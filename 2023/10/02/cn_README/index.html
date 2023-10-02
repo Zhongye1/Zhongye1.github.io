@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>浅扩散模型 （DDSP + Diff-SVC 重构版） |  OGAS</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-cn_README"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  浅扩散模型 （DDSP + Diff-SVC 重构版）
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/10/02/cn_README/" class="article-date">
+  <time datetime="2023-10-02T13:26:43.000Z" itemprop="datePublished">2023-10-02</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.7k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">10 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>基于 DDSP（可微分数字信号处理）的实时端到端歌声转换系统</p>
+<p>（3.0 - 实验性）浅扩散模型 （DDSP + Diff-SVC 重构版）</p>
+<p><img src="/2023/10/02/cn_README/diagram.png" alt="diagram.png"><br>数据准备，配置编码器（hubert 或者 contentvec ) 与声码器 (nsf-hifigan) 的环节与训练纯 DDSP 模型相同。</p>
+<p>因为扩散模型更难训练，我们提供了一些预训练模型：</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/hubertsoft_pitch_410k/model_0.pt">https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/hubertsoft_pitch_410k/model_0.pt</a> (使用 ‘hubertsoft’ 编码器)</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/pitch_400k/model_0.pt">https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/pitch_400k/model_0.pt</a> (使用 ‘contentvec768l12’ 编码器)</p>
+<p>将名为<code>model_0.pt</code>的预训练模型, 放到<code>diffusion.yaml</code>里面 “expdir: exp&#x2F;*****” 参数指定的模型导出文件夹内, 没有就新建一个, 程序会自动加载该文件夹下的预训练模型。</p>
+<p>（1）预处理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/diffusion.yaml</span><br></pre></td></tr></table></figure>
+<p>这个预处理也能用来训练 DDSP 模型，不用预处理两遍（但需要保证 yaml 里面的 data 下面的参数均一致）</p>
+<p>（2）训练扩散模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_diff.py -c configs/diffusion.yaml</span><br></pre></td></tr></table></figure>
+<p>（3）训练 DDSP 模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+<p>如上所述，可以不需要重新预处理，但请检查 combsub.yaml 与 diffusion.yaml 是否参数匹配。说话人数 n_spk 可以不一致，但是尽量用相同的编号表示相同的说话人（推理更简单）。</p>
+<p>（4）非实时推理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main_diff.py -i &lt;input.wav&gt; -ddsp &lt;ddsp_ckpt.pt&gt; -diff &lt;diff_ckpt.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -<span class="built_in">id</span> &lt;speaker_id&gt; -diffid &lt;diffusion_speaker_id&gt; -speedup &lt;speedup&gt; -method &lt;method&gt; -kstep &lt;kstep&gt;</span><br></pre></td></tr></table></figure>
+<p>speedup 为加速倍速，method 为 pndm 或者 dpm-solver, kstep为浅扩散步数，diffid 为扩散模型的说话人id，其他参数与 main.py 含义相同。</p>
+<p>如果训练时已经用相同的编号表示相同的说话人，则 -diffid 可以为空，否则需要指定 -diffid 选项。</p>
+<p>如果 -ddsp 为空，则使用纯扩散模型 ，此时以输入源的 mel 进行浅扩散，若进一步 -kstep 为空，则进行完整深度的高斯扩散。</p>
+<p>程序会自动检查 DDSP 模型和扩散模型的参数是否匹配 （采样率，帧长和编码器），不匹配会忽略加载 DDSP 模型并进入高斯扩散模式。</p>
+<p>（5）实时 GUI :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python gui_diff.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="0-简介"><a href="#0-简介" class="headerlink" title="0.简介"></a>0.简介</h2><p>DDSP-SVC 是一个新的开源歌声转换项目，致力于开发可以在个人电脑上普及的自由 AI 变声器软件。</p>
+<p>相比于比较著名的 <a target="_blank" rel="noopener" href="https://github.com/prophesier/diff-svc">Diff-SVC</a> 和 <a target="_blank" rel="noopener" href="https://github.com/svc-develop-team/so-vits-svc">SO-VITS-SVC</a>, 它训练和合成对电脑硬件的要求要低的多，并且训练时长有数量级的缩短。另外在进行实时变声时，本项目的硬件资源显著低于 SO-VITS-SVC，而 Diff-SVC 合成太慢几乎无法进行实时变声。</p>
+<p>虽然 DDSP 的原始合成质量不是很理想（训练时在 tensorboard 中可以听到原始输出），但在使用基于预训练声码器的增强器增强音质后，对于部分数据集可以达到接近 SOVITS-SVC 的合成质量。</p>
+<p>如果训练数据的质量非常高，可能仍然 Diff-SVC 将拥有最高的合成质量。在<code>samples</code>文件夹中包含合成示例，相关模型检查点可以从仓库发布页面下载。</p>
+<p>免责声明：请确保仅使用<strong>合法获得的授权数据</strong>训练 DDSP-SVC 模型，不要将这些模型及其合成的任何音频用于非法目的。 本库作者不对因使用这些模型检查点和音频而造成的任何侵权，诈骗等违法行为负责。</p>
+<p>1.1 更新：支持多说话人和音色混合。</p>
+<p>2.0 更新：开始支持实时 vst 插件，并优化了 combsub 模型， 训练速度极大提升。旧的 combsub 模型仍然兼容，可用 combsub-old.yaml 训练，sins 模型不受影响，但由于训练速度远慢于 combsub, 目前版本已经不推荐使用。</p>
+<h2 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h2><ol>
+<li><p>安装PyTorch：我们推荐从 <a target="_blank" rel="noopener" href="https://pytorch.org/">**PyTorch 官方网站 **</a> 下载 PyTorch.</p>
+</li>
+<li><p>安装依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt </span><br></pre></td></tr></table></figure>
+<p>注： 仅在 python 3.8 (windows) + torch 1.9.1 + torchaudio 0.6.0 测试过代码，太旧或太新的依赖可能会报错。</p>
+</li>
+</ol>
+<p>更新：python 3.8 (windows) + cuda 11.8 + torch 2.0.0 + torchaudio 2.0.1 可以运行，训练速度更快了。</p>
+<h2 id="2-配置预训练模型"><a href="#2-配置预训练模型" class="headerlink" title="2. 配置预训练模型"></a>2. 配置预训练模型</h2><ul>
+<li><strong>(必要操作)</strong> 下载预训练 <a target="_blank" rel="noopener" href="https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt"><strong>HubertSoft</strong></a> 编码器并将其放到 <code>pretrain/hubert</code> 文件夹。<ul>
+<li>更新：现在支持 ContentVec 编码器了。你可以下载预训练 <a target="_blank" rel="noopener" href="https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr">ContentVec</a> 编码器替代 HubertSoft 编码器并修改配置文件以使用它。</li>
+</ul>
+</li>
+<li>从 <a target="_blank" rel="noopener" href="https://openvpi.github.io/vocoders">DiffSinger 社区声码器项目</a> 下载基于预训练声码器的增强器，并解压至 <code>pretrain/</code> 文件夹。<ul>
+<li>注意：你应当下载名称中带有<code>nsf_hifigan</code>的压缩文件，而非<code>nsf_hifigan_finetune</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-预处理"><a href="#3-预处理" class="headerlink" title="3. 预处理"></a>3. 预处理</h2><h3 id="1-配置训练数据集和验证数据集"><a href="#1-配置训练数据集和验证数据集" class="headerlink" title="1. 配置训练数据集和验证数据集"></a>1. 配置训练数据集和验证数据集</h3><h4 id="1-1-手动配置："><a href="#1-1-手动配置：" class="headerlink" title="1.1 手动配置："></a>1.1 手动配置：</h4><p>将所有的训练集数据 (.wav 格式音频切片) 放到 <code>data/train/audio</code>。</p>
+<p>将所有的验证集数据 (.wav 格式音频切片) 放到 <code>data/val/audio</code>。</p>
+<h4 id="1-2-程序随机选择："><a href="#1-2-程序随机选择：" class="headerlink" title="1.2 程序随机选择："></a>1.2 程序随机选择：</h4><p>运行<code>python draw.py</code>,程序将帮助你挑选验证集数据（可以调整 <code>draw.py</code> 中的参数修改抽取文件的数量等参数）。</p>
+<h4 id="1-3文件夹结构目录展示："><a href="#1-3文件夹结构目录展示：" class="headerlink" title="1.3文件夹结构目录展示："></a>1.3文件夹结构目录展示：</h4><ul>
+<li>单人物目录结构：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data</span><br><span class="line">├─ train</span><br><span class="line">│    ├─ audio</span><br><span class="line">│    │    ├─ aaa.wav</span><br><span class="line">│    │    ├─ bbb.wav</span><br><span class="line">│    │    └─ ....wav</span><br><span class="line">│    └─ val</span><br><span class="line">│    │    ├─ eee.wav</span><br><span class="line">│    │    ├─ fff.wav</span><br><span class="line">│    │    └─ ....wav</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多人物目录结构：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">data</span><br><span class="line">├─ train</span><br><span class="line">│    ├─ audio</span><br><span class="line">│    │    ├─ 1</span><br><span class="line">│    │    │   ├─ aaa.wav</span><br><span class="line">│    │    │   ├─ bbb.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    ├─ 2</span><br><span class="line">│    │    │   ├─ ccc.wav</span><br><span class="line">│    │    │   ├─ ddd.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    └─ ...</span><br><span class="line">│    └─ val</span><br><span class="line">│    │    ├─ 1</span><br><span class="line">│    │    │   ├─ eee.wav</span><br><span class="line">│    │    │   ├─ fff.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    ├─ 2</span><br><span class="line">│    │    │   ├─ ggg.wav</span><br><span class="line">│    │    │   ├─ hhh.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    └─ ...</span><br></pre></td></tr></table></figure>
+<h3 id="2-样例合成器模型训练"><a href="#2-样例合成器模型训练" class="headerlink" title="2. 样例合成器模型训练"></a>2. 样例合成器模型训练</h3><ol>
+<li>训练基于梳齿波减法合成器的模型 (<strong>推荐</strong>)：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>训练基于正弦波加法合成器的模型：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/sins.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>您可以在预处理之前修改配置文件 <code>config/&lt;model_name&gt;.yaml</code>，默认配置适用于GTX-1660 显卡训练 44.1khz 高采样率合成器。</li>
+</ol>
+<h3 id="3-备注："><a href="#3-备注：" class="headerlink" title="3. 备注："></a>3. 备注：</h3><ol>
+<li><p>请保持所有音频切片的采样率与 yaml 配置文件中的采样率一致！如果不一致，程序可以跑，但训练过程中的重新采样将非常缓慢。（可选：使用Adobe Audition™的响度匹配功能可以一次性完成重采样修改声道和响度匹配。）</p>
+</li>
+<li><p>训练数据集的音频切片总数建议为约 1000 个，另外长音频切成小段可以加快训练速度，但所有音频切片的时长不应少于 2 秒。如果音频切片太多，则需要较大的内存，配置文件中将 <code>cache_all_data</code> 选项设置为 false 可以解决此问题。</p>
+</li>
+<li><p>验证集的音频切片总数建议为 10 个左右，不要放太多，不然验证过程会很慢。</p>
+</li>
+<li><p>如果您的数据集质量不是很高，请在配置文件中将 ‘f0_extractor’ 设为 ‘crepe’。crepe 算法的抗噪性最好，但代价是会极大增加数据预处理所需的时间。</p>
+</li>
+<li><p>配置文件中的 ‘n_spk’ 参数将控制是否训练多说话人模型。如果您要训练<strong>多说话人</strong>模型，为了对说话人进行编号，所有音频文件夹的名称必须是<strong>不大于 ‘n_spk’ 的正整数</strong>。</p>
+</li>
+</ol>
+<h2 id="4-训练"><a href="#4-训练" class="headerlink" title="4. 训练"></a>4. 训练</h2><h3 id="1-不使用预训练数据进行训练："><a href="#1-不使用预训练数据进行训练：" class="headerlink" title="1. 不使用预训练数据进行训练："></a>1. 不使用预训练数据进行训练：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以训练 combsub 模型为例 </span></span><br><span class="line">python train.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>训练其他模型方法类似。</p>
+</li>
+<li><p>可以随时中止训练，然后运行相同的命令来继续训练。</p>
+</li>
+<li><p>微调 (finetune)：在中止训练后，重新预处理新数据集或更改训练参数（batchsize、lr等），然后运行相同的命令。</p>
+</li>
+</ol>
+<h3 id="2-使用预训练数据（底模）进行训练："><a href="#2-使用预训练数据（底模）进行训练：" class="headerlink" title="2. 使用预训练数据（底模）进行训练："></a>2. 使用预训练数据（底模）进行训练：</h3><ol>
+<li><strong>使用预训练模型请修改配置文件中的 ‘n_spk’ 参数为 ‘2’ ,同时配置<code>train</code>目录结构为多人物目录，不论你是否训练多说话人模型。</strong></li>
+<li><strong>如果你要训练一个更多说话人的模型，就不要下载预训练模型了。</strong></li>
+<li>欢迎PR训练的多人底模 (请使用授权同意开源的数据集进行训练)。</li>
+<li>从<a target="_blank" rel="noopener" href="https://github.com/yxlllc/DDSP-SVC/releases/download/2.0/opencpop+kiritan.zip"><strong>这里</strong></a>下载预训练模型，并将<code>model_300000.pt</code>解压到<code>.\exp\combsub-test\</code>中</li>
+<li>同不使用预训练数据进行训练一样，启动训练。</li>
+</ol>
+<h2 id="5-可视化"><a href="#5-可视化" class="headerlink" title="5. 可视化"></a>5. 可视化</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用tensorboard检查训练状态</span></span><br><span class="line">tensorboard --logdir=exp</span><br></pre></td></tr></table></figure>
+<p>第一次验证 (validation) 后，在 TensorBoard 中可以看到合成后的测试音频。</p>
+<p>注：TensorBoard 中的测试音频是 DDSP-SVC 模型的原始输出，并未通过增强器增强。 如果想测试模型使用增强器的合成效果（可能具有更高的合成质量），请使用下一章中描述的方法。</p>
+<h2 id="6-非实时变声"><a href="#6-非实时变声" class="headerlink" title="6. 非实时变声"></a>6. 非实时变声</h2><ol>
+<li>（<strong>推荐</strong>）使用预训练声码器增强 DDSP 的输出结果：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认 enhancer_adaptive_key = 0 正常音域范围内将有更高的音质</span></span><br><span class="line"><span class="comment"># 设置 enhancer_adaptive_key &gt; 0 可将增强器适配于更高的音域</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -<span class="built_in">id</span> &lt;speaker_id&gt; -e <span class="literal">true</span> -eak &lt;enhancer_adaptive_key (semitones)&gt;</span><br></pre></td></tr></table></figure></li>
+<li>DDSP 的原始输出结果：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 速度快，但音质相对较低（像您在tensorboard里听到的那样）</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -e <span class="literal">false</span> -<span class="built_in">id</span> &lt;speaker_id&gt;</span><br></pre></td></tr></table></figure></li>
+<li>关于 f0 提取器、响应阈值及其他参数，参见:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py -h</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>如果要使用混合说话人（捏音色）功能，增添 “-mix” 选项来设计音色，下面是个例子：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将1号说话人和2号说话人的音色按照0.5:0.5的比例混合</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -mix <span class="string">&quot;&#123;1:0.5, 2:0.5&#125;&quot;</span> -e <span class="literal">true</span> -eak 0</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-实时变声"><a href="#7-实时变声" class="headerlink" title="7. 实时变声"></a>7. 实时变声</h2><p>用以下命令启动简易操作界面:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python gui.py</span><br></pre></td></tr></table></figure>
+<p>该前端使用了滑动窗口，交叉淡化，基于SOLA 的拼接和上下文语义参考等技术，在低延迟和资源占用的情况下可以达到接近非实时合成的音质。</p>
+<p>更新：现在加入了基于相位声码器的衔接算法，但是大多数情况下 SOLA 算法已经具有足够高的拼接音质，所以它默认是关闭状态。如果您追求极端的低延迟实时变声音质，可以考虑开启它并仔细调参，有概率音质更高。但大量测试发现，如果交叉淡化时长大于0.1秒，相位声码器反而会造成音质明显劣化。</p>
+<h2 id="8-感谢"><a href="#8-感谢" class="headerlink" title="8. 感谢"></a>8. 感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/magenta/ddsp">ddsp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yxlllc/pc-ddsp">pc-ddsp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bshall/soft-vc">soft-vc</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openvpi/DiffSinger">DiffSinger (OpenVPI version)</a></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/10/02/cn_README/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2023/10/02/%E6%B5%85%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-DDSP-SVC/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            浅扩散模型-DDSP-SVC
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/10/02/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">扩散模型</div>
+      </a>
+    
+  </nav>
+
+  
+   
+  
+   
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2023
+        <i class="ri-heart-fill heart_icon"></i> 万晨希
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="OGAS"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">个人文章</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://c.binjie.fun/#/chat/1694091676524">AI工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0">B站空间</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://www.askbox.ink/box/uu/N3LD573T?uid=fa32fffa9e9d7fda9afc07315f738736">留言</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="http://scp-wiki-cn.wikidot.com/">SCP中国分部</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://user.qzone.qq.com/2760913192/infocenter">QQ空间</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+ 
+<script src="/js/clickBoom2.js"></script>
+ 
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=2012172936&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/null"},"display":{"position":"right","width":100,"height":180},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+
+</html>

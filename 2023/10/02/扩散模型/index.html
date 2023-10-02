@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>扩散模型 |  OGAS</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-扩散模型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  扩散模型
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/10/02/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2023-10-02T13:26:43.000Z" itemprop="datePublished">2023-10-02</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">10 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>图像生成领域最常见生成模型有GAN和VAE，2020年，DDPM（Denoising Diffusion Probabilistic Model）被提出，被称为扩散模型（Diffusion Model），同样可用于图像生成。近年扩散模型大热，Stability AI、OpenAI、Google Brain等相继基于扩散模型提出的以文生图，图像生成视频生成等模型。</p>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><p>扩散模型：和其他生成模型一样，实现从噪声（采样自简单的分布）生成目标数据样本。</p>
+<p>扩散模型包括两个过程：前向过程（forward process）和反向过程（reverse process），其中前向过程又称为扩散过程（diffusion process）。无论是前向过程还是反向过程都是一个参数化的马尔可夫链（Markov chain），其中反向过程可用于生成数据样本（它的作用类似GAN中的生成器，只不过GAN生成器会有维度变化，而DDPM的反向过程没有维度变化）。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-1b030c7965fb49c08658016398a36d65_1440w.webp"></p>
+<p>上图截取自原论文.</p>
+<p>-  到  为逐步加噪过的前向程，噪声是已知的，该过程从原始图片逐步加噪至一组纯噪声。</p>
+<p>-  到  为将一组随机噪声还原为输入的过程。该过程需要学习一个去噪过程，直到还原一张图片。</p>
+<p><strong>前向过程</strong></p>
+<p>前向过程是加噪的过程，前向过程中图像  只和上一时刻的  有关, 该过程可以视为马尔科夫过程, 满足:</p>
+<p>其中不同t的  是预先定义好的逐渐衰减的，可以是Linear，Cosine等，满足  。</p>
+<p>根据以上公式，可以通过重参数化采样得到。  ，</p>
+<p>经过推导，可以得出  与 的关系：</p>
+<p><strong>逆向过程</strong></p>
+<p>逆向过程是去噪的过程，如果得到逆向过程 ，就可以通过随机噪声$  $逐步还原出一张图像。DDPM使用神经网络  拟合逆向过程  。</p>
+<p> ，可以推导出:</p>
+<p>DDPM论文中不计方差，通过神经网络拟合均值 ，从而得到  ,</p>
+<p>因为  和  已知，只需使用神经网络拟合 </p>
+<p><strong>网络结构</strong></p>
+<p>论文的源代码采用Unet实现  的预测，整个训练过程其实就是在训练Unet网络的参数</p>
+<p><strong>Unet职责</strong></p>
+<p>无论在前向过程还是反向过程，Unet的职责都是根据当前的样本和时间t预测噪声。</p>
+<h3 id="Gaussion-Diffusion职责"><a href="#Gaussion-Diffusion职责" class="headerlink" title="Gaussion Diffusion职责"></a>Gaussion Diffusion职责</h3><p>前向过程：从1到T的时间采样一个时间  ，生成一个随机噪声加到图片上，从Unet获取预测噪声，计算损失后更新Unet梯度</p>
+<p>反向过程：先从正态分布随机采样和训练样本一样大小的纯噪声图片，从T-1到0逐步重复以下步骤：从  还原  。</p>
+<h3 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h3><p><img src="https://pic3.zhimg.com/80/v2-70f1ec85b1647b70e0b67e14a662315e_1440w.webp"></p>
+<h3 id="Algorithm1：Training"><a href="#Algorithm1：Training" class="headerlink" title="Algorithm1：Training"></a>Algorithm1：Training</h3><ul>
+<li>从数据中抽取一个样本，</li>
+<li>从1-T中随机选取一个时间t</li>
+<li>将  和t传给GaussionDiffusion，GaussionDiffusion采样一个随机噪声，加到  ，形成 ，然后将 和t放入Unet，Unet根据t生成正弦位置编码和  结合，Unet预测加的这个噪声，并返回噪声，GaussionDiffusion计算该噪声和随机噪声的损失</li>
+<li>将神经网络Unet预测的噪声与之前GaussionDiffusion采样的随机噪声求L2损失，计算梯度，更新权重。</li>
+<li>重复以上步骤，直到网络Unet训练完成。</li>
+</ul>
+<p>训练步骤中每个模块的交互如下图：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-33081e7d50e65e1ed4e5d1f91e67728b_1440w.webp"></p>
+<h3 id="Algorithm2：Sampling"><a href="#Algorithm2：Sampling" class="headerlink" title="Algorithm2：Sampling"></a>Algorithm2：Sampling</h3><ul>
+<li>- 从标准正态分布采样出 </li>
+<li>- 从  依次重复以下步骤:</li>
+<li>- 从标准正态分布采样  ，为重参数化做准备</li>
+<li>- 根据模型求出，结合  和采样得到z利用重参数化技巧，得到 </li>
+<li>- 循环结束后返回</li>
+</ul>
+<p> </p>
+<p>采样步骤中每个模块的交互如下图：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-3673b2795344783503286c32f05fc7b6_1440w.webp"></p>
+<h2 id="结合代码（MindSpore版本）讲解"><a href="#结合代码（MindSpore版本）讲解" class="headerlink" title="结合代码（MindSpore版本）讲解"></a>结合代码（MindSpore版本）讲解</h2><p>代码主要分为以下几块：Unet、GaussianDiffusion、 Trainer</p>
+<h3 id="1-Unet"><a href="#1-Unet" class="headerlink" title="1. Unet"></a>1. Unet</h3><p>Unet网络结构如图：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-01dadddd5b3082dafe535d59330ae845_1440w.webp"></p>
+<p><strong>1.1 正弦位置编码</strong></p>
+<p>DDPM每步训练是随机采样一个时间，为了让网络知道当前处理的是一系列去噪过程中的哪一个step，我们需要将当前t编码并传入网络之中，DDPM使用的Unet是time-condition Unet。</p>
+<p>类似于Transformer的positional embedding，DDPM采用正弦位置编码（Sinusoidal Positional Embeddings），既需要位置编码有界又需要两个时间步长之间的距离与句子长度无关。为了满足这两点标准，一种思路是使用有界的周期性函数，而简单的有界周期性函数很容易想到sin和cos函数。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class SinusoidalPosEmb(nn.Cell):</span><br><span class="line">    def __init__(self, dim):</span><br><span class="line">        super().__init__()</span><br><span class="line">        half_dim = dim // 2</span><br><span class="line">        emb = math.log(10000) / (half_dim - 1)</span><br><span class="line">        emb = np.exp(np.arange(half_dim) * - emb)</span><br><span class="line">        self.emb = Tensor(emb, mindspore.float32)</span><br><span class="line">        self.Concat = _get_cache_prim(ops.Concat)(-1)</span><br><span class="line"></span><br><span class="line">    def construct(self, x):</span><br><span class="line">        emb = x[:, None] * self.emb[None, :]</span><br><span class="line">        emb = self.Concat((ops.sin(emb), ops.cos(emb)))</span><br><span class="line">        return emb</span><br></pre></td></tr></table></figure>
+
+<p>DDPM的Unet有ResidualBlock和Attention Module</p>
+<p><strong>1.2 Attention</strong></p>
+<p>Attention的本质是从人类视觉注意力机制中获得灵感。大致是我们视觉在感知东西的时候，一般不会是一个场景从到头看到尾每次全部都看，而往往是根据需求观察注意特定的一部分。具体可以参考博客：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35571412">TheLongGoodbye：浅谈Attention机制的理解</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Attention(nn.Cell):</span><br><span class="line">    def __init__(self, dim, heads=4, dim_head=32):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.scale = dim_head ** -0.5</span><br><span class="line">        self.heads = heads</span><br><span class="line">        hidden_dim = dim_head * heads</span><br><span class="line"></span><br><span class="line">        self.to_qkv = _get_cache_prim(Conv2d)(dim, hidden_dim * 3, 1, pad_mode=&#x27;valid&#x27;, has_bias=False)</span><br><span class="line">        self.to_out = _get_cache_prim(Conv2d)(hidden_dim, dim, 1, pad_mode=&#x27;valid&#x27;, has_bias=True)</span><br><span class="line">self.map = ops.Map()</span><br><span class="line">        self.partial = ops.Partial()</span><br><span class="line">        self.bmm = BMM()</span><br><span class="line">        self.split = ops.Split(axis=1, output_num=3)</span><br><span class="line">        self.softmax = ops.Softmax(-1)</span><br><span class="line"></span><br><span class="line">    def construct(self, x):</span><br><span class="line">        b, c, h, w = x.shape</span><br><span class="line">        qkv = self.split(self.to_qkv(x))</span><br><span class="line">        q, k, v = self.map(self.partial(rearrange, self.heads), qkv)</span><br><span class="line">        q = q * self.scale</span><br><span class="line">        sim = self.bmm(q.swapaxes(2, 3), k)</span><br><span class="line">        attn = self.softmax(sim)</span><br><span class="line">        out = self.bmm(attn, v.swapaxes(2, 3))</span><br><span class="line">        out = out.swapaxes(-1, -2).reshape((b, -1, h, w))</span><br><span class="line">        return self.to_out(out)</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.3 Residual Block</strong></p>
+<p>是ResNet的核心模块，可以防止网络退化。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Residual(nn.Cell):</span><br><span class="line">    &quot;&quot;&quot;残差块&quot;&quot;&quot;</span><br><span class="line">    def __init__(self, fn):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    def construct(self, x, *args, **kwargs):</span><br><span class="line">        return self.fn(x, *args, **kwargs) + x</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-GaussianDiffusion"><a href="#2-GaussianDiffusion" class="headerlink" title="2. GaussianDiffusion"></a>2. GaussianDiffusion</h3><p>首先定义相关的概率值，与公式相对应：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">self.betas = betas</span><br><span class="line">self.alphas_cumprod = alphas_cumprod</span><br><span class="line">self.alphas_cumprod_prev = alphas_cumprod_prev</span><br><span class="line"></span><br><span class="line"># calculations for diffusion q(x_t | x_&#123;t-1&#125;) and others</span><br><span class="line">self.sqrt_alphas_cumprod = Tensor(np.sqrt(alphas_cumprod))</span><br><span class="line">self.sqrt_one_minus_alphas_cumprod = Tensor(np.sqrt(1. - alphas_cumprod))</span><br><span class="line">self.log_one_minus_alphas_cumprod = Tensor(np.log(1. - alphas_cumprod))</span><br><span class="line">self.sqrt_recip_alphas_cumprod = Tensor(np.sqrt(1. / alphas_cumprod))</span><br><span class="line">self.sqrt_recipm1_alphas_cumprod = Tensor(np.sqrt(1. / alphas_cumprod - 1))</span><br><span class="line"></span><br><span class="line">posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)</span><br><span class="line"></span><br><span class="line">self.posterior_variance = Tensor(posterior_variance)</span><br><span class="line"></span><br><span class="line">self.posterior_log_variance_clipped = Tensor(</span><br><span class="line">    np.log(np.clip(posterior_variance, 1e-20, None)))</span><br><span class="line">self.posterior_mean_coef1 = Tensor(</span><br><span class="line">    betas * np.sqrt(alphas_cumprod_prev) / (1. - alphas_cumprod))</span><br><span class="line">self.posterior_mean_coef2 = Tensor(</span><br><span class="line">    (1. - alphas_cumprod_prev) * np.sqrt(alphas) / (1. - alphas_cumprod))</span><br><span class="line"></span><br><span class="line">p2_loss_weight = (p2_loss_weight_k + alphas_cumprod / (1 - alphas_cumprod))\</span><br><span class="line">                  ** - p2_loss_weight_gamma</span><br><span class="line">self.p2_loss_weight = Tensor(p2_loss_weight)</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算损失"><a href="#计算损失" class="headerlink" title="计算损失"></a>计算损失</h3><p>基于Unet预测出noise，使用预测noise和真实noise计算损失：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">def p_losses(self, x_start, t, noise, random_cond):</span><br><span class="line">    # 生成的真实noise</span><br><span class="line">    x = self.q_sample(x_start=x_start, t=t, noise=noise)</span><br><span class="line">    # if doing self-conditioning, 50% of the time, predict x_start from current set of times</span><br><span class="line">    if self.self_condition:</span><br><span class="line">        if random_cond:</span><br><span class="line">            _, x_self_cond = self.model_predictions(x, t)</span><br><span class="line">            x_self_cond = ops.stop_gradient(x_self_cond)</span><br><span class="line">        else:</span><br><span class="line">            x_self_cond = ops.zeros_like(x)</span><br><span class="line">    else:</span><br><span class="line">        x_self_cond = ops.zeros_like(x)</span><br><span class="line">    # model_out为基于U-net预测的pred_noise，此处self.model为Unet，ddpm默认预测目标是pred_noise。</span><br><span class="line">    model_out = self.model(x, t, x_self_cond)</span><br><span class="line">    if self.objective == &#x27;pred_noise&#x27;:</span><br><span class="line">        target = noise</span><br><span class="line">    elif self.objective == &#x27;pred_x0&#x27;:</span><br><span class="line">        target = x_start</span><br><span class="line">    elif self.objective == &#x27;pred_v&#x27;:</span><br><span class="line">        v = self.predict_v(x_start, t, noise)</span><br><span class="line">        target = v</span><br><span class="line">    else:</span><br><span class="line">        target = noise</span><br><span class="line">	# 计算损失值</span><br><span class="line">    loss = self.loss_fn(model_out, target)</span><br><span class="line">    loss = loss.reshape(loss.shape[0], -1)</span><br><span class="line">    loss = loss * extract(self.p2_loss_weight, t, loss.shape)</span><br><span class="line">    return loss.mean()</span><br></pre></td></tr></table></figure>
+
+<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>输出x_start，也就是原始图像，当sampling_time_steps&lt; time_steps，用下方函数：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">def ddim_sample(self, shape, clip_denoise=True):</span><br><span class="line">    batch = shape[0]</span><br><span class="line">    total_timesteps, sampling_timesteps, = self.num_timesteps, self.sampling_timesteps</span><br><span class="line">    eta, objective = self.ddim_sampling_eta, self.objective</span><br><span class="line"></span><br><span class="line">    # [-1, 0, 1, 2, ..., T-1] when sampling_timesteps == total_timesteps</span><br><span class="line">    times = np.linspace(-1, total_timesteps - 1, sampling_timesteps + 1).astype(np.int32)</span><br><span class="line">    # [(T-1, T-2), (T-2, T-3), ..., (1, 0), (0, -1)]</span><br><span class="line">    times = list(reversed(times.tolist()))</span><br><span class="line">    time_pairs = list(zip(times[:-1], times[1:]))</span><br><span class="line"></span><br><span class="line">	# 采样第一次迭代，Unet输入img为随机采样</span><br><span class="line">    img = np.random.randn(*shape).astype(np.float32)</span><br><span class="line">    x_start = None</span><br><span class="line"></span><br><span class="line">    for time, time_next in tqdm(time_pairs, desc=&#x27;sampling loop time step&#x27;):</span><br><span class="line">        # time_cond = ops.fill(mindspore.int32, (batch,), time)</span><br><span class="line">        time_cond = np.full((batch,), time).astype(np.int32)</span><br><span class="line">        x_start = Tensor(x_start) if x_start is not None else x_start</span><br><span class="line">        self_cond = x_start if self.self_condition else None</span><br><span class="line">        predict_noise, x_start, *_ = self.model_predictions(Tensor(img, mindspore.float32),</span><br><span class="line">                                                            Tensor(time_cond),</span><br><span class="line">                                                            self_cond,</span><br><span class="line">                                                            clip_denoise)</span><br><span class="line">        predict_noise, x_start = predict_noise.asnumpy(), x_start.asnumpy()</span><br><span class="line">        if time_next &lt; 0:</span><br><span class="line">            img = x_start</span><br><span class="line">            continue</span><br><span class="line"></span><br><span class="line">        alpha = self.alphas_cumprod[time]</span><br><span class="line">        alpha_next = self.alphas_cumprod[time_next]</span><br><span class="line"></span><br><span class="line">        sigma = eta * np.sqrt(((1 - alpha / alpha_next) * (1 - alpha_next) / (1 - alpha)))</span><br><span class="line">        c = np.sqrt(1 - alpha_next - sigma ** 2)</span><br><span class="line"></span><br><span class="line">        noise = np.random.randn(*img.shape)</span><br><span class="line"></span><br><span class="line">        img = x_start * np.sqrt(alpha_next) + c * predict_noise + sigma * noise</span><br><span class="line"></span><br><span class="line">    img = self.unnormalize(img)</span><br><span class="line"></span><br><span class="line">    return img</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Trainer-训练器"><a href="#3-Trainer-训练器" class="headerlink" title="3. Trainer 训练器"></a>3. Trainer 训练器</h3><p>data_iterator中每次取出的数据集就是一个batch_size大小，每训练一个batch，self.step就会加1。</p>
+<p>DDPM的trainer采用ema（指数移动平均）优化，ema不参与训练，只参与推理，比对变量直接赋值而言，移动平均得到的值在图像上更加平缓光滑，抖动性更小。具体代码参考代码仓中ema.py</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;training start&#x27;)</span><br><span class="line">        with tqdm(initial=self.step, total=self.train_num_steps, disable=False) as pbar:</span><br><span class="line">            total_loss = 0.</span><br><span class="line">            for (img,) in data_iterator:</span><br><span class="line">                model.set_train()</span><br><span class="line">                # # 随机采样time向量</span><br><span class="line">                time_emb = Tensor(</span><br><span class="line">                    np.random.randint(0, num_timesteps, (img.shape[0],)).astype(np.int32))</span><br><span class="line">                noise = Tensor(np.random.randn(*img.shape), mindspore.float32)</span><br><span class="line">                # 返回损失、计算梯度、更新梯度</span><br><span class="line">                self_cond = random.random() &lt; 0.5 if self.self_condition else False</span><br><span class="line">                loss = train_step(img, time_emb, noise, self_cond)</span><br><span class="line"></span><br><span class="line">                # 损失累加</span><br><span class="line">                total_loss += float(loss.asnumpy())</span><br><span class="line"></span><br><span class="line">                self.step += 1</span><br><span class="line">                if self.step % gradient_accumulate_every == 0:</span><br><span class="line">                    # ema和model的参数同步更新</span><br><span class="line">                    self.ema.update()</span><br><span class="line">                    pbar.set_description(f&#x27;loss: &#123;total_loss:.4f&#125;&#x27;)</span><br><span class="line">                    pbar.update(1)</span><br><span class="line">                    total_loss = 0.</span><br><span class="line"></span><br><span class="line">                accumulate_step = self.step // gradient_accumulate_every</span><br><span class="line">                accumulate_remain_step = self.step % gradient_accumulate_every</span><br><span class="line">                if self.step != 0 and accumulate_step % self.save_and_sample_every == 0\</span><br><span class="line">                        and accumulate_remain_step == 0:</span><br><span class="line"></span><br><span class="line">                    self.ema.set_train(False)</span><br><span class="line">                    self.ema.synchronize()</span><br><span class="line">                    batches = num_to_groups(self.num_samples, self.batch_size)</span><br><span class="line">                    all_images_list = list(map(lambda n: self.ema.online_model.sample(batch_size=n),</span><br><span class="line">                                               batches))</span><br><span class="line">                    self.save_images(all_images_list, accumulate_step)</span><br><span class="line">self.save(accumulate_step)</span><br><span class="line">                    self.ema.desynchronize()</span><br><span class="line"></span><br><span class="line">                if self.step &gt;= gradient_accumulate_every * self.train_num_steps:</span><br><span class="line">                    break</span><br><span class="line"></span><br><span class="line">        print(&#x27;training complete&#x27;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DDPM论文"><a href="#DDPM论文" class="headerlink" title="DDPM论文"></a>DDPM论文</h3><p>- [Denoising Diffusion Probabilistic Models](<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation</a>)</p>
+<h3 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h3><p>昇思大模型平台：<a href="https://link.zhihu.com/?target=https://xihe.mindspore.cn/projects/drizzlezyk/DDPM">昇思大模型平台</a></p>
+<p>启智：<a href="https://link.zhihu.com/?target=https://openi.pcl.ac.cn/drizzlezyk/ddpm2">ddpm2</a></p>
+<p>Github：<a href="https://link.zhihu.com/?target=https://github.com/drizzlezyk/DDPM-MindSpore">GitHub - drizzlezyk&#x2F;DDPM-MindSpore</a></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/10/02/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2023/10/02/cn_README/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            浅扩散模型 （DDSP + Diff-SVC 重构版）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/10/02/DDSP-SVC/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">DDSP-SVC</div>
+      </a>
+    
+  </nav>
+
+  
+   
+  
+   
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2023
+        <i class="ri-heart-fill heart_icon"></i> 万晨希
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="OGAS"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">个人文章</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://c.binjie.fun/#/chat/1694091676524">AI工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0">B站空间</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://www.askbox.ink/box/uu/N3LD573T?uid=fa32fffa9e9d7fda9afc07315f738736">留言</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="http://scp-wiki-cn.wikidot.com/">SCP中国分部</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://user.qzone.qq.com/2760913192/infocenter">QQ空间</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+ 
+<script src="/js/clickBoom2.js"></script>
+ 
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=2012172936&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/null"},"display":{"position":"right","width":100,"height":180},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+
+</html>
