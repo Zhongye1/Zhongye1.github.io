@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>艹 |  余震</title>
+      <title>基于扩散模型的AI生成图像（AI绘画） |  余震</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -56,7 +56,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-艹"
+  id="post-基于扩散模型的AI生成图像（AI绘画）"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -67,7 +67,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  艹
+  基于扩散模型的AI生成图像（AI绘画）
 </h1>
  
 
@@ -75,15 +75,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/10/21/%E8%89%B9/" class="article-date">
-  <time datetime="2023-10-21T09:40:43.000Z" itemprop="datePublished">2023-10-21</time>
+      <a href="/2023/10/28/%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E7%9A%84AI%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%EF%BC%88AI%E7%BB%98%E7%94%BB%EF%BC%89/" class="article-date">
+  <time datetime="2023-10-28T05:39:45.000Z" itemprop="datePublished">2023-10-28</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">25</span>
+            <span class="post-count">2k</span>
         </span>
     </span>
 
@@ -92,20 +92,145 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">7 min</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>一个微信把周末在珠江边上的我跨半个广州捻回广大，操了<br><img src="/2023/10/21/%E8%89%B9/wed.jpg" alt="wed.jpg"></p>
+  <p><a target="_blank" rel="noopener" href="https://nenly.notion.site/c5805e7ae26b4683a277c5586ea05904">https://nenly.notion.site/c5805e7ae26b4683a277c5586ea05904</a></p>
+<h1 id="关于Stable-Diffusion"><a href="#关于Stable-Diffusion" class="headerlink" title="关于Stable Diffusion"></a>关于Stable Diffusion</h1><p><a target="_blank" rel="noopener" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui">https://github.com/AUTOMATIC1111/stable-diffusion-webui</a><br><a target="_blank" rel="noopener" href="https://github.com/CompVis/stable-diffusion">https://github.com/CompVis/stable-diffusion</a></p>
+<p><img src="/2023/10/28/%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E7%9A%84AI%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%EF%BC%88AI%E7%BB%98%E7%94%BB%EF%BC%89/31212.jpg" alt="31212.jpg"></p>
+<p>**Stable Diffusion（简称SD）**是2022年发布的一个深度学习文本到图像生成模型，由慕尼黑大学的CompVis研究团体首先提出，并与初创公司Stability AI、Runway合作开发，同时得到了EleutherAI和LAION的支持。</p>
+<p>它可以实现的功能有很多，可以根据文本的描述生成指定内容的图片（图生图），也可以用于已有图片内容的转绘（图生图），还可以用作图像的局部重绘、外补扩充、高清修复，甚至是视频的“动画化”生成。</p>
+<p>SD的源代码是<strong>开源</strong>发布在网上的，这意味着任何人都可以<strong>免费、不限量</strong>地使用它进行AI绘画生成操作。有开发者使用它的源代码制作了易于用户使用的图形化界面（GUI），于是便有了今天我们大多数人手里可以使用的<strong>Stable Diffusion WebUI（SD Web UI）</strong>。</p>
+<!-- notionvc: f26ff929-b3d7-4f1b-9da6-e455b85d20ae -->
+
+
+<p>&lt;aside&gt; &lt;img src&#x3D;”&#x2F;icons&#x2F;gear_gray.svg” alt&#x3D;”&#x2F;icons&#x2F;gear_gray.svg” width&#x3D;”40px” &#x2F;&gt; <strong>安装Stable Diffusion的整体说明</strong></p>
+<p>Stable Diffusion是一款<strong>开源、免费</strong>的应用程序，因为其生态开放且发展迅速，所以不同时期的安装、配置方式可能都会有所变化。</p>
+<p>在这个文档里，我会实时更新当前<strong>可行的Stable Diffusion安装使用方案</strong>，并同步对应的资源链接供使用。</p>
+<p>安装并应用软件的过程中<strong>不涉及任何付费项目</strong>，我也不建议你通过任何途径付费购买软件和模型，请知悉。</p>
+<p>如果安装的过程中存在问题，请查阅 <a target="_blank" rel="noopener" href="https://www.notion.so/4de501778c024458b1cf92bbc576c522?pvs=21">常见问题速查</a></p>
+<p>&lt;&#x2F;aside&gt;</p>
+<!-- notionvc: ecf31da9-fb9c-4c76-a62a-a57d9521666b -->
+
+<p>目前，Stable Diffusion可以在一台搭载有民用级显卡的电脑上运行。它的配置要求不高但具有一定针对性，最主要的要求是显卡性能与显存大小。</p>
+<!-- notionvc: b204b461-832d-4d04-9101-898f5af0dc41 -->
+<p><img src="/2023/10/28/%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E7%9A%84AI%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%EF%BC%88AI%E7%BB%98%E7%94%BB%EF%BC%89/12.jpg" alt="12.jpg"><br><del>小tips：如何查看自己电脑显存大小：<br>在Windows【开始】点鼠标右键，选择【<a href="https://link.zhihu.com/?target=https://so.csdn.net/so/search?q=%25E4%25BB%25BB%25E5%258A%25A1%25E7%25AE%25A1%25E7%2590%2586%25E5%2599%25A8&spm=1001.2101.3001.7020">任务管理器</a>（T）】，在【性能】一栏选择【GPU】查看“专用GPU内存”</del></p>
+<h1 id="安装Stable-Diffusion"><a href="#安装Stable-Diffusion" class="headerlink" title="安装Stable Diffusion"></a><strong>安装Stable Diffusion</strong></h1><p>&lt;aside&gt; &lt;img src&#x3D;”&#x2F;icons&#x2F;new-alert_gray.svg” alt&#x3D;”&#x2F;icons&#x2F;new-alert_gray.svg” width&#x3D;”40px” &#x2F;&gt; <strong>请先阅读以下内容，然后选择适合你的安装方式：</strong></p>
+<p>如果你使用的是<strong>Windows系统</strong>：</p>
+<ul>
+<li>有一定的动手能力与计算机软件基础，并追求更高的自定义程度，可以尝试着<strong>自主安装部署</strong>；</li>
+<li>接触电脑不多，计算机软件基础薄弱，并想以更轻松的方式开启AI绘画学习之路，可以考虑<strong>使用一些开发者为你准备的“整合包”</strong>。</li>
+</ul>
+<p>如果你使用的是<strong>Mac系统</strong>：</p>
+<ul>
+<li>目前，MAC系统仅能通过<strong>自主安装部署</strong>的方式应用Stable Diffusion。</li>
+<li>一些Mac开发者制作了更适合Mac生态的SD应用（如Diffusion Bee等），但应用逻辑和功能框架与WebUI有较大不同，故不在本知识库的讨论范畴内。 &lt;&#x2F;aside&gt;</li>
+</ul>
+<!-- notionvc: 3dda8bd6-1cba-49c9-a331-bd865bf7800a -->
+
+
+<h2 id="自主安装部署AI绘画"><a href="#自主安装部署AI绘画" class="headerlink" title="自主安装部署AI绘画"></a>自主安装部署AI绘画</h2><p>目前，市面上基于Stable Diffusion制作的实用程序中，最受欢迎的是一个由一位越南开发者<a target="_blank" rel="noopener" href="https://github.com/AUTOMATIC1111">Automatic1111</a>制作的**<a target="_blank" rel="noopener" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui">Stable Diffusion WebUI（SD Web UI）</a>**，提供了非常可视化的参数调节与对海量扩展应用的支持。<br><del>自己看英文文献去</del><br><del>胡志明大草</del><br><del>越南人先搞出来的</del></p>
+<p><del>操作简单人性化，适合新手，小白，电脑知识不够首选该方案</del></p>
+<p>中文教程：<a target="_blank" rel="noopener" href="https://nenly.notion.site/c5805e7ae26b4683a277c5586ea05904">https://nenly.notion.site/c5805e7ae26b4683a277c5586ea05904</a></p>
+<p>1，关杀毒<br>2，下载安装Git</p>
+<p><a href="https://link.zhihu.com/?target=https://git-scm.com/">Git​git-scm.com&#x2F;<img src="https://pic1.zhimg.com/v2-34917b969193928c586023f0b971ae38_180x120.jpg"></a></p>
+<p><img src="https://pic4.zhimg.com/80/v2-2f5c35da8c62dc681eaecceaf6c97537_1440w.webp"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-635fa7868c548d2b1fbda172121cfdda_1440w.webp"></p>
+<p>Git是一个免费的、开源的分布式版本控制系统点击Git Bash Here可以打开Git终端</p>
+<p>检查自己电脑有没有安装Git：【Win+R】唤出【运行】，输入“cmd”，回车，在命令行里输入</p>
+<p>git –version</p>
+<p><img src="https://pic1.zhimg.com/80/v2-c698bf51d4dffc626a3a5332006c9908_1440w.webp"></p>
+<p>3.下载安装Python</p>
+<p><a href="https://link.zhihu.com/?target=https://www.python.org/">Welcome to Python.org​www.python.org/</a></p>
+<p><img src="https://pic4.zhimg.com/80/v2-acfaf8ad119538f2d540cf1668c7d5f3_1440w.webp"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-4dede3e1bd496be27ae95f51204ebca6_1440w.webp"></p>
+<p>最好是使用这个版本</p>
+<p><img src="https://pic3.zhimg.com/80/v2-4f544567ec5dca9a1d8b2f7a39a70a6a_1440w.webp"></p>
+<p><img src="https://pic4.zhimg.com/80/v2-58f58469f2350c53d32ba28076549423_1440w.webp"></p>
+<p>注意要勾选此选项，将python添加到系统环境变量PATH中</p>
+<p><img src="https://pic3.zhimg.com/80/v2-69bc637c05a2d2077e5f335c2387b7ba_1440w.webp"></p>
+<p>检查自己电脑有没有安装成功：【Win+R】唤出【运行】，输入“cmd”，回车，在命令行里输入</p>
+<p>python –version</p>
+<p><img src="https://pic1.zhimg.com/80/v2-1f932b24841f0d54a01b673f213ee114_1440w.webp"></p>
+<p>三、下载stable-diffusion-webui仓库</p>
+<p>在空间比较大的盘里新建一个文件夹，如下图名为【AI】的文件夹，然后在这个文件夹里点击鼠标右键，选择【Git Bash Here】打开Git终端</p>
+<p><img src="https://pic1.zhimg.com/80/v2-5ef14003fc6adf69e0d840772cc764b0_1440w.webp"></p>
+<p><img src="https://pic4.zhimg.com/80/v2-625a5c10163f1f53a5cda8ca90d4b5ff_1440w.webp"></p>
+<p>通过Git命令克隆下载代码（之前代码打错了，导致很多人克隆完成后文件不对，这次对代码进行了修正）</p>
+<p>git clone <a href="https://link.zhihu.com/?target=https://github.com/AUTOMATIC1111/stable-diffusion-webui.git">https://github.com/AUTOMATIC1111/stable-diffusion-webui.git</a></p>
+<p><img src="https://pic4.zhimg.com/80/v2-61fd34127550191662719b8d657bed37_1440w.webp"></p>
+<p>出现问题：OpenSSL SSL_read: Connection was reset, errno 10054</p>
+<p>解决方法：</p>
+<p>关闭git的https证书验证</p>
+<p>git config –global http.sslVerify false</p>
+<p><img src="https://pic4.zhimg.com/80/v2-1dc3883a41882f113e8d09063c665bc7_1440w.webp"></p>
+<p>之后再次clone代码，成功！</p>
+<p>同时可以看到文件夹里也下载好了</p>
+<p><img src="https://pic2.zhimg.com/80/v2-d6f1d56a3346f42ed9e2548b9d8b7949_1440w.webp"></p>
+<p>四、运行webui-user.bat</p>
+<p>在上面下载好的文件夹里找到它，双击运行</p>
+<p><img src="https://pic3.zhimg.com/80/v2-b162ebcb4d9bc500d98307b01adb7e5e_1440w.webp"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-85bf9fb887c01aa3303a3bb049669476_1440w.webp"></p>
+<p>下载中</p>
+<p><img src="https://pic4.zhimg.com/80/v2-77ca9b187caea5a11f7f2ac4eda9daf3_1440w.webp"></p>
+<p>出现新问题：提示pip更新？</p>
+<p>解决方法：</p>
+<p>升级pip命令，可以重新打开一个命令行，运行一次它提示的绿色命令（因为文件夹名称可能不同，所以这条命令因人而异）H:\AI\stable-diffusion-webui\venv\Scripts\python.exe -m pip install –upgrade pip</p>
+<p><img src="https://pic2.zhimg.com/80/v2-2e98f2e60aeb9675f0c54d97a505afcd_1440w.webp"></p>
+<p>之后再次重新打开webui-user.bat</p>
+<p>因为在安装过程中没有使用魔法上网，所以在下载过程中出现了gfpgan、clip、open clip没有安装成功的提示，还是国内的网络环境的原因，解决方法：</p>
+<p>编辑stable-diffusion-webui目录里的launch.py文件</p>
+<p><img src="https://pic3.zhimg.com/80/v2-6eeed47df6c03bef6485ce41e58fc8ee_1440w.webp"></p>
+<p>用记事本打开</p>
+<p>比如卡在了gfpgan，就找到run_pip(f”install {gfpgan_package}“, “gfpgan”)所在行，如下图launch.py文件的第263行，把它改为run_pip(f”install -i <a href="https://link.zhihu.com/?target=https://pypi.douban.com/simple/">https://pypi.douban.com/simple/</a> {gfpgan_package}”, “gfpgan”)，修改后保存关闭，走国内的镜像源（ -i <a href="https://link.zhihu.com/?target=https://pypi.douban.com/simple/%25EF%25BC%2589%25EF%25BC%258C%25E6%258F%2590%25E9%25AB%2598%25E4%25B8%258B%25E8%25BD%25BD%25E9%2580%259F%25E5%25BA%25A6">https://pypi.douban.com/simple/），提高下载速度</a></p>
+<p>run_pip(f”install -i <a href="https://link.zhihu.com/?target=https://pypi.douban.com/simple/">https://pypi.douban.com/simple/</a> {gfpgan_package}”, “gfpgan”)</p>
+<p>之后保存launch.py文件，再次打开webui-user.bat</p>
+<p>（每次下载出现问题，就修改launch.py文件里的对应内容，比如clip出问题就把launch.py文件里的run_pip(f”install {clip_package}“, “clip”)改为run_pip(f”install -i <a href="https://link.zhihu.com/?target=https://pypi.douban.com/simple/">https://pypi.douban.com/simple/</a> {clip_package}”, “clip”)），gfpgan、clip、open clip都是一样的操作，如此反复（<a href="https://link.zhihu.com/?target=http://xn--launch-2g0js76l.py/">修改launch.py</a>、关闭命令行、重新打开webui-user.bat）</p>
+<p>如果还是卡住不动的话，在launch.py文件里找到prepare_environment()这部分，在对应的<a href="https://link.zhihu.com/?target=https://github.com/">https://github.com/</a>前面加上<a href="https://link.zhihu.com/?target=https://github.moeyy.xyz/">https://github.moeyy.xyz/</a></p>
+<p>通过代理的方式加速git</p>
+<p><img src="https://pic4.zhimg.com/80/v2-47a7c39d72e698568a880f9058766fab_1440w.webp"></p>
+<hr>
+<p>2023&#x2F;6&#x2F;16 添加（感谢知友的补充说明）</p>
+<p><strong>如果launch.py没有找到或者文件内容不一样</strong></p>
+<p><strong>在launch_utils.py下修改完正常安装，在263，266，269三行</strong></p>
+<hr>
+<p>经过多次修改、关闭、重启，最后终于走到了Web UI这里</p>
+<p><img src="https://pic1.zhimg.com/80/v2-8edde1affc6f1d2611d3440fa6a97a48_1440w.webp"></p>
+<p>一切顺利的话，接下来就要下载一个3.97G的大东西，中间如果卡住，还是关闭命令行、重新打开webui-user.bat</p>
+<p><img src="https://pic3.zhimg.com/80/v2-6733a7ecc0f8949a9e634e40e332fe56_1440w.webp"></p>
+<p>经过一段时间的等待，进度条终于填满了，也出现了我们最希望看到的内容</p>
+<p>表示本地电脑启动了一个服务，端口是127.0.0.1:7860</p>
+<p>把<a href="https://link.zhihu.com/?target=http://127.0.0.1:7860">http://127.0.0.1:7860</a>复制到浏览器中打开，进入Stable Diffusion界面就好了</p>
+<p><del>操作简单人性化，适合新手，小白，电脑知识不够首选该方案</del><br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>；<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1<br>1</p>
+<p>实在不会的话</p>
+<h2 id="使用整合包"><a href="#使用整合包" class="headerlink" title="使用整合包"></a>使用整合包</h2><p>**“整合包”**一般指开发者对Automatic1111制作的Stable Diffusion WebUI进行打包并使其程序化的一种方式。使用整合包，一般可以省去一些自主配置环境依赖、下载必要模型的功夫。</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iM4y1y7oA/">https://www.bilibili.com/video/BV1iM4y1y7oA/</a></p>
+<hr>
+<p><strong>幻灵AI绘画盒子（Windows）：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Vc411T7Nw/">https://www.bilibili.com/video/BV1Vc411T7Nw/</a></p>
+<hr>
+<p><strong>Nvidia显卡整合包（Windows）：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bT411p7Gt/">https://www.bilibili.com/video/BV1bT411p7Gt/</a></p>
+<p><strong>AMD&amp;Intel显卡整合包（Windows）：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1hW4y1R7Nw/">https://www.bilibili.com/video/BV1hW4y1R7Nw/</a></p>
+<!-- notionvc: 6cea88d8-7b62-47f8-bef7-81aee159b38a -->
+
+
+<!-- notionvc: 2cf0fb63-5b1f-4bd3-bb18-722e38d9d2e4 -->
+
+<p>下载解压运行即可</p>
  
       <!-- reward -->
       
@@ -158,7 +283,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/10/21/%E8%89%B9/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/10/28/%E5%9F%BA%E4%BA%8E%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E7%9A%84AI%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%EF%BC%88AI%E7%BB%98%E7%94%BB%EF%BC%89/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -169,19 +294,10 @@
    
   <nav class="article-nav">
     
+    
       <a href="/2023/10/28/NOVELAI%E7%BB%98%E7%94%BB/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            NovelAI绘画
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2023/10/21/%E4%B8%AA%E4%BA%BA%E7%94%B5%E8%84%91%E5%9B%9B%E5%8F%89%E6%A0%91%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">个人电脑四叉树使用备忘录</div>
+        <div class="article-nav-title">NovelAI绘画</div>
       </a>
     
   </nav>
