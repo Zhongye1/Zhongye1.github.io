@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title> 余震</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-扩散模型其二"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+     
+    <div class="article-meta">
+      <a href="/2023/10/29/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%85%B6%E4%BA%8C/" class="article-date">
+  <time datetime="2023-10-29T13:58:40.635Z" itemprop="datePublished">2023-10-29</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">14.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">58 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="SD模型原理"><a href="#SD模型原理" class="headerlink" title="SD模型原理"></a><strong>SD模型原理</strong></h2><p>SD是<a href="https://link.zhihu.com/?target=https://github.com/CompVis">CompVis</a>、<a href="https://link.zhihu.com/?target=https://stability.ai/">Stability AI</a>和<a href="https://link.zhihu.com/?target=https://laion.ai/">LAION</a>等公司研发的一个文生图模型，它的模型和代码是开源的，而且训练数据<a href="https://link.zhihu.com/?target=https://laion.ai/blog/laion-5b/">LAION-5B</a>也是开源的。SD在开源90天github仓库就收获了<strong>33K的stars</strong>，可见这个模型是多受欢迎。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-45c26a5ea3556598b5ce39348f672af5_1440w.webp"></p>
+<p>SD是一个<strong>基于latent的扩散模型</strong>，它在UNet中引入text condition来实现基于文本生成图像。SD的核心来源于<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2112.10752">Latent Diffusion</a>这个工作，常规的扩散模型是基于pixel的生成模型，而Latent Diffusion是基于latent的生成模型，它先采用一个autoencoder将图像压缩到latent空间，然后用扩散模型来生成图像的latents，最后送入autoencoder的decoder模块就可以得到生成的图像。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-649a55e230feba6997604da9724db197_1440w.webp"></p>
+<p><strong>基于latent的扩散模型的优势在于计算效率更高效，因为图像的latent空间要比图像pixel空间要小，这也是SD的核心优势</strong>。文生图模型往往参数量比较大，基于pixel的方法往往限于算力只生成64x64大小的图像，比如OpenAI的DALL-E2和谷歌的Imagen，然后再通过超分辨模型将图像分辨率提升至256x256和1024x1024；而基于latent的SD是在latent空间操作的，它可以直接生成256x256和512x512甚至更高分辨率的图像。</p>
+<p>SD模型的主体结构如下图所示，主要包括三个模型：</p>
+<ul>
+<li><strong>autoencoder</strong>：encoder将图像压缩到latent空间，而decoder将latent解码为图像；</li>
+<li><strong>CLIP text encoder</strong>：提取输入text的text embeddings，通过cross attention方式送入扩散模型的UNet中作为condition；</li>
+<li><strong>UNet</strong>：扩散模型的主体，用来实现文本引导下的latent生成。</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-fddf45ed17a509336d1550833a257684_1440w.webp"></p>
+<p>对于SD模型，其autoencoder模型参数大小为84M，CLIP text encoder模型大小为123M，而UNet参数大小为860M，所以<strong>SD模型的总参数量约为1B</strong>。</p>
+<h3 id="autoencoder"><a href="#autoencoder" class="headerlink" title="autoencoder"></a><strong>autoencoder</strong></h3><p>autoencoder是一个基于encoder-decoder架构的图像压缩模型，对于一个大小为的输入图像，encoder模块将其编码为一个大小为的latent，其中为下采样率（downsampling factor）。在训练autoencoder过程中，除了采用<strong>L1重建损失</strong>外，还增加了<strong>感知损失</strong>（perceptual loss，即LPIPS，具体见论文<a href="https://link.zhihu.com/?target=https://richzhang.github.io/PerceptualSimilarity/">The Unreasonable Effectiveness of Deep Features as a Perceptual Metric</a>）以及<strong>基于patch的对抗训练</strong>。辅助loss主要是为了确保重建的图像局部真实性以及避免模糊，具体损失函数见<a href="https://link.zhihu.com/?target=https://github.com/CompVis/latent-diffusion/tree/main/ldm/modules/losses">latent diffusion的loss部分</a>。同时为了防止得到的latent的标准差过大，采用了两种正则化方法：第一种是<strong>KL-reg</strong>，类似VAE增加一个latent和标准正态分布的KL loss，不过这里为了保证重建效果，采用比较小的权重（～10e-6）；第二种是<strong>VQ-reg</strong>，引入一个VQ （vector quantization）layer，此时的模型可以看成是一个VQ-GAN，不过VQ层是在decoder模块中，这里VQ的codebook采样较高的维度（8192）来降低正则化对重建效果的影响。 latent diffusion论文中实验了不同参数下的autoencoder模型，如下表所示，可以看到当较小和较大时，重建效果越好（PSNR越大），这也比较符合预期，毕竟此时压缩率小。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-e4e760f8a0762f1cb7130e9d99b602d6_1440w.webp"></p>
+<p>论文进一步将不同的autoencoder在扩散模型上进行实验，在ImageNet数据集上训练同样的步数（2M steps），其训练过程的生成质量如下所示，可以看到过小的（比如1和2）下收敛速度慢，此时图像的感知压缩率较小，扩散模型需要较长的学习；而过大的其生成质量较差，此时压缩损失过大。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-e35e58a520fa825f64e89eea4422ea89_1440w.webp"></p>
+<p>当在4～16时，可以取得相对好的效果。SD采用基于KL-reg的autoencoder，其中下采样率，特征维度为，当输入图像为512x512大小时将得到64x64x4大小的latent。 autoencoder模型时在OpenImages数据集上基于256x256大小训练的，但是由于autoencoder的模型是全卷积结构的（基于ResnetBlock，只有模型的中间存在两个self attention层），所以它可以扩展应用在尺寸&gt;256的图像上。下面我们给出使用diffusers库来加载autoencoder模型，并使用autoencoder来实现图像的压缩和重建，代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载模型: autoencoder可以通过SD权重指定subfolder来单独加载</span></span><br><span class="line">autoencoder = AutoencoderKL.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;vae&quot;</span>)</span><br><span class="line">autoencoder.to(<span class="string">&quot;cuda&quot;</span>, dtype=torch.float16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图像并预处理</span></span><br><span class="line">raw_image = Image.<span class="built_in">open</span>(<span class="string">&quot;boy.png&quot;</span>).convert(<span class="string">&quot;RGB&quot;</span>).resize((<span class="number">256</span>, <span class="number">256</span>))</span><br><span class="line">image = np.array(raw_image).astype(np.float32) / <span class="number">127.5</span> - <span class="number">1.0</span></span><br><span class="line">image = image[<span class="literal">None</span>].transpose(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">image = torch.from_numpy(image)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 压缩图像为latent并重建</span></span><br><span class="line"><span class="keyword">with</span> torch.inference_mode():</span><br><span class="line">    latent = autoencoder.encode(image.to(<span class="string">&quot;cuda&quot;</span>, dtype=torch.float16)).latent_dist.sample()</span><br><span class="line">    rec_image = autoencoder.decode(latent).sample</span><br><span class="line">    rec_image = (rec_image / <span class="number">2</span> + <span class="number">0.5</span>).clamp(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">    rec_image = rec_image.cpu().permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>).numpy()</span><br><span class="line">    rec_image = (rec_image * <span class="number">255</span>).<span class="built_in">round</span>().astype(<span class="string">&quot;uint8&quot;</span>)</span><br><span class="line">    rec_image = Image.fromarray(rec_image[<span class="number">0</span>])</span><br><span class="line">rec_image</span><br></pre></td></tr></table></figure>
+
+<p>这里我们给出了两张图片在256x256和512x512下的重建效果对比，如下所示，第一列为原始图片，第二列为512x512尺寸下的重建图，第三列为256x256尺寸下的重建图。对比可以看出，autoencoder将图片压缩到latent后再重建其实是有损的，比如会出现文字和人脸的畸变，在256x256分辨率下是比较明显的，512x512下效果会好很多。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-2f439931568ec63d03e40c1735f9264e_1440w.webp"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-cb198cc9134f4dab69ec7365b90078e6_1440w.webp"></p>
+<p>这种有损压缩肯定是对SD的生成图像质量是有一定影响的，不过好在SD模型基本上是在512x512以上分辨率下使用的。为了改善这种畸变，stabilityai在发布SD 2.0时同时发布了两个在LAION子数据集上<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/sd-vae-ft-mse-original">精调的autoencoder</a>，注意这里只精调autoencoder的decoder部分，SD的UNet在训练过程只需要encoder部分，所以这样精调后的autoencoder可以直接用在先前训练好的UNet上（这种技巧还是比较通用的，比如谷歌的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2206.10789">Parti</a>也是在训练好后自回归生成模型后，扩大并精调ViT-VQGAN的decoder模块来提升生成质量）。我们也可以直接在diffusers中使用这些autoencoder，比如mse版本（采用mse损失来finetune的模型）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">autoencoder = AutoencoderKL.from_pretrained(<span class="string">&quot;stabilityai/sd-vae-ft-mse/&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>对于同样的两张图，这个mse版本的重建效果如下所示，可以看到相比原始版本的autoencoder，畸变是有一定改善的。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-ee18f2e828fd1357b2c29c2355439fcb_1440w.webp"></p>
+<p><img src="https://pic3.zhimg.com/80/v2-818195b8ac7730ab632ae32b47f9272e_1440w.webp"></p>
+<p>由于SD采用的autoencoder是基于KL-reg的，所以这个autoencoder在编码图像时其实得到的是一个高斯分布<a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers/blob/bbab8553224d12f7fd58b0e65b0daf899769ef0b/src/diffusers/models/vae.py%23L312">DiagonalGaussianDistribution</a>（分布的均值和标准差），然后通过调用sample方法来采样一个具体的latent（调用mode方法可以得到均值）。由于KL-reg的权重系数非常小，实际得到latent的标准差还是比较大的，latent diffusion论文中提出了一种rescaling方法：首先计算出第一个batch数据中的latent的标准差，然后采用的系数来rescale latent，这样就尽量保证latent的标准差接近1（防止扩散过程的SNR较高，影响生成效果，具体见latent diffusion论文的D1部分讨论），然后扩散模型也是应用在rescaling的latent上，在解码时只需要将生成的latent除以，然后再送入autoencoder的decoder即可。对于SD所使用的autoencoder，这个rescaling系数为0.18215。</p>
+<h3 id="CLIP-text-encoder"><a href="#CLIP-text-encoder" class="headerlink" title="CLIP text encoder"></a><strong>CLIP text encoder</strong></h3><p>SD<strong>采用CLIP text encoder来对输入text提取text embeddings</strong>，具体的是采用目前OpenAI所开源的最大CLIP模型：<a href="https://link.zhihu.com/?target=https://huggingface.co/openai/clip-vit-large-patch14">clip-vit-large-patch14</a>，这个CLIP的text encoder是一个transformer模型（只有encoder模块）：层数为12，特征维度为768，模型参数大小是123M。对于输入text，送入CLIP text encoder后得到最后的hidden states（即最后一个transformer block得到的特征），其特征维度大小为77x768（77是token的数量），<strong>这个细粒度的text embeddings将以cross attention的方式送入UNet中</strong>。在transofmers库中，可以如下使用CLIP text encoder：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"></span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;text_encoder&quot;</span>).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"><span class="comment"># text_encoder = CLIPTextModel.from_pretrained(&quot;openai/clip-vit-large-patch14&quot;).to(&quot;cuda&quot;)</span></span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line"><span class="comment"># tokenizer = CLIPTokenizer.from_pretrained(&quot;openai/clip-vit-large-patch14&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对输入的text进行tokenize，得到对应的token ids</span></span><br><span class="line">prompt = <span class="string">&quot;a photograph of an astronaut riding a horse&quot;</span></span><br><span class="line">text_input_ids = text_tokenizer(</span><br><span class="line">    prompt,</span><br><span class="line">    padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">    max_length=tokenizer.model_max_length,</span><br><span class="line">    truncation=<span class="literal">True</span>,</span><br><span class="line">    return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">).input_ids</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将token ids送入text model得到77x768的特征</span></span><br><span class="line">text_embeddings = text_encoder(text_input_ids.to(<span class="string">&quot;cuda&quot;</span>))[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是，这里的tokenizer最大长度为77（CLIP训练时所采用的设置），当输入text的tokens数量超过77后，将进行截断，如果不足则进行paddings，这样将保证无论输入任何长度的文本（甚至是空文本）都得到77x768大小的特征。 在训练SD的过程中，<strong>CLIP text encoder模型是冻结的</strong>。在早期的工作中，比如OpenAI的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2112.10741">GLIDE</a>和latent diffusion中的LDM均采用一个随机初始化的tranformer模型来提取text的特征，但是最新的工作都是采用预训练好的text model。比如谷歌的Imagen采用纯文本模型T5 encoder来提出文本特征，而SD则采用CLIP text encoder，预训练好的模型往往已经在大规模数据集上进行了训练，它们要比直接采用一个从零训练好的模型要好。</p>
+<h3 id="UNet"><a href="#UNet" class="headerlink" title="UNet"></a><strong>UNet</strong></h3><p>SD的扩散模型是一个860M的UNet，其主要结构如下图所示（这里以输入的latent为64x64x4维度为例），其中encoder部分包括3个CrossAttnDownBlock2D模块和1个DownBlock2D模块，而decoder部分包括1个UpBlock2D模块和3个CrossAttnUpBlock2D模块，中间还有一个UNetMidBlock2DCrossAttn模块。encoder和decoder两个部分是完全对应的，中间存在skip connection。注意3个CrossAttnDownBlock2D模块最后均有一个2x的downsample操作，而DownBlock2D模块是不包含下采样的。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-2c71f809868ea14d0e2f8caa024781e2_1440w.webp"></p>
+<p>其中CrossAttnDownBlock2D模块的主要结构如下图所示，text condition将通过CrossAttention模块嵌入进来，此时Attention的query是UNet的中间特征，而key和value则是text embeddings。 CrossAttnUpBlock2D模块和CrossAttnDownBlock2D模块是一致的，但是就是总层数为3。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-0eff7fa232e2d33aeb435132c4cd897a_1440w.webp"></p>
+<p>SD和DDPM一样采用预测noise的方法来训练UNet，其训练损失也和DDPM一样：  这里的为text embeddings，此时的模型是一个条件扩散模型。基于diffusers库，我们可以很快实现SD的训练，其核心代码如下所示（这里参考diffusers库下examples中的<a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image.py">finetune代码</a>）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL, UNet2DConditionModel, DDPMScheduler</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载autoencoder</span></span><br><span class="line">vae = AutoencoderKL.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;vae&quot;</span>)</span><br><span class="line"><span class="comment"># 加载text encoder</span></span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;text_encoder&quot;</span>)</span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(<span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line"><span class="comment"># 初始化UNet</span></span><br><span class="line">unet = UNet2DConditionModel(**model_config) <span class="comment"># model_config为模型参数配置</span></span><br><span class="line"><span class="comment"># 定义scheduler</span></span><br><span class="line">noise_scheduler = DDPMScheduler(</span><br><span class="line">    beta_start=<span class="number">0.00085</span>, beta_end=<span class="number">0.012</span>, beta_schedule=<span class="string">&quot;scaled_linear&quot;</span>, num_train_timesteps=<span class="number">1000</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 冻结vae和text_encoder</span></span><br><span class="line">vae.requires_grad_(<span class="literal">False</span>)</span><br><span class="line">text_encoder.requires_grad_(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">opt = torch.optim.AdamW(unet.parameters(), lr=<span class="number">1e-4</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step, batch <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataloader):</span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="comment"># 将image转到latent空间</span></span><br><span class="line">        latents = vae.encode(batch[<span class="string">&quot;image&quot;</span>]).latent_dist.sample()</span><br><span class="line">        latents = latents * vae.config.scaling_factor <span class="comment"># rescaling latents</span></span><br><span class="line">        <span class="comment"># 提取text embeddings</span></span><br><span class="line">        text_input_ids = text_tokenizer(</span><br><span class="line">            batch[<span class="string">&quot;text&quot;</span>],</span><br><span class="line">            padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">            max_length=tokenizer.model_max_length,</span><br><span class="line">            truncation=<span class="literal">True</span>,</span><br><span class="line">            return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">  ).input_ids</span><br><span class="line">  text_embeddings = text_encoder(text_input_ids)[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 随机采样噪音</span></span><br><span class="line">    noise = torch.randn_like(latents)</span><br><span class="line">    bsz = latents.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 随机采样timestep</span></span><br><span class="line">    timesteps = torch.randint(<span class="number">0</span>, noise_scheduler.num_train_timesteps, (bsz,), device=latents.device)</span><br><span class="line">    timesteps = timesteps.long()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将noise添加到latent上，即扩散过程</span></span><br><span class="line">    noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 预测noise并计算loss</span></span><br><span class="line">    model_pred = unet(noisy_latents, timesteps, encoder_hidden_states=text_embeddings).sample</span><br><span class="line">    loss = F.mse_loss(model_pred.<span class="built_in">float</span>(), noise.<span class="built_in">float</span>(), reduction=<span class="string">&quot;mean&quot;</span>)</span><br><span class="line"></span><br><span class="line"> opt.step()</span><br><span class="line">    opt.zero_grad()</span><br></pre></td></tr></table></figure>
+
+<p>注意的是SD的noise scheduler虽然也是采用一个1000步长的scheduler，但是不是linear的，而是scaled linear，具体的计算如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">betas = torch.linspace(beta_start**<span class="number">0.5</span>, beta_end**<span class="number">0.5</span>, num_train_timesteps, dtype=torch.float32) ** <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>在训练条件扩散模型时，往往会采用<strong>Classifier-Free Guidance</strong>（这里简称为CFG），所谓的CFG简单来说就是在训练条件扩散模型的同时也训练一个无条件的扩散模型，同时在采样阶段将条件控制下预测的噪音和无条件下的预测噪音组合在一起来确定最终的噪音，具体的计算公式如下所示：</p>
+<p>这里的为<strong>guidance scale</strong>，当越大时，condition起的作用越大，即生成的图像其更和输入文本一致。CFG的具体实现非常简单，在训练过程中，我们只需要<strong>以一定的概率（比如10%）随机drop掉text</strong>即可，这里我们可以将text置为空字符串（前面说过此时依然能够提取text embeddings）。这里并没有介绍CLF背后的技术原理，感兴趣的可以阅读CFG的论文<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2207.12598">Classifier-Free Diffusion Guidance</a>以及guided diffusion的论文<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2105.05233">Diffusion Models Beat GANs on Image Synthesis</a>。<strong>CFG对于提升条件扩散模型的图像生成效果是至关重要的</strong>。</p>
+<h3 id="训练细节"><a href="#训练细节" class="headerlink" title="训练细节"></a><strong>训练细节</strong></h3><p>前面我们介绍了SD的模型结构，这里我们也简单介绍一下SD的训练细节，主要包括训练数据和训练资源，这方面也是在SD的<a href="https://link.zhihu.com/?target=https://huggingface.co/runwayml/stable-diffusion-v1-5">Model Card</a>上有说明。 首先是训练数据，SD在<a href="https://link.zhihu.com/?target=https://huggingface.co/datasets/laion/laion2B-en">laion2B-en</a><strong>数据集</strong>上训练的，它是<a href="https://link.zhihu.com/?target=https://laion.ai/blog/laion-5b/">laion-5b</a><strong>数据集</strong>的一个子集，更具体的说它是laion-5b中的英文（文本为英文）数据集。laion-5b数据集是从网页数据Common Crawl中筛选出来的图像-文本对数据集，它包含5.85B的图像-文本对，其中文本为英文的数据量为2.32B，这就是laion2B-en数据集。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-91d5227730b38d1c72d7858d3b67fbba_1440w.webp"></p>
+<p>下面是laion2B-en数据集的元信息（图片width和height，以及文本长度）统计分析：其中图片的width和height均在256以上的样本量为1324M，在512以上的样本量为488M，而在1024以上的样本为76M；文本的平均长度为67。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-7bc54f633af1760a97b5af05746a74a0_1440w.webp"></p>
+<p>laion数据集中除了图片（下载URL，图像width和height）和文本（描述文本）的元信息外，还包含以下信息：</p>
+<ul>
+<li>similarity：使用CLIP ViT-B&#x2F;32计算出来的图像和文本余弦相似度；</li>
+<li>pwatermark：使用一个图片<a href="https://link.zhihu.com/?target=https://github.com/LAION-AI/LAION-5B-WatermarkDetection">水印检测器</a>检测的概率值，表示图片含有水印的概率；</li>
+<li>punsafe：图片是否安全，或者图片是不是NSFW，使用<a href="https://link.zhihu.com/?target=https://github.com/LAION-AI/CLIP-based-NSFW-Detector">基于CLIP的检测器</a>来估计；</li>
+<li>AESTHETIC_SCORE：图片的美学评分（1-10），这个是后来追加的，首先选择一小部分图片数据集让人对图片的美学打分，然后基于这个标注数据集来训练一个<a href="https://link.zhihu.com/?target=https://laion.ai/blog/laion-aesthetics/">打分模型</a>，并对所有样本计算估计的美学评分。</li>
+</ul>
+<p>上面是laion数据集的情况，下面我们来介绍SD训练数据集的具体情况，<strong>SD的训练是多阶段的</strong>（先在256x256尺寸上预训练，然后在512x512尺寸上精调），不同的阶段产生了不同的版本：</p>
+<ul>
+<li>SD v1.1：在laion2B-en数据集上以256x256大小训练237,000步，上面我们已经说了，laion2B-en数据集中256以上的样本量共1324M；然后在laion5B的<a href="https://link.zhihu.com/?target=https://huggingface.co/datasets/laion/laion-high-resolution">高分辨率数据集</a>以512x512尺寸训练194,000步，这里的高分辨率数据集是图像尺寸在1024x1024以上，共170M样本。</li>
+<li>SD v1.2：以SD v1.1为初始权重，在<a href="https://link.zhihu.com/?target=https://huggingface.co/datasets/ChristophSchuhmann/improved_aesthetics_5plus">improved_aesthetics_5plus</a>数据集上以512x512尺寸训练515,000步数，这个improved_aesthetics_5plus数据集上laion2B-en数据集中美学评分在5分以上的子集（共约600M样本），注意这里过滤了含有水印的图片（pwatermark&gt;0.5)以及图片尺寸在512x512以下的样本。</li>
+<li>SD v1.3：以SD v1.2为初始权重，在improved_aesthetics_5plus数据集上继续以512x512尺寸训练195,000步数，不过这里采用了CFG（以10%的概率随机drop掉text）。</li>
+<li>SD v1.4：以SD v1.2为初始权重，在improved_aesthetics_5plus数据集上采用CFG以512x512尺寸训练225,000步数。</li>
+<li>SD v1.5：以SD v1.2为初始权重，在improved_aesthetics_5plus数据集上采用CFG以512x512尺寸训练595,000步数。</li>
+</ul>
+<p>其实可以看到SD v1.3、SD v1.4和SD v1.5其实是以SD v1.2为起点在improved_aesthetics_5plus数据集上采用CFG训练过程中的不同checkpoints，<strong>目前最常用的版本是SD v1.4和SD v1.5</strong>。 SD的训练是<strong>采用了32台8卡的A100机器</strong>（32 x 8 x A100_40GB GPUs），所需要的训练硬件还是比较多的，但是相比语言大模型还好。单卡的训练batch size为2，并采用gradient accumulation，其中gradient accumulation steps&#x3D;2，那么训练的<strong>总batch size就是32x8x2x2&#x3D;2048</strong>。训练<strong>优化器采用AdamW</strong>，训练采用warmup，在初始10,000步后<strong>学习速率升到0.0001</strong>，后面保持不变。至于训练时间，文档上只说了用了150,000小时，这个应该是A100卡时，如果按照256卡A100来算的话，那么大约<strong>需要训练25天左右</strong>。</p>
+<h3 id="模型评测"><a href="#模型评测" class="headerlink" title="模型评测"></a><strong>模型评测</strong></h3><p>上面介绍了模型训练细节，那么最后的问题就是模型评测了。对于文生图模型，目前常采用的定量指标是<strong>FID</strong>（Fréchet inception distance）和CLIP score，其中FID可以衡量生成图像的逼真度（image fidelity），而CLIP score评测的是生成的图像与输入文本的一致性，其中FID越低越好，而CLIP score是越大越好。当CFG的gudiance scale参数设置不同时，FID和CLIP score会发生变化，下图为不同的gudiance scale参数下，SD模型在COCO2017验证集上的评测结果，注意这里是zero-shot评测，即SD模型并没有在COCO训练数据集上精调。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-b7ef3c892c5b833191b483932c42fc1c_1440w.webp"></p>
+<p>可以看到当gudiance scale&#x3D;3时，FID最低；而当gudiance scale越大时，CLIP score越大，但是FID同时也变大。在实际应用时，往往会采用较大的gudiance scale，比如SD模型默认采用7.5，此时生成的图像和文本有较好的一致性。从不同版本的对比曲线上看，SD的采用CFG训练后三个版本其实差别并没有那么大，其中SD v1.5相对好一点，但是明显要未采用CFG训练的版本要好的多，这说明CFG训练是比较关键的。 目前在模型对比上，大家往往是比较不同模型在COCO验证集上的zero-shot FID-30K（选择30K的样本），大家往往就选择模型所能得到的最小FID来比较，下面为eDiff和GigaGAN两篇论文所报道的不同文生图模型的FID对比（由于SD并没有给出FID-30K，所以大家应该都是自己用开源SD的模型计算的，由于选择样本不同，可能结果存在差异）：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-979a3b11b99fbd854f472e8902f578a0_1440w.webp"></p>
+<p>可以看到SD虽然FID不是最好的，但是也能达到比较低的FID（大约在8～9之间）。不过虽然学术界常采用FID来定量比较模型，但是FID有很大的局限性，它并不能很好地衡量生成图像的质量，也是因为这个原因，谷歌的Imagen引入了人工评价，先建立一个评测数据集DrawBench（包含200个不同类型的text），然后用不同的模型来生成图像，让人去评价同一个text下不同模型生成的图像，这种评测方式比较直接，但是可能也受一些主观因素的影响。总而言之，目前的评价方式都有一定的局限性，最好还是直接上手使用来比较不同的模型。</p>
+<h2 id="SD的主要应用"><a href="#SD的主要应用" class="headerlink" title="SD的主要应用"></a><strong>SD的主要应用</strong></h2><p>下面来介绍SD的主要应用，这包括<strong>文生图</strong>，<strong>图生图</strong>以及<strong>图像inpainting</strong>。其中文生图是SD的基础功能：根据输入文本生成相应的图像，而图生图和图像inpainting是在文生图的基础上延伸出来的两个功能。</p>
+<h3 id="文生图"><a href="#文生图" class="headerlink" title="文生图"></a><strong>文生图</strong></h3><p>根据文本生成图像这是文生图的最核心的功能，下图为SD的文生图的推理流程图：首先根据输入text用text encoder提取text embeddings，同时初始化一个随机噪音noise（latent上的，512x512图像对应的noise维度为64x64x4），然后将text embeddings和noise送入扩散模型UNet中生成去噪后的latent，最后送入autoencoder的decoder模块得到生成的图像。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-4b69474b69a10f7963cc8a6f68ede756_1440w.webp"></p>
+<p>使用diffusers库，我们可以直接调用<code>StableDiffusionPipeline</code>来实现文生图，具体代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionPipeline</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 组合图像，生成grid</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image_grid</span>(<span class="params">imgs, rows, cols</span>):</span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">len</span>(imgs) == rows*cols</span><br><span class="line"></span><br><span class="line">    w, h = imgs[<span class="number">0</span>].size</span><br><span class="line">    grid = Image.new(<span class="string">&#x27;RGB&#x27;</span>, size=(cols*w, rows*h))</span><br><span class="line">    grid_w, grid_h = grid.size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i, img <span class="keyword">in</span> <span class="built_in">enumerate</span>(imgs):</span><br><span class="line">        grid.paste(img, box=(i%cols*w, i//cols*h))</span><br><span class="line">    <span class="keyword">return</span> grid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载文生图pipeline</span></span><br><span class="line">pipe = StableDiffusionPipeline.from_pretrained(</span><br><span class="line">    <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span>, <span class="comment"># 或者使用 SD v1.4: &quot;CompVis/stable-diffusion-v1-4&quot;</span></span><br><span class="line">    torch_dtype=torch.float16</span><br><span class="line">).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输入text，这里text又称为prompt</span></span><br><span class="line">prompts = [</span><br><span class="line">    <span class="string">&quot;a photograph of an astronaut riding a horse&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A cute otter in a rainbow whirlpool holding shells, watercolor&quot;</span>,</span><br><span class="line">    <span class="string">&quot;An avocado armchair&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A white dog wearing sunglasses&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">generator = torch.Generator(<span class="string">&quot;cuda&quot;</span>).manual_seed(<span class="number">42</span>) <span class="comment"># 定义随机seed，保证可重复性</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行推理</span></span><br><span class="line">images = pipe(</span><br><span class="line">    prompts,</span><br><span class="line">    height=<span class="number">512</span>,</span><br><span class="line">    width=<span class="number">512</span>,</span><br><span class="line">    num_inference_steps=<span class="number">50</span>,</span><br><span class="line">    guidance_scale=<span class="number">7.5</span>,</span><br><span class="line">    negative_prompt=<span class="literal">None</span>,</span><br><span class="line">    num_images_per_prompt=<span class="number">1</span>,</span><br><span class="line">    generator=generator</span><br><span class="line">).images</span><br><span class="line"></span><br><span class="line">grid = image_grid(images, rows=<span class="number">1</span>, cols=<span class="number">4</span>)</span><br><span class="line">grid</span><br></pre></td></tr></table></figure>
+
+<p>生成的图像效果如下所示：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-e2da18f32ca57ed37f36d5099da636ad_1440w.webp"></p>
+<p>这里可以通过指定width和height来决定生成图像的大小，前面说过SD最后是在512x512尺度上训练的，所以生成512x512尺寸效果是最好的，但是实际上SD可以生成任意尺寸的图片：一方面autoencoder支持任意尺寸的图片的编码和解码，另外一方面扩散模型UNet也是支持任意尺寸的latents生成的（UNet是卷积+attention的混合结构）。然而，生成512x512以外的图片会存在一些问题，比如生成低分辨率图像时，图像的质量大幅度下降，下图为同样的文本在256x256尺寸下的生成效果：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-17adfbcb66d31299a2c397c16066c463_1440w.webp"></p>
+<p>如果是生成512x512以上分辨率的图像，图像质量虽然没问题，但是可能会出现重复物体以及物体被拉长的情况，下图为分别为768x512和512x768尺寸下的生成效果，可以看到部分图像存在一定的问题：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-76de42ced2d2cda89bb0aebe7086bc2c_1440w.webp"></p>
+<p><img src="https://pic1.zhimg.com/80/v2-6259780a378b797cbb58d12471acbca8_1440w.webp"></p>
+<p>所以虽然SD的架构上支持任意尺寸的图像生成，但训练是在固定尺寸上（512x512），生成其它尺寸图像还是会存在一定的问题。解决这个问题的办法就相对比较简单，就是采用多尺度策略训练，比如NovelAI提出采用<a href="https://link.zhihu.com/?target=https://github.com/NovelAI/novelai-aspect-ratio-bucketing">Aspect Ratio Bucketing</a>策略来在二次元数据集上精调模型，这样得到的模型就很大程度上避免SD的这个问题，目前大部分开源的基于SD的精调模型往往都采用类似的多尺度策略来精调。比如我们采用开源的<a href="https://link.zhihu.com/?target=https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0">dreamlike-diffusion-1.0</a>模型（基于SD v1.5精调的），其生成的图像效果在变尺寸上就好很多：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-89b25d80d68f3e818beaa1c909a1b026_1440w.webp"></p>
+<p><img src="https://pic1.zhimg.com/80/v2-f571223e3f3022460808f6ba072a0934_1440w.webp"></p>
+<p>另外一个参数是<code>num_inference_steps</code>，它是指<strong>推理过程中的去噪步数或者采样步数</strong>。SD在训练过程采用的是步数为1000的noise scheduler，但是在推理时往往采用速度更快的scheduler：只需要少量的采样步数就能生成不错的图像，比如SD默认采用<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2202.09778">PNDM scheduler</a>，它只需要采样50步就可以出图。当然我们也可以换用其它类型的scheduler，比如<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2010.02502">DDIM scheduler</a>和<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2206.00927">DPM-Solver scheduler</a>。我们可以在diffusers中直接替换scheduler，比如我们想使用DDIM：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> DDIMScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意这里的clip_sample要关闭，否则生成图像存在问题，因为不能对latent进行clip</span></span><br><span class="line">pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config, clip_sample=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>换成DDIM后，同样的采样步数生成的图像如下所示，在部分细节上和PNDM有差异：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-88ed3ce8a9b3847c8ac90e89faee5e5a_1440w.webp"></p>
+<p>当然<strong>采样步数越大，生成的图像质量越好，但是相应的推理时间也更久</strong>。这里我们可以试验一下不同采样步数下的生成效果，以宇航员骑马为例，下图展示了采样步数为10，20，30，50，70和100时的生成图像，可以看到采样步数增加后，图像生成质量是有一定的提升的，当采样步数为30时就能生成相对稳定的图像。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-ef712b5422e00d7497ec9afb9822359f_1440w.webp"></p>
+<p>我们要讨论的第三个参数是<code>guidance_scale</code>，前面说过当CFG的<code>guidance_scale</code>越大时，生成的图像应该会和输入文本更一致，这里我们同样以宇航员骑马为例来测试不同guidance_scale下的图像生成效果。下图为guidance_scale为1，3，5，7，9和11下生成的图像对比，可以看到当guidance_scale较低时生成的图像效果是比较差的，<strong>当guidance_scale在7～9时，生成的图像效果是可以的</strong>，当采用更大的guidance_scale比如11，图像的色彩过饱和而看起来不自然，所以SD<strong>默认采用的guidance_scale为7.5</strong>。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-8337dbec38f8c3e7f684cf49ed64cecf_1440w.webp"></p>
+<p>过大的guidance_scale之所以出现问题，主要是由于训练和测试的不一致，过大的guidance_scale会导致生成的样本超出范围。谷歌的Imagen论文提出一种dynamic thresholding策略来解决这个问题，所谓的dynamic thresholding是相对于原来的static thresholding，static thresholding策略是直接将生成的样本clip到[-1, 1]范围内（Imagen是基于pixel的扩散模型，这里是将图像像素值归一化到-1到1之间），但是会在过大的guidance_scale时产生很多的饱含像素点。而dynamic thresholding策略是先计算样本在某个百分位下（比如99%）的像素绝对值，然后如果它超过1时就采用来进行clip，这样就可以大大减少过饱和的像素。两种策略的具体实现代码如下所示：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-ab0405eb00a79be6eb953227e565cfcd_1440w.webp"></p>
+<p>dynamic thresholding策略对于Imagen是比较关键的，它使得Imagen可以采用较大的guidance_scale来生成更自然的图像。下图为两种thresholding策略下生成图像的对比：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-942d6e58a310f24136134fc89f6eac0c_1440w.webp"></p>
+<p>虽然SD是基于latent的扩散模型，但依然可以采用类似的dynamic thresholding策略，感兴趣的可以参考目前的一个开源实现：<a href="https://link.zhihu.com/?target=https://github.com/mcmonkeyprojects/sd-dynamic-thresholding">sd-dynamic-thresholding</a>，使用dynamic thresholding策略后，SD可以在较大的guidance_scale下生成相对自然的图像。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-b097ffe7c5bcb131341b9b6a6b3241e9_1440w.webp"></p>
+<p>另外一个比较容易忽略的参数是<code>negative_prompt</code>，这个参数和CFG有关，前面说过，SD采用了CFG来提升生成图像的质量。使用CFG，去噪过程的噪音预测不仅仅依赖条件扩散模型，也依赖无条件扩散模型：  这里的<code>negative_prompt</code>便是无条件扩散模型的text输入，前面说过训练过程中我们将text置为空字符串来实现无条件扩散模型，所以这里：<code>negative_prompt = None = &quot;&quot;</code>。但是有时候我们可以<strong>使用不为空的negative_prompt来避免模型生成的图像包含不想要的东西</strong>，因为从上述公式可以看到这里的无条件扩散模型是我们想远离的部分。下面我们来举几个具体的例子，首先来看生成人物图像的一个例子，这里的输入文本为”a portrait of a beautiful blonde woman”，其生成的图像如下所示：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-477a9a38dfe2ed22e37d39a8021108ac_1440w.webp"></p>
+<p>可以看到生成的图像效果并不好，比如出现一些脸部的畸变，但是我们可以设置negative_prompt来提升生成效果，这里我们将negative_prompt设置为”cropped, lowres, poorly drawn face, out of frame, poorly drawn hands, blurry”，这些描述都是负面的。改变negative_prompt后，生成的图像效果有一个明显的提升：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-40c14e5aa7d107dec744d8581904db9c_1440w.webp"></p>
+<p>第二个例子是一个建筑物，这里的输入文本为”A Hyperrealistic photograph of German architectural modern home”，默认图像生成效果如下所示：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-3904adb4555d7461331f9c2f7e600771_1440w.webp"></p>
+<p>虽然生成的图像效果不错，但是如果只想要一个干净的建筑物，而不想背景中含有树木和草地等，此时我们可以通过设置negative prompt来达到这种效果。这里将negative prompt设为”trees, bushes, leaves, greenery”，其生成的建筑物就干净了很多：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-9cf023a14899f7b60d3edeb360a45616_1440w.webp"></p>
+<p>可以看到合理使用negative prompt能够帮助我们去除不想要的东西来提升图像生成效果。 一般情况下，输入的text或者prompt我们称之为“<strong>正向提示词</strong>”，而negative prompt称之为“<strong>反向提示词</strong>”，想要生成的好的图像，不仅要选择好的正向提示词，也需要好的反向提示词，这和文本生成模型也比较类似：都需要好的prompt。这里也举一个对正向prompt优化的例子（这个例子来源于微软的工作<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2212.09611">Optimizing Prompts for Text-to-Image Generation</a>），这里的原始prompt为”A rabbit is wearing a space suit”，可以看到直接生成的效果其实是不尽人意的：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-04235db0adbeb2e5f4edab3ded4d5c75_1440w.webp"></p>
+<p>但是如果我们将prompt改为”A rabbit is wearing a space suit, digital Art, Greg rutkowski, Trending cinematographic artstation”，其生成的效果就大大提升：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-74b0506d89da4ca89e8be8e0b5bf57a2_1440w.webp"></p>
+<p>这里我们其实只是在原有的prompt基础加上了一些描述词，有时候我们称之为“<strong>魔咒</strong>”，不同的模型可能会有不同的魔咒。 上述我们讨论了SD的文生图的主要参数，这里简单总结一下：</p>
+<ul>
+<li>SD默认生成512x512大小的图像，但实际上可以生成其它分辨率的图像，但是可能会出现不协调，如果采用多尺度策略训练，会改善这种情况；</li>
+<li>采用快速的noise scheduler，SD在去噪步数为30～50步时就能生成稳定的图像；</li>
+<li>SD的guidance_scale设置为7～9是比较稳定的，过小和过大都会出现图像质量下降，实际使用中可以根据具体情况灵活调节；</li>
+<li>可以使用negative prompt来去除不想要的东西来改善图像生成效果；</li>
+<li>好的prompt对图像生成效果是至关重要的。</li>
+</ul>
+<p>上边我们介绍了如何使用SD进行文生图以及一些主要参数，在最后我们也给出文生图这个pipeline的内部流程代码，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL, UNet2DConditionModel, DDIMScheduler</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"><span class="keyword">from</span> tqdm.auto <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span></span><br><span class="line"><span class="comment"># 1. 加载autoencoder</span></span><br><span class="line">vae = AutoencoderKL.from_pretrained(model_id, subfolder=<span class="string">&quot;vae&quot;</span>)</span><br><span class="line"><span class="comment"># 2. 加载tokenizer和text encoder </span></span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder=<span class="string">&quot;text_encoder&quot;</span>)</span><br><span class="line"><span class="comment"># 3. 加载扩散模型UNet</span></span><br><span class="line">unet = UNet2DConditionModel.from_pretrained(model_id, subfolder=<span class="string">&quot;unet&quot;</span>)</span><br><span class="line"><span class="comment"># 4. 定义noise scheduler</span></span><br><span class="line">noise_scheduler = DDIMScheduler(</span><br><span class="line">    num_train_timesteps=<span class="number">1000</span>,</span><br><span class="line">    beta_start=<span class="number">0.00085</span>,</span><br><span class="line">    beta_end=<span class="number">0.012</span>,</span><br><span class="line">    beta_schedule=<span class="string">&quot;scaled_linear&quot;</span>,</span><br><span class="line">    clip_sample=<span class="literal">False</span>, <span class="comment"># don&#x27;t clip sample, the x0 in stable diffusion not in range [-1, 1]</span></span><br><span class="line">    set_alpha_to_one=<span class="literal">False</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模型复制到GPU上</span></span><br><span class="line">device = <span class="string">&quot;cuda&quot;</span></span><br><span class="line">vae.to(device, dtype=torch.float16)</span><br><span class="line">text_encoder.to(device, dtype=torch.float16)</span><br><span class="line">unet = unet.to(device, dtype=torch.float16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义参数</span></span><br><span class="line">prompt = [</span><br><span class="line">    <span class="string">&quot;A dragon fruit wearing karate belt in the snow&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A small cactus wearing a straw hat and neon sunglasses in the Sahara desert&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A photo of a raccoon wearing an astronaut helmet, looking out of the window at night&quot;</span>,</span><br><span class="line">    <span class="string">&quot;A cute otter in a rainbow whirlpool holding shells, watercolor&quot;</span></span><br><span class="line">]</span><br><span class="line">height = <span class="number">512</span></span><br><span class="line">width = <span class="number">512</span></span><br><span class="line">num_inference_steps = <span class="number">50</span></span><br><span class="line">guidance_scale = <span class="number">7.5</span></span><br><span class="line">negative_prompt = <span class="string">&quot;&quot;</span></span><br><span class="line">batch_size = <span class="built_in">len</span>(prompt)</span><br><span class="line"><span class="comment"># 随机种子</span></span><br><span class="line">generator = torch.Generator(device).manual_seed(<span class="number">2023</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line"> <span class="comment"># 获取text_embeddings</span></span><br><span class="line"> text_input = tokenizer(prompt, padding=<span class="string">&quot;max_length&quot;</span>, max_length=tokenizer.model_max_length, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">    text_embeddings = text_encoder(text_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line"> <span class="comment"># 获取unconditional text embeddings</span></span><br><span class="line"> max_length = text_input.input_ids.shape[-<span class="number">1</span>]</span><br><span class="line"> uncond_input = tokenizer(</span><br><span class="line">     [negative_prompt] * batch_size, padding=<span class="string">&quot;max_length&quot;</span>, max_length=max_length, return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line"> )</span><br><span class="line">      uncond_embeddings = text_encoder(uncond_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line"> <span class="comment"># 拼接为batch，方便并行计算</span></span><br><span class="line"> text_embeddings = torch.cat([uncond_embeddings, text_embeddings])</span><br><span class="line"></span><br><span class="line"> <span class="comment"># 生成latents的初始噪音</span></span><br><span class="line"> latents = torch.randn(</span><br><span class="line">     (batch_size, unet.in_channels, height // <span class="number">8</span>, width // <span class="number">8</span>),</span><br><span class="line">     generator=generator, device=device</span><br><span class="line"> )</span><br><span class="line"> latents = latents.to(device, dtype=torch.float16)</span><br><span class="line"></span><br><span class="line"> <span class="comment"># 设置采样步数</span></span><br><span class="line"> noise_scheduler.set_timesteps(num_inference_steps, device=device)</span><br><span class="line"></span><br><span class="line"> <span class="comment"># scale the initial noise by the standard deviation required by the scheduler</span></span><br><span class="line"> latents = latents * noise_scheduler.init_noise_sigma <span class="comment"># for DDIM, init_noise_sigma = 1.0</span></span><br><span class="line"></span><br><span class="line"> timesteps_tensor = noise_scheduler.timesteps</span><br><span class="line"></span><br><span class="line"> <span class="comment"># Do denoise steps</span></span><br><span class="line"> <span class="keyword">for</span> t <span class="keyword">in</span> tqdm(timesteps_tensor):</span><br><span class="line">     <span class="comment"># 这里latens扩展2份，是为了同时计算unconditional prediction</span></span><br><span class="line">     latent_model_input = torch.cat([latents] * <span class="number">2</span>)</span><br><span class="line">     latent_model_input = noise_scheduler.scale_model_input(latent_model_input, t) <span class="comment"># for DDIM, do nothing</span></span><br><span class="line"></span><br><span class="line">     <span class="comment"># 使用UNet预测噪音</span></span><br><span class="line">        noise_pred = unet(latent_model_input, t, encoder_hidden_states=text_embeddings).sample</span><br><span class="line"></span><br><span class="line">     <span class="comment"># 执行CFG</span></span><br><span class="line">     noise_pred_uncond, noise_pred_text = noise_pred.chunk(<span class="number">2</span>)</span><br><span class="line">     noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># 计算上一步的noisy latents：x_t -&gt; x_t-1</span></span><br><span class="line">     latents = noise_scheduler.step(noise_pred, t, latents).prev_sample</span><br><span class="line">    </span><br><span class="line"> <span class="comment"># 注意要对latents进行scale</span></span><br><span class="line"> latents = <span class="number">1</span> / <span class="number">0.18215</span> * latents</span><br><span class="line"> <span class="comment"># 使用vae解码得到图像</span></span><br><span class="line">    image = vae.decode(latents).sample</span><br></pre></td></tr></table></figure>
+
+<h3 id="图生图"><a href="#图生图" class="headerlink" title="图生图"></a><strong>图生图</strong></h3><p><strong>图生图（image2image）是对文生图功能的一个扩展</strong>，这个功能来源于<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2108.01073">SDEdit</a>这个工作，其核心思路也非常简单：给定一个笔画的色块图像，可以先给它加一定的高斯噪音（执行扩散过程）得到噪音图像，然后基于扩散模型对这个噪音图像进行去噪，就可以生成新的图像，但是这个图像在结构和布局和输入图像基本一致。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-88ea5b0999db0f14b270847ab12610b3_1440w.webp"></p>
+<p>对于SD来说，图生图的流程图如下所示，相比文生图流程来说，这里的初始latent不再是一个随机噪音，而是由初始图像经过autoencoder编码之后的latent加高斯噪音得到，这里的加噪过程就是扩散过程。要注意的是，去噪过程的步数要和加噪过程的步数一致，就是说你加了多少噪音，就应该去掉多少噪音，这样才能生成想要的无噪音图像。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-1f760753b2577060a67963f6532634cb_1440w.webp"></p>
+<p>在diffusers中，我们可以使用<code>StableDiffusionImg2ImgPipeline</code>来实现文生图，具体代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionImg2ImgPipeline</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载图生图pipeline</span></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span></span><br><span class="line">pipe = StableDiffusionImg2ImgPipeline.from_pretrained(model_id, torch_dtype=torch.float16).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取初始图片</span></span><br><span class="line">init_image = Image.<span class="built_in">open</span>(<span class="string">&quot;init_image.png&quot;</span>).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推理</span></span><br><span class="line">prompt = <span class="string">&quot;A fantasy landscape, trending on artstation&quot;</span></span><br><span class="line">generator = torch.Generator(device=<span class="string">&quot;cuda&quot;</span>).manual_seed(<span class="number">2023</span>)</span><br><span class="line"></span><br><span class="line">image = pipe(</span><br><span class="line">    prompt=prompt,</span><br><span class="line">    image=init_image,</span><br><span class="line">    strength=<span class="number">0.8</span>,</span><br><span class="line">    guidance_scale=<span class="number">7.5</span>,</span><br><span class="line">    generator=generator</span><br><span class="line">).images[<span class="number">0</span>]</span><br><span class="line">image</span><br></pre></td></tr></table></figure>
+
+<p>相比文生图的pipeline，图生图的pipeline还多了一个参数<code>strength</code>，这个参数介于0-1之间，表示对输入图片加噪音的程度，这个值越大加的噪音越多，对原始图片的破坏也就越大，当strength&#x3D;1时，其实就变成了一个随机噪音，此时就相当于纯粹的文生图pipeline了。下面展示了一个具体的实例，这里的第一张图为输入的初始图片，它是一个笔画的色块，我们可以通过图生图将它生成一幅具体的图像，其中第2张图和第3张图的strength分别是0.5和0.8，可以看到当strength&#x3D;0.5时，生成的图像和原图比较一致，但是就比较简单了，当strength&#x3D;0.8时，生成的图像偏离原图更多，但是图像的质感有一个明显的提升。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-4e0affea8868b71ca483fc0a4c324b26_1440w.webp"></p>
+<p>图生图这个功能一个更广泛的应用是在风格转换上，比如给定一张人像，想生成动漫风格的图像。这里我们可以使用动漫风格的开源模型<a href="https://link.zhihu.com/?target=https://huggingface.co/andite/anything-v4.0">anything-v4.0</a>，它是基于SD v1.5在动漫风格数据集上finetune的，使用它可以更好地利用图生图将人物动漫化。下面的第1张为输入人物图像，采用的prompt为”masterpiece, best quality, 1girl, red hair, medium hair, green eyes”，后面的图像是strength分别为0.3-0.9下生成的图像。可以看到在不同的strength下图像有不同的生成效果，其中strength&#x3D;0.6时我觉得效果是最好的。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-9ff42eb6049882d71ff76c97ce7a8a80_1440w.webp"></p>
+<p>总结来看，<strong>图生图其实核心也是依赖了文生图的能力，其中strength这个参数需要灵活调节来得到满意的图像</strong>。在最后，我们也给出图生图pipeline的内部主要代码，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PIL</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL, UNet2DConditionModel, DDIMScheduler</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"><span class="keyword">from</span> tqdm.auto <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span></span><br><span class="line"><span class="comment"># 1. 加载autoencoder</span></span><br><span class="line">vae = AutoencoderKL.from_pretrained(model_id, subfolder=<span class="string">&quot;vae&quot;</span>)</span><br><span class="line"><span class="comment"># 2. 加载tokenizer和text encoder </span></span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder=<span class="string">&quot;text_encoder&quot;</span>)</span><br><span class="line"><span class="comment"># 3. 加载扩散模型UNet</span></span><br><span class="line">unet = UNet2DConditionModel.from_pretrained(model_id, subfolder=<span class="string">&quot;unet&quot;</span>)</span><br><span class="line"><span class="comment"># 4. 定义noise scheduler</span></span><br><span class="line">noise_scheduler = DDIMScheduler(</span><br><span class="line">    num_train_timesteps=<span class="number">1000</span>,</span><br><span class="line">    beta_start=<span class="number">0.00085</span>,</span><br><span class="line">    beta_end=<span class="number">0.012</span>,</span><br><span class="line">    beta_schedule=<span class="string">&quot;scaled_linear&quot;</span>,</span><br><span class="line">    clip_sample=<span class="literal">False</span>, <span class="comment"># don&#x27;t clip sample, the x0 in stable diffusion not in range [-1, 1]</span></span><br><span class="line">    set_alpha_to_one=<span class="literal">False</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模型复制到GPU上</span></span><br><span class="line">device = <span class="string">&quot;cuda&quot;</span></span><br><span class="line">vae.to(device, dtype=torch.float16)</span><br><span class="line">text_encoder.to(device, dtype=torch.float16)</span><br><span class="line">unet = unet.to(device, dtype=torch.float16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 预处理init_image</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">image</span>):</span><br><span class="line">    w, h = image.size</span><br><span class="line">    w, h = <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x - x % <span class="number">32</span>, (w, h))  <span class="comment"># resize to integer multiple of 32</span></span><br><span class="line">    image = image.resize((w, h), resample=PIL.Image.LANCZOS)</span><br><span class="line">    image = np.array(image).astype(np.float32) / <span class="number">255.0</span></span><br><span class="line">    image = image[<span class="literal">None</span>].transpose(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">    image = torch.from_numpy(image)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2.0</span> * image - <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数设置</span></span><br><span class="line">prompt = [<span class="string">&quot;A fantasy landscape, trending on artstation&quot;</span>]</span><br><span class="line">num_inference_steps = <span class="number">50</span></span><br><span class="line">guidance_scale = <span class="number">7.5</span></span><br><span class="line">strength = <span class="number">0.8</span></span><br><span class="line">batch_size = <span class="number">1</span></span><br><span class="line">negative_prompt = <span class="string">&quot;&quot;</span></span><br><span class="line">generator = torch.Generator(device).manual_seed(<span class="number">2023</span>)</span><br><span class="line"></span><br><span class="line">init_image = PIL.Image.<span class="built_in">open</span>(<span class="string">&quot;init_image.png&quot;</span>).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line"> <span class="comment"># 获取prompt的text_embeddings</span></span><br><span class="line"> text_input = tokenizer(prompt, padding=<span class="string">&quot;max_length&quot;</span>, max_length=tokenizer.model_max_length, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">    text_embeddings = text_encoder(text_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line"> <span class="comment"># 获取unconditional text embeddings</span></span><br><span class="line"> max_length = text_input.input_ids.shape[-<span class="number">1</span>]</span><br><span class="line"> uncond_input = tokenizer(</span><br><span class="line">     [negative_prompt] * batch_size, padding=<span class="string">&quot;max_length&quot;</span>, max_length=max_length, return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line"> )</span><br><span class="line">      uncond_embeddings = text_encoder(uncond_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line"> <span class="comment"># 拼接batch</span></span><br><span class="line"> text_embeddings = torch.cat([uncond_embeddings, text_embeddings])</span><br><span class="line"></span><br><span class="line"> <span class="comment"># 设置采样步数</span></span><br><span class="line"> noise_scheduler.set_timesteps(num_inference_steps, device=device)</span><br><span class="line"> <span class="comment"># 根据strength计算timesteps</span></span><br><span class="line"> init_timestep = <span class="built_in">min</span>(<span class="built_in">int</span>(num_inference_steps * strength), num_inference_steps)</span><br><span class="line"> t_start = <span class="built_in">max</span>(num_inference_steps - init_timestep, <span class="number">0</span>)</span><br><span class="line"> timesteps = noise_scheduler.timesteps[t_start:]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment"># 预处理init_image</span></span><br><span class="line"> init_input = preprocess(init_image)</span><br><span class="line">    init_latents = vae.encode(init_input.to(device, dtype=torch.float16)).latent_dist.sample(generator)</span><br><span class="line">    init_latents = <span class="number">0.18215</span> * init_latents</span><br><span class="line"></span><br><span class="line"> <span class="comment"># 给init_latents加噪音</span></span><br><span class="line"> noise = torch.randn(init_latents.shape, generator=generator, device=device, dtype=init_latents.dtype)</span><br><span class="line"> init_latents = noise_scheduler.add_noise(init_latents, noise, timesteps[:<span class="number">1</span>])</span><br><span class="line"> latents = init_latents <span class="comment"># 作为初始latents</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment"># Do denoise steps</span></span><br><span class="line"> <span class="keyword">for</span> t <span class="keyword">in</span> tqdm(timesteps):</span><br><span class="line">     <span class="comment"># 这里latens扩展2份，是为了同时计算unconditional prediction</span></span><br><span class="line">     latent_model_input = torch.cat([latents] * <span class="number">2</span>)</span><br><span class="line">     latent_model_input = noise_scheduler.scale_model_input(latent_model_input, t) <span class="comment"># for DDIM, do nothing</span></span><br><span class="line"></span><br><span class="line">     <span class="comment"># 预测噪音</span></span><br><span class="line">        noise_pred = unet(latent_model_input, t, encoder_hidden_states=text_embeddings).sample</span><br><span class="line"></span><br><span class="line">     <span class="comment"># CFG</span></span><br><span class="line">     noise_pred_uncond, noise_pred_text = noise_pred.chunk(<span class="number">2</span>)</span><br><span class="line">     noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)</span><br><span class="line"></span><br><span class="line">     <span class="comment"># 计算上一步的noisy latents：x_t -&gt; x_t-1</span></span><br><span class="line">     latents = noise_scheduler.step(noise_pred, t, latents).prev_sample</span><br><span class="line">    </span><br><span class="line"> <span class="comment"># 注意要对latents进行scale</span></span><br><span class="line"> latents = <span class="number">1</span> / <span class="number">0.18215</span> * latents</span><br><span class="line">    <span class="comment"># 解码</span></span><br><span class="line">    image = vae.decode(latents).sample</span><br></pre></td></tr></table></figure>
+
+<h3 id="图像inpainting"><a href="#图像inpainting" class="headerlink" title="图像inpainting"></a><strong>图像inpainting</strong></h3><p>最后我们要介绍的一项功能是图像inpainting，它和图生图一样也是文生图功能的一个扩展。SD的图像inpainting不是用在图像修复上，而是主要用在<strong>图像编辑</strong>上：给定一个输入图像和想要编辑的区域mask，我们想通过文生图来编辑mask区域的内容。SD的图像inpainting原理可以参考论文<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2206.02779">Blended Latent Diffusion</a>，其主要原理图如下所示：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-927c1583cfcb13dfab39f9fcda1ab96b_1440w.webp"></p>
+<p>它和图生图一样：首先将输入图像通过autoencoder编码为latent，然后加入一定的高斯噪音生成noisy latent，再进行去噪生成图像，但是这里为了保证mask以外的区域不发生变化，在去噪过程的每一步，都将扩散模型预测的noisy latent用真实图像同level的nosiy latent替换。 在diffusers中，使用<code>StableDiffusionInpaintPipelineLegacy</code>可以实现文本引导下的图像inpainting，具体代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionInpaintPipelineLegacy</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载inpainting pipeline</span></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span></span><br><span class="line">pipe = StableDiffusionInpaintPipelineLegacy.from_pretrained(model_id, torch_dtype=torch.float16).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取输入图像和输入mask</span></span><br><span class="line">input_image = Image.<span class="built_in">open</span>(<span class="string">&quot;overture-creations-5sI6fQgYIuo.png&quot;</span>).resize((<span class="number">512</span>, <span class="number">512</span>))</span><br><span class="line">input_mask = Image.<span class="built_in">open</span>(<span class="string">&quot;overture-creations-5sI6fQgYIuo_mask.png&quot;</span>).resize((<span class="number">512</span>, <span class="number">512</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行推理</span></span><br><span class="line">prompt = [<span class="string">&quot;a mecha robot sitting on a bench&quot;</span>, <span class="string">&quot;a cat sitting on a bench&quot;</span>]</span><br><span class="line">generator = torch.Generator(<span class="string">&quot;cuda&quot;</span>).manual_seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.autocast(<span class="string">&quot;cuda&quot;</span>):</span><br><span class="line">    images = pipe(</span><br><span class="line">        prompt=prompt,</span><br><span class="line">        image=input_image,</span><br><span class="line">        mask_image=input_mask,</span><br><span class="line">        num_inference_steps=<span class="number">50</span>,</span><br><span class="line">        strength=<span class="number">0.75</span>,</span><br><span class="line">        guidance_scale=<span class="number">7.5</span>,</span><br><span class="line">        num_images_per_prompt=<span class="number">1</span>,</span><br><span class="line">        generator=generator,</span><br><span class="line">    ).images</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个具体的生成效果，这里我们将输入图像的dog换成了mecha robot或者cat，从而实现了图像编辑。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-d46397655ae48aa691ec55b4c8e8ba98_1440w.webp"></p>
+<p>要注意的是这里的参数guidance_scale也和图生图一样比较重要，要生成好的图像，需要选择合适的guidance_scale。如果guidance_scale&#x3D;0.5时，生成的图像由于过于受到原图干扰而产生一些不协调，如下所示：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-ec7dc58bc0ea6fe71e68559eda72acae_1440w.webp"></p>
+<p>合适的prompt也比较重要，比如如果我们去掉prompt中的”sitting on a bench”，那么编辑的图像效果也会出现不协调：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-6e559a47524be82c50c5f00b502bc204_1440w.webp"></p>
+<p>无论是上面的图生图还是这里的图像inpainting，我们其实并没有去finetune SD模型，只是扩展了它的能力，但是这两样功能就需要精确调整参数才能得到满意的生成效果。 这里，我们也给出<code>StableDiffusionInpaintPipelineLegacy</code>这个pipeline内部的核心代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PIL</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> AutoencoderKL, UNet2DConditionModel, DDIMScheduler</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> CLIPTextModel, CLIPTokenizer</span><br><span class="line"><span class="keyword">from</span> tqdm.auto <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">preprocess_mask</span>(<span class="params">mask</span>):</span><br><span class="line">    mask = mask.convert(<span class="string">&quot;L&quot;</span>)</span><br><span class="line">    w, h = mask.size</span><br><span class="line">    w, h = <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x - x % <span class="number">32</span>, (w, h))  <span class="comment"># resize to integer multiple of 32</span></span><br><span class="line">    mask = mask.resize((w // <span class="number">8</span>, h // <span class="number">8</span>), resample=PIL.Image.NEAREST)</span><br><span class="line">    mask = np.array(mask).astype(np.float32) / <span class="number">255.0</span></span><br><span class="line">    mask = np.tile(mask, (<span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">    mask = mask[<span class="literal">None</span>].transpose(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># what does this step do?</span></span><br><span class="line">    mask = <span class="number">1</span> - mask  <span class="comment"># repaint white, keep black</span></span><br><span class="line">    mask = torch.from_numpy(mask)</span><br><span class="line">    <span class="keyword">return</span> mask</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">image</span>):</span><br><span class="line">    w, h = image.size</span><br><span class="line">    w, h = <span class="built_in">map</span>(<span class="keyword">lambda</span> x: x - x % <span class="number">32</span>, (w, h))  <span class="comment"># resize to integer multiple of 32</span></span><br><span class="line">    image = image.resize((w, h), resample=PIL.Image.LANCZOS)</span><br><span class="line">    image = np.array(image).astype(np.float32) / <span class="number">255.0</span></span><br><span class="line">    image = image[<span class="literal">None</span>].transpose(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">    image = torch.from_numpy(image)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2.0</span> * image - <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-v1-5&quot;</span></span><br><span class="line"><span class="comment"># 1. 加载autoencoder</span></span><br><span class="line">vae = AutoencoderKL.from_pretrained(model_id, subfolder=<span class="string">&quot;vae&quot;</span>)</span><br><span class="line"><span class="comment"># 2. 加载tokenizer和text encoder </span></span><br><span class="line">tokenizer = CLIPTokenizer.from_pretrained(model_id, subfolder=<span class="string">&quot;tokenizer&quot;</span>)</span><br><span class="line">text_encoder = CLIPTextModel.from_pretrained(model_id, subfolder=<span class="string">&quot;text_encoder&quot;</span>)</span><br><span class="line"><span class="comment"># 3. 加载扩散模型UNet</span></span><br><span class="line">unet = UNet2DConditionModel.from_pretrained(model_id, subfolder=<span class="string">&quot;unet&quot;</span>)</span><br><span class="line"><span class="comment"># 4. 定义noise scheduler</span></span><br><span class="line">noise_scheduler = DDIMScheduler(</span><br><span class="line">    num_train_timesteps=<span class="number">1000</span>,</span><br><span class="line">    beta_start=<span class="number">0.00085</span>,</span><br><span class="line">    beta_end=<span class="number">0.012</span>,</span><br><span class="line">    beta_schedule=<span class="string">&quot;scaled_linear&quot;</span>,</span><br><span class="line">    clip_sample=<span class="literal">False</span>, <span class="comment"># don&#x27;t clip sample, the x0 in stable diffusion not in range [-1, 1]</span></span><br><span class="line">    set_alpha_to_one=<span class="literal">False</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将模型复制到GPU上</span></span><br><span class="line">device = <span class="string">&quot;cuda&quot;</span></span><br><span class="line">vae.to(device, dtype=torch.float16)</span><br><span class="line">text_encoder.to(device, dtype=torch.float16)</span><br><span class="line">unet = unet.to(device, dtype=torch.float16)</span><br><span class="line"></span><br><span class="line">prompt = <span class="string">&quot;a mecha robot sitting on a bench&quot;</span></span><br><span class="line">strength = <span class="number">0.75</span></span><br><span class="line">guidance_scale = <span class="number">7.5</span></span><br><span class="line">batch_size = <span class="number">1</span></span><br><span class="line">num_inference_steps = <span class="number">50</span></span><br><span class="line">negative_prompt = <span class="string">&quot;&quot;</span></span><br><span class="line">generator = torch.Generator(device).manual_seed(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    <span class="comment"># 获取prompt的text_embeddings</span></span><br><span class="line">    text_input = tokenizer(prompt, padding=<span class="string">&quot;max_length&quot;</span>, max_length=tokenizer.model_max_length, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">    text_embeddings = text_encoder(text_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 获取unconditional text embeddings</span></span><br><span class="line">    max_length = text_input.input_ids.shape[-<span class="number">1</span>]</span><br><span class="line">    uncond_input = tokenizer(</span><br><span class="line">        [negative_prompt] * batch_size, padding=<span class="string">&quot;max_length&quot;</span>, max_length=max_length, return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">    )</span><br><span class="line">    uncond_embeddings = text_encoder(uncond_input.input_ids.to(device))[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 拼接batch</span></span><br><span class="line">    text_embeddings = torch.cat([uncond_embeddings, text_embeddings])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 设置采样步数</span></span><br><span class="line">    noise_scheduler.set_timesteps(num_inference_steps, device=device)</span><br><span class="line">    <span class="comment"># 根据strength计算timesteps</span></span><br><span class="line">    init_timestep = <span class="built_in">min</span>(<span class="built_in">int</span>(num_inference_steps * strength), num_inference_steps)</span><br><span class="line">    t_start = <span class="built_in">max</span>(num_inference_steps - init_timestep, <span class="number">0</span>)</span><br><span class="line">    timesteps = noise_scheduler.timesteps[t_start:]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 预处理init_image</span></span><br><span class="line">    init_input = preprocess(input_image)</span><br><span class="line">    init_latents = vae.encode(init_input.to(device, dtype=torch.float16)).latent_dist.sample(generator)</span><br><span class="line">    init_latents = <span class="number">0.18215</span> * init_latents</span><br><span class="line">    init_latents = torch.cat([init_latents] * batch_size, dim=<span class="number">0</span>)</span><br><span class="line">    init_latents_orig = init_latents</span><br><span class="line">    <span class="comment"># 处理mask</span></span><br><span class="line">    mask_image = preprocess_mask(input_mask)</span><br><span class="line">    mask_image = mask_image.to(device=device, dtype=init_latents.dtype)</span><br><span class="line">    mask = torch.cat([mask_image] * batch_size)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 给init_latents加噪音</span></span><br><span class="line">    noise = torch.randn(init_latents.shape, generator=generator, device=device, dtype=init_latents.dtype)</span><br><span class="line">    init_latents = noise_scheduler.add_noise(init_latents, noise, timesteps[:<span class="number">1</span>])</span><br><span class="line">    latents = init_latents <span class="comment"># 作为初始latents</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Do denoise steps</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> tqdm(timesteps):</span><br><span class="line">        <span class="comment"># 这里latens扩展2份，是为了同时计算unconditional prediction</span></span><br><span class="line">        latent_model_input = torch.cat([latents] * <span class="number">2</span>)</span><br><span class="line">        latent_model_input = noise_scheduler.scale_model_input(latent_model_input, t) <span class="comment"># for DDIM, do nothing</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 预测噪音</span></span><br><span class="line">        noise_pred = unet(latent_model_input, t, encoder_hidden_states=text_embeddings).sample</span><br><span class="line"></span><br><span class="line">        <span class="comment"># CFG</span></span><br><span class="line">        noise_pred_uncond, noise_pred_text = noise_pred.chunk(<span class="number">2</span>)</span><br><span class="line">        noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算上一步的noisy latents：x_t -&gt; x_t-1</span></span><br><span class="line">        latents = noise_scheduler.step(noise_pred, t, latents).prev_sample</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 将unmask区域替换原始图像的nosiy latents</span></span><br><span class="line">        init_latents_proper = noise_scheduler.add_noise(init_latents_orig, noise, torch.tensor([t]))</span><br><span class="line">        latents = (init_latents_proper * mask) + (latents * (<span class="number">1</span> - mask))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 注意要对latents进行scale</span></span><br><span class="line">    latents = <span class="number">1</span> / <span class="number">0.18215</span> * latents</span><br><span class="line">    image = vae.decode(latents).sample</span><br></pre></td></tr></table></figure>
+
+<p>另外，runwayml在发布SD 1.5版本的同时还发布了一个inpainting模型：<a href="https://link.zhihu.com/?target=https://huggingface.co/runwayml/stable-diffusion-inpainting">runwayml&#x2F;stable-diffusion-inpainting</a>，与前面所讲不同的是，这是一个<strong>在SD 1.2上finetune的模型</strong>。原来SD的UNet的输入是64x64x4，为了实现inpainting，现在给UNet的第一个卷机层增加5个channels，分别为masked图像的latents（经过autoencoder编码，64x64x4）和mask图像（直接下采样8x，64x64x1），增加的权重填零初始化。在diffusers中，可以使用<code>StableDiffusionInpaintPipeline</code>来调用这个模型，具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionInpaintPipeline</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> tqdm.auto <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="keyword">import</span> PIL</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load pipeline</span></span><br><span class="line">model_id = <span class="string">&quot;runwayml/stable-diffusion-inpainting/&quot;</span></span><br><span class="line">pipe = StableDiffusionInpaintPipeline.from_pretrained(model_id, torch_dtype=torch.float16).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line">prompt = [<span class="string">&quot;a mecha robot sitting on a bench&quot;</span>, <span class="string">&quot;a dog sitting on a bench&quot;</span>, <span class="string">&quot;a bench&quot;</span>]</span><br><span class="line"></span><br><span class="line">generator = torch.Generator(<span class="string">&quot;cuda&quot;</span>).manual_seed(<span class="number">2023</span>)</span><br><span class="line"></span><br><span class="line">input_image = Image.<span class="built_in">open</span>(<span class="string">&quot;overture-creations-5sI6fQgYIuo.png&quot;</span>).resize((<span class="number">512</span>, <span class="number">512</span>))</span><br><span class="line">input_mask = Image.<span class="built_in">open</span>(<span class="string">&quot;overture-creations-5sI6fQgYIuo_mask.png&quot;</span>).resize((<span class="number">512</span>, <span class="number">512</span>))</span><br><span class="line"></span><br><span class="line">images = pipe(</span><br><span class="line">    prompt=prompt,</span><br><span class="line">    image=input_image,</span><br><span class="line">    mask_image=input_mask,</span><br><span class="line">    num_inference_steps=<span class="number">50</span>,</span><br><span class="line">    generator=generator,</span><br><span class="line">    ).images</span><br></pre></td></tr></table></figure>
+
+<p>其生成的效果图如下所示：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-71940530603f265d2f2597cf8570ef97_1440w.webp"></p>
+<p>经过finetune的inpainting在生成细节上可能会更好，但是有可能会丧失部分文生图的能力，而且也比较难迁移其它finetune的SD模型。</p>
+<h2 id="SD-2-0"><a href="#SD-2-0" class="headerlink" title="SD 2.0"></a><strong>SD 2.0</strong></h2><h3 id="SD-2-0-1"><a href="#SD-2-0-1" class="headerlink" title="SD 2.0"></a><strong>SD 2.0</strong></h3><p>Stability AI公司在2022年11月（<a href="https://link.zhihu.com/?target=https://stability.ai/blog/stable-diffusion-v2-release">stable-diffusion-v2-release</a>）放出了<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-base">SD 2.0版本</a>，这里我们也简单介绍一下相比SD 1.x版本SD 2.0的具体改进点。SD 2.0相比SD 1.x版本的主要变动在于<strong>模型结构</strong>和<strong>训练数据</strong>两个部分。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-b9c901beba87587f110fc603f79b7b79_1440w.webp"></p>
+<p>首先是模型结构方面，SD 1.x版本的text encoder采用的是OpenAI的CLIP ViT-L&#x2F;14模型，其模型参数量为123.65M；而SD 2.0采用了更大的text encoder：基于OpenCLIP在laion-2b数据集上训练的<a href="https://link.zhihu.com/?target=https://huggingface.co/laion/CLIP-ViT-H-14-laion2B-s32B-b79K">CLIP ViT-H&#x2F;14</a>模型，其参数量为354.03M，相比原来的text encoder模型大了约3倍。两个CLIP模型的对比如下所示：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-f4f57a7cbcdfabb12dc11e57792d42c8_1440w.webp"></p>
+<p>可以看到CLIP ViT-H&#x2F;14模型相比原来的OpenAI的L&#x2F;14模型，在imagenet1K上分类准确率和mscoco多模态检索任务上均有明显的提升，这也意味着对应的text encoder更强，能够抓住更准确的文本语义信息。另外是一个小细节是SD 2.0提取的是text encoder倒数第二层的特征，而SD 1.x提取的是倒数第一层的特征。由于倒数第一层的特征之后就是CLIP的对比学习任务，所以倒数第一层的特征可能部分丢失细粒度语义信息，Imagen论文（见论文D.1部分）和novelai（见<a href="https://link.zhihu.com/?target=https://blog.novelai.net/novelai-improvements-on-stable-diffusion-e10d38db82ac">novelai blog</a>）均采用了倒数第二层特征。对于UNet模型，SD 2.0相比SD 1.x几乎没有改变，就是由于换了CLIP模型，cross attention dimension从原来的768变成了1024，这个导致参数量有轻微变化。另外一个小的变动是：SD 2.0不同stage的attention模块是固定attention head dim为64，而SD 1.0则是不同stage的attention模块采用固定attention head数量，明显SD 2.0的这种设定更常用，但是这个变动不会影响模型参数。 然后是训练数据，前面说过SD 1.x版本其实最后主要采用laion-2B中美学评分为5以上的子集来训练，而SD 2.0版本采用评分在4.5以上的子集，相当于扩大了训练数据集，具体的训练细节见<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2">model card</a>。 另外SD 2.0除了512x512版本的模型，还包括768x768版本的模型（<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2">https://huggingface.co/stabilityai/stable-diffusion-2</a>），所谓的768x768模型是在512x512模型基础上用图像分辨率大于768x768的子集继续训练的，不过优化目标不再是noise_prediction，而是采用<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2202.00512">Progressive Distillation for Fast Sampling of Diffusion Models</a>论文中所提出的 v-objective。 下图为SD 2.0和SD 1.x版本在COCO2017验证集上评测的对比，可以看到2.0相比1.5，CLIP score有一个明显的提升，同时FID也有一定的提升。但是正如前面所讨论的，FID和CLIP score这两个指标均有一定的局限性，所以具体效果还是上手使用来对比。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-9526ce01305b9226d1f15ce4d25079cb_1440w.webp"></p>
+<p>Stability AI在发布SD 2.0的同时，还发布了另外3个模型：<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-x4-upscaler">stable-diffusion-x4-upscaler</a>，<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-inpainting">stable-diffusion-2-inpainting</a>和<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-depth">stable-diffusion-2-depth</a>。 <a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-x4-upscaler">stable-diffusion-x4-upscaler</a>是一个基于扩散模型的4x超分模型，它也是基于latent diffusion，不过这里采用的autoencoder是基于VQ-reg的，下采样率为。在实现上，它是将低分辨率图像直接和noisy latent拼接在一起送入UNet，因为autoencoder将高分辨率图像压缩为原来的1&#x2F;4，而低分辨率图像也为高分辨率图像的1&#x2F;4，所以低分辨率图像的空间维度和latent是一致的。另外，这个超分模型也采用了<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2106.15282">Cascaded Diffusion Models for High Fidelity Image Generation</a>所提出的noise conditioning augmentation，简单来说就是在训练过程中给低分辨率图像加上高斯噪音，可以通过扩散过程来实现，注意这里的扩散过程的scheduler与主扩散模型的scheduler可以不一样，同时也将对应的noise_level（对应扩散模型的time step）通过class labels的方式送入UNet，让UNet知道加入噪音的程度。stable-diffusion-x4-upscaler是使用LAION中&gt;2048x2048大小的子集（10M）训练的，训练过程中采用512x512的crops来训练（降低显存消耗）。SD模型可以用来生成512x512图像，加上这个超分模型，就可以得到2048x2048大小的图像。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-b00157e0603f4da6bccc9b7a184406b9_1440w.webp"></p>
+<p>在diffusers库中，可以如下使用这个超分模型（这里的noise level是指推理时对低分辨率图像加入噪音的程度）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionUpscalePipeline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># load model and scheduler</span></span><br><span class="line">model_id = <span class="string">&quot;stabilityai/stable-diffusion-x4-upscaler&quot;</span></span><br><span class="line">pipeline = StableDiffusionUpscalePipeline.from_pretrained(model_id, torch_dtype=torch.float16)</span><br><span class="line">pipeline = pipeline.to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># let&#x27;s download an  image</span></span><br><span class="line">url = <span class="string">&quot;https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/sd2-upscale/low_res_cat.png&quot;</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line">low_res_img = Image.<span class="built_in">open</span>(BytesIO(response.content)).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">low_res_img = low_res_img.resize((<span class="number">128</span>, <span class="number">128</span>))</span><br><span class="line"></span><br><span class="line">prompt = <span class="string">&quot;a white cat&quot;</span></span><br><span class="line"></span><br><span class="line">upscaled_image = pipeline(prompt=prompt, image=low_res_img, noise_level=<span class="number">20</span>).images[<span class="number">0</span>]</span><br><span class="line">upscaled_image.save(<span class="string">&quot;upsampled_cat.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-inpainting">stable-diffusion-2-inpainting</a>是图像inpainting模型，和前面所说的<a href="https://link.zhihu.com/?target=https://huggingface.co/runwayml/stable-diffusion-inpainting">runwayml&#x2F;stable-diffusion-inpainting</a>基本一样，不过它是在SD 2.0的512x512版本上finetune的。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-3e7314c658c27783635a47dee1ed3ea3_1440w.webp"></p>
+<p><a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-depth">stable-diffusion-2-depth</a>是也是在SD 2.0的512x512版本上finetune的模型，它是额外增加了图像的深度图作为condition，这里是直接将深度图下采样8x，然后和nosiy latent拼接在一起送入UNet模型中。深度图可以作为一种结构控制，下图展示了加入深度图后生成的图像效果：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-ba0c12df1d24ee074a06412493e397c8_1440w.webp"></p>
+<p>你可以调用diffusers库中的<code>StableDiffusionDepth2ImgPipeline</code>来实现基于深度图控制的文生图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionDepth2ImgPipeline</span><br><span class="line"></span><br><span class="line">pipe = StableDiffusionDepth2ImgPipeline.from_pretrained(</span><br><span class="line">   <span class="string">&quot;stabilityai/stable-diffusion-2-depth&quot;</span>,</span><br><span class="line">   torch_dtype=torch.float16,</span><br><span class="line">).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://images.cocodataset.org/val2017/000000039769.jpg&quot;</span></span><br><span class="line">init_image = Image.<span class="built_in">open</span>(requests.get(url, stream=<span class="literal">True</span>).raw)</span><br><span class="line"></span><br><span class="line">prompt = <span class="string">&quot;two tigers&quot;</span></span><br><span class="line">n_propmt = <span class="string">&quot;bad, deformed, ugly, bad anotomy&quot;</span></span><br><span class="line">image = pipe(prompt=prompt, image=init_image, negative_prompt=n_propmt, strength=<span class="number">0.7</span>).images[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，Stability AI公司还开源了两个加强版的autoencoder：<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/sd-vae-ft-mse-original">ft-EMA和ft-MSE</a>（前者使用L1 loss后者使用MSE loss），前面已经说过，它们是在LAION数据集继续finetune decoder来增强重建效果。</p>
+<h3 id="SD-2-1"><a href="#SD-2-1" class="headerlink" title="SD 2.1"></a><strong>SD 2.1</strong></h3><p>在SD 2.0版本发布几周后，Stability AI又发布了<a href="https://link.zhihu.com/?target=https://stability.ai/blog/stablediffusion2-1-release7-dec-2022">SD 2.1</a>。SD 2.0在训练过程中采用NSFW检测器过滤掉了可能包含色情的图像（punsafe&#x3D;0.1），但是也同时过滤了很多人像图片，这导致SD 2.0在人像生成上效果可能较差，所以SD 2.1是在SD 2.0的基础上放开了限制（punsafe&#x3D;0.98）继续finetune，所以增强了人像的生成效果。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-904f2a50d768c499948deb0be938ba65_1440w.webp"></p>
+<p>和SD 2.0一样，SD 2.1也包含两个版本：<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-1-base">512x512版本</a>和<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-1">768x768版本</a>。</p>
+<h3 id="SD-unclip"><a href="#SD-unclip" class="headerlink" title="SD unclip"></a><strong>SD unclip</strong></h3><p>Stability AI在2023年3月份，又放出了基于SD的另外一个模型：<a href="https://link.zhihu.com/?target=https://stability.ai/blog/stable-diffusion-reimagine">stable-diffusion-reimagine</a>，它可以实现单个图像的变换，即image variations，目前该模型已经在在huggingface上开源：<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-1-unclip">stable-diffusion-2-1-unclip</a>。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-e4cf221f07f5873312e9e6f3fa1f977a_1440w.webp"></p>
+<p>这个模型是借鉴了OpenAI的DALLE2（又称unCLIP)，unCLIP是基于CLIP的image encoder提取的image embeddings作为condition来实现图像的生成。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-8add1d6507e924f1b60b6854f86cf53a_1440w.webp"></p>
+<p>SD unCLIP是在原来的SD模型的基础上增加了CLIP的image encoder的nosiy image embeddings作为condition。具体来说，它在训练过程中是对提取的image embeddings施加一定的高斯噪音（也是通过扩散过程），然后将noise level对应的time embeddings和image embeddings拼接在一起，最后再以class labels的方式送入UNet。在diffusers中，你可以调用<code>StableUnCLIPImg2ImgPipeline</code>来实现图像的变换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableUnCLIPImg2ImgPipeline</span><br><span class="line"></span><br><span class="line"><span class="comment">#Start the StableUnCLIP Image variations pipeline</span></span><br><span class="line">pipe = StableUnCLIPImg2ImgPipeline.from_pretrained(</span><br><span class="line">    <span class="string">&quot;stabilityai/stable-diffusion-2-1-unclip&quot;</span>, torch_dtype=torch.float16, variation=<span class="string">&quot;fp16&quot;</span></span><br><span class="line">)</span><br><span class="line">pipe = pipe.to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Get image from URL</span></span><br><span class="line">url = <span class="string">&quot;https://huggingface.co/datasets/hf-internal-testing/diffusers-images/resolve/main/stable_unclip/tarsila_do_amaral.png&quot;</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line">init_image = Image.<span class="built_in">open</span>(BytesIO(response.content)).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Pipe to make the variation</span></span><br><span class="line">images = pipe(init_image).images</span><br><span class="line">images[<span class="number">0</span>].save(<span class="string">&quot;tarsila_variation.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其实在SD unCLIP之前，已经有<a href="https://link.zhihu.com/?target=https://lambdalabs.com/">Lambda Labs</a>开源的<a href="https://link.zhihu.com/?target=https://lambdalabs.com/">sd-image-variations-diffusers</a>，它是在SD 1.4的基础上finetune的模型，不过实现方式是直接将text embeddings替换为image embeddings，这样也同样可以实现图像的变换。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-6baa63b6a282ab9b55c301af2a94dd86_1440w.webp"></p>
+<p>这里SD unCLIP有两个版本：sd21-unclip-l和sd21-unclip-h，两者分别是采用OpenAI CLIP-L和OpenCLIP-H模型的image embeddings作为condition。如果要实现文生图，还需要像DALLE2那样训练一个prior模型，它可以实现基于文本来预测对应的image embeddings，我们将prior模型和SD unCLIP接在一起就可以实现文生图了。<a href="https://link.zhihu.com/?target=https://kakaobrain.com/">KakaoBrain</a>这个公司已经开源了一个DALLE2的复现版本：<a href="https://link.zhihu.com/?target=https://github.com/kakaobrain/karlo">Karlo</a>，它是基于OpenAI CLIP-L来实现的，你可以基于这个模型中prior模块加上sd21-unclip-l来实现文本到图像的生成，目前这个已经集成了在<a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/stable_diffusion/pipeline_stable_unclip.py">StableUnCLIPPipeline</a>中，或者基于<a href="https://link.zhihu.com/?target=https://github.com/Stability-AI/stablediffusion/blob/main/scripts/streamlit/stableunclip.py">stablediffusion官方仓库</a>来实现。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-030ded0b7cca24ffb813d26fc887b1a6_1440w.webp"></p>
+<h2 id="SD的其它特色应用"><a href="#SD的其它特色应用" class="headerlink" title="SD的其它特色应用"></a><strong>SD的其它特色应用</strong></h2><p>在SD模型开源之后，社区和研究机构也基于SD实现了形式多样的特色应用，这里我们也选择一些比较火的应用来介绍一下。</p>
+<h3 id="个性化生成"><a href="#个性化生成" class="headerlink" title="个性化生成"></a><strong>个性化生成</strong></h3><p>个性化生成是指的生成特定的角色或者风格，比如给定自己几张肖像来利用SD来生成个性化头像。在个性化生成方面，比较重要的两个工作是英伟达的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2208.01618">Textual Inversion</a>和谷歌的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2208.12242">DreamBooth</a>。 <strong>Textual Inversion</strong>这个工作的核心思路是基于用户提供的3～5张特定概念（物体或者风格）的图像来学习一个特定的text embeddings，实际上只用一个word embedding就足够了。<strong>Textual Inversion</strong>不需要finetune UNet，而且由于text embeddings较小，存储成本很低。目前diffusers库已经支持<a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers/tree/main/examples/textual_inversion">textual_inversion的训练</a>。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-2e5448b758b8b67f77c0c7278c70db60_1440w.webp"></p>
+<p><strong>DreamBooth</strong>原本是谷歌提出的应用在Imagen上的个性化生成，但是它实际上也可以扩展到SD上（更新版论文已经增加了SD）。DreamBooth首先为特定的概念寻找一个特定的描述词[V]，这个特定的描述词只要是稀有的就可以，然后与Textual Inversion不同的是DreamBooth需要finetune UNet，这里为了防止过拟合，增加了一个class-specific prior preservation loss（基于SD生成同class图像加入batch里面训练）来进行正则化。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-810d8ba5757afe4fa4a22a72b8bf345f_1440w.webp"></p>
+<p>由于finetune了UNet，DreamBooth往往比Textual Inversion要表现的要好，但是DreamBooth的存储成本较高。目前diffusers库已经支持<a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers/tree/main/examples/dreambooth">dreambooth训练</a>，你也可以在<a href="https://link.zhihu.com/?target=https://huggingface.co/sd-dreambooth-library">sd-dreambooth-library</a>中找到其他人上传的模型。 DreamBooth和Textual Inversion是最常用的个性化生成方法，但其实除了这两种，还有很多其它的研究工作，比如Adobe提出的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2212.04488">Custom Diffusion</a>，相比DreamBooth，它只finetune了UNet的attention模块的KV权重矩阵，同时优化一个新概念的token。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-9f3d22dbfbd59c76a2e9ae23b34cfb7c_1440w.webp"></p>
+<h3 id="风格化finetune模型"><a href="#风格化finetune模型" class="headerlink" title="风格化finetune模型"></a><strong>风格化finetune模型</strong></h3><p>SD的另外一大应用是采用特定风格的数据集进行finetune，这使得<strong>模型“过拟合”在特定的风格上</strong>。之前比较火的novelai就是基于二次元数据在SD上finetune的模型，虽然它失去了生成其它风格图像的能力，但是它在二次元图像的生成效果上比原来的SD要好很多。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-8e8aae59e87393c49ef39820263ed9ed_1440w.webp"></p>
+<p>目前已经有很多风格化的模型在huggingface上开源，这里也列出一些：</p>
+<ul>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/andite/anything-v4.0">andite&#x2F;anything-v4.0</a>：二次元或者动漫风格图像</li>
+</ul>
+<p><img src="https://pic2.zhimg.com/80/v2-6b783d310eab94176f3e1886a94073ad_1440w.webp"></p>
+<p>grid-0018.png</p>
+<ul>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0">dreamlike-art&#x2F;dreamlike-diffusion-1.0</a>：艺术风格图像</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-90e406ec533680de88ebc8536d6db20c_1440w.webp"></p>
+<p>image.png</p>
+<ul>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/prompthero/openjourney">prompthero&#x2F;openjourney</a>：mdjrny-v4风格图像</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-96f85e8e85e7b9f53075708acbe2f938_1440w.webp"></p>
+<p>更多的模型可以直接在<a href="https://link.zhihu.com/?target=https://huggingface.co/models?pipeline_tag=text-to-image&sort=downloads">huggingface text-to-image模型库</a>上找到。此外，很多基于SD进行finetune的模型开源在<a href="https://link.zhihu.com/?target=https://civitai.com/">civitai</a>上，你也可以在这个网站上找到更多风格的模型。 值得说明的一点是，目前finetune SD模型的方法主要有两种：一种是直接finetune了UNet，但是容易过拟合，而且存储成本；另外一种低成本的方法是基于微软的<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2106.09685">LoRA</a>，LoRA本来是用于finetune语言模型的，但是现在已经可以用来finetune SD模型了，具体可以见博客<a href="https://link.zhihu.com/?target=https://huggingface.co/blog/lora">Using LoRA for Efficient Stable Diffusion Fine-Tuning</a>。</p>
+<h3 id="图像编辑"><a href="#图像编辑" class="headerlink" title="图像编辑"></a><strong>图像编辑</strong></h3><p>图像编辑也是SD比较火的应用方向，这里所说的图像编辑是指的是使用SD来实现对图片的局部编辑。这里列举两个比较好的工作：谷歌的<a href="https://link.zhihu.com/?target=https://prompt-to-prompt.github.io/">prompt-to-prompt</a>和加州伯克利的<a href="https://link.zhihu.com/?target=https://www.timothybrooks.com/instruct-pix2pix">instruct-pix2pix</a>。 谷歌的<strong>prompt-to-prompt</strong>的核心是基于UNet的cross attention maps来实现对图像的编辑，它的好处是不需要finetune模型，但是主要用在编辑用SD生成的图像。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-e030e7244f8b2cc2ffea6df0d8fd8f92_1440w.webp"></p>
+<p>谷歌后面的工作<a href="https://link.zhihu.com/?target=https://null-text-inversion.github.io/">Null-text Inversion</a>有进一步实现了对真实图片的编辑：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-3df9637930f5e7041e5174e3e5491754_1440w.webp"></p>
+<p><strong>instruct-pix2pix</strong>这个工作基于GPT-3和prompt-to-prompt构建了pair的数据集，然后在SD上进行finetune，它可以输入text instruct对图像进行编辑：</p>
+<p><img src="https://pic1.zhimg.com/80/v2-d1ef06288b3e9e55fe8c5e06834d0288_1440w.webp"></p>
+<h3 id="可控生成"><a href="#可控生成" class="headerlink" title="可控生成"></a><strong>可控生成</strong></h3><p>可控生成是SD最近比较火的应用，这主要归功于<a href="https://link.zhihu.com/?target=https://github.com/lllyasviel/ControlNet">ControlNet</a>，基于ControlNet可以实现对很多种类的可控生成，比如边缘，人体关键点，草图和深度图等等。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-3292ad0f7cf01d1007ddee10c1417963_1440w.webp"></p>
+<p><img src="https://pic2.zhimg.com/80/v2-47f7a07f07658468255e4eee08da2e19_1440w.webp"></p>
+<p><img src="https://pic1.zhimg.com/80/v2-99f30fa18f1a09a75e88c4a12463a23c_1440w.webp"></p>
+<p>其实在ControlNet之前，也有一些可控生成的工作，比如<a href="https://link.zhihu.com/?target=https://huggingface.co/stabilityai/stable-diffusion-2-depth">stable-diffusion-2-depth</a>也属于可控生成，但是都没有太火。我觉得ControlNet之所以火，是因为这个工作直接实现了各种各种的可控生成，而且训练的ControlNet可以迁移到其它基于SD finetune的模型上（见<a href="https://link.zhihu.com/?target=https://github.com/lllyasviel/ControlNet/discussions/12">Transfer Control to Other SD1.X Models</a>）：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-85d938ca6266b4f8c3ed899b868e6bb5_1440w.webp"></p>
+<p>与ControlNet同期的工作还有腾讯的<a href="https://link.zhihu.com/?target=https://github.com/TencentARC/T2I-Adapter">T2I-Adapter</a>以及阿里的<a href="https://link.zhihu.com/?target=https://damo-vilab.github.io/composer-page/">composer-page</a>：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-ef724be09052bb0c7b1144369dd41963_1440w.webp"></p>
+<h3 id="stable-diffusion-webui"><a href="#stable-diffusion-webui" class="headerlink" title="stable-diffusion-webui"></a><strong>stable-diffusion-webui</strong></h3><p>最后要介绍的一个比较火的应用<a href="https://link.zhihu.com/?target=https://github.com/AUTOMATIC1111/stable-diffusion-webui">stable-diffusion-webui</a>其实是用来支持SD出图的一个web工具，它算是基于<a href="https://link.zhihu.com/?target=https://gradio.app/">gradio</a>框架实现了SD的快速部署，不仅支持SD的最基础的文生图、图生图以及图像inpainting功能，还支持SD的其它拓展功能，很多基于SD的拓展应用可以用插件的方式安装在webui上。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-40b6807bb357a446ec1acbad13bd4d0e_1440w.webp"></p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a><strong>后话</strong></h2><p>在OpenAI最早放出DALLE2的时候，我曾被它生成的图像所惊艳到，但是我从来没有想到图像生成的AIGC会如此火爆，技术的发展太快了，这得益于互联网独有的开源精神。我想，没有SD的开源，估计这个方向可能还会沉寂一段时间。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a><strong>参考</strong></h2><ul>
+<li><a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2112.10752">High-Resolution Image Synthesis with Latent Diffusion Models</a></li>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/CompVis/stable-diffusion-v1-4">https://huggingface.co/CompVis/stable-diffusion-v1-4</a></li>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/runwayml/stable-diffusion-v1-5">https://huggingface.co/runwayml/stable-diffusion-v1-5</a></li>
+<li><a href="https://link.zhihu.com/?target=https://github.com/huggingface/diffusers">https://github.com/huggingface/diffusers</a></li>
+<li><a href="https://link.zhihu.com/?target=https://huggingface.co/blog/stable_diffusion">https://huggingface.co/blog/stable_diffusion</a></li>
+<li><a href="https://link.zhihu.com/?target=https://github.com/CompVis/latent-diffusion">https://github.com/CompVis/latent-diffusion</a></li>
+<li><a href="https://link.zhihu.com/?target=https://laion.ai/blog/laion-5b/">https://laion.ai/blog/laion-5b/</a></li>
+<li><a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2303.05511">https://arxiv.org/abs/2303.05511</a></li>
+<li><a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2211.01324">https://arxiv.org/abs/2211.01324</a></li>
+<li><a href="https://link.zhihu.com/?target=https://arxiv.org/abs/2205.11487">https://arxiv.org/abs/2205.11487</a></li>
+<li><a href="https://link.zhihu.com/?target=https://keras.io/guides/keras_cv/generate_images_with_stable_diffusion/">https://keras.io/guides/keras_cv&#x2F;generate_images_with_stable_diffusion&#x2F;</a></li>
+<li><a href="https://link.zhihu.com/?target=https://stability.ai/blog/stablediffusion2-1-release7-dec-2022">https://stability.ai/blog/stablediffusion2-1-release7-dec-2022</a></li>
+</ul>
+<p>编辑于 2023-07-14 00:03・IP 属地广东</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/10/29/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%85%B6%E4%BA%8C/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/10/29/%E8%87%AA%E5%BB%BA%E6%9C%AC%E5%9C%B0AI%E7%BB%98%E7%94%BB%E5%B1%95%E7%A4%BA/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">自建本地AI绘画展示</div>
+      </a>
+    
+  </nav>
+
+   
+ 
+   
+  
+   
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2023
+        <i class="ri-heart-fill heart_icon"></i> 伊万
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="余震"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">个人文章</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://c.binjie.fun/#/chat/1694091676524">AI工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0">B站空间</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="https://www.askbox.ink/box/uu/N3LD573T?uid=fa32fffa9e9d7fda9afc07315f738736">留言</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="http://scp-wiki-cn.wikidot.com/">SCP中国分部</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+ 
+<script src="/js/clickBoom2.js"></script>
+ 
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=2012172936&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+    
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/ Relative)","tagMode":false,"log":false,"model":{"jsonPath":"/null"},"display":{"position":"right","width":100,"height":180},"mobile":{"show":false},"react":{"opacityDefault":0.7}});</script></body>
+
+</html>

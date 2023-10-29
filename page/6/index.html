@@ -144,6 +144,351 @@
     
     
     <article
+  id="post-浅扩散模型-DDSP-SVC"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/10/02/%E6%B5%85%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-DDSP-SVC/"
+    >浅扩散模型-DDSP-SVC</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/10/02/%E6%B5%85%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-DDSP-SVC/" class="article-date">
+  <time datetime="2023-10-02T13:36:25.000Z" itemprop="datePublished">2023-10-02</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>基于 DDSP（可微分数字信号处理）的实时端到端歌声转换系统</p>
+<p>（3.0 - 实验性）浅扩散模型 （DDSP + Diff-SVC 重构版）<br><img src="/2023/10/02/%E6%B5%85%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-DDSP-SVC/diagram.png" alt="diagram.png"><br>数据准备，配置编码器（hubert 或者 contentvec ) 与声码器 (nsf-hifigan) 的环节与训练纯 DDSP 模型相同。</p>
+<p>因为扩散模型更难训练，我们提供了一些预训练模型：</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/hubertsoft_pitch_410k/model_0.pt">https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/hubertsoft_pitch_410k/model_0.pt</a> (使用 ‘hubertsoft’ 编码器)</p>
+<p><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/pitch_400k/model_0.pt">https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/blob/main/pitch_400k/model_0.pt</a> (使用 ‘contentvec768l12’ 编码器)</p>
+<p>将名为<code>model_0.pt</code>的预训练模型, 放到<code>diffusion.yaml</code>里面 “expdir: exp&#x2F;*****” 参数指定的模型导出文件夹内, 没有就新建一个, 程序会自动加载该文件夹下的预训练模型。</p>
+<p>（1）预处理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/diffusion.yaml</span><br></pre></td></tr></table></figure>
+<p>这个预处理也能用来训练 DDSP 模型，不用预处理两遍（但需要保证 yaml 里面的 data 下面的参数均一致）</p>
+<p>（2）训练扩散模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train_diff.py -c configs/diffusion.yaml</span><br></pre></td></tr></table></figure>
+<p>（3）训练 DDSP 模型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+<p>如上所述，可以不需要重新预处理，但请检查 combsub.yaml 与 diffusion.yaml 是否参数匹配。说话人数 n_spk 可以不一致，但是尽量用相同的编号表示相同的说话人（推理更简单）。</p>
+<p>（4）非实时推理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main_diff.py -i &lt;input.wav&gt; -ddsp &lt;ddsp_ckpt.pt&gt; -diff &lt;diff_ckpt.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -<span class="built_in">id</span> &lt;speaker_id&gt; -diffid &lt;diffusion_speaker_id&gt; -speedup &lt;speedup&gt; -method &lt;method&gt; -kstep &lt;kstep&gt;</span><br></pre></td></tr></table></figure>
+<p>speedup 为加速倍速，method 为 pndm 或者 dpm-solver, kstep为浅扩散步数，diffid 为扩散模型的说话人id，其他参数与 main.py 含义相同。</p>
+<p>如果训练时已经用相同的编号表示相同的说话人，则 -diffid 可以为空，否则需要指定 -diffid 选项。</p>
+<p>如果 -ddsp 为空，则使用纯扩散模型 ，此时以输入源的 mel 进行浅扩散，若进一步 -kstep 为空，则进行完整深度的高斯扩散。</p>
+<p>程序会自动检查 DDSP 模型和扩散模型的参数是否匹配 （采样率，帧长和编码器），不匹配会忽略加载 DDSP 模型并进入高斯扩散模式。</p>
+<p>（5）实时 GUI :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python gui_diff.py</span><br></pre></td></tr></table></figure>
+
+<h2 id="0-简介"><a href="#0-简介" class="headerlink" title="0.简介"></a>0.简介</h2><p>DDSP-SVC 是一个新的开源歌声转换项目，致力于开发可以在个人电脑上普及的自由 AI 变声器软件。</p>
+<p>相比于比较著名的 <a target="_blank" rel="noopener" href="https://github.com/prophesier/diff-svc">Diff-SVC</a> 和 <a target="_blank" rel="noopener" href="https://github.com/svc-develop-team/so-vits-svc">SO-VITS-SVC</a>, 它训练和合成对电脑硬件的要求要低的多，并且训练时长有数量级的缩短。另外在进行实时变声时，本项目的硬件资源显著低于 SO-VITS-SVC，而 Diff-SVC 合成太慢几乎无法进行实时变声。</p>
+<p>虽然 DDSP 的原始合成质量不是很理想（训练时在 tensorboard 中可以听到原始输出），但在使用基于预训练声码器的增强器增强音质后，对于部分数据集可以达到接近 SOVITS-SVC 的合成质量。</p>
+<p>如果训练数据的质量非常高，可能仍然 Diff-SVC 将拥有最高的合成质量。在<code>samples</code>文件夹中包含合成示例，相关模型检查点可以从仓库发布页面下载。</p>
+<p>免责声明：请确保仅使用<strong>合法获得的授权数据</strong>训练 DDSP-SVC 模型，不要将这些模型及其合成的任何音频用于非法目的。 本库作者不对因使用这些模型检查点和音频而造成的任何侵权，诈骗等违法行为负责。</p>
+<p>1.1 更新：支持多说话人和音色混合。</p>
+<p>2.0 更新：开始支持实时 vst 插件，并优化了 combsub 模型， 训练速度极大提升。旧的 combsub 模型仍然兼容，可用 combsub-old.yaml 训练，sins 模型不受影响，但由于训练速度远慢于 combsub, 目前版本已经不推荐使用。</p>
+<h2 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h2><ol>
+<li><p>安装PyTorch：我们推荐从 <a target="_blank" rel="noopener" href="https://pytorch.org/">**PyTorch 官方网站 **</a> 下载 PyTorch.</p>
+</li>
+<li><p>安装依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt </span><br></pre></td></tr></table></figure>
+<p>注： 仅在 python 3.8 (windows) + torch 1.9.1 + torchaudio 0.6.0 测试过代码，太旧或太新的依赖可能会报错。</p>
+</li>
+</ol>
+<p>更新：python 3.8 (windows) + cuda 11.8 + torch 2.0.0 + torchaudio 2.0.1 可以运行，训练速度更快了。</p>
+<h2 id="2-配置预训练模型"><a href="#2-配置预训练模型" class="headerlink" title="2. 配置预训练模型"></a>2. 配置预训练模型</h2><ul>
+<li><strong>(必要操作)</strong> 下载预训练 <a target="_blank" rel="noopener" href="https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt"><strong>HubertSoft</strong></a> 编码器并将其放到 <code>pretrain/hubert</code> 文件夹。<ul>
+<li>更新：现在支持 ContentVec 编码器了。你可以下载预训练 <a target="_blank" rel="noopener" href="https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr">ContentVec</a> 编码器替代 HubertSoft 编码器并修改配置文件以使用它。</li>
+</ul>
+</li>
+<li>从 <a target="_blank" rel="noopener" href="https://openvpi.github.io/vocoders">DiffSinger 社区声码器项目</a> 下载基于预训练声码器的增强器，并解压至 <code>pretrain/</code> 文件夹。<ul>
+<li>注意：你应当下载名称中带有<code>nsf_hifigan</code>的压缩文件，而非<code>nsf_hifigan_finetune</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-预处理"><a href="#3-预处理" class="headerlink" title="3. 预处理"></a>3. 预处理</h2><h3 id="1-配置训练数据集和验证数据集"><a href="#1-配置训练数据集和验证数据集" class="headerlink" title="1. 配置训练数据集和验证数据集"></a>1. 配置训练数据集和验证数据集</h3><h4 id="1-1-手动配置："><a href="#1-1-手动配置：" class="headerlink" title="1.1 手动配置："></a>1.1 手动配置：</h4><p>将所有的训练集数据 (.wav 格式音频切片) 放到 <code>data/train/audio</code>。</p>
+<p>将所有的验证集数据 (.wav 格式音频切片) 放到 <code>data/val/audio</code>。</p>
+<h4 id="1-2-程序随机选择："><a href="#1-2-程序随机选择：" class="headerlink" title="1.2 程序随机选择："></a>1.2 程序随机选择：</h4><p>运行<code>python draw.py</code>,程序将帮助你挑选验证集数据（可以调整 <code>draw.py</code> 中的参数修改抽取文件的数量等参数）。</p>
+<h4 id="1-3文件夹结构目录展示："><a href="#1-3文件夹结构目录展示：" class="headerlink" title="1.3文件夹结构目录展示："></a>1.3文件夹结构目录展示：</h4><ul>
+<li>单人物目录结构：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data</span><br><span class="line">├─ train</span><br><span class="line">│    ├─ audio</span><br><span class="line">│    │    ├─ aaa.wav</span><br><span class="line">│    │    ├─ bbb.wav</span><br><span class="line">│    │    └─ ....wav</span><br><span class="line">│    └─ val</span><br><span class="line">│    │    ├─ eee.wav</span><br><span class="line">│    │    ├─ fff.wav</span><br><span class="line">│    │    └─ ....wav</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多人物目录结构：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">data</span><br><span class="line">├─ train</span><br><span class="line">│    ├─ audio</span><br><span class="line">│    │    ├─ 1</span><br><span class="line">│    │    │   ├─ aaa.wav</span><br><span class="line">│    │    │   ├─ bbb.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    ├─ 2</span><br><span class="line">│    │    │   ├─ ccc.wav</span><br><span class="line">│    │    │   ├─ ddd.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    └─ ...</span><br><span class="line">│    └─ val</span><br><span class="line">│    │    ├─ 1</span><br><span class="line">│    │    │   ├─ eee.wav</span><br><span class="line">│    │    │   ├─ fff.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    ├─ 2</span><br><span class="line">│    │    │   ├─ ggg.wav</span><br><span class="line">│    │    │   ├─ hhh.wav</span><br><span class="line">│    │    │   └─ ....wav</span><br><span class="line">│    │    └─ ...</span><br></pre></td></tr></table></figure>
+<h3 id="2-样例合成器模型训练"><a href="#2-样例合成器模型训练" class="headerlink" title="2. 样例合成器模型训练"></a>2. 样例合成器模型训练</h3><ol>
+<li>训练基于梳齿波减法合成器的模型 (<strong>推荐</strong>)：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>训练基于正弦波加法合成器的模型：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python preprocess.py -c configs/sins.yaml</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>您可以在预处理之前修改配置文件 <code>config/&lt;model_name&gt;.yaml</code>，默认配置适用于GTX-1660 显卡训练 44.1khz 高采样率合成器。</li>
+</ol>
+<h3 id="3-备注："><a href="#3-备注：" class="headerlink" title="3. 备注："></a>3. 备注：</h3><ol>
+<li><p>请保持所有音频切片的采样率与 yaml 配置文件中的采样率一致！如果不一致，程序可以跑，但训练过程中的重新采样将非常缓慢。（可选：使用Adobe Audition™的响度匹配功能可以一次性完成重采样修改声道和响度匹配。）</p>
+</li>
+<li><p>训练数据集的音频切片总数建议为约 1000 个，另外长音频切成小段可以加快训练速度，但所有音频切片的时长不应少于 2 秒。如果音频切片太多，则需要较大的内存，配置文件中将 <code>cache_all_data</code> 选项设置为 false 可以解决此问题。</p>
+</li>
+<li><p>验证集的音频切片总数建议为 10 个左右，不要放太多，不然验证过程会很慢。</p>
+</li>
+<li><p>如果您的数据集质量不是很高，请在配置文件中将 ‘f0_extractor’ 设为 ‘crepe’。crepe 算法的抗噪性最好，但代价是会极大增加数据预处理所需的时间。</p>
+</li>
+<li><p>配置文件中的 ‘n_spk’ 参数将控制是否训练多说话人模型。如果您要训练<strong>多说话人</strong>模型，为了对说话人进行编号，所有音频文件夹的名称必须是<strong>不大于 ‘n_spk’ 的正整数</strong>。</p>
+</li>
+</ol>
+<h2 id="4-训练"><a href="#4-训练" class="headerlink" title="4. 训练"></a>4. 训练</h2><h3 id="1-不使用预训练数据进行训练："><a href="#1-不使用预训练数据进行训练：" class="headerlink" title="1. 不使用预训练数据进行训练："></a>1. 不使用预训练数据进行训练：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以训练 combsub 模型为例 </span></span><br><span class="line">python train.py -c configs/combsub.yaml</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>训练其他模型方法类似。</p>
+</li>
+<li><p>可以随时中止训练，然后运行相同的命令来继续训练。</p>
+</li>
+<li><p>微调 (finetune)：在中止训练后，重新预处理新数据集或更改训练参数（batchsize、lr等），然后运行相同的命令。</p>
+</li>
+</ol>
+<h3 id="2-使用预训练数据（底模）进行训练："><a href="#2-使用预训练数据（底模）进行训练：" class="headerlink" title="2. 使用预训练数据（底模）进行训练："></a>2. 使用预训练数据（底模）进行训练：</h3><ol>
+<li><strong>使用预训练模型请修改配置文件中的 ‘n_spk’ 参数为 ‘2’ ,同时配置<code>train</code>目录结构为多人物目录，不论你是否训练多说话人模型。</strong></li>
+<li><strong>如果你要训练一个更多说话人的模型，就不要下载预训练模型了。</strong></li>
+<li>欢迎PR训练的多人底模 (请使用授权同意开源的数据集进行训练)。</li>
+<li>从<a target="_blank" rel="noopener" href="https://github.com/yxlllc/DDSP-SVC/releases/download/2.0/opencpop+kiritan.zip"><strong>这里</strong></a>下载预训练模型，并将<code>model_300000.pt</code>解压到<code>.\exp\combsub-test\</code>中</li>
+<li>同不使用预训练数据进行训练一样，启动训练。</li>
+</ol>
+<h2 id="5-可视化"><a href="#5-可视化" class="headerlink" title="5. 可视化"></a>5. 可视化</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用tensorboard检查训练状态</span></span><br><span class="line">tensorboard --logdir=exp</span><br></pre></td></tr></table></figure>
+<p>第一次验证 (validation) 后，在 TensorBoard 中可以看到合成后的测试音频。</p>
+<p>注：TensorBoard 中的测试音频是 DDSP-SVC 模型的原始输出，并未通过增强器增强。 如果想测试模型使用增强器的合成效果（可能具有更高的合成质量），请使用下一章中描述的方法。</p>
+<h2 id="6-非实时变声"><a href="#6-非实时变声" class="headerlink" title="6. 非实时变声"></a>6. 非实时变声</h2><ol>
+<li>（<strong>推荐</strong>）使用预训练声码器增强 DDSP 的输出结果：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 默认 enhancer_adaptive_key = 0 正常音域范围内将有更高的音质</span></span><br><span class="line"><span class="comment"># 设置 enhancer_adaptive_key &gt; 0 可将增强器适配于更高的音域</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -<span class="built_in">id</span> &lt;speaker_id&gt; -e <span class="literal">true</span> -eak &lt;enhancer_adaptive_key (semitones)&gt;</span><br></pre></td></tr></table></figure></li>
+<li>DDSP 的原始输出结果：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 速度快，但音质相对较低（像您在tensorboard里听到的那样）</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -e <span class="literal">false</span> -<span class="built_in">id</span> &lt;speaker_id&gt;</span><br></pre></td></tr></table></figure></li>
+<li>关于 f0 提取器、响应阈值及其他参数，参见:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python main.py -h</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>如果要使用混合说话人（捏音色）功能，增添 “-mix” 选项来设计音色，下面是个例子：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将1号说话人和2号说话人的音色按照0.5:0.5的比例混合</span></span><br><span class="line">python main.py -i &lt;input.wav&gt; -m &lt;model_file.pt&gt; -o &lt;output.wav&gt; -k &lt;keychange (semitones)&gt; -mix <span class="string">&quot;&#123;1:0.5, 2:0.5&#125;&quot;</span> -e <span class="literal">true</span> -eak 0</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="7-实时变声"><a href="#7-实时变声" class="headerlink" title="7. 实时变声"></a>7. 实时变声</h2><p>用以下命令启动简易操作界面:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python gui.py</span><br></pre></td></tr></table></figure>
+<p>该前端使用了滑动窗口，交叉淡化，基于SOLA 的拼接和上下文语义参考等技术，在低延迟和资源占用的情况下可以达到接近非实时合成的音质。</p>
+<p>更新：现在加入了基于相位声码器的衔接算法，但是大多数情况下 SOLA 算法已经具有足够高的拼接音质，所以它默认是关闭状态。如果您追求极端的低延迟实时变声音质，可以考虑开启它并仔细调参，有概率音质更高。但大量测试发现，如果交叉淡化时长大于0.1秒，相位声码器反而会造成音质明显劣化。</p>
+<h2 id="8-感谢"><a href="#8-感谢" class="headerlink" title="8. 感谢"></a>8. 感谢</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/magenta/ddsp">ddsp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yxlllc/pc-ddsp">pc-ddsp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bshall/soft-vc">soft-vc</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openvpi/DiffSinger">DiffSinger (OpenVPI version)</a></li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+  
+</article>
+
+    
+    <article
+  id="post-扩散模型"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/10/02/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/"
+    >扩散模型</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/10/02/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2023-10-02T13:26:43.000Z" itemprop="datePublished">2023-10-02</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>图像生成领域最常见生成模型有GAN和VAE，2020年，DDPM（Denoising Diffusion Probabilistic Model）被提出，被称为扩散模型（Diffusion Model），同样可用于图像生成。近年扩散模型大热，Stability AI、OpenAI、Google Brain等相继基于扩散模型提出的以文生图，图像生成视频生成等模型。</p>
+<h2 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h2><p>扩散模型：和其他生成模型一样，实现从噪声（采样自简单的分布）生成目标数据样本。</p>
+<p>扩散模型包括两个过程：前向过程（forward process）和反向过程（reverse process），其中前向过程又称为扩散过程（diffusion process）。无论是前向过程还是反向过程都是一个参数化的马尔可夫链（Markov chain），其中反向过程可用于生成数据样本（它的作用类似GAN中的生成器，只不过GAN生成器会有维度变化，而DDPM的反向过程没有维度变化）。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-1b030c7965fb49c08658016398a36d65_1440w.webp"></p>
+<p>上图截取自原论文.</p>
+<p>-  到  为逐步加噪过的前向程，噪声是已知的，该过程从原始图片逐步加噪至一组纯噪声。</p>
+<p>-  到  为将一组随机噪声还原为输入的过程。该过程需要学习一个去噪过程，直到还原一张图片。</p>
+<p><strong>前向过程</strong></p>
+<p>前向过程是加噪的过程，前向过程中图像  只和上一时刻的  有关, 该过程可以视为马尔科夫过程, 满足:</p>
+<p>其中不同t的  是预先定义好的逐渐衰减的，可以是Linear，Cosine等，满足  。</p>
+<p>根据以上公式，可以通过重参数化采样得到。  ，</p>
+<p>经过推导，可以得出  与 的关系：</p>
+<p><strong>逆向过程</strong></p>
+<p>逆向过程是去噪的过程，如果得到逆向过程 ，就可以通过随机噪声$  $逐步还原出一张图像。DDPM使用神经网络  拟合逆向过程  。</p>
+<p> ，可以推导出:</p>
+<p>DDPM论文中不计方差，通过神经网络拟合均值 ，从而得到  ,</p>
+<p>因为  和  已知，只需使用神经网络拟合 </p>
+<p><strong>网络结构</strong></p>
+<p>论文的源代码采用Unet实现  的预测，整个训练过程其实就是在训练Unet网络的参数</p>
+<p><strong>Unet职责</strong></p>
+<p>无论在前向过程还是反向过程，Unet的职责都是根据当前的样本和时间t预测噪声。</p>
+<h3 id="Gaussion-Diffusion职责"><a href="#Gaussion-Diffusion职责" class="headerlink" title="Gaussion Diffusion职责"></a>Gaussion Diffusion职责</h3><p>前向过程：从1到T的时间采样一个时间  ，生成一个随机噪声加到图片上，从Unet获取预测噪声，计算损失后更新Unet梯度</p>
+<p>反向过程：先从正态分布随机采样和训练样本一样大小的纯噪声图片，从T-1到0逐步重复以下步骤：从  还原  。</p>
+<h3 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h3><p><img src="https://pic3.zhimg.com/80/v2-70f1ec85b1647b70e0b67e14a662315e_1440w.webp"></p>
+<h3 id="Algorithm1：Training"><a href="#Algorithm1：Training" class="headerlink" title="Algorithm1：Training"></a>Algorithm1：Training</h3><ul>
+<li>从数据中抽取一个样本，</li>
+<li>从1-T中随机选取一个时间t</li>
+<li>将  和t传给GaussionDiffusion，GaussionDiffusion采样一个随机噪声，加到  ，形成 ，然后将 和t放入Unet，Unet根据t生成正弦位置编码和  结合，Unet预测加的这个噪声，并返回噪声，GaussionDiffusion计算该噪声和随机噪声的损失</li>
+<li>将神经网络Unet预测的噪声与之前GaussionDiffusion采样的随机噪声求L2损失，计算梯度，更新权重。</li>
+<li>重复以上步骤，直到网络Unet训练完成。</li>
+</ul>
+<p>训练步骤中每个模块的交互如下图：</p>
+<p><img src="https://pic4.zhimg.com/80/v2-33081e7d50e65e1ed4e5d1f91e67728b_1440w.webp"></p>
+<h3 id="Algorithm2：Sampling"><a href="#Algorithm2：Sampling" class="headerlink" title="Algorithm2：Sampling"></a>Algorithm2：Sampling</h3><ul>
+<li>- 从标准正态分布采样出 </li>
+<li>- 从  依次重复以下步骤:</li>
+<li>- 从标准正态分布采样  ，为重参数化做准备</li>
+<li>- 根据模型求出，结合  和采样得到z利用重参数化技巧，得到 </li>
+<li>- 循环结束后返回</li>
+</ul>
+<p> </p>
+<p>采样步骤中每个模块的交互如下图：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-3673b2795344783503286c32f05fc7b6_1440w.webp"></p>
+<h2 id="结合代码（MindSpore版本）讲解"><a href="#结合代码（MindSpore版本）讲解" class="headerlink" title="结合代码（MindSpore版本）讲解"></a>结合代码（MindSpore版本）讲解</h2><p>代码主要分为以下几块：Unet、GaussianDiffusion、 Trainer</p>
+<h3 id="1-Unet"><a href="#1-Unet" class="headerlink" title="1. Unet"></a>1. Unet</h3><p>Unet网络结构如图：</p>
+<p><img src="https://pic2.zhimg.com/80/v2-01dadddd5b3082dafe535d59330ae845_1440w.webp"></p>
+<p><strong>1.1 正弦位置编码</strong></p>
+<p>DDPM每步训练是随机采样一个时间，为了让网络知道当前处理的是一系列去噪过程中的哪一个step，我们需要将当前t编码并传入网络之中，DDPM使用的Unet是time-condition Unet。</p>
+<p>类似于Transformer的positional embedding，DDPM采用正弦位置编码（Sinusoidal Positional Embeddings），既需要位置编码有界又需要两个时间步长之间的距离与句子长度无关。为了满足这两点标准，一种思路是使用有界的周期性函数，而简单的有界周期性函数很容易想到sin和cos函数。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class SinusoidalPosEmb(nn.Cell):</span><br><span class="line">    def __init__(self, dim):</span><br><span class="line">        super().__init__()</span><br><span class="line">        half_dim = dim // 2</span><br><span class="line">        emb = math.log(10000) / (half_dim - 1)</span><br><span class="line">        emb = np.exp(np.arange(half_dim) * - emb)</span><br><span class="line">        self.emb = Tensor(emb, mindspore.float32)</span><br><span class="line">        self.Concat = _get_cache_prim(ops.Concat)(-1)</span><br><span class="line"></span><br><span class="line">    def construct(self, x):</span><br><span class="line">        emb = x[:, None] * self.emb[None, :]</span><br><span class="line">        emb = self.Concat((ops.sin(emb), ops.cos(emb)))</span><br><span class="line">        return emb</span><br></pre></td></tr></table></figure>
+
+<p>DDPM的Unet有ResidualBlock和Attention Module</p>
+<p><strong>1.2 Attention</strong></p>
+<p>Attention的本质是从人类视觉注意力机制中获得灵感。大致是我们视觉在感知东西的时候，一般不会是一个场景从到头看到尾每次全部都看，而往往是根据需求观察注意特定的一部分。具体可以参考博客：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35571412">TheLongGoodbye：浅谈Attention机制的理解</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Attention(nn.Cell):</span><br><span class="line">    def __init__(self, dim, heads=4, dim_head=32):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.scale = dim_head ** -0.5</span><br><span class="line">        self.heads = heads</span><br><span class="line">        hidden_dim = dim_head * heads</span><br><span class="line"></span><br><span class="line">        self.to_qkv = _get_cache_prim(Conv2d)(dim, hidden_dim * 3, 1, pad_mode=&#x27;valid&#x27;, has_bias=False)</span><br><span class="line">        self.to_out = _get_cache_prim(Conv2d)(hidden_dim, dim, 1, pad_mode=&#x27;valid&#x27;, has_bias=True)</span><br><span class="line">self.map = ops.Map()</span><br><span class="line">        self.partial = ops.Partial()</span><br><span class="line">        self.bmm = BMM()</span><br><span class="line">        self.split = ops.Split(axis=1, output_num=3)</span><br><span class="line">        self.softmax = ops.Softmax(-1)</span><br><span class="line"></span><br><span class="line">    def construct(self, x):</span><br><span class="line">        b, c, h, w = x.shape</span><br><span class="line">        qkv = self.split(self.to_qkv(x))</span><br><span class="line">        q, k, v = self.map(self.partial(rearrange, self.heads), qkv)</span><br><span class="line">        q = q * self.scale</span><br><span class="line">        sim = self.bmm(q.swapaxes(2, 3), k)</span><br><span class="line">        attn = self.softmax(sim)</span><br><span class="line">        out = self.bmm(attn, v.swapaxes(2, 3))</span><br><span class="line">        out = out.swapaxes(-1, -2).reshape((b, -1, h, w))</span><br><span class="line">        return self.to_out(out)</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.3 Residual Block</strong></p>
+<p>是ResNet的核心模块，可以防止网络退化。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Residual(nn.Cell):</span><br><span class="line">    &quot;&quot;&quot;残差块&quot;&quot;&quot;</span><br><span class="line">    def __init__(self, fn):</span><br><span class="line">        super().__init__()</span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    def construct(self, x, *args, **kwargs):</span><br><span class="line">        return self.fn(x, *args, **kwargs) + x</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-GaussianDiffusion"><a href="#2-GaussianDiffusion" class="headerlink" title="2. GaussianDiffusion"></a>2. GaussianDiffusion</h3><p>首先定义相关的概率值，与公式相对应：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">self.betas = betas</span><br><span class="line">self.alphas_cumprod = alphas_cumprod</span><br><span class="line">self.alphas_cumprod_prev = alphas_cumprod_prev</span><br><span class="line"></span><br><span class="line"># calculations for diffusion q(x_t | x_&#123;t-1&#125;) and others</span><br><span class="line">self.sqrt_alphas_cumprod = Tensor(np.sqrt(alphas_cumprod))</span><br><span class="line">self.sqrt_one_minus_alphas_cumprod = Tensor(np.sqrt(1. - alphas_cumprod))</span><br><span class="line">self.log_one_minus_alphas_cumprod = Tensor(np.log(1. - alphas_cumprod))</span><br><span class="line">self.sqrt_recip_alphas_cumprod = Tensor(np.sqrt(1. / alphas_cumprod))</span><br><span class="line">self.sqrt_recipm1_alphas_cumprod = Tensor(np.sqrt(1. / alphas_cumprod - 1))</span><br><span class="line"></span><br><span class="line">posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)</span><br><span class="line"></span><br><span class="line">self.posterior_variance = Tensor(posterior_variance)</span><br><span class="line"></span><br><span class="line">self.posterior_log_variance_clipped = Tensor(</span><br><span class="line">    np.log(np.clip(posterior_variance, 1e-20, None)))</span><br><span class="line">self.posterior_mean_coef1 = Tensor(</span><br><span class="line">    betas * np.sqrt(alphas_cumprod_prev) / (1. - alphas_cumprod))</span><br><span class="line">self.posterior_mean_coef2 = Tensor(</span><br><span class="line">    (1. - alphas_cumprod_prev) * np.sqrt(alphas) / (1. - alphas_cumprod))</span><br><span class="line"></span><br><span class="line">p2_loss_weight = (p2_loss_weight_k + alphas_cumprod / (1 - alphas_cumprod))\</span><br><span class="line">                  ** - p2_loss_weight_gamma</span><br><span class="line">self.p2_loss_weight = Tensor(p2_loss_weight)</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算损失"><a href="#计算损失" class="headerlink" title="计算损失"></a>计算损失</h3><p>基于Unet预测出noise，使用预测noise和真实noise计算损失：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">def p_losses(self, x_start, t, noise, random_cond):</span><br><span class="line">    # 生成的真实noise</span><br><span class="line">    x = self.q_sample(x_start=x_start, t=t, noise=noise)</span><br><span class="line">    # if doing self-conditioning, 50% of the time, predict x_start from current set of times</span><br><span class="line">    if self.self_condition:</span><br><span class="line">        if random_cond:</span><br><span class="line">            _, x_self_cond = self.model_predictions(x, t)</span><br><span class="line">            x_self_cond = ops.stop_gradient(x_self_cond)</span><br><span class="line">        else:</span><br><span class="line">            x_self_cond = ops.zeros_like(x)</span><br><span class="line">    else:</span><br><span class="line">        x_self_cond = ops.zeros_like(x)</span><br><span class="line">    # model_out为基于U-net预测的pred_noise，此处self.model为Unet，ddpm默认预测目标是pred_noise。</span><br><span class="line">    model_out = self.model(x, t, x_self_cond)</span><br><span class="line">    if self.objective == &#x27;pred_noise&#x27;:</span><br><span class="line">        target = noise</span><br><span class="line">    elif self.objective == &#x27;pred_x0&#x27;:</span><br><span class="line">        target = x_start</span><br><span class="line">    elif self.objective == &#x27;pred_v&#x27;:</span><br><span class="line">        v = self.predict_v(x_start, t, noise)</span><br><span class="line">        target = v</span><br><span class="line">    else:</span><br><span class="line">        target = noise</span><br><span class="line">	# 计算损失值</span><br><span class="line">    loss = self.loss_fn(model_out, target)</span><br><span class="line">    loss = loss.reshape(loss.shape[0], -1)</span><br><span class="line">    loss = loss * extract(self.p2_loss_weight, t, loss.shape)</span><br><span class="line">    return loss.mean()</span><br></pre></td></tr></table></figure>
+
+<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>输出x_start，也就是原始图像，当sampling_time_steps&lt; time_steps，用下方函数：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">def ddim_sample(self, shape, clip_denoise=True):</span><br><span class="line">    batch = shape[0]</span><br><span class="line">    total_timesteps, sampling_timesteps, = self.num_timesteps, self.sampling_timesteps</span><br><span class="line">    eta, objective = self.ddim_sampling_eta, self.objective</span><br><span class="line"></span><br><span class="line">    # [-1, 0, 1, 2, ..., T-1] when sampling_timesteps == total_timesteps</span><br><span class="line">    times = np.linspace(-1, total_timesteps - 1, sampling_timesteps + 1).astype(np.int32)</span><br><span class="line">    # [(T-1, T-2), (T-2, T-3), ..., (1, 0), (0, -1)]</span><br><span class="line">    times = list(reversed(times.tolist()))</span><br><span class="line">    time_pairs = list(zip(times[:-1], times[1:]))</span><br><span class="line"></span><br><span class="line">	# 采样第一次迭代，Unet输入img为随机采样</span><br><span class="line">    img = np.random.randn(*shape).astype(np.float32)</span><br><span class="line">    x_start = None</span><br><span class="line"></span><br><span class="line">    for time, time_next in tqdm(time_pairs, desc=&#x27;sampling loop time step&#x27;):</span><br><span class="line">        # time_cond = ops.fill(mindspore.int32, (batch,), time)</span><br><span class="line">        time_cond = np.full((batch,), time).astype(np.int32)</span><br><span class="line">        x_start = Tensor(x_start) if x_start is not None else x_start</span><br><span class="line">        self_cond = x_start if self.self_condition else None</span><br><span class="line">        predict_noise, x_start, *_ = self.model_predictions(Tensor(img, mindspore.float32),</span><br><span class="line">                                                            Tensor(time_cond),</span><br><span class="line">                                                            self_cond,</span><br><span class="line">                                                            clip_denoise)</span><br><span class="line">        predict_noise, x_start = predict_noise.asnumpy(), x_start.asnumpy()</span><br><span class="line">        if time_next &lt; 0:</span><br><span class="line">            img = x_start</span><br><span class="line">            continue</span><br><span class="line"></span><br><span class="line">        alpha = self.alphas_cumprod[time]</span><br><span class="line">        alpha_next = self.alphas_cumprod[time_next]</span><br><span class="line"></span><br><span class="line">        sigma = eta * np.sqrt(((1 - alpha / alpha_next) * (1 - alpha_next) / (1 - alpha)))</span><br><span class="line">        c = np.sqrt(1 - alpha_next - sigma ** 2)</span><br><span class="line"></span><br><span class="line">        noise = np.random.randn(*img.shape)</span><br><span class="line"></span><br><span class="line">        img = x_start * np.sqrt(alpha_next) + c * predict_noise + sigma * noise</span><br><span class="line"></span><br><span class="line">    img = self.unnormalize(img)</span><br><span class="line"></span><br><span class="line">    return img</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Trainer-训练器"><a href="#3-Trainer-训练器" class="headerlink" title="3. Trainer 训练器"></a>3. Trainer 训练器</h3><p>data_iterator中每次取出的数据集就是一个batch_size大小，每训练一个batch，self.step就会加1。</p>
+<p>DDPM的trainer采用ema（指数移动平均）优化，ema不参与训练，只参与推理，比对变量直接赋值而言，移动平均得到的值在图像上更加平缓光滑，抖动性更小。具体代码参考代码仓中ema.py</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;training start&#x27;)</span><br><span class="line">        with tqdm(initial=self.step, total=self.train_num_steps, disable=False) as pbar:</span><br><span class="line">            total_loss = 0.</span><br><span class="line">            for (img,) in data_iterator:</span><br><span class="line">                model.set_train()</span><br><span class="line">                # # 随机采样time向量</span><br><span class="line">                time_emb = Tensor(</span><br><span class="line">                    np.random.randint(0, num_timesteps, (img.shape[0],)).astype(np.int32))</span><br><span class="line">                noise = Tensor(np.random.randn(*img.shape), mindspore.float32)</span><br><span class="line">                # 返回损失、计算梯度、更新梯度</span><br><span class="line">                self_cond = random.random() &lt; 0.5 if self.self_condition else False</span><br><span class="line">                loss = train_step(img, time_emb, noise, self_cond)</span><br><span class="line"></span><br><span class="line">                # 损失累加</span><br><span class="line">                total_loss += float(loss.asnumpy())</span><br><span class="line"></span><br><span class="line">                self.step += 1</span><br><span class="line">                if self.step % gradient_accumulate_every == 0:</span><br><span class="line">                    # ema和model的参数同步更新</span><br><span class="line">                    self.ema.update()</span><br><span class="line">                    pbar.set_description(f&#x27;loss: &#123;total_loss:.4f&#125;&#x27;)</span><br><span class="line">                    pbar.update(1)</span><br><span class="line">                    total_loss = 0.</span><br><span class="line"></span><br><span class="line">                accumulate_step = self.step // gradient_accumulate_every</span><br><span class="line">                accumulate_remain_step = self.step % gradient_accumulate_every</span><br><span class="line">                if self.step != 0 and accumulate_step % self.save_and_sample_every == 0\</span><br><span class="line">                        and accumulate_remain_step == 0:</span><br><span class="line"></span><br><span class="line">                    self.ema.set_train(False)</span><br><span class="line">                    self.ema.synchronize()</span><br><span class="line">                    batches = num_to_groups(self.num_samples, self.batch_size)</span><br><span class="line">                    all_images_list = list(map(lambda n: self.ema.online_model.sample(batch_size=n),</span><br><span class="line">                                               batches))</span><br><span class="line">                    self.save_images(all_images_list, accumulate_step)</span><br><span class="line">self.save(accumulate_step)</span><br><span class="line">                    self.ema.desynchronize()</span><br><span class="line"></span><br><span class="line">                if self.step &gt;= gradient_accumulate_every * self.train_num_steps:</span><br><span class="line">                    break</span><br><span class="line"></span><br><span class="line">        print(&#x27;training complete&#x27;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DDPM论文"><a href="#DDPM论文" class="headerlink" title="DDPM论文"></a>DDPM论文</h3><p>- [Denoising Diffusion Probabilistic Models](<a href="https://link.zhihu.com/?target=https://arxiv.org/abs/1505.04597">U-Net: Convolutional Networks for Biomedical Image Segmentation</a>)</p>
+<h3 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h3><p>昇思大模型平台：<a href="https://link.zhihu.com/?target=https://xihe.mindspore.cn/projects/drizzlezyk/DDPM">昇思大模型平台</a></p>
+<p>启智：<a href="https://link.zhihu.com/?target=https://openi.pcl.ac.cn/drizzlezyk/ddpm2">ddpm2</a></p>
+<p>Github：<a href="https://link.zhihu.com/?target=https://github.com/drizzlezyk/DDPM-MindSpore">GitHub - drizzlezyk&#x2F;DDPM-MindSpore</a></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+  
+</article>
+
+    
+    <article
+  id="post-DDSP-SVC"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2023/10/02/DDSP-SVC/"
+    >DDSP-SVC</a> 
+</h2>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/10/02/DDSP-SVC/" class="article-date">
+  <time datetime="2023-10-02T02:04:05.000Z" itemprop="datePublished">2023-10-02</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>cuda is out of memory<br>​loss 不收敛<br>​gpu限额<br>​反正搞模型时各种的炸炉，最后昨天晚上让4g显存的破显卡跑了一夜终于练完了svc模型nmmd<br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100518.jpg" alt="微信图片_20231002100518.jpg"><br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100522.jpg" alt="微信图片_20231002100522.jpg"><br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100525.jpg" alt="微信图片_20231002100525.jpg"><br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100528.jpg" alt="微信图片_20231002100528.jpg"><br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100532.jpg" alt="微信图片_20231002100532.jpg"><br><img src="/2023/10/02/DDSP-SVC/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20231002100439.jpg" alt="微信图片_20231002100439.jpg"></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+  
+</article>
+
+    
+    <article
   id="post-cod"
   class="article article-type-post"
   itemscope
@@ -483,281 +828,6 @@
        
   <p>苏-27战斗机（俄文：Сухой Су-27，英文：Sukhoi Su-27，北约代号：Flanker，译文：侧卫<a href> </a> ）是苏联<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%8B%8F%E9%9C%8D%E4%BC%8A%E8%AE%BE%E8%AE%A1%E5%B1%80?fromModule=lemma_inlink">苏霍伊设计局</a>（后称：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%8B%8F%E9%9C%8D%E4%BC%8A%E8%88%AA%E7%A9%BA%E9%9B%86%E5%9B%A2/3382580?fromModule=lemma_inlink">苏霍伊航空集团</a>）研制的单座双发全天候空中优势<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%87%8D%E5%9E%8B%E6%88%98%E6%96%97%E6%9C%BA/886762?fromModule=lemma_inlink">重型战斗机</a>，属于第三代战斗机，主要用于国土防空、护航、海上巡逻等。</p>
 <p>苏-27战斗机采用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BF%BC%E8%BA%AB%E8%9E%8D%E5%90%88?fromModule=lemma_inlink">翼身融合</a>体技术，悬臂式<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%AD%E5%8D%95%E7%BF%BC?fromModule=lemma_inlink">中单翼</a>，翼根外有光滑弯曲前伸的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BE%B9%E6%9D%A1%E7%BF%BC/4501579?fromModule=lemma_inlink">边条翼</a>，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8F%8C%E5%9E%82%E5%B0%BE?fromModule=lemma_inlink">双垂尾</a>正常式布局，楔型<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9B%E6%B0%94%E9%81%93/8650007?fromModule=lemma_inlink">进气道</a>位于翼身融合体的前下方，有很好的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%B0%94%E5%8A%A8%E6%80%A7%E8%83%BD/4944210?fromModule=lemma_inlink">气动性能</a>，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9B%E6%B0%94%E9%81%93/8650007?fromModule=lemma_inlink">进气道</a>底部及侧壁有栅型辅助门，以防起落时吸入异物。全金属半硬壳式机身，机头略向下垂，大量采用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%92%9B%E5%90%88%E9%87%91/1170982?fromModule=lemma_inlink">钛合金</a>，传统三梁式机翼，四余度<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%94%B5%E4%BC%A0%E6%93%8D%E7%BA%B5%E7%B3%BB%E7%BB%9F/6051771?fromModule=lemma_inlink">电传操纵系统</a>，无机械备份，静不稳定设计 。苏-27战斗机动力装置为2台AL-31F型涡轮风扇发动机，推力2x75.6千牛，加力推力2x122.6千牛。武器配备为：1门GSh-30-1型30毫米口径航炮（备弹150发）;全机10个外挂点，可挂10枚R-27、R-73等多型对空对面导弹；最大外挂质量6000千克。该机翼展14.70米，机长21.94米，机高5.93米，最大起飞量28000千克，最大平飞速度（高空）2430千米&#x2F;小时，实用升限18000米，最大油量航程3880千米<br><img src="/2023/09/23/SU27%E8%AE%BE%E8%AE%A1%E5%9B%BE/213.jpg" alt="213.jpg"><br><img src="/2023/09/23/SU27%E8%AE%BE%E8%AE%A1%E5%9B%BE/OIP-C.jpg" alt="OIP-C.jpg"><br><img src="/2023/09/23/SU27%E8%AE%BE%E8%AE%A1%E5%9B%BE/R-C.jpg" alt="R-C.jpg"><br><img src="/2023/09/23/SU27%E8%AE%BE%E8%AE%A1%E5%9B%BE/21.jpg" alt="21.jpg"></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-  
-</article>
-
-    
-    <article
-  id="post-WZ10"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/09/22/WZ10/"
-    >中国现役直升机武直10</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/09/22/WZ10/" class="article-date">
-  <time datetime="2023-09-22T13:45:40.000Z" itemprop="datePublished">2023-09-22</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><img src="/2023/09/22/WZ10/71a9ad305bfe43633b334f70b59cdfb.jpg" alt="71a9ad305bfe43633b334f70b59cdfb.jpg"><br><img src="/2023/09/22/WZ10/OIP-C.jpg" alt="OIP-C.jpg"></p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-  
-</article>
-
-    
-    <article
-  id="post-923"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/09/22/923/"
-    >没有答案的童话</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/09/22/923/" class="article-date">
-  <time datetime="2023-09-22T09:43:16.000Z" itemprop="datePublished">2023-09-22</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p><em>然后，我与Minnaloushe终于共舞着奔赴了无以生存的月亮，此刻它毛发所映射出的月光比任何时刻都要明亮，我们就这样在以太中平静地溺亡。</em><br><img src="/2023/09/22/923/AAHZMBG.jpg" alt="AAHZMBG.jpg"></p>
-<hr>
-<p>在我还是个孩提的时候，母亲常凝望着我舍不得闭上的双眼，替我把棉被的边压到身下，带着盈盈的笑靥愉快地给我讲起她最拿手的睡前童话。</p>
-<p>“从前有一个猫叫Minnaloushe，它的主人在满月的夜晚打开被带着尖刺的蔷薇遮住的铁门，使灵动的小猫能够踩过满地枯萎的棘刺，晃动着纤细却有力的条纹尾巴在月下舞蹈。它时而匍匐，时而跃起，当四肢全部腾空的那一刻，月光从它眸子中央细长的瞳孔向外围的黄玛瑙色轮廓映去，它黑色的躯干被那皎洁的月色照耀得如同一道浮空剪影，像是巴斯特女神下凡一般。主人望着它反光的胡须，脸上一阵微红，靠在铁门上的身体渐渐向前滑去，以至于西服的后背被墙上仍鲜活的蔷薇刺刮破，可他没有丝毫升级留意地向前走去。他以捧起婴儿的姿态抱起他的猫，‘Minnaloushe，你要跳舞吗？’他们在月下共舞，主人口中哼着的古典乐与猫的呼噜呼噜声混着月光洒落一地。他们明白了在遍地枯刺与无处不在的重力的禁锢下不可能一直这样快乐下去，于是，他们相伴着的身体在轻盈的舞步下逐渐腾空，随着一个个优美的旋转，他们越飞越高，眼中所看到的月光也越发明亮。最后，他们终于相拥着到达了月亮上。”</p>
-<p>母亲是一个很有文艺趣味的人，至少在与其他母亲一样承受着一个孩子的负担时，她手中所捧的常常不是毫无根据的鸡汤与育儿法宝，而是散发着墨香的诗集与文笺。在长成青年后，我了解了现代诗歌，听闻了威廉·勃特勒·叶芝的名字，才知道母亲那夜为我讲的并不是某个唯美的童话，而是一则灵感来自叶芝笔下《猫与月光》的原创故事，不过那诗里只有同名的跳舞的猫和月光，没有蔷薇的刺和什么重力，我将这认为是母亲的文学意识发作而融入的自身感悟。我可以想象母亲那时或许是刚刚被月下猫舞的美感所打动，又苦于无人诉说，便只得玩笑般将其编作一个故事讲给她尚且什么也不明白的儿子。</p>
-<p>那时的我或许应该夸赞她这个童话真有趣，可我没有，那时的我提出的是一个充斥着现实主义气息的问题：“可是他们到了月球没有氧气，要不了多久就会憋死的对吧？这可比在地上惨多了。”</p>
-<p>她没有回答我，或许是她自己也没想清楚答案究竟是什么，或许是她希望我自己回答自己的问题。</p>
-<hr>
-<p>四点，宿舍大门被粗暴地打开，墙头充当起床号的警铃迅速旋转着发出压抑的红光与侵犯着困倦大脑的噪音，一阵独属于仲冬清晨的穿堂风粗暴地夺走了我的睡意。</p>
-<p>手扶墙壁支起身来，每早都由睡梦化作的怨气这一刻又如同一团棉花堵在了我的胸口，想要发作却看到周围其他人木然地将制服向身上套着，便只能和他们一样装作早已适应了这样的生活。</p>
-<p>大学后，稀里糊涂地在社会中混迹了两年，发现自己一无所成还因为创业失败拖欠了一笔款项，只是冲着要还清债务而成了SCP基金会的员工，那时保密协定也签署好了，决定任职两年便走人，现在想想自己的经历大概和那些为了金钱被传销蒙骗的失足少年们差不了多少。</p>
-<p>大概是三年前吧，基金会发生了多次动荡事件，作为一名底层警卫我自然也不会了解那些事情的内幕，但我知道我从一个站点调往了另一个，没过多久与我同来的研究员们便私下告诉说我之前供职的站点被毁掉了。如是有两三次，敌人在他们的口中时而是混沌分裂者，时而是破碎之神教会——那时的我该庆幸自己作为一名外聘警卫且长期只是看守低危异常因而作战经验不够，所以从未被那些站点作为留守干员。</p>
-<p>可渐渐地，我的同事们几乎终日都面露疲惫或是惊恐的神色，在少有的工作闲暇之余的谈论中，常常有人对基金会当下的状况持怀疑状态甚至认为基金会在不久后的失败是必然的。于是，据我所知的，大量的基金会员工以各种方式流失着。我最后一次被调职到现在这个偏僻的站点，一座在国家北部边陲的年久失修而破旧的建筑群，它的身后便是界河。这个站点在我心中如同一个破碎的铁屋子，努力将自身与外界以铁栅栏与威严的规则隔开，可现在那铁圈中负责维护它的生命已经少的可怜。</p>
-<p>基金会动用尚且还体面的外交容貌与国家达成了一些协议，确立了所谓特殊状态的合理性，因此我这类临时员工被迫编入体制内，在这个与冬雪一样冰冷的站点里过着由于缺少员工而不得不压榨出的二班倒生活。没有休假，不可能离开站点，身边有几个五十多岁的前辈们过劳死了，那时的我时时相信着自己也会与他们一样在无用的守候下死去。</p>
-<hr>
-<p>在这个站点，我仍然如往常一样负责一些无用的安全异常们。起初是一群各式各样的小动物，其中有几只以梦为食的蜥蜴，它们很可爱，会用冰冷的肌肤贴近我的手指。一位研究员把它们取走做实验，那时的我不知道他很早便被发现情绪上极度的不稳定可因为站点人力缺少只能让他继续工作，只是看他双眼下结出一层薄薄的眼翳，便劝他好好休息，他留给我了一张如死灰般的脸，然后在实验时操作机器把蜥蜴们压作了一摊粘液。我负责的收容室之一因此空旷了下来。</p>
-<p>那一夜我就躺在那间收容室中睡觉，一旁是我为它们准备的数个环境不同的收容箱，无一例外地铺满了柔软的木屑，我明白我不是真的喜欢蜥蜴们，只是为自己在这个站点无意义的工作找到一个理由。因为它们的离去，我久违地有了梦境：</p>
-<p>我梦到我的躯体被关押在密不透风的铁箱子里，唯一的一扇小门被蔷薇紧缩，蔷薇刺从门缝渗入，扎进了我的每一个毛孔。</p>
-<p>第二天我得知那个杀害蜥蜴们的研究员不会受到除了缩短假期外的任何惩罚，我明白的，那时候的站点比起几只毫无用处的普通异常更需要蚕食员工们的生命，可那个员工还是在数日后自杀了，在他缢死的麻绳另一头系着一张泛黄的记录纸，上面写满的全是他对自己的厌恶和对那些蜥蜴们的抱歉。看出我那段时间的忧郁的同事们劝我去看看他的尸体，他们以为我是在憎恶那个杀死了我的蜥蜴的研究员。我最终忍心去看，并将那张最终传到我手中的记录纸揉作一团丢进了下水道。</p>
-<p>这个插曲究竟萦绕在我心头多久？我不知道，那段时间彻夜看到的都是那个研究员跪倒在三箭头的标识前，脖子上还有勒伤的痕迹，他眼神绝望地抬起头来望着面前的那三个字母，一如我身边一切被基金会遗忘在这座站点里的人一样。</p>
-<p>在困倦地工作与清醒地失眠中浑浑度日，宛如油腻的液体在水面上漂浮永远不能化开的不适，我明白自己正在经历地是神圣的压榨，我们不能采取任何行动，道德已经被帷幕紧紧封锁在外，16世纪的工人们在我们的躯体中呐喊，只是当杀人的蒸汽机变为了杀人的异常后，头顶并不明媚的日光便又多了一层冠冕与外衣。</p>
-<hr>
-<p>然后，她终于来了，我的Minnaloushe。</p>
-<p>那是某日的下午，那天太阳挂得很低，天空与日光都是苍白色。一辆货车驶入站点，放下了一堆笼子后离开，那时新运来的收容物们。它们来自遥远的中东，基金会已经疲于在那些国家的战事中潜伏着进行收容工作，终于把安置在那里的收容物们向各个地区转移，而这些收容物则是我们站点所负责的。</p>
-<p>那一堆笼子里传出一阵腥臭味，将它们打开后我们看到的是一堆杂七杂八的小物件，几头浑身是污泥的猪和几个裹着破烂布衣的中东小孩——辨别了许久我们才明白那股臭味同时来自后两者。由于大学时恰好选修了阿拉伯语和希伯来语，我被安排带着那群孩子们去冲洗身上的污渍，然后换上人形异常的制服，这个过程中他们只是默默地走着，连赤脚与水泥地的摩擦声也显得那么小心。毫无疑问地，他们应当由我管理了，于是我径直把他们领回了我所负责的收容间，做好了登记。</p>
-<p>临走时，一个小女孩扯了扯我的制服，我转过身来，与她那惊恐着游走的眼神对视，她立刻埋下头去，嘴里嘀咕着比起是某些我没听过的单词更像是叫声。我没带过孩子，便拍了拍她的脸，至今我还记得那张脸是冰冷的，比我因终日于冷风下站岗而干裂的双手更冰冷。然后她脱下了她的上衣，赤裸着走到我的面前，刚刚为他们从冲洗身体时我没有将注意力安置在他们身上，此时我才注意到她的躯体是多么干瘪，小麦色的肌肤紧贴肋骨，胸前的一道血痂很是刺眼。</p>
-<p>此刻她蜷缩着的肩膀使我的眼中出现了一只流浪猫，它缓缓地漫无目的地前进着，却被一个路过的看不清面孔的人狠狠踹了一脚，便弓着身子迅速逃离——那模样要是幻化成人与我面前的女孩一定一样。我静静关上了收容室的门，转过身去，我想身后的她应该默默穿上了衣服。</p>
-<p>那一夜，我躺在宿舍的木板床上，将警卫制服拉过来盖在身上，同事们都很疲惫，以翻身声与喊声诘问着自己当下的意义。我思索着那个女孩为何要那样对我，思绪像是绕成球的毛线团被扯散落得满地都是。文档上说他们被发现于阿拉伯地区某个小村庄，那个村庄以活祭出现异常性质的村内儿童为习俗，这些小孩被当地的基金会员工在一次活祭时发现，但还没有完全弄清所有个体的异常能力究竟是什么，那个小女孩也是不清楚能力的一类。</p>
-<p>猫对人是若即若离的性格，我曾遇到过一只流浪猫，它在路灯下独舞，我看到了它跃动的尾巴，便到便利店买了根火腿肠给它吃。它吃完后便回过头准备离开，我伸手过去想要摸它的头，它狠狠用爪子抓伤了我然后跑开。过了几天我再路过那里，又遇到那只猫，它的后腿像是被什么碾过，关节处的骨头白森森地突了出来，一个面色忧郁的少女走过去，我分明看到她的一滴泪水滴到了那猫的背上，于是那猫只是静静地让她抚摸。它们清楚自己有别于人而常常将自身封闭起来，却能清楚感受到自己的痛苦与人类相通，那沟通如缓缓相融的两颗血滴。</p>
-<p>那个异常女孩，便如同一只猫一般，她看上去约莫十岁吧，总之在基金会这样无情之地自然已经明白了自己与“人类”的区别，于是摆出了自己作为异常该对我有的疏离——那一群孩子都有着一般的心态，于是她希望与我沟通时说出的不是自己本会的语言而是低沉的胡言乱语。而他们内心的痛苦却是真实的，人类躯体对于情感是并不完美的容器，何况是一群孩子们。可他们连如猫一般低下头来求得抚慰也没有学会，他们只能以已经异化了的行为向我交流，那行为是扯住了我的衣角却缄默不言，是想要诉述心理与生理的痛苦而只能露出毫无遮蔽的肉体。那一刻我更觉得她比起<em>人形</em>异常更像是一只猫。</p>
-<hr>
-<p>他们的到来所引发的是更多的困扰，站点的工作变得更加紧了，也是从那时开始我每日都能见到凌晨5点的霜雪落在门把手上。</p>
-<p>我为了支持着自己不进行任何奇怪的思考，便试图要找到些许新的意义，于是有意选择于那群孩子们接触——和她接触。</p>
-<p>在对其他的项目进行了确认后，我打开了那群孩子们的收容室，这是我负责他们的第2个月。我对待他们的态度其实很是平淡，并不想流露出自己对他们十分感兴趣，使他们觉得我将他们当作了什么玩物。不过，只是每天给他们送来饭菜和一些没头没尾的交谈却使他们似乎很喜欢我，联想到他们的伤痕和曾经读过的某些心理研究的碎片记忆我大概能理解他们对我的依赖是为何。一打开收容室，他们愿意聚在我寒冷的双手旁，却什么话也没有说。我坐下来，两三个已经可以灵活使用异常的孩子按照规定只能站在房间的角落，尽管我曾表示过完全不介意让他们靠近我，他们对我的话语表示了恐惧，使我疑心他们曾遇见过什么事情，使得他们表现出如此的情绪。</p>
-<p>于是，我将食物放在地上然后后退，他们过来拿起并躲在角落开始食用，然后把剩下的食物分发给其他暂时没有明显异常性质而得以与我接触的孩子们。</p>
-<p>如往常一样，周围只有细微的他们进食的声音，那个女孩将后背靠在我的左肩上，每当这时我只得为他们找一些话题。</p>
-<p>“你们想要听些故事吗？”我突然想起自己孩提时听母亲讲故事的场景，无由来地问了这样一句。</p>
-<p>一双双眼睛由注视着餐盘转而注视着我，显得有些无奈。他们能大概听懂我说的，却几乎不会选择回答。</p>
-<p>我注视着肩上摩擦着转向我的脑袋，那扩张的瞳孔像是猫眼一般盯着我，那种表情算得上是期待吗？那时的我是这么认为的。于是第二天，我带去了一本从站点图书馆里翻找出来的卷边了的《安徒生童话》。他们像极有仪式感似的悄悄围坐在我身旁，就连平常与我最亲近的她也安静地看着我翻开纸张，并不像往常一般凑到我的面前。那本童话是中文的，我只能用阿拉伯语给他们讲个故事梗概，作为讲述者我感觉自己干瘪的声音和缩减后的故事情节没有任何吸引力，可他们脸上尽力隐藏着的表情使我感到他们内心的新奇。我想他们所新奇的，与其说是故事，而是有一个人——一个安保警卫——坐在他们面前笨拙地给他们讲着故事。</p>
-<p>于是，我能感受到他们的喜悦，在我准备离开时她站起来挽住了我的右臂，并点了点头，嘴角终于微微向上翘了，大概是5度吧，那道弧线萦绕在我的梦中。第二天我再去看他们时，她拿着站点发放给他们的涂鸦本给我看，上面写着弯弯曲曲的阿拉伯语，大概三四排的样子：</p>
-<p>我有一只猫，它很饿。</p>
-<p>它点燃了火柴，然后变成了肥皂泡。</p>
-<p>这是她自己的创作，是听完我讲述的童话后的兴起。当然，它看上去很不成熟，更像是拼接，上面还保留了我把小美人鱼变为的泡沫解释成肥皂泡的痕迹。但这是我一次看到他们中任何一个人使用文字——不论是说出还是写下。我小心翼翼地将那张纸叠了起来，塞进胸前的口袋，她对我这样的举动似乎感到很高兴，便把手放入了我的掌心，我又感受到了她冰冷的肌肤。此刻，我能看到她磕磕碰碰着享受着心灵的独舞，一丝光射入她心间的舞台，我看到了她灵魂的舞姿。此时的她比昨天笑的更加放松了，那张偏黑的瘦小的脸上如同没鹅毛扫过了一般，澄澈而纯洁。那一刻我认定了，如果她真的如猫一般畏缩着，那她便是我的Minnaloushe。</p>
-<hr>
-<p>后来我继续跟他们讲着故事，《格林童话》和他们更熟悉的《天方夜谭》都化作了我那实在没有天赋的讲述。一连数周都是如此，只有那天缺席了。</p>
-<p>例行的早集会，我捶打着朦胧着的双眼走进站点的主会场。周围的人差不多快来齐了，我们等待着与往常一样的陈词滥调，会场的大铁门却在此时反常地被几个站长派遣的护卫关上。轰隆一声从背后传来，震得头顶的白炽灯个个摇晃，满地的影子碎作一团，会场中立刻议论纷纷了。由于窄小的会场遭到封闭，加之自己的怀疑与周围人的怀疑交织出的紧张，周围显得燥热了起来，站长用毛巾擦拭着脸上油腻的汗，清了清嗓子，终于要开始诉说这反常的原因。</p>
-<p>“大家都是知道的，近几年来基金会势力式微，这话我本不该说，因为会打压大家的斗志，可我遮遮掩掩地不能改变什么，你们都明白之所以你们现在天天拼命工作就是因为基金会不如以前强大了，我们的力量越来越小。如果你觉得我今天是来给大家喂鸡汤的，那便错了，我自己和你们忍受着同样的压力，上面的人只会给这个偏远的破站点下发任务而在别的时候不管不问。我想说你们既然当初选择了为人类而坚守的SCP基金会，此时的痛苦便不能成为你逃避的理由，无论痛苦有多深多大！”</p>
-<p>这段道德绑架式的宣言立刻引起了一阵骚动，被寒风包裹的会场内此时却像一滩夏日满是蚊鸣的脏水。而站长没有在意他明明可以听到的反对声，继续说了下去：“我们的网络爬虫捕获了一封加密邮件，经过多日破译后上面把消息回传给了我们，那封邮件来自混沌分裂者，收信人是我们站点的某位博士，内容则是谋反明细。”</p>
-<p>说罢，几位警卫冲进人群中，咒骂声叫喊声，骚乱此起彼伏，我躲闪到人群的外围，看着这场闹剧最终以数个衣着白大褂或是警卫服的人被抓到了台上。</p>
-<p>“我说过，无论如何，都不是逃避的理由。”</p>
-<p>那个博士死死盯着站长，似乎没有两位警卫的压制就要用眼神的怒火和已经露出的牙齿撕烂烤焦站长。</p>
-<p>“去你妈的SCP基金会，我这辈子都被你们毁了，我要被你们逼疯了。”</p>
-<p>“我与人形异常在这里都算不上是人，都是使即将到达的站点或者基金会还能摇摇欲坠着立起的工具之一罢了，台下的你们，你们和我们一样啊，你们不是也早都受不了了吗？保卫人类！去他妈的，我要生活，还我生活，我不会为了不止何时为止的‘特殊时期’葬送了我，哪怕我脑袋开花了也还是一朵花不是吗？”</p>
-<p>他们一齐嘶喊着，我听不清这些话中的每一句到底来自哪一个人，就像在聆听毫无美感的多重奏。第一个叫停的是站长，他用自己腰间的手枪击爆了那个博士的头，他跪倒在地，血液从着地的头部中缓缓从台上滑了下来，是一朵变异而畸形的花。然后又是数声枪响，数具尸体倒地。这是一场杀鸡儆猴的表演，我们每个人的脸上都透露出了不适，因为我们无法否认的是死者们遗言的正确性。利用现实中的铁门与烙印在纸张与我心中的协议将我们拧螺丝般拧入这个站点的基金会并没有任何人性的考虑，我也并没想成为什么无比高尚的正义伙伴，大家都是这样。我们驻留着，许多人丧失了道德，他们变为了只想完成重复又重复的探索、实验与报告，宛如一台超负荷的老蒸汽机，排忧只有头顶的“呜呜”声，讽刺的是，将我们所禁锢的便又是道德了。</p>
-<p>缄默着走出会场。我发觉已经十二点了，我没有给他们送去早饭和午饭，也不会有人给他们送去的，除了外勤外所有的员工都在我身边向站点辐散去。我奔跑着到了食堂，气喘吁吁地把剩下的几块馒头揣在了怀里，奔向了收容室。从怀里掏出时，它们仍然是冰冷的，硬作了一团。我向他们表示歉意，可他们都摇摇头，吃馒头时认真的模样与吃平时的饭菜时一样。而然我感到的歉意却更重了，我看着他们幼小的面孔，又看到他们总是隐忍的心灵，长年累月被黑暗笼罩下哪怕是一丝微弱的光也是可喜的，这就是他们不会因为我的迟到而责备也根本不觉得我需要道歉的原因，这是他们对我怀着无比感恩的原因，而在某一刻我却感到自己做了什么伟大的事情才会受到孩子们的喜爱。</p>
-<p>她冰冷的手打断了我的思绪，她看出我脸上的愁思，爬上了我的膝盖，一如我对待她那样，替我擦掉了本不应该擦掉的眼泪，我的Minnaloushe，从现在开始请允许我这么称呼你吧。那天下午站点会加强防护等级，我的巡逻时间被延长了，于是我便只有中午这短暂的时光能与他们度过。那天我没有带上被我压在枕头下的童话书便急忙着跑过来了，就只能苦苦回想母亲曾给我讲过的故事，视线一对上她期待的目光我便知道应该讲些什么了。</p>
-<p>“从前有只猫，它叫Minnaloushe，他会在月光下舞蹈……最终，他们一起飞向了明亮的月亮。”</p>
-<p>我凭着自己的记忆复述出那个故事的大概来，他们的表情告诉我他们对此的不解，和曾经的我一样不能明白它的情节，或许也想提出什么问题，但并不说出。</p>
-<p>于是我打趣道：“这是我小时候我的母亲给我讲的故事，还记得那时候我听完之后就问我妈‘他们到月亮上了不就没有氧气死了吗，这有什么意义啊’。”</p>
-<p>听罢，确实有几个小男孩对此感到好笑，也露出了他们似乎人均都会的躲避式微笑——我常常要在他们躲闪的面庞上寻找他们细微的感情变化。</p>
-<p>而Minnaloushe则又扯了扯我的衣角，我低下头来。她望了望四周，似乎下定决心地，使自己的喉咙发出了一些声音，微微的连成了一句阿拉伯语，轻轻绕在我的耳畔，我听清楚了：“我觉得，他们很值得。”说完，她立刻后退，脸上的表情先是因为对自己感到禁止做的事情的破戒而惊恐，还有些许激动带来的晕红。</p>
-<p>“哦？为什么值得呢？是因为在童话中人是不会死的，对吧。”</p>
-<p>她摇了摇头，眸子定在了眼睛中央，以正常的人声大小说道：“不，因为如果我是那只猫，我会选择在月前舞蹈后死去，而不是被蔷薇桎梏下活着。”我听清了她的声音，颤抖着，十分柔和，与她话中那份坚定意味不符。她确实很弱小，弱小得如蜷缩的毛绒团，可她的内心尽管遭受了收容下畸形的培育，竟还有如此独立的思想发芽了！我似乎真的听到了回答，却又不甚真切，因为那回答者声音的颤抖使我明白比起下定决心赴死，升天才是更需要解决的问题。我走起身来，负责下一班的巡逻，孩子们下午要进行例行实验，让研究员探究他们真正的异常能力。</p>
-<p>站点的大门，寒风呼啸着在我的枪管外围摩擦着，薄雪由颗粒变为片状，像撕碎的纸片缓缓下落。我的靴子里渗入了水，黄昏时我终于有了休息，便用双手把腿从鞋子中抱了出来，放入了热水中，瞬间散起一圈暖雾，这是每日最快乐的数分钟，我不必思考每日的工作和在这里待着的意义，我也不必考虑身边时有的死亡，有的只是雾水扑在脸前那阵惬意的头晕。</p>
-<p>正当我瘫坐着擦脚时，一个警卫冲进了寝室，冷风马上使我刚刚温暖的双脚成为众矢之的。他说我负责的那群人形异常在实验时出事了，那急促的语气没有给我反问的余地——那时站点里许多人都知道我与这些孩子们关系甚好了。于是，我将双脚插入还蠲着冰水的靴子，飞奔到了实验室。我站在观察玻璃外，看到一个头已经凹陷的个体被捆绑着瘫坐在一个器械上，周围所谓的实验工具更像是沉重的钝器，那孩子看上去早已失去了生命。</p>
-<p>“研究员苏欢在进行实验时疯了一般，利用器械殴打那些孩子，直到不能给他们留下余地，她说这样才能激发他的潜能。”</p>
-<p>“然后呢？”</p>
-<p>“然后你负责收容的那几个小孩子里有一个已经失去生命体质了，还有一群都躲在一边休息。这种施压是有效的，我们已经通过这种方法让五个孩子释放出了异常能力，唯独有两个力不从心，其中一个就是那个今天死掉的，还有一个就是那个女孩儿。”顺着他手指的防线看到实验室内另一个角落，那是我的Minnaloushe。</p>
-<p>“不好意思把麻烦你这么久的异常弄坏了一个，但剩下那个我们还要进行实验，这次我会让他们把力度调整些，即不容易死掉，也能逼得他们发出异常。”这是那位苏研究员，她满脸只能显得出骨架，毫不例外的一副“站点脸”，那死气沉沉而不对未来抱有希望的模样。</p>
-<p>“你是负责研究他们的真实异常的是吧，那你把他们都杀了不就不能研究了吗？”</p>
-<p>“啊，和我有什么关系，死去的异常太多太多了，他们都化作了一篇篇报告，哦对，你的那几只蜥蜴的遭遇也成了一篇报告，是我替那个死掉的家伙写的。今天所发生的，我也会写成报告，这样的话我还差五篇…五篇就够了。”</p>
-<p>听罢她的发言，我感到身体的颤抖正在驱散着寒冷。不由分说地，我一掌将她击倒在地，连带着弄倒了她身后的椅子，于是她的脑袋重重撞击在了椅脚上。</p>
-<p>“去他妈的报告！老子受够了你们这群只会服从基金会的人。”</p>
-<p>“那你告诉我，我们应该怎么做？如那些人一样反叛，还是自杀？我不知道，我没想死，这样也不算活着。现在基金会的人手比这类没有研究价值的异常还宝贵。基金会将我们当玩物，我们将异常当玩物，这是一道被设计成型的体制，我们无力反抗而只得遵守。”她扶了扶鼻梁上的眼镜，试图站起来，脸上并没有显露出疼痛所应有的神情。</p>
-<p>她瘦弱的身躯，不知为何又让我回想起那个自杀的研究员跪在基金会标志下这幅梦境。</p>
-<p><em>出逃那三个箭头围成的虚无十字架，济自身以月光。</em></p>
-<p>我的耳畔响起了一阵低沉的吟唱，令我不胜厌烦。于是我掏出了腰间的手枪，将面前这具躯体击毙。</p>
-<p>我耳边那声音应当是启示录吧。所以我明白我是帮了她。</p>
-<hr>
-<p>她说的是对的，至少我无法反抗，并且在现在的基金会眼里研究员的生命确实比那些没有研究价值的异常更宝贵。我因为杀死了一名研究员而被关入了禁闭室，没人告诉我要被关多久，因为在我开始那段长篇大论之前我的嘴就已经被堵上了。我所负责的8个异常的维护工作被分摊到我的室友头上，之所以我没有被处死或者贬为D级人员之类的，恐怕是因为警卫和研究员一样稀缺。</p>
-<p>我尽量使自己不要胡思乱想，让自己的思维随着门缝外射入的那一点点微光集中在不远处的她身上。那时的我在疲惫中幻想着能够带着她和更多的孩子们逃出站点，逃出基金会，逃出该死的异常世界。</p>
-<p>“然后到哪儿去呢？爱尔兰？母亲最喜欢的那个诗人就是那里的人。挪威也不错，记得高中读过一本…”</p>
-<p>铁门哐哐作响了两声，打断了<em>痴想</em>一般的思绪。我看到那透光的缝隙被一对黑色的瞳孔遮住。</p>
-<p>“你…是谁？”我尽量使自己半个月未与他人交谈的嗓子不要显得那么沙哑。</p>
-<p>“我是一个警卫，你肯定认识我的，可我现在不能告诉你我是谁。”</p>
-<p>“好，我明白了，所以你现在是想来干嘛？嘲笑我么？”</p>
-<p>“当然不是，我只是知道了我们站点有个杀了人的恋童癖，听说对基金会颇有不满所以…”</p>
-<p>“你说谁是恋童癖？”我将双拳狠狠敲击在铁门上，发出一阵闷响。</p>
-<p>“小声点，我可没有来探监你的权限。”</p>
-<p>“既然这么说你也不是什么好鸟是吧，那有话就快说吧。”</p>
-<p>“你还记得那些因为和CI搭上线而谋反的几个人吗？”</p>
-<p>“当然，难道说…”</p>
-<p>“是这样的，不知你有没有意向加入我们。”</p>
-<p>“为什么选我？”</p>
-<p>“因为你有反抗精神，我的朋友。这个基金会已经不值得我们为它卖命了，我已经受够了精神被压榨着的生活，你想想吧，你所爱的那个孩子就这样被杀掉了，基金会并没有发挥它们所谓的道德，只是一味粉饰自己的权力。大多数人明白这些，却选择了不作为，他们只会当看客，一如历史上的大多数人。你不一样，你有所作为，可外面现在把你传成了一个乐子一般的小丑。”</p>
-<p>“那我也可以选择马上举报你，就凭你说我是恋童癖。我凭什么相信和你们选择CI是更光明的？”</p>
-<p>“就凭CI是基金会极力抑制的对象，敌人的敌人…这话你明白的。尝试一下吧，这并不糟糕，如果你知道有多少人选择投靠我们的话，毕竟已经没有比现在更糟的了。”</p>
-<p>“好，我答应你，前提是我得把那些小孩中的一个带走。”</p>
-<p>“当然，如果说把他们全部带走的话我们可能没这个本事，但只带走一个的话就请你随意。我们会在五天后行动，到时候我会来打开你这扇铁门，你尽可能的带走一些异常，然后到站点后面的那条河上，我们坐船直接出境。哦对了，你之前杀掉那个女人时听到的声音是我们利用异常手段让你听到的，很高兴你过关了。”</p>
-<p>然后，我听到了一阵逐渐远去的脚步声。我又使自己的身体滑着躺在了乱作一团的床上。我竟然傻傻地以为那是什么启示录。那时我便相信这世上没有什么天启了，天启说白了也是童话。</p>
-<p>幸而，我没有选择相信他。在与那声音简短的交谈中，我脑中闪过了我抱着我的Minnaloushe奔跑的画面，我会利用他们，然后逃离他们。我不会归属任何人，我只希望实现我那痴想。</p>
-<hr>
-<p>后来五日，都是彻夜未眠，双目盯着那道缝隙的方向，盼望着，盼望着，代表着一日之始的灯光终于传来，于是那日子在我心中又近了些。本来已经有些厌食的我开始逼迫自己吃下每日送来的浆糊，以便自己到时候还有体力与两个不同势力的人对抗。</p>
-<p>于是，那心心念念的第五日终于到了。</p>
-<p>那日的清晨，我等待了许久也没有灯光，想必是他们已经动手了吧。过了不知多久，我在黑夜里玩着从曾经读过的漫画中学来的数质数的游戏使自己尽可能保持冷静，终于，那铁门外传出一阵撞击声，随之朝里应声倒下，震起的尘埃使外面的手电筒光芒产生了丁达尔效应。</p>
-<p>面前是一张似乎熟悉的脸，那大概是那日来找我的警卫，他穿着平常的警卫服，只是右肩系了条黑带子，并且胸口还沾着一些血迹。</p>
-<p>“快点，把这个系在胳膊上，然后拿好这把枪，我们去把大厅剩下的家伙给干掉。”</p>
-<p>我接过他手中的黑布条并照做，又检查了他递给我的枪支能否正常使用。</p>
-<p>“好了，快点我们走。”他朝我挥挥手，而我并不决定回应他。</p>
-<p>“干什么，你不会想反悔吧，你现在的行为已经是谋反了。”</p>
-<p>“没什么，我只是觉得大厅恐怕很危险。”</p>
-<p>“没事的，那边应该不剩多少人了，要是不快点增援可能就要来了。”</p>
-<p>他转过身向前跑去，并朝身后的我挥了挥手。</p>
-<p>意识告诉我这是好时机。于是，我举起枪，扣动扳机，那个来自混沌分裂者的反叛军应身倒地。</p>
-<p>“既然已经反叛了，再反叛一次也无所谓了吧。”我拿走了他身上的权限卡。</p>
-<p>迈步出门，奔向收容建筑的方向，落下的雪籽一粒一粒打击在我的脸上，那感觉已经许久没有过了——自从我被禁闭以来。</p>
-<p>终于，我走入那栋熟悉的建筑，熟视无睹地跨过地上的尸体。宛如每天早晨给他们带来食物一般，我走到了那间收容室外，打开了那扇久违的玻璃门。</p>
-<p>孩子们用惊恐的眼神盯着我，似乎他们都明白了外面发生着什么恐怖的事。我一言不发地走了进去，抱起了Minnaloushe。其他孩子们也向我围过来，像是一群无助而无辜的羔羊。我下意识地摸了摸身边那个孩子的头，用带着哭腔的语气说道：“我只能带一个走啊。如果我成功出去了，我会来救你们的。”说这句话时我知道它大概率不可能实现，可对那时的我而言，一句谎言已经算不上什么了。说罢，我又带上了那扇门，祈祷它还能起到什么保护的作用，然后向外奔去。</p>
-<p>Minnaloushe的体温透过单薄的收容服传到我的手上，我用手指撩了撩她散乱的头发，她的脸还是那样的冰冷。此时的她面无表情，恐惧使我感受不到此刻她灵魂的舞蹈，她的躯体更像是一件玩物。</p>
-<p>原本在我眼中庞大到臃肿的站点现在似乎变得小了起来，我似乎并没有用多久就望到了界河与河畔的小船。一路上我一直说着安慰的话，尽管她没有落下任何眼泪。她只是一个劲地问我：“那个童话的结局你满意吗？”</p>
-<p>我来不及思考并回答他，身后突然传来一阵枪声，我感到自己的后背如同被烙铁击中一般。</p>
-<p>“看来是中弹了啊，没事，我们马上就要到了。”</p>
-<p>我回头看了一眼，却发现人数远远超过了我的预期，这大概就是那所谓的增援吧，只是这样的大动干戈的行为似乎仍然是杀鸡儆猴式的——考虑到这次叛乱参与者也不过上十人。</p>
-<p>那船上的两个人朝我招了招手，我以为他们是叫我快一些，便加快了脚步。在我试图抬起右腿发力的那一瞬间，又一枚子弹射入了我的左肩，这使我左手中的枪滚落到了地上，这时我又抬起头才发现那船已经渐渐远去了。原来那招手的含义是“我们要逃命了，抱歉”吗？可是河岸就在眼前，我只能继续向前奔去，便用双脚踏破了河面的那层薄冰。</p>
-<p>渐渐地，我感到自己的脚底空无一物，而河水自胸口而淹没了头顶，我试图在冰冷的河水里睁开眼却失败了，我不知道我的Minnaloushe是否在发抖，因为此刻就连她的体温也消失了，仿佛与那河水融为一体。</p>
-<p>我想要划动双臂使自己漂浮起来，却感到如同手掌敲击在石头上的触觉，震的我伤口生疼，便一下子睁开了眼，才发现四周竟然被冰所包围，仅仅是我坠入水中的一瞬间，河水便包围着我凝作了如同铁幕一般的冰面。</p>
-<p>我看向环抱中那个与冰一样冷的少女，此刻她的身体近乎透明，我能看到她纤细的骨骼微微的颤抖。这大概就是她的异常能力吧。她向我转过身来，用冰冷的嘴唇贴了我的嘴唇，二人腔内最后的空气化作了一阵无言的气泡。这条河或许永远不会开冻了，但这不是我需要关心的了，再过不到一分钟，我大概就会溺死在冰与水中，一如那与Minnaloushe溺死在虚无太空中的人儿。可此刻我感到的只有平静，没有顾虑的平静，从她冰冷的嘴唇传来的万古平静。</p>
-<p>“我说啊，这大概就是那个童话的答案，这份答案，我认为是值得的。”我在心里默默对她说道。</p>
-<p>我曾以为童话都是虚无而经不起疑问，现在才明白那则简短的故事已然概括了我的一生。于是，在生命的最后，再也分不清Minnaloushe与我，我就这样成为了童话的主角。</p>
- 
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-  
-</article>
-
-    
-    <article
-  id="post-SUCCESS"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2023/09/22/SUCCESS/"
-    >成功上线</a> 
-</h2>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/09/22/SUCCESS/" class="article-date">
-  <time datetime="2023-09-22T07:59:07.000Z" itemprop="datePublished">2023-09-22</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>成功上线纪念2023 9 22<br>我也有自己的博客了<br>我的qq和微信<br><img src="/2023/09/22/SUCCESS/d8b77ee07123f9bf4d1114694f8a7d3.jpg" alt="d8b77ee07123f9bf4d1114694f8a7d3.jpg"><br><img src="/2023/09/22/SUCCESS/2e710f1fea3fe1fc321d8f8a4e6d46f.jpg" alt="2e710f1fea3fe1fc321d8f8a4e6d46f.jpg"></p>
  
       <!-- reward -->
       
