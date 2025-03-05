@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/ico" href="./favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SITE-CN-02</title>
+  <script type="module" crossorigin src="./assets/index.78484553.js"></script>
+  <link rel="stylesheet" href="./assets/index.ea684ee0.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div>
+    <div id="pointer"></div>
+    <div id="pointer-effect"></div>
+  </div>
+</body>
+<style>
+  * {
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGBAMAAAAS4vJ7AAAAElBMVEX///////////////////////+65XQCAAAABXRSTlPUzXppDN7WmLAAAAAZSURBVAjXY3ASVGEwDQ1mYA0NAGEQGyQGAC9SA/00lbgwAAAAAElFTkSuQmCC) 4 4, default;
+  }
+<p>#pointer {<br>
+transform: translate3d(-50%, -50%, 0px);<br>
+position: fixed;<br>
+top: 0;<br>
+left: 0;<br>
+width: 36px;<br>
+height: 36px;<br>
+border: 1px solid #cccccc;<br>
+border-radius: 50%;<br>
+/* 自带动画 */<br>
+transition-property: opacity, background-color, left, top, width, height;<br>
+transition-duration: .3s, .3s, .1s, .1s, .3s, .3s;<br>
+z-index: 2;<br>
+pointer-events: none;<br>
+}</p>
+<p>#pointer-effect {<br>
+position: fixed;<br>
+top: 0;<br>
+left: 0;<br>
+width: 80px;<br>
+height: 80px;<br>
+border: 4px solid #ccc;<br>
+border-radius: 50%;<br>
+transform: translate3d(-50%, -50%, 0px) scale(1);<br>
+opacity: 0;<br>
+z-index: 1;<br>
+pointer-events: none;<br>
+}</p>
+<p>#pointer.hidden {<br>
+opacity: 0;<br>
+}</p>
+<p>#pointer.hover {<br>
+width: 24px;<br>
+height: 24px;<br>
+background-color: rgba(255, 255, 255, 0.5);<br>
+}</p>
+<p>@keyframes effect {<br>
+0% {<br>
+transform: translate3d(-50%, -50%, 0px) scale(0.1);<br>
+opacity: 0.8;<br>
+}</p>
+<pre><code>30% &#123;
+  opacity: 0.4;
+&#125;
+
+100% &#123;
+  transform: translate3d(-50%, -50%, 0px) scale(1);
+  opacity: 0;
+&#125;
+</code></pre>
+<p>}<br>
+</style></p>
+<script>
+  const body = document.querySelector('body')
+  const element = document.getElementById('pointer')
+  const elementEffect = document.getElementById('pointer-effect')
+
+  function setPosition(x, y) {
+    element.style.top = y - 1 + 'px'
+    element.style.left = x - 1 + 'px'
+  }
+  // 告诉浏览器需要执行动画，帧数更高
+  body.onmousemove = e => {
+    window.requestAnimationFrame(() => setPosition(e.clientX, e.clientY))
+    // 鼠标移到含有自定义属性的元素时对圈添加样式
+    e.target.dataset.cursor || e?.fromElement?.dataset.cursor ? element.classList.add('hover') : element.classList.remove('hover')
+  }
+
+  body.onmouseenter = e => { element.classList.remove('hidden') }//鼠标经过
+  body.onmouseleave = e => { element.classList.add('hidden') }//鼠标离开
+
+  let throttle = true //节流
+  body.onclick = (e) => {
+    if (throttle) {
+      throttle = false
+      elementEffect.style.top = e.clientY - 1 + 'px'
+      elementEffect.style.left = e.clientX - 1 + 'px'
+      elementEffect.style.animation = 'effect 0.5s'
+      setTimeout(() => {
+        elementEffect.style.animation = ''
+        throttle = true
+      }, 500)
+    }
+  }
+
+</script>
+</html>

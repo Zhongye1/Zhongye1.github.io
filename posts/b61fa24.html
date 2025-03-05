@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" version="4">
+<head>
+    <meta charset="UTF-8">
+    <title>申论生成器</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #Frame {
+            border: none; /* 移除边框 */
+            display: block; /* 块级元素 */
+            width: 100%; /* 宽度100% */
+            height: calc(100vh - 40px); /* 减去按钮的高度 */
+            position: absolute; /* 绝对定位 */
+            top: 40px; /* 使iframe位于按钮下方 */
+            left: 0;
+        }
+        .return-button {
+            display: block;
+            position: fixed; /* 固定定位 */
+            top: 0; /* 顶部位置 */
+            left: 50%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            z-index: 1000; /* 确保按钮在其他元素之上 */
+        }
+    </style>
+</head>
+<body inject_video_svd="true">
+<!-- 添加按钮 -->
+<p><a href="https://zhongye1.github.io/" class="return-button">返回博客主页~</a></p>
+<iframe id="Frame" src="https://air.moe/funs/Slscq/" allowfullscreen=""></iframe>
+</body>
+</html>
