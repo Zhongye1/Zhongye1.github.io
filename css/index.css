@@ -4236,7 +4236,7 @@ h1.page-title + .tag-cloud-list {
   overflow-wrap: break-word;
 }
 #article-container a {
-  color: #a591e0;
+  color: #94b4ff;
 }
 #article-container a:hover {
   text-decoration: underline;
@@ -7513,7 +7513,7 @@ input#pic-link {
 
 /* heo 加载动画头像 */
 .loading-img {
-  background: url(https://pic1.zhimg.com/80/v2-88d2ec402c1018cec57110c295e85a30_720w.webp)
+  background: url(https://avatars.githubusercontent.com/u/145737758?v=4)
     no-repeat center center;
   background-size: cover;
 }
@@ -9263,7 +9263,7 @@ hr:before {
 
 .tk-footer a {
   font-weight: bold;
-  color: #a591e0;
+  color: #94b4ff;
 }
 
 /* Github徽标 */
