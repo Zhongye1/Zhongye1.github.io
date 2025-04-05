@@ -1,0 +1,1933 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><div id="myscoll"></div><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>数据结构复习其一 | 柊野的博客</title><meta name="keywords" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学"><meta name="author" content="柊野"><meta name="copyright" content="柊野"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="收集到的数据结构复习资料">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构复习其一">
+<meta property="og:url" content="https://zhongye1.github.io/posts/4536146e.html">
+<meta property="og:site_name" content="柊野的博客">
+<meta property="og:description" content="收集到的数据结构复习资料">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-a410b08c35e5288a57b75762ae482806_720w.webp">
+<meta property="article:published_time" content="2024-07-25T18:24:14.000Z">
+<meta property="article:modified_time" content="2024-10-14T14:56:49.794Z">
+<meta property="article:author" content="柊野">
+<meta property="article:tag" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.zhimg.com/80/v2-a410b08c35e5288a57b75762ae482806_720w.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zhongye1.github.io/posts/4536146e"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据结构复习其一',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-14 22:56:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><style id="themeColor"></style><style id="rightSide"></style><style id="transPercent"></style><style id="blurNum"></style><style id="settingStyle"></style><style id="defineBg"></style><style id="menu_shadow"></style><script type="text/javascript" src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/map/js/china.js"></script><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="柊野的博客" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" onerror="onerror=null;src='/assets/r1.jpg'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">柊野的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="search faa-parent animated-hover" title="检索站内任何你想要的信息"><svg class="faa-tada icon" style="height:24px;width:24px;fill:currentColor;position:relative;top:6px" aria-hidden="true"><use xlink:href="#icon-search"></use></svg><span> 搜索</span></a></div><a class="meihua faa-parent animated-hover" onclick="toggleWinbox()" title="美化设置-自定义你的风格" id="meihua-button"><svg class="faa-tada icon" style="height:26px;width:26px;fill:currentColor;position:relative;top:8px" aria-hidden="true"><use xlink:href=""></use></svg></a><a class="sun_moon faa-parent animated-hover" onclick="switchNightMode()" title="浅色和深色模式转换" id="nightmode-button"><svg class="faa-tada" style="height:25px;width:25px;fill:currentColor;position:relative;top:7px" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="">       </use></svg></a><div id="toggle-menu"><a><i class="fas fa-bars fa-fw"></i></a></div></div></div></nav><div id="post-info"><h1 class="post-title">数据结构复习其一</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><svg class="meta_icon post-meta-icon" style="width:30px;height:30px;position:relative;top:10px"><use xlink:href="#icon-rili"></use></svg><span class="post-meta-label">发表于 </span><time class="post-meta-date-created" datetime="2024-07-25T18:24:14.000Z" title="发表于 2024-07-26 02:24:14">2024-07-26</time><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-gengxin1"></use></svg><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-14T14:56:49.794Z" title="更新于 2024-10-14 22:56:49">2024-10-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-biaoqian"></use></svg><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:8px"><use xlink:href="#icon-charuword"></use></svg><span class="post-meta-label">字数总计:</span><span class="word-count">3.2w</span><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:20px;height:20px;position:relative;top:5px"><use xlink:href="#icon-shizhong"></use></svg><span class="post-meta-label">阅读时长:</span><span>105分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数据结构复习其一"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:5px"><use xlink:href="#icon-eye"></use></svg><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>大一下数据结构泡图书馆战斗几个星期从日到夜好不容易勉强过了</p>
+<p>艹</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/80/v2-5570178f83684b066dfd65d5255fe6a5_720w.webp" alt="img" width=53%  />
+<hr>
+<h2 id="第一章：数据结构绪论">第一章：数据结构绪论</h2>
+<h3 id="一、数据">一、数据</h3>
+<p>1.数据是<strong>信息的载体</strong>，是描述客观事物的数、字符、以及所有能输入到<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%AE%A1%E7%AE%97%E6%9C%BA&amp;spm=1001.2101.3001.7020">计算机</a>中，被计算机程序识别和处理的<strong>符号的集合</strong>。</p>
+<p>2.数据分为：数值性数据和非数值性数据。</p>
+<h3 id="二、数据元素">二、<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E6%8D%AE%E5%85%83%E7%B4%A0&amp;spm=1001.2101.3001.7020">数据元素</a></h3>
+<p>1.数据元素是数据的<strong>基本单位</strong>，是<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E6%8D%AE%E9%9B%86%E5%90%88&amp;spm=1001.2101.3001.7020">数据集合</a>的个体。</p>
+<p>2.一个数据元素可以由若干<strong>数据项</strong>组成（此时数据元素被称为记录）。</p>
+<p>3.数据元素又称为元素、结点、记录。</p>
+<h3 id="三、数据项">三、数据项</h3>
+<p>1.数据项是具有独立含义的<strong>最小</strong>标识单位。</p>
+<p>2.数据项是数据的最小单位。</p>
+<h3 id="四、数据对象">四、数据对象</h3>
+<p>1.数据对象是具有相同性质的<strong>数据元素的集合</strong>，是数据的一个子集。</p>
+<p>（整数数据对象，字母字符数据对象）</p>
+<h3 id="五、结构">五、结构</h3>
+<p>1.结构是元素之间的。</p>
+<p>2.结构包含空间位置关系，相互作用和依赖关系。</p>
+<p>3.四种基本结构：<strong>集合</strong>结构、<strong>线性</strong>结构、<strong>树形</strong>结构、<strong>图形</strong>结构。</p>
+<p>(1)集合结构：结构中的数据元素之间除“同属一个集合”外，别无其他关系。</p>
+<p>(2)线性结构：数据元素一对一关系。</p>
+<p>(3)树形结构：一对多。</p>
+<p>(4)图形结构：多对多。</p>
+<h3 id="六、数据结构">六、数据结构</h3>
+<p>1.形式定义：某一数据对象的所有数据成员之间的关系。记为：</p>
+<p>Data_Structure={D,S}</p>
+<p>其中,D是某一<strong>数据对象</strong>，即数据元素的有限集合，S是该对象中所有<strong>数据成员之间的关系</strong>的<strong>有限集合</strong>。</p>
+<p>2.数据结构是相互之间存在一种或多种特点<strong>关系</strong>的<strong>数据元素的集合</strong>。</p>
+<p>3.数据结构包含三方面的内容：<strong>逻辑</strong>结构，<strong>存储</strong>结构和数据的<strong>运算</strong>。</p>
+<p>2.线性数据结构：L={K,R}（其中K为点集，R为关系&lt;&gt;）</p>
+<p>3.树形数据结构：T={K,R}（其中K为点集，R为关系&lt;&gt;）</p>
+<p>4.图形数据结构：G={K,R}（其中K为点集，R为关系() ）</p>
+<h3 id="七、数据结构要解决的问题">七、数据结构要解决的问题</h3>
+<p>1.从广义上讲，数据结构描述现实世界实体的数学模型及其上的操作在计算机中的表示和实现。</p>
+<h3 id="八、逻辑结构">八、逻辑结构</h3>
+<p>1.逻辑结构描述<strong>数据元素之间的关系</strong>。</p>
+<p>2.逻辑结构包括线性结构和非线性结构。</p>
+<p>（1）线性结构包括线性表（表、栈、队列、串）。栈、队列、串是受限线性表。</p>
+<p>（2）非线性结构包括树（二叉树、赫夫曼树、二叉排序树）和图（有向图、无向图）。</p>
+<h3 id="九、物理结构（存储结构）">九、物理结构（存储结构）</h3>
+<p>1.物理结构是数据结构在计算机中的表示（或映像）。（存储结构是逻辑结构在计算机中的存储映像，包括数据元素映像和关系映像，但是逻辑结构是独立于存储结构的。）</p>
+<p>2.物理结构包括：顺序存储表示、非顺序存储（链式存储表示、索引存储表示、散列存储表示）。</p>
+<p><em><strong>注意：有序表属于逻辑结构；顺序表、哈希表、单链表属于存储结构</strong></em></p>
+<p>(1)顺序存储：逻辑上相邻的元素，存储的物理位置也相邻。优点：随机存取，每个元素占用最少的存储空间；缺点：只能使用相邻的一整块存储单元，可能产生较多的外部碎片。</p>
+<p>(2)链式存储：不要求逻辑上相邻的元素，存储的物理位置也相邻。借助指针表示元素之间的逻辑关系。优点：不会出现碎片现象，充分利用所有存储单元；缺点：每个元素因存储指针占用额外的存储空间，且只能实现顺序存取。</p>
+<p>(3)索引存储：建立附加索引表。优点：检索速度快；缺点：附加的索引表占内存，增加和删除数据也会修改索引表，花费较多时间。</p>
+<p>(4)散列存储：根据关键字直接计算存储地址。优点：检索、删除、增加都很快；缺点：会发生冲突，花费时间。</p>
+<h3 id="十、数据类型">十、数据类型</h3>
+<p>1.数据类型是<strong>一个值的集合</strong>和定义在这个值集上的<strong>一组操作</strong>的总称。</p>
+<p>（如<strong>int整型</strong>变量，其值集为某个区间上的整数，定义在其上的操作为+、-、x、/等)</p>
+<p>2.<strong>原子</strong>数据类型是不可分解的数据类型（如int、float、char、*等等）。</p>
+<p>3.<strong>结构</strong>数据类型</p>
+<p>（1）由若干成分（原子类型或结构类型）按照某种结构组成的数据类型）</p>
+<p>（2）<strong>结构数据类型</strong>可以看做是<strong>一种数据结构</strong>和定义在其上的<strong>一组操作</strong>组成的整体。</p>
+<p>（3）如数组，由若干个分量组成，每个分量可以是整数，也可以是数组（int A[10]）。</p>
+<p>4.<strong>抽象</strong>数据类型</p>
+<p>（1）由用户定义，用以表示应用问题的数据模型。</p>
+<p>（2）由基本的数据类型组成，并包括一组相关的操作。</p>
+<p>（3）信息隐蔽和数据封装，使用与现实相分离。</p>
+<p>（4）抽象数据类型ADT是一个<strong>数学模型</strong>以及定义在该模型上的<strong>一组操作</strong>。</p>
+<p>（5）<strong>抽象数据类型=数据结构+定义在此数据结构上的一组操作</strong>。</p>
+<p>（6）（D，S，P）三元组表示。（D是<strong>数据对象</strong>，S是D上的<strong>关系</strong>集，P是对D的基本<strong>操作</strong>集）</p>
+<p>（7）ADT定义：</p>
+<p>ADT 抽象数据类型名{</p>
+<p>数据对象：&lt;数据对象的定义&gt;</p>
+<p>数据关系：&lt;数据关系的定义&gt;</p>
+<p>基本操作：&lt;基本操作（函数）的定义&gt;</p>
+<p>}ADT 抽象数据类型名</p>
+<p>例子：</p>
+<p>ADT Triplet {</p>
+<p>数据对象：D = {e1,e2,e3 | e1,e2,e3∈ElemSet}</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">数据关系：R = &#123;<span class="attribute">&lt;e1,e2&gt;</span>, <span class="attribute">&lt;e2,e3&gt;</span>&#125;</span><br><span class="line"></span><br><span class="line">基本操作：Max(T, &amp;e)                           </span><br></pre></td></tr></table></figure>
+<p>初始条件：三元组T已存在。</p>
+<p>操作结果：用e返回T的3个元素中的最大值。</p>
+<p>Min(T, &amp;e)</p>
+<p>初始条件：三元组T已存在。</p>
+<p>操作结果：用e返回T的3个元素中的最小值。</p>
+<p>} ADT Triplet</p>
+<p>（7）抽象数据类型可以通过固有的数据类型来实现：</p>
+<p><strong>抽象数据类型：类class</strong></p>
+<p>数据对象：数据成员</p>
+<p>基本操作：成员函数（方法）</p>
+<h3 id="十一、算法">十一、算法</h3>
+<p>1.算法是对特定问题求解步骤的一种描述。</p>
+<p>2.算法是一有限长的操作序列。</p>
+<p>3.算法特性：</p>
+<p>（1）<strong>有穷性</strong>：算法在执行有穷步后能结束。</p>
+<p>（2）<strong>确定性</strong>：每步定义都是确切、无歧义，相同输入相同输出。</p>
+<p>（3）<strong>可行性</strong>：每一条运算应足够基本（已验算正确）。</p>
+<p>（4）<strong>输入</strong>：有0个或多个输入。</p>
+<p>（5）<strong>输出</strong>：有1个或多个输出。</p>
+<p>4.算法设计要求（目标）：</p>
+<p>（1）<strong>正确性</strong>：满足具体题目的需求。</p>
+<p>（2）<strong>可读性</strong>：便于理解和修改。</p>
+<p>（3）<strong>健壮性</strong>：当输入数据非法时，也能适当反应。</p>
+<p>（4）<strong>效率高</strong>：执行时间少。</p>
+<p>（5）<strong>空间省</strong>:执行中需要的<strong>最大</strong>存储空间少。</p>
+<h3 id="十二、时间复杂度">十二、时间复杂度</h3>
+<p>1.算法效率的度量是通过时间复杂度和空间复杂度来描述的。</p>
+<p>衡量算法的效率，主要依据算法执行所需要的时间，即时间复杂度。</p>
+<p><em><strong>注意：算法分析的目的：分析算法的效率以求改进。</strong></em></p>
+<p>2.事后统计法：计算算法开始时间与完成时间差值。</p>
+<p>缺点：（必须执行程序；其它因素遮盖算法本质）</p>
+<p>3.事前统计法：依据算法选用何种策略及问题的规模n，是常用的方法。</p>
+<p>4.（事前统计法）和算法执行时间相关的因素：</p>
+<p>（1）<strong>算法选用的策略</strong>（主要）</p>
+<p>（2）<strong>问题的规模</strong>（主要）</p>
+<p>（3）编写的语言</p>
+<p>（4）编译程序产生的机器代码的质量</p>
+<p>（5）计算机执行指令的速度</p>
+<p>5.一般情况下，算法中<strong>基本操作重复执行的次数</strong>是问题规模n的某个函数，算法的<strong>时间量度记作 T(n)=O(f(n))</strong>，称作算法的渐近时间复杂度,简称时间复杂度。它表示随问题规模n的增大，算法执行时间的增长率和f(n)的增长率相同。</p>
+<p>（1）加法规则：T(n)=T1(n)+T2(n)=O(f(n))+O(g(n))=O(max(f(n),g(n)))</p>
+<p>（2）乘法规则：T(n)=T1(n)*T2(n)=O(f(n)) * O(g(n))=O(f(n)*g(n))</p>
+<p>6.时间复杂度除常量阶[O(1)], 线性阶[O(n)], 平方阶[O(n^2)]外，还有对数阶[O(logn)]，排列阶[O(n!)]，指数阶[O(2^n)]等，是相对于问题规模n的增长率的表示方法。</p>
+<p>（1）多项式：O(1)&lt;O(log2(n))&lt;O(n)&lt;O(nlog2(n))&lt;O(n^2)&lt;O(n^3)</p>
+<p>（2）指数时间：O(2^n)&lt;O(n!)&lt;O(n^n)</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">i=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&lt;=n)i=i*<span class="number">2</span>;</span><br><span class="line"><span class="comment">//令执行x次，2^x=n，x=log2(n)，即时间复杂度为O(log2(n))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//递归算法，时间复杂度是O(n)</span></span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">rec</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;                 </span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">return</span> (n*rec(n<span class="number">-1</span>));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>7.如果算法的执行有<strong>多种可能</strong>的操作顺序，则求其<strong>平均</strong>时间复杂度。</p>
+<p>如果<strong>无法求取平均</strong>时间复杂度，则采用<strong>最坏</strong>情况下的时间复杂度。</p>
+<p>时间复杂度是衡量算法好坏的一个最重要的标准。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void bubble-sort<span class="params">(int a[]，int n)</span></span><br><span class="line">&#123;</span><br><span class="line">    for<span class="params">(<span class="attr">i</span>=n-1,<span class="attr">change</span>=TURE;i&gt;1 &amp;&amp; change;--i)</span></span><br><span class="line">      &#123;</span><br><span class="line">           change=<span class="literal">false</span>;</span><br><span class="line">           for<span class="params">(<span class="attr">j</span>=0;j&lt;i;++j)</span></span><br><span class="line">               <span class="keyword">if</span> <span class="params">(a[j]&gt;a[j+1])</span> &#123;</span><br><span class="line">                     a[j] ←→a[j+1];</span><br><span class="line">                    change=TURE&#125;</span><br><span class="line">       &#125;     </span><br><span class="line">&#125;</span><br><span class="line"><span class="string">//</span>最好情况：0次（全部升序排列）</span><br><span class="line"><span class="string">//</span>最坏情况：n*<span class="params">(n-1)</span><span class="string">/2</span>次（全部降序排列）</span><br><span class="line"><span class="string">//5</span> 4 3 2 1（5要比较（n-1）次，1被移到最前面了，比较0次，共有n个元素，使用求和公式0+1+<span class="string">...</span>+<span class="params">(n-1)</span>=n*<span class="params">(n-1+0)</span><span class="string">/2</span></span><br><span class="line"><span class="string">//</span>平均时间复杂度：O<span class="params">(n^2)</span></span><br></pre></td></tr></table></figure>
+<h3 id="十三、空间复杂度">十三、空间复杂度</h3>
+<p>1.空间复杂度指算法执行时，所需要<strong>存储空间</strong>的量度，它也是问题规模的函数，即：S(n) = O(f(n))。</p>
+<p>2.算法的存储量包括：</p>
+<p>（1）<strong>程序本身</strong>所占空间（与算法无关）</p>
+<p>（2）<strong>输入数据</strong>所占空间（与算法无关）</p>
+<p>（3）<strong>辅助变量</strong>所占空间（若所需额外空间相对于输入数据量来说是<strong>常数</strong>，则称此算法为<strong>原地工作</strong>。否则,按最坏情况分析）</p>
+<p><em><strong>注意：只有辅助变量所占空间与算法有关</strong></em></p>
+<h2 id="第二章：线性表">第二章：线性表</h2>
+<h3 id="一、线性数据结构的特点">一、线性数据结构的特点</h3>
+<p>在<strong>数据元素</strong>的<strong>非空有限</strong>集中 ：</p>
+<p>1.存在惟一的一个被称作“第一个”的数据元素。</p>
+<p>2.存在惟一的一个被称作“最后一个”的数据元素。</p>
+<p>3.除第一个元素外，每个数据元素均只有一个前驱 。</p>
+<p>4.除最后一个元素外，每个数据元素均只有一个后继 。</p>
+<h3 id="二、线性表">二、线性表</h3>
+<p>1.线性表是最简单的一类线性数据结构。</p>
+<p>2.线性表是由n个<strong>数据元素</strong>组成的<strong>有限</strong>序列，相邻数据元素之间存在着序偶关系，可以写为：(a1, a2,…ai-1, ai, ai+1,…an-1, an)其中,ai是表中元素,i表示元素ai的位置,n是表的长度。</p>
+<p>3.线性表中的<strong>元素</strong>具有<strong>相同</strong>的特性，属于<strong>同一数据对象</strong>，如：1.26个字母的字母表: (A,B,C,D,…,Z)2.近期每天的平均温度:(30℃, 28℃, 29℃,…)。</p>
+<h3 id="三、顺序表">三、顺序表</h3>
+<p>1.顺序表是线性表的顺序表示。（线性表的顺序存储称为顺序表）</p>
+<p>2.用一组地址连续的存储单元依次存储线性表的数据元素。逻辑相邻，物理也相邻。</p>
+<p>3.顺序表数据元素的位置：</p>
+<p>loc(a[i])=loc(a[i-1])+length</p>
+<p>loc(a[i])=loc(a[1])+(i-1)*length</p>
+<p>其中length表示元素占用的内存单元数。</p>
+<p>4.顺序表的插入操作：</p>
+<p>（1）顺序表的插入操作是指在顺序表的第i-1个数据元素和第i个数据元素之间插入一个新的数据元素，即将长度为n的顺序表：(a1,…ai-1, ai, …, an) 变成长度为n+1的顺序表：(a1,…ai-1, e, ai, …, an)</p>
+<p>（2）在顺序表中的第i个位置插入一个元素，需要向后移动的元素个数为：<strong>n-i+1</strong></p>
+<p>（3）平均移动元素数为（假设在第i个元素之间插入的概率为pi）：Eis = ∑ pi x (n-i+1) 其中i从1到n+1。</p>
+<p>（4）当插入位置等概率时pi=1/(n+1)，因为可以插在最后面。因此：</p>
+<p>Eis = ∑ [1/(n+1)] x (n-i+1) = n/2其中i从1到n+1。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/d3d5befebcaaadca3725f68af9556728.png" alt="img"></p>
+<p><em><strong>注意：顺序表插入平均移动元素数为n/2</strong></em></p>
+<p>（5） 顺序表插入操作的时间复杂度为<strong>O(n)</strong>。</p>
+<p>5.顺序表的删除操作：</p>
+<p>（1）顺序表的删除操作是指将顺序表的第i个数据元素删除，即将长度为n的顺序表：(a1,…ai-1, ai, ai+1,…, an) 变成长度为n-1的顺序表：(a1,…ai-1, ai+1, …, an)</p>
+<p>（2）在顺序表中删除一个元素，需要向前移动元素个数为：<strong>n-i</strong>（不用加一）</p>
+<p>（3）平均移动元素数为：Edl = ∑ qi x (n-i) 其中i从1到n。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ee1f23913aa2d443340c3c4ea317b586.png" alt="img"></p>
+<p>（4）当删除位置等概率时qi=1/n，因为只有n个元素可以删除。因此：</p>
+<p>Edl = ∑ [1/n] x (n-i) = (n-1)/2其中i从1到n。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/72ab2edd476db5d70bf3380c5e4ddf47.png" alt="img"></p>
+<p><em><strong>注意：顺序表删除平均移动元素数为(n-1)/2</strong></em></p>
+<p>（5）顺序表删除操作的时间复杂度为<strong>O(n)</strong>。</p>
+<p>6.顺序表的其它操作:</p>
+<p>（1）查找第i个位置的元素值。</p>
+<p>（2）查找元素所在位置。</p>
+<p>（3）得到表长。</p>
+<p>（4）置空表。</p>
+<p>（5）销毁表(析构函数~SqList())。</p>
+<p>7.顺序表的优缺点：</p>
+<p>（1）优点：元素可以<strong>随机存取</strong>；<strong>元素位置</strong>可用一个简单、直观的公式表示并求取。通过首地址和元素序号,<strong>O(1)内找到</strong>指定元素。存储密度高，每个结点只存储数据元素。</p>
+<p>（2）缺点：在作<strong>插入或删除</strong>操作时，需要移动大量元素 。</p>
+<p><em><strong>注意：一个顺序表的第一个元素存储地址为2001,每个元素占用4个地址单元，第6个元素的存储地址为：2001+（6-1）5=2021；对于顺序存储的线性表，删除、增加结点的时间复杂度为O(n)</strong></em></p>
+<h3 id="四、链表">四、链表</h3>
+<p>1.链表是线性表的<strong>链式存储</strong>表示。</p>
+<p>2.链表中逻辑关系相邻的元素不一定在存储位置上相连，用指针表示元素之间的邻接关系。</p>
+<p>3.线性表的链式存储表示主要有三种形式：<strong>线性链表、循环链表、双向链表</strong>。</p>
+<p>4.线性链表：</p>
+<p>（1）线性链表的<strong>元素称为结点</strong>。</p>
+<p>（2）结点除包含数据元素信息的<strong>数据域</strong>外，还包含指示直接后继的<strong>指针域</strong>。</p>
+<p>（3）每个结点，在需要时<strong>动态生成</strong>，在删除时释放。</p>
+<p>（4）N个结点(ai(1≤i ≤ n)的存储映像)链结成一个链表,即为线性表的链式存储结构。</p>
+<p>（5）链表的每个结点中<strong>只包含一个指针域</strong>,故又称<strong>线性</strong>链表或<strong>单</strong>链表。</p>
+<p>（6）线性链表可由<strong>头指针</strong>惟一确定。</p>
+<p>（7）以线性表中的第一个数据元素a1的存储地址作为线性表的地址，称作线性表的头指针。</p>
+<p>（8）有时为了操作方变，在第一个节点之前虚加一个&quot;<strong>头结点</strong>&quot;，以<strong>指向头结点的指针为链表的头指针</strong>。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LNode *head;//头指针</span><br><span class="line">head = new LNode;//生成头结点  head-&gt;[ |<span class="type">^]</span></span><br><span class="line"><span class="type">//head</span>-&gt;[ |<span class="type">-]-&gt;[a</span>|<span class="type">-]-&gt;[b</span>|<span class="type">-]-&gt;....</span></span><br></pre></td></tr></table></figure>
+<p><em><strong>注意：头结点和头指针区分：不管带不带头结点，头指针始终指向链表的第一个结点，而头结点是带头结点的链表中第一个结点，结点内通常不存储信息。增加头结点的目的是为了方便运算。</strong></em></p>
+<p><em><strong>头结点的优点:(1)由于第一个数据结点的位置被存放在头结点的指针域中，所以在链表的第一个位置上的操作和在表的其他位置上的操作一致，无需进行特殊处理；(2)无论链表是否为空，其头指针都指是向头结点的非空指针（空表中头结点的指针域为空）</strong></em></p>
+<p><em><strong>单链表的头指针为head，不带头结点的判空条件：head==NULL</strong></em></p>
+<p><em><strong>带头结点的判空条件：head-&gt;next==NULL (L -&gt;[ |^] (head-&gt;next==NULL))</strong></em></p>
+<p>（9）<strong>找第i个</strong>元素getelement：在线性链表中找到第i个元素，并返回指针；从头结点开始，顺链一步步查找；查找第i个数据元素的基本操作为：移动指针，比较k和i（k为当前指针所指向的结点序号）。时间复杂度为<strong>O(n)</strong>。</p>
+<p>（10）线性链表的<strong>插入</strong>：在线性链表的第i-1个元素与第i和元素之间插入一个新元素。<strong>s-&gt;next=p-&gt;next;p-&gt;next=s</strong>。（其中s为新元素）时间复杂度主要取决于getelement的时间复杂度，getelement的时间复杂度为<strong>O(n)</strong>，因此线性链表插入的时间复杂度为O(n)。</p>
+<p><em><strong>注意：在单链表中第i个结点之前进行插入的基本操作：找到线性表中的第i-1个结点p，创建新结点s，然后修改第i-1个结点和s结点的后继指针。s-&gt;next=p-&gt;next;p-&gt;next=s</strong></em></p>
+<p>（11）线性链表的<strong>删除</strong>：将线性链表的第i个元素删除。</p>
+<p>找到线性表中第i-1个结点p，修改其指向后继的指针。</p>
+<p>q=p-&gt;next;p-&gt;next=q-&gt;next;(e=q-&gt;data)delete q;（删除p-&gt;next这个结点）时间复杂度主要取决于getelement的时间复杂度，getelement的时间复杂度为O(n)，因此线性链表删除的时间复杂度为<strong>O(n)</strong>。</p>
+<p>（12）线性链表的创建：链表是一个<strong>动态</strong>的结构，不需要预分配空间，生成链表的过程是一个结点&quot;<strong>逐个插入</strong>&quot;的过程。依次调用insert即可，<strong>时间复杂度O(n^2)</strong>。n个结点，每个结点每次插入Insert函数，头指针指向最后，表尾插入故为n*n。</p>
+<p>（13）线性链表的创建-头插法：即表头不断插入新结点。逆序输入数据值。<strong>头插法时间复杂度O(n)</strong>。</p>
+<p>（14）线性链表的创建-尾插法：即表尾不断插入新结点。按链表序输入数据值。为记录尾结点，增加一个尾指针tail，指向最后一个结点。<strong>尾插法时间复杂度O(n)</strong></p>
+<p>（15）单链表的合并：将两个<strong>有序</strong>链表合并成一个有序链表。</p>
+<p>（16）拷贝构造函数被调用的三种情况：一个对象以值传递的方式传入函数体；一个对象以值传递的方式从函数返回；一个对象需要通过另一个对象进行初始化。</p>
+<p>（17）赋值函数被调用的时机：当一个类的对象向该类的另一个对象赋值时，就会用到该类的赋值函数。</p>
+<p>（18）拷贝构造函数与赋值函数比较：</p>
+<p>调用拷贝构造函数来初始化一个对象：</p>
+<p>A a;A b(a); A b=a;</p>
+<p>都是<strong>拷贝构造函数来创建对象b（b还不存在）</strong></p>
+<p>调用赋值函数对对象复制：</p>
+<p>A a;A b;b=a;</p>
+<p>强调：<strong>这里a,b对象是已经存在的，是用a 对象来赋值给b</strong>的！！</p>
+<p>5.静态链表：线性链表也可以采用静态数组实现。</p>
+<p>与顺序表有两点不同：</p>
+<p>（1）每个元素包括数据域和指针域。</p>
+<p>（2）元素的逻辑关系由指针确定。</p>
+<p>与单链表的区别：</p>
+<p>（1）静态链表暂时不用结点，链成一个<strong>备用链表</strong>。</p>
+<p>（2）插入时，从备用链表中<strong>申请结点</strong>。</p>
+<p>（3）删除结点时，将结点放入备用链表。</p>
+<p>6.循环链表：</p>
+<p>（1）循环链表是一种特别的线性链表。</p>
+<p>（2）循环链表中最后一个结点的指针域指向头结点，整个链表形成一个环。</p>
+<p>（3）在<strong>只有尾指针的单循环链表</strong>中：</p>
+<p>表头插入结点：在只有尾指针的情况下，要在表头插入结点，首先需要找到尾结点，然后将新结点插入到尾结点之后。因此，表头插入结点的时间复杂度为 O(1)（常数时间），因为无论链表有多长，插入操作所需的时间都是相对固定的。</p>
+<p>虽然在只有尾指针的情况下，插入结点时需要找到尾结点，但这并不会导致时间复杂度变为 O(n)。在单循环链表中，尾结点指向头结点，因此我们可以<strong>直接通过尾指针找到头结点，然后在头结点之后插入新结点。</strong></p>
+<p>因此，<strong>表头插入结点的时间复杂度仍然是 O(1)</strong>，因为无论链表有多长，插入操作所需的时间都是相对固定的。</p>
+<p>表尾插入结点：由于只有尾指针，直接<strong>在尾结点之后插入新结点</strong>即可。因此，表尾插入结点的时间复杂度同样为 <strong>O(1)</strong>。</p>
+<p>（4）查找、插入和删除：与线性链表基本一致，差别仅在于算法中的循环条件不是p-&gt;next或p是否为空（^)，而是它们是否等于头指针(L)。</p>
+<p><strong>注意循环链表带头结点判空：head-&gt;next==head</strong></p>
+<p>7.双向链表</p>
+<p>（1）双向链表是一种特殊的线性链表：每个结点有<strong>两个指针</strong>，一个指针指向直接后继(next)，另一个指针指向直接前驱(prior)。</p>
+<p>（2）对于任何一个中间节点有：p=p-&gt;next-&gt;prior/p=p-&gt;prior-&gt;next。</p>
+<p>（3）插入操作需要改变两个方向的指针：s-&gt;next=p;s-&gt;prior=p-&gt;prior;p-&gt;prior-&gt;next=s;p-&gt;prior=s;</p>
+<p>（4）删除操作需要改变两个方向的指针：p-&gt;prior-&gt;next=p-&gt;next;p-&gt;next-&gt;prior=p-&gt;prior;</p>
+<p>8.双向循环链表</p>
+<p>（1）存在两个环：一个是直接后继环，另一个是直接前驱环。</p>
+<h3 id="五、一元多项式">五、一元多项式</h3>
+<p><a target="_blank" rel="noopener" href="http://1.pn">1.pn</a> (x) = p0 + p1x + p2 x^ 2 + … + pn x^ n</p>
+<p>在计算机中，可以用一个线性表来表示：P = (p0 , p1 , …，pn)</p>
+<p><a target="_blank" rel="noopener" href="http://2.pn">2.pn</a>(x)=p1x^e1+p2x^e2+…+pmx^em</p>
+<p>线性表示((p1,e1),(p2,e2),…,(pm,em))</p>
+<h3 id="六、顺序表与链表的比较">六、顺序表与链表的比较</h3>
+<p>1.基于<strong>空间</strong>的比较</p>
+<p>（1）存储分配的方式：<strong>顺序表</strong>的存储空间是<strong>静态</strong>分配的，<strong>链表</strong>的存储空间是<strong>动态</strong>分配的。</p>
+<p>（2）存储密度=结点数据本身所占的存储量/结点结构所占的存储总量</p>
+<p><strong>顺序表的存储密度=1，链表的存储密度&lt;1</strong></p>
+<p>2.基于<strong>时间</strong>的比较</p>
+<p>（1）存取方式：顺序表可以随机存取也可以顺序存取，<strong>链表必须顺序存取</strong>。</p>
+<p>（2）插入、删除时移动元素个数：顺序表平均需要移动近一半元素，链表不需要移动元素只需要修改指针。</p>
+<p>3.基于<strong>应用</strong>的比较 （1）线性表主要是<strong>存储大量数据</strong>，并用于<strong>查找</strong>时，采用顺序表比较好。</p>
+<p>（2）若线性表存储的数据元素要<strong>经常插入和删除</strong>，采用链表比较好。</p>
+<p><em><strong>注意：某线性表中最常用的操作是在最后一个元素之后插入一个元素和删除第一个元素，则采用带尾指针的单循环链表最节省时间。</strong></em></p>
+<p><em><strong>仅有尾指针的单循环链表，可以非常方便地找到尾结点，尾结点后面的第一个结点往往是头结点，头结点的下一个结点就是线性表的第一个结点。对最后一个元素和第一个元素操作对带尾指针的单循环链表是非常方便的</strong></em></p>
+<p><em><strong>循环链表是线性表，它是线性表的链表存储结构之一。</strong></em></p>
+<p><em><strong>在一个以h为头的单循环链表中，p指针指向链尾的条件是p-&gt;next=h。</strong></em></p>
+<h2 id="第三章：栈和队列">第三章：栈和队列</h2>
+<h3 id="一、栈">一、栈</h3>
+<p>1.栈是限定仅在<strong>表尾</strong>(top)进行插入或删除操作的<strong>线性表</strong>。</p>
+<p>2.允许插入和删除的一端称为栈顶(top，表尾)，另一端称为栈底(bottom，表头）</p>
+<p>3.特点：后进先出 (LIFO)</p>
+<p>4.栈的<strong>存储结构：顺序栈和链式栈</strong>。</p>
+<p>5.顺序栈：</p>
+<p>（1）顺序栈是栈的顺序存储结构。</p>
+<p>（2）利用<strong>一组地址连续</strong>的存储单元依次存放自栈底到栈顶的数据元素。</p>
+<p>（3）指针top指向栈顶元素在顺序栈中的下一个位置，base为栈底指针，指向栈底的位置。</p>
+<p>（4）<strong>top=0 或top=base 表示空栈</strong>。</p>
+<p>（5）<strong>base=NULL表示栈不存在</strong>。</p>
+<p>（6）当插入新的栈顶元素时,指针top+1。</p>
+<p>（7）删除栈顶元素时，指针top-1。</p>
+<p>（8）当top&gt;stacksize时，栈满，溢出。</p>
+<p><em><strong>注意：向顺序表中压入新元素，应当先移动栈顶指针，再入栈，出栈时先取栈顶元素再移动指针</strong></em></p>
+<p>6.链栈：</p>
+<p>（1）栈的链式存储结构称为链栈，它是运算受限的单链表，可插入和删除操作仅限制在<strong>表头</strong>位置上进行。</p>
+<p>（2）由于<strong>只能在链表头部</strong>进行操作，故链表<strong>没有必要像单链表那样附加头结点</strong>。<strong>栈顶指针就是链表的头指针</strong>。</p>
+<p>（3）链栈中为何不设头指针？因为链栈<strong>只在链表头</strong>插入和删除结点,不可能在链表中间插入或删除结点,算法实现很简单,所以一般不设置头结点。</p>
+<p>（4）链栈对比顺序栈主要优点在于，通常<strong>不会栈满</strong>的情况</p>
+<p>7.C++中栈容器：</p>
+<p>（1）stack 模板类的定义在<stack>头文件中。</p>
+<p>（2）定义stack 对象的示例代码如下：stack<int> s1;stack<string> s2;</p>
+<p>（3）stack 的基本操作有：</p>
+<p>入栈，如例：s.push(x);</p>
+<p>出栈，如例：s.pop();注意，出栈操作只是删除栈顶元素，并不返回该元素。</p>
+<p>访问栈顶，如例：s.top()</p>
+<p>判断栈空，如例：s.empty()，当栈空时，返回true。</p>
+<p>访问栈中的元素个数，如例：s.size()。</p>
+<p>8.栈的应用举例</p>
+<p>（1）数值转换：</p>
+<p>将十进制转换为其他进制（d）：N=(N*d)*d+N mod d</p>
+<p>（<strong>计算顺序与输出顺序相反</strong>）</p>
+<p>（2）行编辑程序</p>
+<p>（3）迷宫求解（用一个栈来记录已走过的路径）</p>
+<p>设定当前位置为入口位置</p>
+<p>do {若当前位置可通，则 {</p>
+<p>将该位置插入栈顶(Push)；若该位置是出口，则结束</p>
+<p>否则切换当前位置的东邻方块为当前位置；</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#125; 否则 &#123;      　</span><br></pre></td></tr></table></figure>
+<p>若栈不空则｛</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    　  如果栈顶位置的四周均不可通,则删除栈顶位置(<span class="built_in">Pop</span>)</span><br><span class="line"></span><br><span class="line">      　并重新测试新的栈顶位置</span><br></pre></td></tr></table></figure>
+<p>如果找到栈顶位置的下一方向未经探索，则将该方向</p>
+<p>方块设为当前位置}}}while(栈不空)；找不到路径；</p>
+<p>（4）表达式求值：表达式由操作数、运算符和界限符组成，它们皆称为单词。</p>
+<p>操作数：常数或变量。运算符：+, -, *, / 等。界限符：(, ), #(表达式开始及结束符)。</p>
+<p>计算步骤：假设操作数栈NS和运算符栈OS，</p>
+<p>–（1）依次读取表达式，若为操作数，则直接进栈；</p>
+<p>若为运算符(记为op2)，转（2）</p>
+<p>–（2）将op2与运算符栈顶元素(记为op1)按P53的表3.13 比较优先权，并按如下规则进行操作：</p>
+<p>若prec(op1) &lt; prec(op2), 则op2入OS;</p>
+<p>若prec(op1) = prec(op2), 则op1出栈，回到（1）；</p>
+<p>若prec(op1) &gt; prec(op2), 则NS出2个操作数 num2,num1,op1出栈，</p>
+<p>计算num2 op1 num2，结果入NS；回到(2) 。</p>
+<p>–（3）重复（1）、（2）直至整个表达式求值完毕。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/5522aca5dc9f7fa1b30012ec5cc23a76.jpeg" alt="img"></p>
+<p>例如: Exp = a x b + (c - d / e) x f</p>
+<p>前缀式: + x a b x - c / d e f</p>
+<p>中缀式: a x b + c - d / e x f</p>
+<p>后缀式: a b x c d e / - f x +</p>
+<p>前缀式的运算规则为:连续出现的两个操作数和在它们之前且紧靠它们的运算符构成一个最小表达式;</p>
+<p>中缀式丢失了括弧信息,致使运算的次序不确定;（编译系统中：中缀转后缀进行计算）</p>
+<p>后缀式的运算规则为: 运算符在式中出现的顺序恰为表达式的运算顺序; 每个运算符和在它之前出现 且 紧靠它的两个操作数构成一个最小表达式。</p>
+<p>结论：操作数之间的相对次序不变；运算符的相对次序不同。</p>
+<p>得到后缀表达式后，我们在计算表达式时，可以设置一个栈，从左到右扫描后缀表达式，每读到一个操作数就将其压入栈中；每到一个运算符时，则从栈顶取出两个操作数进行运算，并将结果压入栈中，一直到后缀表达式读完。最后栈顶就是计算结果。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/73bcc40a165c14288da3c69aa7b777e3.jpeg" alt="img"></p>
+<p>9.栈与递归的实现</p>
+<p>（1）当在一个函数的运行期间调用另一个函数时，在运行该被调用函数之前，需先完成三项任务：将所有的实在参数、返回地址等信息传递给被调用函数<strong>保存</strong>；为被调用函数的局部变量分配存储区；将控制转移到被调用函数的入口。</p>
+<p>（2）从被调用函数返回调用函数之前，应该完成下列三项任务：保存被调函数的计算结果；释放被调函数的数据区；依照被调函数保存的返回地址将控制转移到调用函数</p>
+<p>（3）多个函数嵌套调用：后调用先返回！此时的内存管理实行“栈式管理”。</p>
+<p>（4）递归函数执行的过程可视为同一函数进行嵌套调用。</p>
+<p><em><strong>注意：n个不同元素进栈，出栈元素不同排列个数为：(1/(n+1))C(2n,n)其中C为组合数，从2n个选n个</strong></em></p>
+<h3 id="二、队列">二、队列</h3>
+<p>1.队列是只允许在<strong>表的一端</strong>进行插入，而在<strong>另一端</strong>删除元素的线性表。</p>
+<p>2.在队列中，允许插入的一端叫队尾（rear），允许删除的一端称为对头(front)。特点：先进先出 (FIFO)</p>
+<p>3.<strong>顺序</strong>队列：采用一组地址连续的存储单元依次存储从队列头到队列尾的元素。顺序队列有两个指针：队头指针front和队尾指针rear</p>
+<p>4.顺序队列的进队和出队原则：进队时，新元素按rear指针位置插入，然后队尾指针增一，即 rear = rear + 1；出队时，将队头指针位置的元素取出，然后队头指针增一，即 front = front + 1；队头指针始终指向队列头元素；队尾指针始终指向队列尾元素的下一个位置。</p>
+<p>5.顺序队列存在的问题：</p>
+<p>（1）当队尾指针指向队列存储结构中的最后单元时，如果再继续插入新的元素，则会产生溢出当队列发生溢出时。</p>
+<p>（2）不能用rear==maxsize判断队满。</p>
+<p>（3）队列存储结构中可能还存在一些空白位置（已被取走数据的元素），<strong>假上溢</strong>。(前面还有空位)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/a26ad1874b5dd398e0729183cd513b19.png" alt="img"></p>
+<p>（3）解决办法之一：将队列存储结构首尾相接，形成循环(环形)队列。</p>
+<p>6.循环队列：</p>
+<p>（1）循环队列采用一组地址连续的存储单元。</p>
+<p>（2）将整个队列的存储单元<strong>首尾相连</strong>。</p>
+<p>（3）判断对空和队满：</p>
+<p>对循环队列而言，无法通过front==rear来判断队列“空”还是“满”。 解决此问题的方法至少有三种：</p>
+<p>其一是另设一个布尔变量以匹别队列的空和满；</p>
+<p>其二是<strong>少用一个元素的空间</strong>，约定入队前，测试尾指针在循环意义下加1后是否等于头指针，若相等则认为队满（<strong>注意：rear所指的单元始终为空！！</strong>）；</p>
+<p><strong>front = rear，（都指向空）循环队列空；(rear+1) % MAXQSIZE = front，循环队列满。</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/84cb2d96787f14704d54a3051de22c89.png" alt="img"></p>
+<p>其三是使用一个计数器记录队列中元素的总数（实际上是队列长度）。</p>
+<p>（4）循环队列：</p>
+<p>初始时：front=rear=0</p>
+<p>出队，队首指针加一：front=(front+1)%maxsize</p>
+<p>进队，队尾指针加一：rear=(rear+1)%maxsize</p>
+<p><strong>队列长度：(rear-front+maxsize)%maxsize</strong></p>
+<p>若牺牲一个单元来区分队列空和队列满，队列少用一个队列单元：</p>
+<p><strong>队满：(rear+1)%maxsize==front</strong></p>
+<p>队空：front==rear</p>
+<p><strong>题目</strong>：假设Q[ 11] (下标为从0到10)是一个循环队列,初始状态为front=rear=0;画出分别做完下列操作后队列的头尾指针的装填变化情况,若不能入队,请指出其元素,说明理由…(采用少用一个元素空间的方式)</p>
+<p>d,e,b,g,h入队</p>
+<p>d,e出队</p>
+<p>i,j,k,l,m入队</p>
+<p>b 出队</p>
+<p>n,o,p,q,r 入队</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/8d1d75223b9b6c9ef846de9c3d1a8206.png" alt="img"></p>
+<p>(上述答案采用front指向空，应改为rear时刻指向空！)</p>
+<p>7.链队列</p>
+<p>（1）链队列采用链表存储单元链队列中，有<strong>两个</strong>分别指示队头和队尾的<strong>指针</strong>。</p>
+<p>（2）链式队列在进队时无队满问题，但<strong>有队空问题</strong>。</p>
+<p>（3）链队列是链表操作的子集。</p>
+<p><strong>设长度为n的链队列用单循环链表表示，若只设头指针，则入度时间复杂度为O(n)，出队时间复杂度为O(1);若只设尾指针，则入队时间复杂度和出队时间复杂度都为O(1)，出队队头之间是tail-&gt;next即可。</strong></p>
+<p><strong>删除一个结点，即出队时的指针操作为：front=front-&gt;next</strong></p>
+<p>8.C++中的队列容器</p>
+<p>（1）queue 模板类的定义在<queue>头文件中。</p>
+<p>（2）定义queue 对象的示例代码如下：queue<int> q1;queue<double> q2;</p>
+<p>（3）queue 的基本操作有：</p>
+<p>入队，如例：q.push(x); 将x 接到队列的末端。</p>
+<p>出队，如例：q.pop(); 弹出队列的第一个元素，注意，并不会返回被弹出元素的值。</p>
+<p>访问队首元素，如例：q.front()，即最早被压入队列的元素。</p>
+<p>访问队尾元素，如例：q.back()，即最后被压入队列的元素。</p>
+<p>判断队列空，如例：q.empty()，当队列空时，返回true。</p>
+<p>访问队列中的元素个数，如例：q.size()</p>
+<p>9.C++中的map容器</p>
+<p>（1）map是c++的一个标准容器，提供了key和value的映射。map 模板类定义在<map>头文件中。</p>
+<p>（2）map对象定义：map&lt;string , int &gt; mapstring;</p>
+<p>（3）map添加数据：map&lt;int ,string&gt; maplive; -1.maplive.insert(pair&lt;int,string&gt;(102,“aclive”));</p>
+<p>-2.maplive.insert(map&lt;int,string&gt;::value_type(321,“hai”));</p>
+<p>-3.maplive[112]=“April”;//map中最简单最常用的插入添加！</p>
+<p>（4）map中查找数据：</p>
+<p>-1.使用map的下标运算符重载</p>
+<p>map&lt; std::string,int&gt; mapTest;</p>
+<p>cout&lt;&lt;mapTest[“index”]&lt;&lt;endl;</p>
+<p>-2.使用map的find接口。</p>
+<p>map&lt; std::string,int&gt; mapTest;</p>
+<p>map&lt; std::string,int&gt;::iterator it = mapTest.find(“index”);</p>
+<p>if(it!=mapTest.end()) cout&lt;&lt; it-&gt;second&lt;&lt;endl;</p>
+<p><strong>大题重点：表达式求值</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/43b43b7ce2fa49529495aeb5c9e63e37.png" alt="img"></p>
+<p>(同种符号比较，先出现的优先级高)</p>
+<h2 id="第四章：串">第四章：串</h2>
+<h3 id="一、字符串">一、字符串</h3>
+<p>1.字符串是n个字符的有限序列。</p>
+<p>2.字符串术语：</p>
+<p>（1）空串：不含任何字符的串，串长度=0。</p>
+<p>（2）空格串：仅由一个或多个空格组成的串。</p>
+<p>（3）子串：由串中任意个连续的字符组成的子序列。</p>
+<p>（4）主串：包含子串的串。</p>
+<p>（5）位置：字符在主串中的序号。子串在主串中的位置以子串第一个字符在主串中的位置来表示。</p>
+<p>（6）串相等的条件：当两个串的长度相等且各个对应位置的字符都相等时才相等。</p>
+<p>（7）<strong>模式匹配</strong>：确定子串在主串中<strong>首次</strong>出现的位置的运算</p>
+<p>3.字符串与线性表的关系</p>
+<p>—串的逻辑结构和线性表极为相似：</p>
+<p>（1）它们都是<strong>线性结构</strong>。</p>
+<p>（2）串中的<strong>每个字符</strong>都仅有一个<strong>前驱</strong>和一个<strong>后继</strong>。</p>
+<p>—串与线性表又有区别，主要表现为：</p>
+<p>（1）串的<strong>数据对象</strong>约定是<strong>字符集</strong>。</p>
+<p>（2）在线性表的基本操作中，以“<strong>单个元素</strong>”作为操作对象。</p>
+<p>（3）在串的基本操作中，通常以“<strong>串的整体</strong>”作为操作对象，如：在串中查找某个子串、在串的某个位置上插入一个子串等。</p>
+<p>4.字符串的操作</p>
+<p>13种操作中的<strong>最小</strong>操作子集(五种)：串<strong>赋值</strong>StrAssign;串<strong>比较</strong>StrCompare;求<strong>串长</strong>StrLength;串<strong>联接</strong>Concat;求<strong>子串</strong>SubString。</p>
+<p>最小操作集：</p>
+<p>这些操作不可能利用其他串操作来实现，反之，其他串操作（除串清除ClearString和串销毁DestroyString外）可在这个最小操作子集上实现。</p>
+<p>5.字符串的操作(index)</p>
+<p>（1）串匹配(查找)的定义: INDEX (S, T, pos)</p>
+<p>（2）初始条件：串S和T存在，T是非空串，1≤pos≤StrLength(S)。</p>
+<p>（3）操作结果：若主串S中存在和串T值相同的子串返回它在主串S中第pos个字符之后第一次出现的位置；否则函数值为0。</p>
+<h3 id="二、串的表示和实现">二、串的表示和实现</h3>
+<p>1.定长顺序存储表示（静态存储分配）</p>
+<p>（1）用一组地址连续的存储单元存储字符序列。</p>
+<p>（2）如C语言中的字符串定义(以“\0”为串结束标志) char Str[MAXSTRLEN+1];</p>
+<p>（3）定义了长度为MAXSTRLEN字符存储空间字符串长度可以是小于MAXSTRLEN的任何值（最长串长度有限制，多余部分将被截断）</p>
+<p>（4）隐含：一般可使用一个不会出现在串中的特殊字符在串值的尾部来表示串的结束。</p>
+<p>优点:便于系统自动实现。</p>
+<p>缺点:不利于某些操作(如合并).</p>
+<p>例如，C语言中以字符‵\0′表示串值的终结，这就是为什么在上述定义中，串空间最大值maxstrlen为256，但最多只能存放255个字符的原因。</p>
+<p>（5）显式：若不设终结符，可用一个整数来表示串的长度，那么该长度减1的位置就是串值的最后一个字符的位置（下标）。</p>
+<p>优点:便于在算法中用长度参数控制循环过程。</p>
+<p>2.<strong>堆分配存储</strong>表示</p>
+<p>（1）在程序执行过程中，动态分配（malloc）一组地址连续的存储单元存储字符序列。</p>
+<p>（2）在C++语言中，由new和delete动态分配与回收的存储空间称为堆。</p>
+<p>（3）堆分配存储结构的串既有顺序存储结构的特点，处理方便,操作中对串长又没有限制,更显灵活。</p>
+<p>3.链存储表示</p>
+<p>（1）采用链表方式存储串值。</p>
+<p>（2）每个结点中，可以存放一个字符，也可以存放多个字符。</p>
+<p>（3）存储密度=数据元素所占存储位/实际分配的存储位。</p>
+<h3 id="三、串的匹配算法">三、串的匹配算法</h3>
+<p>1.求子串位置函数Index()</p>
+<p>（1）子串的定位操作通常称做串的模式匹配。</p>
+<p>（2）算法（穷举法，朴素算法，BF(Brute-Force)算法）：</p>
+<p>从主串的指定位置开始，将主串与模式（要查找的子串）的第一个字符比较：</p>
+<p>若相等，则继续逐个比较后续字符；若不等，从主串的下一个字符起再重新和模式的字符比较。</p>
+<p>（3）在<strong>最好</strong>的情况下，除比较成功的位置外，其余位置仅需比较一次（模式第一个字符），其时间复杂度为：<strong>O(n+m)</strong>(n，m分别为主串和模式的长度)</p>
+<p>（4）但在<strong>最坏</strong>的情况下，如模式为‘00000001’，主串为‘0000000000000000000000000000000001’,则每次模式的前7个0都要与主串逐一比较，因此，其时间复杂度为：<strong>O(n*m)</strong></p>
+<p>2.<strong>KMP算法（时间复杂度O(n+m))</strong></p>
+<p>（1）当一趟匹配过程中出现字符比较不等(失配)时</p>
+<p>–1.不需回溯i指针</p>
+<p>–2.利用已经得到的“部分匹配”的结果</p>
+<p>–3.将模式向右“滑动”尽可能远的一段距离(next[j])后，继续进行比较</p>
+<p>（2）在模式串中第j个字符“失配”时,模式串第k个字符再同主串中对应的失配位置(i)的字符继续进行比较 ：‘p1p2…pk-1’ = ‘pj-k+1pj-k+2…pj-1’</p>
+<p>k值可以在做串的匹配之前，求出一般用next函数求取k值。</p>
+<p>（3）next函数定义为（下标从1开始）：</p>
+<p>–当j=1时next[j] = 0；</p>
+<p>–next[j] = max{k | 0&lt;k&lt;j且‘p1…pk-1’=‘pj-k+1…pj-1’}；(直接等于0~j-1的字符串的最长公共前后缀的长度+1)</p>
+<p>–当其它情况时next[j]=1。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/a7bb8cd87669683e21ee0c6045b5b29a.png" alt="img"></p>
+<p>（4）next函数定义为（下标从0开始）：</p>
+<p>–当j=0时next[j] = -1；</p>
+<p>–next[j] = max{k | 0&lt;k&lt;j且‘p0…pk-1’=‘pj-k…pj-1’}；(直接等于0~j-1的字符串的最长公共前后缀的长度)</p>
+<p>–当其它情况时next[j]=0。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/9577123652917070830d2fcb363afd76.png" alt="img"></p>
+<p>即寻找当前j前可相互重叠（不完全重叠）的最长真子串的长度。从第一个字符开始的子串的下一个元素的下标，指示出，如果j所指示的模式串的字符与目标串中的当前字符不相等时，j应回退的位置。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/eff141823a0bacc009d06798baccd5ac.png" alt="img"></p>
+<p>（5）求next[j]值的算法：</p>
+<p>–1. j的初值为0, next[0]=-1, k=-1</p>
+<p>–2. While(j&lt;模式串长度-1) {</p>
+<p>–(1).若k=-1或者Tj=Tk,则j++,k++,next[j]=k</p>
+<p>–(2).否则,k=next[k]</p>
+<p>}</p>
+<p>这实际上也是一个匹配的过程，不同在于：主串和模式串是同一个串。</p>
+<p>（6）KMP算法：</p>
+<p>–1.令i的初值为pos,j的初值为0</p>
+<p>–2. While((i&lt;主串长度)且(j&lt;模式串长度)) {</p>
+<p>–(1).若j=－1或者si=pj,则i++, j++</p>
+<p>–(2).否则,j=next[j]</p>
+<p>}//j=－1表示第一个字符失配</p>
+<p>（7）时间复杂度：</p>
+<p>KMP()函数的时间复杂度为<strong>O(n)</strong>，为了求模式串的next值,其算法与KMP很相似,其时间复杂度为O(m)，因此,KMP算法的时间复杂度为O(n+m)。</p>
+<p>（8）nextval：</p>
+<p>–1.首先计算next</p>
+<p>–2.比较当前字符t.ch[j]与其next值k所指字符 <a target="_blank" rel="noopener" href="http://t.ch">t.ch</a>[k]</p>
+<p>–（1）不等： nextval[j]=next[j]（即维持不变）</p>
+<p>–（2）相等： nextval[j]=nextval[k]</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/6eded62fff34634d7b295031adc29c58.png" alt="img"></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> getnext(string p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> j,k;</span><br><span class="line">    j=<span class="number">0</span>,k=-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">next</span>[<span class="number">0</span>]=-<span class="number">1</span>;<span class="comment">//!</span></span><br><span class="line">    <span class="keyword">while</span>(j&lt;p.<span class="keyword">size</span>()-<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(k==-<span class="number">1</span>||T[j]==T[k])</span><br><span class="line">            <span class="keyword">next</span>[++j]=++k;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            k=<span class="keyword">next</span>[k];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>大题题目重点：字符串匹配</strong></p>
+<p><strong>题目</strong>：求串eefegeef的next值。写出计算过程。假设主串为eefeefegeebeefegeeb，写出KMP算法查找串eefegeef的过程。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/5cdb8d7fb335cf3a79cf57baf9d6cd65.jpeg" alt="img"></p>
+<h2 id="第五章：数组和广义表">第五章：数组和广义表</h2>
+<h3 id="一、数组的定义">一、数组的定义</h3>
+<p>1.数组</p>
+<p>数组是<strong>相同类型的数据元素</strong>的集合</p>
+<p>数组是一种<strong>定长</strong>的线性表</p>
+<p>数组一般<strong>不作插入和删除</strong>操作</p>
+<p>一旦建立了数组，则结构中的数据<strong>元素个数</strong>和数据<strong>元素之间的关系</strong>就不再发生变动</p>
+<p>判断：“数组的处理比其它复杂的结构要简单”，对吗？</p>
+<p>答：对的。因为——① 数组中各元素具有统一的类型；② 数组元素的下标一般具有固定的上界和下界，即数组一旦被定义，它的维数和维界就不再改变。③数组的基本操作比较简单，除了结构的初始化和销毁之外，只有存取元素和修改元素值的操作。</p>
+<p>2.一维数组</p>
+<p>一维数组是一种简单的定长线性表</p>
+<p>一维数组中的每个数据元素是一个(数)值</p>
+<p>(原子)如：int A[8]={8,7,5,4,6,1,3,2} b=8，有8个数据元素，每个元素都是一个数值</p>
+<p>3.二维数组</p>
+<p>二维数组是这样一个定长线性表，其<strong>每个数据元素</strong>也是一个<strong>定长线性表</strong>(一维数组)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/57dd2c37a21026474b0b944e9d5c492d.png" alt="img"></p>
+<p>Amxn= ((a00 a01…a0,n-1), (a10 a11…a1,n-1),…,(am-1,0 …am-1,n-1))</p>
+<p>4.多维数组</p>
+<p>多维数组是这样一个定长线性表，其每个数据元素也是一个定长线性表(降一维)</p>
+<p>如果其数据元素不是一维数组，则其数据元素的每个数据元素也是一个定长线性表</p>
+<p>一直到最后一个定长线性表是一维数组，其每个数据元素为一个(数)值</p>
+<h3 id="二、数组的表示">二、数组的表示</h3>
+<p>1.数组的顺序表示</p>
+<p>顺序存储：数组由相同类型的数据组成，且一般不作插入和删除操作，一般采用顺序存储结构表示数组</p>
+<p>次序约定：<strong>计算机中，存储单元是一维结构</strong>，而数组为多维结构，则用一组连续的存储单元存放数组的数据元素时，有一个次序约定问题</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/e1980f3ff7be1b49d5d995da6f9d3987.png" alt="img"></p>
+<p>Amxn= ((a00 a01…a0,n-1), (a10 a11…a1,n-1),…,(am-1,0 …am-1,n-1))</p>
+<p>Amxn= ((a00 a10…am-1,0), (a01 a11…am-1,1),…,(a0,n-1 …am-1,n-1))</p>
+<p>（1）行序（m行n列）</p>
+<p>LOC(aij) = LOC(a00) + (i x n + j) x L</p>
+<p>LOC(a00)是二维数组的起始存储地址</p>
+<p>L为每个数据元素占用存储单元的长度(数目)</p>
+<p>Loc(aij)=Loc(a11)+[<strong>(j-1)</strong> +<strong>(i-1)</strong> * n ]*K</p>
+<p>（2）列序（m行n列）</p>
+<p>LOC(aij) = LOC(a00) + (i + j x m) x L</p>
+<p>LOC(a00)是二维数组的起始存储地址</p>
+<p>L为每个数据元素占用存储单元的长度(数目)</p>
+<p>Loc(aij)=Loc(a11)+[<strong>(j-1)</strong> * m+<strong>(i-1)</strong>]*K</p>
+<p><strong>注意：已知二维数组Am,m按行存储的元素地址公式是： Loc(aij)= Loc(a11)+[(i-1) * m+(j-1)]K , 请问按列存储的公式相同吗？</strong></p>
+<p><strong>答：尽管是方阵，但公式仍不同。应为： Loc(aij)=Loc(a11)+[(j-1) * m+(i-1)]K</strong></p>
+<p>2.多维数组的顺序表示</p>
+<p>（1）以行序为主序存储,多(K)维数组元素存储位置</p>
+<p>LOC(aj1,j2,…,jk) = LOC(a00 0) + ((b2xb3x…xbkxj1)+(b3x…xbkxj2)+…+jk) x L</p>
+<p>（2）以列序为主序存储,多(K)维数组元素存储位置</p>
+<p>LOC(aj1,j2,…,jk) = LOC(a00 0) + ((b1xb2x…xbk-1xjk)+(b1x…xbk-2xjk-1)+…+j1)xLp</p>
+<h3 id="三、矩阵的压缩存储">三、矩阵的压缩存储</h3>
+<p>1.矩阵的压缩存储</p>
+<p>（1）如果矩阵中有许多值相同的元素或者零元素(特殊矩阵、稀疏矩阵)，为了节省存储空间，可以对这类矩阵进行压缩存储</p>
+<p>（2）压缩存储：为<strong>多个值相同</strong>的元素只分配<strong>一个</strong>存储空间；对<strong>零</strong>元素<strong>不分配</strong>空间</p>
+<p>2.特殊矩阵</p>
+<p>（1）特殊矩阵：矩阵中，值相同的元素或者零元素的分布有一定规律</p>
+<p>（2）对称矩阵：矩阵中，对角线两边对应位置上元素的值相同(aij=aji)</p>
+<p>（3）三角矩阵：矩阵中，对角线**上(下)<strong>边元素值为常数(或者0)，称</strong>下(上)**三角矩阵</p>
+<p>（4）如果只存储对称矩阵对角线上的值和对角线以上部分的值，则与上三角矩阵存储方法相同；如果只存储对称矩阵对角线上的值和对角线以下部分的值，则与下三角矩阵存储方法相同。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/071cd89e8abac33c6a3987de5e1fe6ca.png" alt="img"></p>
+<p>LOC(aij) = LOC(a00) + ((i+1)*i/2+j) *L</p>
+<p>若i&gt;=j，数组元素a[i] [j]在数组B中的存放位置为：1+2+…+i+j=(i+1)*i/2+j</p>
+<p>(i+1)*i/2为前i行元素总数，j为第i行第j个元素前元素个数（因为下标都从0开始）</p>
+<p>若 i &lt; j，数组元素 a[i] [j] 在矩阵的上三角部分, 在数组 B 中没有存放，可以找它的对称元素a[j] [i]：= j *(j +1) / 2 + i (在上则找对称到下)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/463fd5089b37496e8ed73e3764832d28.png" alt="img"></p>
+<p>若i &lt;= j，数组元素A[i] [j]在数组B中的存放位置为 n + (n-1) + (n-2) + … + (n-i+1) + j-i=(2*n-i-1) * i/2+j-i</p>
+<p>其中(2*n-i-1) *i/2为前i行元素总数，j-i为第i行第j个元素前元素个数</p>
+<p>若i &gt; j，数组元素A[i] [j]在矩阵的下三角部分，在数组 B 中没有存放。因此，找它的对称元素A[j] [i]。 A[j] [i]在数组 B 的第 (2*n-j-1) * j / 2 + i 的位置中找到。</p>
+<p>3.稀疏矩阵</p>
+<p>（1）稀疏矩阵：矩阵中有许多值相同的元素或者零元素，而且分布没有任何规律</p>
+<p>假设在mxn的矩阵中，有t个非零元素，令：</p>
+<p>δ= t /(m x n)</p>
+<p>如果稀疏因子δ≤0.05，则称该矩阵为稀疏矩阵</p>
+<p>（2）用三元组存储稀疏矩阵中的非零元素</p>
+<p>三元组(i,j,aij)表示矩阵中i行、j列位置的值为aij</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/8ea5fb68ee91da2e2dbf1833ce003490.png" alt="img"></p>
+<p>（3）转置</p>
+<p>设矩阵列数为m，对矩阵三元组表扫描m次</p>
+<p>第k次扫描，找寻所有列号为k的项</p>
+<p>将其行号变列号、列号变行号，顺次存于转置矩阵三元组表中</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/556b73736783266e0ba02a137c255653.png" alt="img"></p>
+<h3 id="四、广义表">四、广义表</h3>
+<p>1.广义表的定义</p>
+<p>（1）广义表：由n(≥0)个表元素组成的<strong>有限序列</strong>：</p>
+<p>LS = (a0, a1, a2, …, an-1)</p>
+<p>（2）LS是广义表的名称</p>
+<p>（3）ai是广义表的元素，既可以是表(称为子表)，也可以是数据元素(称为原子)</p>
+<p>（4）n为广义表的长度(n=0的广义表为空表)</p>
+<p>2.广义表的举例</p>
+<p>A=( ); //表A是一个空表</p>
+<p>B=(e); //表B有一个原子</p>
+<p>C=(a,(b,c,d)); //两个元素，分别为原子a和子表(b,c,d)</p>
+<p>D=(A,B,C); //有三个元素均为列表</p>
+<p>E=(a,E); //递归的列表</p>
+<p>其中，“表”以及“列表”，均指广义表</p>
+<p>3.广义表的存储</p>
+<p>广义表一般采用链式存储结构</p>
+<p>表结点[Tag=1|hp|tp]；原子结点[Tag=0|atom]；hp表示表头，tp表示表尾</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/fbd17a823db129904dbdde90f0366d97.png" alt="img"></p>
+<p>4.广义表的表头</p>
+<p>表头(head)：广义表的第一个<strong>元素</strong></p>
+<p>表头既可以是原子，也可以是列表(广义表)</p>
+<p>GetHead(B) = e；GetHead(D) = A；GetHead((B,C)) = B</p>
+<p>5.广义表的表尾</p>
+<p>表尾(tail)：广义表中，<strong>除表头外的部分</strong></p>
+<p><em><strong>注意：表尾一定是列表，要加括号！</strong></em></p>
+<p>GetTail(B) = ()；GetTail(D) = (B,C)；GetTail((B,C)) = ©</p>
+<ul>
+<li>GetTail【(b, k, p, h)】＝ （k,p,h） ;</li>
+<li>GetHead【( (a,b), (c,d) )】＝ （a,b） ;</li>
+<li>GetTail【( (a,b), (c,d) )】＝（(c,d)） ;</li>
+<li>GetTail【 GetHead【((a,b),(c,d))】】＝（b）;</li>
+<li>GetTail【（e）】＝（）;</li>
+<li>GetHead 【 ( ( ) )】＝（）；</li>
+<li>GetTail【 ( ( ) ) 】＝ （）；</li>
+</ul>
+<h2 id="第六章：树与二叉树">第六章：树与二叉树</h2>
+<h3 id="一、树的概念与基本术语">一、树的概念与基本术语</h3>
+<p>1.树的定义(Tree)</p>
+<p>（1）树是有n(n≥0)个结点的<strong>有限</strong>集合。</p>
+<p>（2）如果 n=0，称为空树；</p>
+<p>（3）如果 n&gt;0,称为非空树,对于非空树,<strong>有且仅有一个</strong>特定的称为根(Root)的节点(无直接前驱)</p>
+<p>（4）如果 n&gt;1，则除根以外的其它结点划分为 m (m&gt;0)个互不相交的有限集 T1, T2 ,…, Tm，其中<strong>每个集合本身又是一棵树</strong>，并且称为<strong>根的子树</strong>(SubTree)。(此为递归定义)</p>
+<p>（5）每个结点都有<strong>唯一的直接前驱</strong>，但可能有<strong>多个后继</strong>。</p>
+<p>2.树的基本术语</p>
+<p>（1）<strong>结点</strong>：包含一个<strong>数据元素及</strong>若干指向其子树的<strong>分支</strong>；（包括分支！）</p>
+<p>（2）结点的<strong>度</strong>：结点拥有的<strong>子树数</strong>；结点的<strong>深度</strong>是从根结点开始<strong>自顶向下</strong>逐层累加；结点的<strong>高度</strong>是从叶节点开始<strong>自底向上</strong>逐层累加。</p>
+<p>（3）<strong>叶</strong>结点：<strong>度为0</strong>的结点[没有子树的结点] (终端结点 )</p>
+<p>（4）<strong>分支</strong>结点：<strong>度不为0</strong>的结点[包括根结点]，也称为<strong>非终端结点</strong>。除根外称为内部结点。</p>
+<p><em><strong>注意：除根之外都是内部结点！</strong></em></p>
+<p>（5）孩子：结点的子树的根[<strong>直接</strong>后继，可能有多个]</p>
+<p>（6）双亲：孩子的<strong>直接</strong>前驱[最多只能有一个]</p>
+<p>（7）兄弟：同一双亲的孩子</p>
+<p>（8）子孙：以某结点为根的树中的<strong>所有结点</strong></p>
+<p>（9）祖先：从根到该结点所经分支上的<strong>所有结点</strong></p>
+<p>（10）层次：<strong>根结点为第一层</strong>，其孩子为第二层，依此类推</p>
+<p>（11）深度：树中结点的最大层次（从根算第一层），也为树的高度。</p>
+<p>（12）有序树：子树之间存在确定的次序关系。</p>
+<p>（13）无序树：子树之间不存在确定的次序关系。</p>
+<p>（14）森林：<strong>互不相交</strong>的树的集合。对树中每个结点而言，其子树的集合即为森林。<strong>任何一棵非空树是一个二元组</strong> Tree = （root，F）其中：root 被称为根结点 ，F 被称为子树森林。</p>
+<p>3.树型结构与线性结构的区别在于：一个元素可以有<strong>多个后继</strong>。</p>
+<p>4.树的相关性质：</p>
+<p>（1）树中的结点数等于所有结点的度数加一</p>
+<p>（2）度为m的树中第i层上至多有m^(i-1)个结点</p>
+<p>（3）高度为h的m叉树至多有(m^h-1)/(m-1)个结点</p>
+<p>（4）具有n个结点的m叉树的最小高度为logm(n(m-1)+1)</p>
+<h3 id="二、二叉树">二、二叉树</h3>
+<p>1.二叉树是一种特殊的树，每个结点<strong>最多</strong>有<strong>2棵子树</strong>，子树有左右之分。</p>
+<p>2.在二叉树的<strong>第i层</strong>上最多有**2^(i-1)**个结点。</p>
+<p>3.<strong>深度为k</strong>的二叉树最多有<strong>2^k-1</strong>个结点。</p>
+<p>4.如果二叉树终端结点数为n0(也为叶子结点数),度为2的结点数为n2,则<strong>n0=n2+1</strong></p>
+<h3 id="三、满二叉树">三、满二叉树</h3>
+<p>1.一个<strong>深度为k且有2^k-1个结点</strong>的二叉树。</p>
+<p>2.每层上的结点数都是最大数。</p>
+<p>3.可以自上而下、自左至右连续编号。</p>
+<h3 id="四、完全二叉树">四、完全二叉树</h3>
+<p>1.当且仅当<strong>每一个结点</strong>都与<strong>深度相同的满二叉树中编号从1到n的结点一一对应</strong>的二叉树。</p>
+<p>2.叶子结点只在最大两层上出现。</p>
+<p>3.左子树深度与右子树深度<strong>相等或大１</strong>。</p>
+<p>4.具有<strong>n个结点</strong>的完全二叉树,其深度为<strong>floor(log2(n)) +1</strong></p>
+<p>5.在完全二叉树中，结点i的双亲为 <strong>i/2</strong>;</p>
+<p>结点i的左孩子LCHILD(i)=<strong>2i</strong>;</p>
+<p>结点i的右孩子RCHILD(i)=<strong>2i+1</strong>.</p>
+<h3 id="五、二叉树的顺序存储结构">五、二叉树的顺序存储结构</h3>
+<p>1.用一组连续的存储单元依次<strong>自上而下,自左至右</strong>存储结点。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/656470a8d16c33b20e5602d8d230b148.png" alt="img"></p>
+<h3 id="六、二叉树的链式存储结构">六、二叉树的链式存储结构</h3>
+<p>1.二叉链表：二叉链表结点由一个数据域和两个指针域组成，采用数据域加上左、右孩子指针。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/71d85e351ec79c63300125079ef06c0a.png" alt="img"></p>
+<p>2.三叉链表：采用数据域加上左、右孩子指针及双亲指针。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/53d66d8bd69370e1df1575328bc86df1.png" alt="img"></p>
+<h3 id="七、遍历二叉树">七、遍历二叉树</h3>
+<p>1.遍历二叉树：树的遍历就是按某种次序访问树中的结点，要求每个结点访问一次且仅访问一次（<strong>非线性结构线性化</strong>）。</p>
+<p>2.一个二叉树由根节点与左子树和右子树组成，设访问根结点用D表示，遍历左、右子树用L、R表示，如果规定先左子树后右子树，则共有三种组合</p>
+<p>（1）DLR [先序遍历]</p>
+<p>（2）LDR [中序遍历]</p>
+<p>（3）LRD [后序遍历]</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/18ab07f635c22b73c124fdf7d5b597af.png" alt="img"></p>
+<h3 id="八、线索二叉树">八、线索二叉树</h3>
+<p>1.利用空指针</p>
+<p>（1）在有<strong>n个</strong>结点的二叉树中，必定存在<strong>n+1个</strong>空链域；</p>
+<p>（2）因为<strong>每个结点有两个链域</strong>（左、右孩子指针），因此共有<strong>2n</strong>个链域；</p>
+<p>（3）除根结点外，每个结点都有且仅有一个分支相连，即<strong>n-1个</strong>链域被使用。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/114e01c162ea71094f42200231084a02.png" alt="img"></p>
+<h3 id="十、树与森林">十、树与森林</h3>
+<p>1.树的存储结构</p>
+<p>（1）双亲表示法：采用一组连续的存储空间；由于每个结点只有一个双亲，只需要一个指针。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/14534fe942e56381de7a12ec1b1fad8a.png" alt="img"></p>
+<p>（2）孩子表示法：可以采用多重链表，即每个结点有多个指针，最大缺点是空链域太多[(d-1)n+1个]。将每个结点的孩子排列起来，用单链表表示；将每个结点排列成一个线性表。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/e48970eaff818db8ba39af07ad1da42d.png" alt="img"></p>
+<p>（3）孩子兄弟表示法（常用）：采用<strong>二叉链表</strong>左边指针指向第一个孩子，右边指针指向兄弟。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/8534f045d3416d9f80456e392b98a81c.png" alt="img"></p>
+<p>2.树与二叉树的对于关系</p>
+<p>（1）树与二叉树都可以采用二叉链表作存储结构。</p>
+<p>（2）任意给定一棵<strong>树</strong>，可以找到一个<strong>唯一的二叉树(没有右子树)</strong>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/e59356587a1801aae6c1ac38588d5e37.png" alt="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/d8f5145c4fd5a4606ecb16653b7d7281.png" alt="img"></p>
+<p>3.森林与二叉树的对应关系</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/fbe8c5e22651b6cdb5b93f224c528875.png" alt="img"></p>
+<p>4.树的遍历：</p>
+<p>（1）先根（次序）遍历（树的先根-----二叉树的先序）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/17cfdc5def54dadd0bb73b28512a9adb.png" alt="img"></p>
+<p>（2）后根（次序）遍历（树的后根-----二叉树的中序）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/63e5036c2fcce2ebe01fa2615b36c67c.png" alt="img"></p>
+<p>5.森林的遍历：</p>
+<p>（1）先序遍历：<strong>依次从左至右</strong>对森林中的每一棵树进行<strong>先根</strong>遍历。</p>
+<p>（2）中序遍历：<strong>依次从左至右</strong>对森林中的每一棵树进行<strong>后根</strong>遍历。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/bad0cef11a7be064726b0848ea787ab2.png" alt="img"></p>
+<h3 id="十一、赫夫曼树及其应用">十一、赫夫曼树及其应用</h3>
+<p>1.最优二叉树</p>
+<p>（1）路径：从树中一个结点到另一个结点之间的分支构成这两个结点之间的路径</p>
+<p>（2）路径长度：路径上的<strong>分支数目</strong></p>
+<p>（3）<strong>树的路径长度</strong>：从树根到<strong>每个结点</strong>的路径长度之和</p>
+<p>（4）<strong>结点</strong>的<strong>带权路径长度</strong>：从结点到树根之间的<strong>路径长度</strong>与结点上<strong>权</strong>的乘积</p>
+<p>（5）<strong>树的带权路径长度(WPL)</strong>：树中<strong>所有叶子结点</strong>的<strong>带权路径长度之和</strong>（是<strong>叶子</strong>结点！）</p>
+<p>（6）<strong>最优</strong>二叉树：假设二叉树有n个叶子，其每个叶子结点带权wi，则带权路径长度<strong>WPL最小</strong>的二叉树称为最优二叉树</p>
+<p>（7）赫夫曼(Huffman)树就是一棵最优二叉树</p>
+<p>2.赫夫曼树</p>
+<p>（1）在Huffman树中，权值最<strong>大</strong>的结点离根最<strong>近</strong>；权值最<strong>小</strong>的结点离根最<strong>远</strong>。</p>
+<p>（2）构建算法：</p>
+<p>—1.根据给定的n个权值(w1, w2, …, wn)构成n棵二叉树的集合F={T1, T2, …, Tn}，其中每棵二叉树Ti中只有一个带权为wi的根结点，左右子树为空。</p>
+<p>—2.在F中选取两棵根结点的<strong>权值最小</strong>的树作为左右子树构造一棵新的二叉树，且置其根结点的权值为其左右子树根结点的权值之和。</p>
+<p>—3.在F中删除这两棵树，同时将新得到的二叉树加入F中。</p>
+<p>—4.重复2, 3，直到F只含一棵树为止。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/1c2c12147af6f73def5faa3dbb57796d.png" alt="img"></p>
+<p><em><strong>注意：画图时每一次要把所有点都画出来！</strong></em></p>
+<p>（3）编码算法：（从叶子开始！）</p>
+<p>—1.从Huffman树的<strong>每一个叶子结点</strong>开始</p>
+<p>—2、依次沿结点到根的路径，判断该结点是父亲结点的左孩子还是右孩子，如果是<strong>左孩子则得到编码‘0’，否则得到编码‘1’</strong>，先得到的编码放在后面</p>
+<p>----3、直到到达根结点，编码序列即为该叶子结点对应的Huffman编码</p>
+<p>（4）译码算法：</p>
+<p>—1.指针指向Huffman树的<strong>根结点</strong>，取第一个Huffman码</p>
+<p>—2、如果Huffman码为‘0’，将指针指向当前结点的左子树的根结点；如果Huffman码为‘1’，将指针指向当前结点的右子树的根结点</p>
+<p>—3、如果指针指向的当前结点为叶子结点，则输出叶子结点对应的字符；否则，取下一个Huffman码，并返回2</p>
+<p>—4、如果Huffman码序列未结束，则返回1继续译码</p>
+<p><strong>题目：</strong>（4）设给出一段报文：GOOD_GOOD_GOOD_GOOOOOOOO_OFF字符集合是 { O, G, _, D, F}，各个字符出现的频度(次数)是 W＝{ 15, 4, 4, 3, 2}。</p>
+<p>若给每个字符以等长编码 O: 000 G: 001 _: 010 D: 011 F: 100</p>
+<p>则总编码长度为 (15+4+4+3+2) * 3 = 84.</p>
+<p>若按各个字符出现的概率不同而给予不等长编码，可望减少总编码长度。</p>
+<p>各字符{ O, G, _, D, F }出现概率为</p>
+<p>{ 15/28, 4/28, 4/28, 3/28, 2/28 },<strong>化整</strong>为 { 15, 4, 4, 3, 2 }</p>
+<p>令左孩子分支为编码‘0’，右孩子分支为编码‘1’将根结点到叶子结点路径上的分支编码，组合起来，作为该字符的Huffman码，则可得到：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/bed5089b63111fc7b2651629600dbdb9.png" alt="img"></p>
+<p>O:1 _:011 G:010 D:001 F:000</p>
+<p>则总编码长度为 15*1+(2+3+4+4) *3 = 54 &lt; 84</p>
+<p><strong>Huffman是一种前缀编码</strong>，解码时不会混淆</p>
+<p>如GOOD编码为：01011001</p>
+<p>如Huffman编码序列01011001，译码后的字符串为GOOD</p>
+<p>（5）<strong>前缀编码</strong>：指的是，任何<strong>一个字符的编码</strong>都<strong>不是同一字符集中另一个字符</strong>的编码的<strong>前缀</strong>。利用赫夫曼树可以构造一种不等长的二进制编码，并且构造所得的赫夫曼编码是一种最优前缀编码，即使所传电文的总长度最短。</p>
+<p><strong>题目</strong>：（1）设有字符集{A, B, C, D}，各字符在电文中出现的次数集为{1, 3, 5, 7}，则哈夫曼树构造过程如下图所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ac00597aff82726c37d09a46419e1f6c.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/3ccd86622ea5cdeb3d5756a855a900ba.png" alt="img"></p>
+<p>（最终哈夫曼树的构造结果如上，一定要记得写结果！）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ed524901d81ea79326dffdce275fe4f8.png" alt="img"></p>
+<p>（2）已知一颗完全二叉树第7层有20个结点，则整棵树的结点数？</p>
+<p>83</p>
+<p>（3）在二叉树中，指针p指向的结点是叶子，则p满足条件？</p>
+<p>p-&gt;leftChild==NULL&amp;&amp;p-&gt;rightChild==NULL</p>
+<p>（4）由3个结点组成的二叉树最多有多少种形态？</p>
+<p>5</p>
+<p>（5）已知一棵完全二叉树有100个结点，根节点编号为1，按层次遍历编号，则结点45的父亲编号为？结点50的孩子编号情况如何？</p>
+<p>22;100,101</p>
+<h2 id="第七章：图">第七章：图</h2>
+<h3 id="一、图的定义与术语">一、图的定义与术语</h3>
+<p>1.图是由顶点集合(vertex)及顶点间的关系集合组成的一种数据结构： Graph＝( V, E )</p>
+<p>其中V = {x | x属于数据对象}是顶点的有穷非空集合</p>
+<p>E是顶点之间关系的有穷集合，包括E1 = {(x, y) | x, y 属于 V } 边的集合或E2 = {&lt;x, y&gt; | x, y 属于 V } 弧的集合</p>
+<p><em><strong>注意：在一个图中，所有顶点的度数之和等于边数的2倍！</strong></em></p>
+<p>2.无向图（无向图的邻接矩阵是对称矩阵）</p>
+<p>用(x,y)表示两个顶点x,y之间的一条边(edge)N={V,E}，V={0,1,2,3,4,5}，E={(0,1), (0,4), (0,5), (1,2), (1,3), (1,5), (2,3), (3,4), (3,5), (4,5)}</p>
+<p>（1）邻接点：如果(x,y)属于E,称x,y互为邻接点，即x,y相邻接</p>
+<p>（2）依附：边(x,y)依附于顶点x,y</p>
+<p>（3）相关联：边(x,y)与x,y相关联</p>
+<p>（4）顶点的度：和顶点相关联的边的数目，记为TD(x)</p>
+<p>3.无向图（完全图）：如果无向图有<strong>n(n-1)/2</strong>条边，则称为<strong>无向完全图</strong>。</p>
+<p>4.有向图</p>
+<p>用&lt;x,y&gt;表示从x到y的一条弧(Arc)，且称x为弧尾，y为弧头，N={V,E}，V={0,1,2,3,4}，E={&lt;0,1&gt;，&lt;0,3&gt;，&lt;0,4&gt;，&lt;1,2&gt;，&lt;2,4&gt;，&lt;3,2&gt; }</p>
+<p>（1）邻接：如果&lt;x,y&gt;属于E,称x邻接到y,或y邻接</p>
+<p>（2）自x相关联：弧&lt;x,y&gt;与x,y相关联</p>
+<p>（3）入度：以顶点为头的弧的 数目，记为ID(x)</p>
+<p>（4）出度：以顶点为尾的弧的 数目，记为OD(x)</p>
+<p>（5）度：TD(x)=ID(x)+OD(x)</p>
+<p>4.有向图（完全图）：如果有向图有n(n-1)条边，则称为有向完全图。</p>
+<p>5.路径：是一个从顶点x到y的顶点序列(x, vi1, vi2,…, vin, y)其中，(x,vi1),(vij-1,vij),(vin,y)皆属于E。</p>
+<p>6.回路：</p>
+<p>（1）回路或环：路径的开始顶点与最后一个顶点相同，即路径中(x, vi1, vi2,…, vin, y)，x=y</p>
+<p>（2）简单路径：路径的顶点序列中，<strong>顶点不重复</strong>出现</p>
+<p>7.连通：</p>
+<p>（1）连通：如果顶点x到y有路径，称x和y是连通的</p>
+<p>（2）连通图：图中所有顶点都连通</p>
+<p>8.子图：</p>
+<p>设有两个图 G＝(V, E) 和 G’＝(V’, E’)。</p>
+<p>若 V’包含于 V 且 E’包含于E, 称图G’是图G的子图</p>
+<p>9.生成树</p>
+<p>一个连通图的生成树是一个<strong>极小连通子</strong>图，它含图中全部n个顶点，但只有足以构成一棵树的<strong>n-1</strong>条边。</p>
+<h3 id="二、图的存储结构">二、图的存储结构</h3>
+<p>图的存储结构有4种：邻接矩阵，邻接表，十字链表（有向），邻接多重表（无向）</p>
+<p>1.邻接矩阵</p>
+<p>（1）邻接矩阵：记录图中各顶点之间关系的二维数组。</p>
+<p>（2）对于不带权的图，以1表示两顶点存在边(或弧)(相邻接)，以0表示两顶点不邻接，即 如果(i,j)属于E 或 &lt;i,j&gt;属于E，A[ i ] [ j ] =1 否则等于0。</p>
+<p>（3）无向图的邻接矩阵为对称矩。</p>
+<p>（4）其第i行1的个数等于顶点i的出度OD(i)，第j列1的个数等于顶点j的入度ID(j)。</p>
+<p>2.邻接矩阵（网络）</p>
+<p>在网络中，两个顶点如果不邻接，则被视为距离为无穷大；如果邻接，则两个顶点之间存在一个距离值(即权值)，即如果(i,j)属于E 或 &lt;i,j&gt;属于E，A[ i ] [ j ] =wi,j 否则等于<strong>∞</strong>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/d93f3d11bdb4c58ce33ea1094c7a74e5.png" alt="img"></p>
+<p>3.邻接表</p>
+<p>（1）邻接表是图的一种<strong>链式</strong>存储结构。</p>
+<p>（2）在邻接表中，每个顶点设置一个单链表，其<strong>每个结点都是依附于该顶点</strong>的边（或以该顶点为尾的弧）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/383520efc5c6bba4ae4bf9884a2d4425.png" alt="img"></p>
+<p>无向图中，注意左侧的表格数组！</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/4f58f13bd0f18a35c444508e63cb4784.png" alt="img"></p>
+<p>（邻接表（有向网络））</p>
+<p>（3）在一个<strong>无向图的邻接表</strong>表示中，每个顶点对应一个链表，链表中包含该顶点相邻的其他顶点。每条边在邻接表中对应两个链表结点，因为无向图的边是双向的。给定图包含 10 个顶点和 20 条边，那么每个顶点的平均度数是 2×边数/顶点数=4。</p>
+<p><strong>由于每个链表结点对应一条边，总的链表结点数是 2×边数</strong>。所以，邻接表包含 2×20=40 个链表结点。</p>
+<p><em><strong>注意：n个结点，e条边的无向图邻接表中，有n个头结点和2e个表结点</strong></em></p>
+<p>（4）在有向图的邻接表中<strong>不易找到指向该顶点的弧</strong>。</p>
+<p>（5）对于有向图的邻接表，其第i个链表中结点的个数只是该顶点的出度；如果要计算入度，必须遍历整个邻接表[也可以建立一个逆邻接表]要判定两个顶点i和j是否有边（或弧），必须搜索整个第i个和第j个链表，不及邻接矩阵方便。</p>
+<p>在有向图的逆邻接表找每个结点入度：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/c5d0d6be7909f29e3e22c4e864a0f801.png" alt="img"></p>
+<p>（5）无向邻接表所需存储空间O(|V|+2|E|)，有向邻接表所需存储空间O(|V|+|E|)</p>
+<p>（6）对于稀疏图，采用邻接表能极大节省空间。</p>
+<p>4.十字链表（有向图！）</p>
+<p>（1）十字链表是<strong>有向图</strong>的另一种存储结构</p>
+<p>（2）十字链表是将有向图的邻接表和逆邻接表结合起来的一种存储结构</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/868cb857d23f81b231662163e8fb5816.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/d67f3dd68092a3c19c8295039057e985.png" alt="img"></p>
+<p>绿色代表：相同弧尾（邻接表）</p>
+<p>红色代表：相同弧头（逆邻接表）</p>
+<p>5.邻接多重表（无向图！）</p>
+<p>（1）邻接多重表是<strong>无向图</strong>的另一种存储结构</p>
+<p>（2）在无向图中，一条边要用2个结点表示(分别从2个顶点的角度看)</p>
+<p>（3）在邻接多重表中，<strong>一条边只用一个结点</strong>表示</p>
+<p>（4）将所有具有某顶点的结点，全部用链连结起来，链所在的域为该顶点对应的指针域</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/408ad7415c9875ee908456fced546e95.png" alt="img"></p>
+<h3 id="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/0016dd515a022fdf2ce4174f3adf52e0.png" alt="img"></h3>
+<h3 id="三、图的遍历">三、图的遍历</h3>
+<p>1.从图的某一顶点开始，访遍图中其余顶点，且使<strong>每一个顶点仅被访问一次</strong></p>
+<p>2.图的遍历主要应用于<strong>无向图</strong></p>
+<p>3.深度优先搜索DFS</p>
+<p>（1）图的深度优先搜索是<strong>树的先根遍历</strong>的推广</p>
+<p>（2）图中可能存在回路，且图的任一顶点都可能与其它顶点相通，在访问完某个顶点之后可能会沿着某些边又回到了曾经访问过的顶点。</p>
+<p>（3）为了避免重复访问，可设置一个标志顶点是否被访问过的辅助数组 visited [ ]</p>
+<p>（4）算法：</p>
+<p>所有顶点访问标志visited[]设置为FALSE</p>
+<p>从某顶点v0开始，设v=v0</p>
+<p>–1.如果visited[v]=FALSE，则访问该顶点，且设visited[v]=TRUE</p>
+<p>–2.如果找到当前顶点的一个新的相邻顶点w,设v=w,重复1</p>
+<p>–3.否则(说明当前顶点的所有相邻顶点都已被访问过，或者当前顶点没有相邻顶点)，如果当前顶点是v0，退出；否则返回上一级顶点，重复2</p>
+<p>（5）<strong>存储结构未定，则遍历顺序不确定</strong>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/4cf9c9a96cca249a714f2697756b73ec.png" alt="img"></p>
+<p>4.广度优先搜索（BFS）</p>
+<p>（1）广度优先搜索(BFS)是一种分层搜索方法</p>
+<p>（2）BFS每向前走一步可能访问一批顶点, 不存在往回退的情况</p>
+<p>（3）BFS不是一个递归的过程。</p>
+<p>（4）算法：</p>
+<p>所有顶点访问标志visited[]设置为FALSE</p>
+<p>从某顶点v0开始，访问v0，visited[v0]=TRUE，将v0插入队列Q</p>
+<p>–1.如果队列Q不空，则从队列Q头上取出一个顶点v,否则结束</p>
+<p>–2.依次找到顶点v的所有相邻顶点v’，如果visited[v’]=FALSE，访问该顶点v’，visited[v’]=TRUE，将v’插入队列Q</p>
+<p>–3.重复1,2</p>
+<p>5.结论</p>
+<p>（1）如果图为<strong>连通图</strong>，则从该图的任意一个顶点开始执行一次深度优先遍历或广度优先遍历，即可访问该连通图的所有顶点。</p>
+<p>（2）如果图为非连通图，则<strong>依次从未访问过的顶点</strong>开始执行深度优先遍历或广度优先遍历，直至所有的顶点均被访问。</p>
+<p>（3）事实上执行一次深度优先可以遍历一个连通分支。<strong>图有多少个连通分支，就调用多少次深度优先遍历。</strong></p>
+<p>6.时间复杂度</p>
+<p>（1）可以看出无论是深度优先遍历还是广度优先遍历,其实质都是透过边或弧找邻接点的过程,只是访问的顺序不同。</p>
+<p>（2）两者的时间复杂度相同，<strong>取决于采取的存储结构</strong>，若用<strong>邻接矩阵为O(N^2)</strong>,若 用<strong>邻接表则为O(N+E) 即O(n)</strong>。</p>
+<p>注意：深度优先搜索遍历类似于树的先根遍历，广度优先搜索遍历类似于树的层次遍历。</p>
+<p>**题目：**假设用邻接表存储，下图中边上序号表示边输入顺序(链表头插入)，画出该图邻接表，写出用该邻接表存储时其深度优先顺序和广度优先顺序。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/469bd9200a84d1d1b72c67f54b0522fc.jpeg" alt="img"></p>
+<h3 id="四、图的连通性问题">四、图的连通性问题</h3>
+<p>1.无向图的连通性</p>
+<p>如果无向图中，存在不连通的顶点，则该图称为非连通图。</p>
+<p>2.无向图的连通分量</p>
+<p>（1）<strong>非</strong>连通图的<strong>极大连通子图</strong>叫做<strong>连通分量</strong>。</p>
+<p>（2）若从无向图的每一个连通分量中的一个顶点出发进行DFS或BFS遍历，可求得无向图的所有连通分量的生成树(DFS或BFS生成树)。</p>
+<p>（3）所有连通分量的生成树组成了非连通图的生成森林。</p>
+<p>（4）连通分量是无向图的极大连通子图，其中极大的含义是将依附于连通分量中顶点的所有边都加上，所以连通分量中可能存在回路。</p>
+<p>（5）<strong>生成树是一个连通图的极小连通子图</strong>，包含连通图的所有顶点，且使其连通的边数最少。</p>
+<p>（6）<strong>极大连通子图是无向图（不一定连通）的连通分量</strong>。极小连通子图是连通无向图的生成树。</p>
+<p>（7）<strong>任何连通图的连通分量只有一个，即使其自身</strong>。</p>
+<p>3.无向图的生成树</p>
+<p>（1）由DFS遍历，求得连通分量称为DFS生成树</p>
+<p>（2）由BFS遍历，求得连通分量称为BFS生成树</p>
+<p>4.有向图的强连通分量</p>
+<p>强连通图是指在有向图中，对于每一对不同的顶点u和v，都存在从u到v及v到u的路径，n个顶点用弧向同一方向连接形成一个环时，就是强连通图，需要弧最少。</p>
+<p>（1）深度优先搜索算法是求有向图的强连通分量的有效方法。</p>
+<p>（2）在有向图G上，从某个顶点出发沿该顶点为尾的弧进行深度优先搜索，并按其所有邻接点的搜索都完成（即退出dfs函数）的顺序将顶点排列起来。</p>
+<p>（3） 在有向图G上，从最后搜索的顶点出发，沿着以该顶点为头的弧作逆向的深度优先搜索遍历。若此次遍历不能访问到有向图中的所有顶点，则从余下顶点中最后完成搜索的顶点出发继续进行逆向的深度优先搜索遍历。</p>
+<p>（4）每次调用dfs作逆向深度优先遍历所访问到的顶点集便是有向图G中的一个强连通分量的顶点集。</p>
+<p>（5）为了实现以上遍历，需要对深度优先遍历算法作以下修改</p>
+<p>–1.在进入DFStraverse函数时，对计数变量count进行初始化，count=0</p>
+<p>–2.在退出DFS函数之前，将完成搜索的顶点号记录在另一个辅助数组finish【vernum】中，在DFS函数结束之前加上finished【++count】=v</p>
+<p>5.最小生成树</p>
+<p>（1）如果无向图中，边上有权值，则称该无向图为无向网</p>
+<p>（2）如果无向网中的每个顶点都相通，称为连通网</p>
+<p>（3）最小生成树(Minimum Cost Spanning Tree)是代价最小的连通网的生成树，即该<strong>生成树上的边的权值和最小</strong></p>
+<p>（4）准则：必须使用且仅使用连通网中的<strong>n-1</strong>条边来联结网络中的n个顶点；不能使用产生回路的边；各边上的权值的总和达到最小。常用于道路建设、线路铺设等应用中计算成本。</p>
+<p>6.Prim普里姆算法生成最小生成树</p>
+<p>（1）假设N=(V,E)是连通网</p>
+<p>（2）TE是N上最小生成树中边的集合</p>
+<p>–1.U={u0}，(u0属于V), TE={}</p>
+<p>–2.在所有u属于U,v属于V-U的边(u,v)属于E中找一条代价最小的边(u,v0)并入集合TE，同时v0并入U</p>
+<p>–3.重复2，直到U=V。T=(V，TE)即为所求最小生成树。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/4f70445cd5f97fdabec9d530d18dae14.png" alt="img"></p>
+<p>（记得每一次画上所有点！）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/f070197a7eb9641b7b362a26b542ad99.png" alt="img"></p>
+<p>（Prim V1-Vn mindis flag U)</p>
+<p>（3）在生成树的构造过程中，图中 n 个顶点分属两个集合：已落在生成树上的顶点集 U 和尚未落在生成树上的顶点集V-U，应在所有连通U中顶点和V-U中顶点的边中选取权值最小的边逐渐加入TE,相应顶点加入U中。</p>
+<p>7.Kruscal克鲁斯卡尔算法生成最小生成树</p>
+<p>（1）假设N=(V,E)是连通网</p>
+<p>–1.非连通图T={V,{}}，图中每个顶点自成一个连通分量</p>
+<p>–2.在E中找一条代价最小，且其两个顶点分别依附不同的连通分量的边，将其加入T中</p>
+<p>–3.重复2，直到T中所有顶点都在同一连通分量上</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/60ad49f5dc33ad7e92983ebf47214a6f.png" alt="img"></p>
+<p>（2）把边按照从小到大的顺序排序；</p>
+<p>判断边的顶点不在同一个联通分支-》并查集。</p>
+<p>8.生成最小生成树：</p>
+<p>当为稠密图（邻接矩阵）prim算法 O(n^2)</p>
+<p>当为稀疏图（邻接表）Kruscal算法O(eloge)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ad079dbda9a728b7e8a6266668cf7d2c.png" alt="img"></p>
+<h3 id="五、最短路径">五、最短路径</h3>
+<p>1.最短路径</p>
+<p>（1）最短路径是求从图（或网）中某一顶点，到其余各顶点的最短路径</p>
+<p>（2）最短路径与最小生成树主要有三点不同：</p>
+<p>–1.最短路径的操作对象主要是有向图(网)，而最小生成树的操作对象是无向图</p>
+<p>–2.最短路径有一个始点，最小生成树没有（Prim算法有起点）</p>
+<p>–3.最短路径关心的是始点到每个顶点的路径最短，而最小生成树关心的是整个树的代价最小</p>
+<p>2.基本概念</p>
+<p>（1）路径长度:一条路径上所经过的<strong>边的数目</strong></p>
+<p>（2）带权路径长度:路径上<strong>所经过边的权值之和</strong></p>
+<p>（跟树的带权路径长度区分好！）</p>
+<p>（3）最短路径:(带权)路径长度(值)最小的那条路径</p>
+<p>（4）最短路径长度或最短距离:最短路径长度</p>
+<p>3.Dijkstra算法(O(n^3))</p>
+<p>（1）Dijkstra算法思想：采用按<strong>路径长度递增</strong>的次序产生最短路径</p>
+<p>–1.设置两个顶点的集合U和T，集合U中存放已找到最短路径的顶点，集合T中存放当前还未找到最短路径的顶点。</p>
+<p>–2.初始状态时，集合U中只包含源点，设为v0；</p>
+<p>–3.然后从集合T中选择到源点v0路径长度最短的顶点u加入到集合U中；</p>
+<p>–4.集合U中每加入一个新的顶点u都要修改源点v0到集合T中剩余顶点的当前最短路径长度值，集合T中各顶点的新的当前最短路径长度值，为原来的当前最短路径长度值与从源点过顶点u到达该顶点的路径长度中的较小者。</p>
+<p>–5.转到3，此过程不断重复，直到集合T中的顶点全部加入到集合U中为止。</p>
+<p>（2）在Dijkstra算法中，引进了一个<strong>辅助向量D</strong></p>
+<p>每个分量D[i]表示当前所找到的从始点到每个终点vi的最短路径长度。</p>
+<p>D[i]初值为始点v0到各终点vi的直接距离，即若从始点到某终点有(出)弧，则为弧上的权值，否则为∞。</p>
+<p>（3）得到路径：</p>
+<p>–1.设置另一个辅助向量path[]，用来存放得到的从源点v0到其余各顶点的最短路径上到达目标顶点的前一顶点下标。</p>
+<p>–2.为每一个顶点i设置辅助向量path<a target="_blank" rel="noopener" href="https://blog.csdn.net/gyeolhada/article/details/135513487?ops_request_misc=%7B%22request%5Fid%22%3A%22172193217416800227432269%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=172193217416800227432269&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-135513487-null-null.142%5Ev100%5Epc_search_result_base6&amp;utm_term=%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0#">i</a>，用来存放得到的从源点v0到该顶点的最短路径中依次访问过的顶点。第一个值是路径上的顶点数。</p>
+<p>**题目：**对下图求从V0出发到各顶点的最短路径。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/3a54777867e8f7fbae29f16b34f66b3d.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/f8a7036d84c09217468d3af882f4ccad.png" alt="img"></p>
+<p>（最后的过程5“无”一定要加，且要补充最后最短路径的结果!)</p>
+<p>4.求n个顶点之间的最短路径</p>
+<p>（1）用Dijkstra算法也可以求得有向图G=(V，E)中每一对顶点间的最短路径。</p>
+<p>方法是： 设置二维数组D [i] [j]，数组每一行D[i]表示从顶点vi出发到其它顶点的最短路径，即每次以一个不同的顶点vi为源点重复Dijkstra算法便可求得每一对顶点间的最短路径，<strong>时间复杂度是O(n^3)</strong> 。</p>
+<p>（2）<strong>弗罗伊德(Floyd)算法，其时间复杂度仍是O(n^3)</strong> ， 但算法形式更为简明，步骤更为简单，数据结构是基于图的邻接矩阵。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ffa174a05f2bcade597ccdb74e9735d6.png" alt="img"></p>
+<p>将图中一个顶点Vk 加入到S中，修改A[i] [j]的值，修改方法是：</p>
+<p><strong>A[i] [j] = Min{ A[i] [j] , (A[i] [k]+A[k] [j]) }</strong></p>
+<p>找路径：定义二维数组Path[n] [n] (n为图的顶点数) ，元素Path<a target="_blank" rel="noopener" href="https://blog.csdn.net/gyeolhada/article/details/135513487?ops_request_misc=%7B%22request%5Fid%22%3A%22172193217416800227432269%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=172193217416800227432269&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-2-135513487-null-null.142%5Ev100%5Epc_search_result_base6&amp;utm_term=%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%A4%8D%E4%B9%A0#">i</a>保存从Vi到Vj的最短路径所经过的顶点。若Path[i] [j]=k：从Vi到Vj 经过Vk ，最短路径序列是(Vi , …, Vk , …, Vj) ，则路径序列：(Vi , …, Vk)和(Vk , …, Vj)一定是从Vi到Vk和从Vk到Vj 的最短路径。从而可以根据Path[i] [k]和Path[k] [j]的值再找到该路径上所经过的其它顶点，…依此类推。</p>
+<p>初始时令Path[i] [j]=-1，表示从Vi到Vj 不经过任何(S中的中间)顶点。当某个顶点Vk加入到S中后使A[i] [j]变小时，令Path[i] [j]=k。</p>
+<h3 id="六、有向无环图及其应用">六、有向无环图及其应用</h3>
+<p>1.<strong>AOV</strong>网（<strong>有向图</strong>！）</p>
+<p>（1）如果用有向图的顶点表示活动，用弧表示活动间的优先关系，则称该有向图为顶点表示活动的网AOV(Activity On Vertex Network)</p>
+<p>（2）AOV的应用包括流程图、工程安排等。对AOV网，应判定图中不存在环，因为存在环意味着某项活动应以自己为先决条件。</p>
+<p>2.有向无环图(DAG)Directed Acycline Graph</p>
+<p>3.检查有向图中是否有回路：</p>
+<p>（1）深度优先搜索 ：从某个顶点v出发，进行DFS，如果存在一条从顶点u到v的回边，则有向图中存在环。</p>
+<p>（2）拓扑排序：由严格偏序定义得到的拓扑有序的操作称拓扑排序。</p>
+<p>若集合X上的关系R是：⑴.自反的：x R x⑵.反对称的：x R y =&gt; y R x⑶.传递的：xRy &amp; yRz =&gt; xRz 则称R是集合X上的偏序关系。</p>
+<p>全序：设关系R是集合X上的偏序，如果对每个x,y属于X，必有xRy或者yRx，则称R是X上的全序关系。</p>
+<p>偏序：指集合中仅有部分成员之间可比较。</p>
+<p>全序：指集合中全体成员之间均可比较</p>
+<p>算法：⑴.在有向图中选一个<strong>没有前驱</strong>的顶点(无入度)且输出之⑵.从图中删除该顶点和所有以它为尾的弧；重复⑴⑵两步，直到所有顶点输出为止或跳出循环。</p>
+<p>（3）拓扑排序与AOV网：</p>
+<p>拓扑排序可检测AOV网是否存在环。如果通过拓扑排序能将AOV网络的所有顶点都排入一个拓扑有序的序列中, 则该网络中必定不会出现有向环。反之其中存在环。</p>
+<p>4.拓扑排序实现</p>
+<p>（1）没有前驱的顶点 == 入度为零的顶点</p>
+<p>（2）删除顶点及以它为尾的弧 == 弧头顶点的入度减1</p>
+<p><strong>题目</strong>:写出某AOV网的邻接表存储结构如下，写出分别用队列和栈存储入读为零的顶点时的拓扑排序序列。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/4f1a89160a1628b14847d098811eb582.png" alt="img"></p>
+<p>栈的拓扑：C4,C0,C2,C1,C3,C5</p>
+<p>队列的拓扑：C2,C4,C0,C1,C5,C3</p>
+<p>5.AOV-网</p>
+<p>（1）如果用有向图的<strong>顶点表示事件</strong>，用<strong>弧表示活动</strong>，则称该有向图为边表示活动的网AOE(Activity On Edge)</p>
+<p>（2）AOE应该同样是DAG，AOE包括估算工程的完成时间。</p>
+<p>注意：AOE网和AOV网都是有向无环图，不同在于AOE网中的边有权值；而AOV网中的边无权值，仅表示顶点之间的前后关系。</p>
+<p>6.关键路径</p>
+<p>（1）工程问题的AOE网中，从工程开始(顶点)到工程结束(顶点)之间<strong>路径长度最长</strong>的路径叫关键路径（<strong>最长</strong>路径！）</p>
+<p>（2）提前完成<strong>关键路径上的活动</strong>，工程进度会加快</p>
+<p>（3）提前完成非关键路径上的活动，对工程无帮助</p>
+<p>7.关键活动</p>
+<p>（1）关键路径上的所有活动称为关键活动</p>
+<p>（2）<strong>找到工程AOE中的所有关键活动，即找到了关键路径</strong></p>
+<p>8.关键活动有关的量</p>
+<p>（1）e(i)：活动ai最早开始时间</p>
+<p>（2）l(i)：活动ai最迟开始时间</p>
+<p>（3）l(i)-e(i)：活动ai开始时间余量</p>
+<p>（4）如果l(i)=e(i)，则称活动ai为关键活动</p>
+<p>（5）ve(j)：事件vj最早开始时间</p>
+<p>（6）vl(j)：事件vj最迟开始时间</p>
+<p>（7)e(i)=ve(j)</p>
+<p>（8）l(i)=vl(k)-dut(&lt;j,k&gt;)</p>
+<p>dut(&lt;j,k&gt;)为活动ai的持续时间</p>
+<p>（9）活动的最早开始时间是活动的弧尾事件的最早发生时间，</p>
+<p>活动的最晚发生时间是活动的弧头事件的最晚发生时间减去活动的持续时间。</p>
+<p>j------&gt;k(此边即活动的编号为i)</p>
+<p>（10）从ve(0)=0开始向前递推（事件的最早发生时刻）</p>
+<p>事件的最早发生时间是以其为弧头事件的所有弧尾事件的最早发生时间与对应弧活动的持续时间之和的最大值</p>
+<p>（11）从vl(n-1)=ve(n-1)起向后递推（事件的最晚发生时刻）</p>
+<p>事件的最晚发生时间是以其为弧尾事件的所有弧头事件的最晚发生时间与对应弧活动的持续时间之差的最小值。</p>
+<p>9.求关键活动算法（先计算事件，再计算活动）</p>
+<p>（1）从始点v0出发，令ve[0]=0（源点），按拓扑有序求ve[j]</p>
+<p>&lt;vj,vk&gt;即vk为vj的任意后续</p>
+<p>ve[k]=max{ve[j]+Weight(vj,vk)}</p>
+<p>（2）从终点vn-1出发，令vl[n-1]=ve[n-1]（汇点），按逆拓扑有序求vl[i]</p>
+<p>&lt;vk,vj&gt;即vk为vj的任意前驱</p>
+<p>vl[k]=min{ vl[j]-Weight(vk,vj)}</p>
+<p>（简单记忆：我们都想晚点开学早点放假，晚点开学即最早开始取max，早点放假即最晚开始取min)</p>
+<p>（3）根据各顶点的ve和vl值，求每条弧(活动)ai的最早开始时间e[ai]和最迟开始时间l[ai]</p>
+<p>若边&lt;vk,vj&gt;表示活动ai,则e(i)=ve[k]</p>
+<p>l[i]=vl[j]-Weight(vk,vj)</p>
+<p>（4）如果e[ai]=l[ai]，则ai为关键活动(e[i]-l[i]==0)</p>
+<p>（5）如果ve[i]=vl[i]，则vi为关键路径上的事件</p>
+<p>**题目：**下表给出了某工程各工序之间的优先关系和各工序所需的时间。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">工序代号</th>
+<th style="text-align:left">A</th>
+<th style="text-align:left">B</th>
+<th style="text-align:left">C</th>
+<th style="text-align:left">D</th>
+<th style="text-align:left">E</th>
+<th style="text-align:left">F</th>
+<th style="text-align:left">G</th>
+<th style="text-align:left">H</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">所需时间</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">先驱工序</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">C,E</td>
+<td style="text-align:left">D</td>
+</tr>
+</tbody>
+</table>
+<p>问: 该工程是否能够顺利进行? 如果能，请问要花多长时间？ 缩短那些工序可以缩短整个工程的完工时间？</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/c40cb5ac29419114a476bfbf5cacd5b8.jpeg" alt="img"></p>
+<h2 id="img-2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/907dddd28d84e699540a8fc0d555556d.jpeg" alt="img"></h2>
+<h2 id="img-3"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ad46540e54f0b67fd768aafe047adf64.jpeg" alt="img"></h2>
+<h2 id="第九章：查找">第九章：查找</h2>
+<h3 id="一、查找的概念">一、查找的概念</h3>
+<p>1.查找表</p>
+<p>（1）查找表是由<strong>同一类型的数据元素</strong>(或记录)构成的集合</p>
+<p>（2）对查找表的操作:</p>
+<p>–1.查询某个“特定的”数据元素是否在查找表中；</p>
+<p>–2.检索某个“特定的”数据元素的各种属性；</p>
+<p>–3.在查找表中插入一个数据元素；</p>
+<p>–4.从查找表中删去某个数据元素</p>
+<p>（3）<strong>静态</strong>查找表：仅作<strong>查询和检索</strong>操作的查找表。</p>
+<p>（4）<strong>动态</strong>查找表：在查找过程中同时<strong>插入</strong>查找表中不存在的数据元素，或者从查找表中<strong>删除</strong>已存在的某个数据元素。</p>
+<p>2.关键字</p>
+<p>（1）<strong>关键字</strong>是数据元素（或记录）中<strong>某个数据项的值</strong>，用以标识（识别）一个数据元素（或记录</p>
+<p><em><strong>注意：关键字是某个数据项的值！不是数据元素</strong></em></p>
+<p>（2）主关键字：可以识别<strong>唯一</strong>的一个记录的关键字</p>
+<p>（3）次关键字：能识别若干记录的关键字</p>
+<p>3.查找</p>
+<p>（1）查找是根据给定的某个值，在查找表中确定一个其关键字等于给定值的数据元素（或记录）。</p>
+<p>（2）查找成功：在查找表中查找到指定的记录。</p>
+<p>（3）查找不成功：在查找表中没有找到指定记录。</p>
+<p>4.衡量<strong>查找算法</strong>的标准</p>
+<p>（1）时间复杂度</p>
+<p>（2）空间复杂度</p>
+<p>（3）<strong>平均查找长度ASL</strong></p>
+<p>5.平均查找长度ASL</p>
+<p>（1）平均查找长度定义为确定记录在表中的位置所进行的和关键字比较的次数的平均值。</p>
+<p>（2）ASL = ∑ PiCi （i为1到n）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/2a10c2cf525d93f886530b184f66f0ff.png" alt="img"></p>
+<p>n为查找表的长度，即表中所含元素的个数；Pi为<strong>查找第i个元素的概率</strong>(∑Pi=1)；Ci是查找第i个元素时同给<strong>定值K比较的次数</strong>。</p>
+<h3 id="二、静态查找表（顺序、折半、分块）">二、静态查找表（顺序、折半、分块）</h3>
+<p>1.顺序查找</p>
+<p>（1）顺序查找算法是<strong>顺序表</strong>的查找方法。</p>
+<p>（2）在顺序查找算法中，以<strong>顺序表或线性链表</strong>表示静态查找表。</p>
+<p>（3）顺序查找算法：</p>
+<p>–1.从表中最后一个记录开始</p>
+<p>–2.逐个进行记录的关键字和给定值的比较</p>
+<p>–3.若某个记录比较相等，则查找成功</p>
+<p>–4.若直到第1个记录都比较不等，则查找不成功</p>
+<p>（4）算法性能分析</p>
+<p>对顺序表而言，Ci=n-i+1</p>
+<p>在等概率查找的情况下，Pi=1/n</p>
+<p><strong>ASL（成功）=n*P1 +(n-1)P2 +…+ 2Pn-1+ Pn = (n+1)/2</strong></p>
+<p>（5）顺序查找(不等概率)</p>
+<p>如果被查找的记录概率不等时，取 Pn≥Pn-1≥···≥P2≥P1；</p>
+<p>若查找概率无法事先测定，则查找过程采取的改进办法是，在每次查找之后，将刚刚查找到的记录直接移至表尾的位置上。</p>
+<p>（6）特点：</p>
+<p>优点：1.简单2.适应面广(对表的结构无任何要求)</p>
+<p>缺点：1.平均查找长度较大2.特别是<strong>当n很大时，查找效率很低</strong>。</p>
+<p>2.折半查找（有序表！）</p>
+<p>（1）折半查找算法是<strong>有序表</strong>的查找方法。</p>
+<p>（2）在折半查找算法中，静态查找表按<strong>关键字</strong>大小的次序，<strong>有序</strong>地存放在顺序表中。</p>
+<p>（3）折半查找的原理是：1.先确定待查记录所在的范围(前部分或后部分)2.逐步缩小(一半)范围直到找(不)到该记录为止。</p>
+<p>（4）算法：</p>
+<p>–1.n个对象从小到大存放在有序顺序表ST中，k为给定值</p>
+<p>–2.设low、high指向待查元素所在区间的下界、上界，即low=1, high=n</p>
+<p>–3.设mid指向待区间的中点，即mid=(low+high)/2</p>
+<p>–4.让k与mid指向的记录比较若k=ST[mid].key，查找成功</p>
+<p>若k&lt;ST[mid].key，则<strong>high=mid-1</strong> [上半区间]</p>
+<p>若k&gt;ST[mid].key，则<strong>low=mid+1</strong> [下半区间]</p>
+<p>–5.重复3,4操作，直至<strong>low&gt;high</strong>时，查找失败。（严格大于）</p>
+<p>（5）折半查找（判定树）</p>
+<p>判定树：描述查找过程的二叉树。</p>
+<p><strong>有n个结点的判定树的深度为floor(log2(n)) +1（与含有 n 个结点的完全二叉树的深度相同）</strong></p>
+<p>折半查找法在查找过程中进行的比较次数最多不超过floor(log2(n)) +1</p>
+<p><strong>题目</strong>：假设某有序表查找中有12个元素，请问该查找表查找成功时的平均查找长度为多少？（查找失败的ASL：为白块到根结点的路径长度之和/白块个数；ASL=1/2 * 成功+1/2* 失败）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/77ae298f7eef0b5219571ecb1debc241.jpeg" alt="img"></p>
+<p>（6）性能分析</p>
+<p>设有序表的长度n=2^h-1（即h=log2(n+1)）,则描述折半查找的判定树是深度为h的满二叉树。</p>
+<p>树中层次为1的结点有1个，层次为2的结点有2个，层次为h的结点有2^(h-1)个。</p>
+<p>假设表中每个记录的查找概率相等，则查找成功时折半查找的平均查找长度：<strong>ASL（成功）=[(n+1)/n]*log2(n+1)-1</strong></p>
+<p>（7）特点</p>
+<p>折半查找的效率比顺序查找高(特别是在静态查找表的长度很长时)。</p>
+<p>折半查找只能适用于<strong>有序</strong>表，并且以顺序存储结构存储。</p>
+<p>3.分块查找</p>
+<p>（1）分块查找是一种索引顺序表(分块有序表)查找方法，是折半查找和顺序查找的简单结合。</p>
+<p>（2）**索引顺序表(分块有序表)**将整个表分成几块，块内无序，块间有序。</p>
+<p>（3）所谓块间有序是指后一块表中所有记录的关键字均大于前一块表中的最大关键字。</p>
+<p>（4）分块查找(分块有序表)</p>
+<p>主表：用数组存放待查记录,每个数据元素至少含有关键字域。</p>
+<p>索引表：每个结点含有最大关键字域和指向本块第一个结点的指针。</p>
+<p>（5）采用折半查找方法在索引表中找到块[第2块]，用顺序查找方法在主表对 应块中找到记录[第3记录]。</p>
+<p>（6）性能分析：</p>
+<p>若将长度为n的表分成b块，每块含s个记录，并设表中每个记录查找概率相等。</p>
+<p>用折半查找方法在索引表中查找索引块，ASL块间≈log2(n/s+1)</p>
+<p>用顺序查找方法在主表对应块中查找记录，ASL块内=s/2</p>
+<p><strong>ASL(成功)≈log2(n/s+1) + s/2</strong></p>
+<h3 id="三、动态查找表">三、动态查找表</h3>
+<p>1.动态查找表</p>
+<p>（1）表结构本身是在查找过程中动态生成的</p>
+<p>（2）若表中存在其关键字等于给定值key的记录,表明查找成功；</p>
+<p>（3）否则插入关键字等于key的记录。</p>
+<p>2.二叉排序树（将判定树的结点信息从下标改为数据即为二叉排序树）</p>
+<p>（1）空树或者是具有如下特性的二叉树：</p>
+<p>–⑴.若它的左子树不空，则左子树上<strong>所有</strong>结点的值均小于根结点的值；</p>
+<p>–⑵.若它的右子树不空，则右子树上<strong>所有</strong>结点的值均大于根结点的值；</p>
+<p>–⑶.它的左、右子树也都分别是二叉排序树。</p>
+<p>（2）二叉排序树又称二叉查找树</p>
+<p>查找算法： 给定值与根结点比较：–1.若相等，查找成功–2.若小于，查找左子树–3.若大于，查找右子树</p>
+<p>生成举例：</p>
+<p><strong>题目</strong>：画出在初始为空的二叉排序树中依次插入56,64,92,80,88,75时该树的生长全过程</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/d2580fec79503256908079d814c46272.png" alt="img"></p>
+<p>（3）二叉排序树(插入)</p>
+<p>二叉排序树是一种<strong>动态</strong>树表；</p>
+<p>当树中<strong>不存在</strong>查找的结点时，作<strong>插入</strong>操作；</p>
+<p><strong>新插入的结点一定是叶子结点</strong>（只需改动一个结点的指针）；</p>
+<p>该叶子结点是查找不成功时路径上<strong>访问的最后一个结点</strong>左孩子或右孩子(新结点值小于或大于该结点值)。（最后一个！）</p>
+<p>（4）<strong>中序</strong>遍历二叉排序树，可得到一个关键字的有序序列。</p>
+<p>（5）二叉排序树(删除)</p>
+<p>删除二叉排序树中的一个结点后，必须保持二叉排序树的特性（左子树的所有结点值小于根结点，右子树的所有结点值大于根结点）也即保持中序遍历后，输出为有序序列。</p>
+<p>被删除结点具有以下三种情况：1.是叶子结点（直接删除结点，并让其父结点指向该结点的指针变为空）；2.只有左子树或右子树（删除结点,让其父结点指向该结点的指针指向其左子树(或右子树),即用孩子结点替代被删除结点即可）；3.同时有左、右子树。（<strong>以中序遍历时的直接前驱</strong>s替代被删除结点p，然后再删除该直接前驱（只可能有左孩子））</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/79214a289ead742445faa98bd9ffc6cc.png" alt="img"></p>
+<p>（6）性能分析</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/61414a0033967c09f3af63077944d293.png" alt="img"></p>
+<p>（注意根算1！）</p>
+<p>对于每一棵特定的二叉排序树，均可按照平均查找长度的定义来求它的 ASL 值。</p>
+<p>显然，由值相同的 n 个关键字，构造所得的不同形态的各棵二叉排序树的平均查找长度的值不同，甚至可能差别很大。</p>
+<p>在最坏的情况下，二叉排序树为近似线性表时(如以<strong>升序或降序</strong>输入结点时)，其查找深度为n量级，即其时间复杂性为O(n)</p>
+<p>（7）特性</p>
+<p>一个无序序列可以通过构造一棵二叉排序树而变成一个有序序列（通过中序遍历）。</p>
+<p>插入新记录时，<strong>只需改变一个结点的指针</strong>，相当于在有序序列中插入一个记录而不需要移动其它记录。</p>
+<p><strong>二叉排序树既拥有类似于折半查找的特性，又采用了链表作存储结构。</strong></p>
+<p>但当插入记录的次序不当时(如升序或降序)，则二叉排序树深度很深，增加了查找的时间。</p>
+<p>3.平衡二叉树</p>
+<p>（1）平衡二叉树是二叉排序(查找)树的另一种形式</p>
+<p>（2）平衡二叉树又称<strong>AVL树</strong>(Adelsen-Velskii and Landis)</p>
+<p>（3）其特点为：树中<strong>每个结点</strong>的左、右子树深度之差的绝对值不大于1，即|hL-hR|≤1</p>
+<p>（4）平衡因子：每个结点附加一个数字, 给出该结点左子树的高度减去右子树的高度所得的高度差,这个数字即为结点的平衡因子balance （左减右！）</p>
+<p>（5）AVL树任一结点平衡因子只能取 -1, 0, 1</p>
+<p>（6）平衡二叉树(删除)与二叉排序树相同</p>
+<p>如果被删结点A最多只有一个孩子，那么将结点A从树中删去，并将其双亲指向它的指针指向它的唯一的孩子，并作平衡化处理。</p>
+<p>如果被删结点A没有孩子，则直接删除之，并作平衡化处理。</p>
+<p>如果被删结点A有两个子女，则用该结点的直接前驱S替代被删结点，然后对直接前驱S作删除处理(S只有一个孩子或没有孩子)。</p>
+<p>4.AVL平衡化旋转</p>
+<p>（1）如果在一棵平衡的二叉查找树中插入一个新结点，造成了不平衡。此时必须调整树的结构，使之平衡化。</p>
+<p>（2）平衡化旋转(处理)有两类：</p>
+<p>–1.单向旋转 (单向右旋和单向左旋)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/cef5b169a4fe5d6b9110ada53c5c75ac.png" alt="img"></p>
+<p>–2.双向旋转 (先左后右旋转和先右后左旋转)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/5621c1de1427d7a5cb77ecb06ac90867.png" alt="img"></p>
+<p>（3）每插入一个新结点时, AVL树中相关结点的平衡状态会发生改变。</p>
+<p>–1.在插入一个新结点后，需要<strong>从插入位置沿通向根的路径回溯</strong>，检查各结点的平衡因子。</p>
+<p>–2.如果在某一结点发现高度不平衡，停止回溯。(<strong>出现2或者-2</strong>)</p>
+<p>–3.从发生不平衡的结点起，沿刚才回溯的路径<strong>取直接下两层的结点</strong>。（做旋转操作）</p>
+<p>题目：画出在初始为空的AVL树中依次插入64,5,13,21,19,80,75,37,56时该树的生长过程，并在有旋转时说出旋转的类型。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/973d290c0600a1e23b5e455662b6b1e4.jpeg" alt="img"></p>
+<h3 id="四、哈希表">四、哈希表</h3>
+<p>1.哈希表（散列表）</p>
+<p>（1）哈希(Hash)表又称散列表散列表，是一种<strong>直接计算记录存放地址</strong>的方法，它在<strong>关键码与存储位置之间直接建立了映象</strong>。</p>
+<p>（2）哈希函数是从关键字空间到存储地址空间的一种映象。</p>
+<p>（3）哈希函数在记录的关键字与记录的存储地址之间建立起一种对应关系。可写成：addr(ai)= H(keyi)，H(·)为哈希函数k，eyi是表中元素ai关键字,addr(ai)是存储地址。</p>
+<p>2.哈希表(查找)</p>
+<p>（1）哈希查找也叫散列查找，是利用哈希函数进行查找的过程。</p>
+<p>–1.首先利用哈希函数及记录的关键字计算出记录的存储地址.。</p>
+<p>–2.然后直接到指定地址进行查找</p>
+<p>–3.不需要经过比较，一次存取就能得到所查元素</p>
+<p>3.哈希表(冲突)</p>
+<p>（1）不同的记录，其关键字通过哈希函数的计算，可能得到相同的地址。把不同的记录映射到同一个散列地址上，这种现象称为冲突。</p>
+<p>4.哈希表(定义)</p>
+<p>（1）根据设定的哈希函数 H(key) 和所选中的处理冲突的方法</p>
+<p>（2）将一组关键字映象到一个有限的、地址连续的地址集 (区间) 上</p>
+<p>（3）并以关键字在地址集中的“象”作为相应记录在表中的存储位置</p>
+<p>（4）如此构造所得的查找表称之为“哈希表”</p>
+<p>5.哈希函数(均匀性)</p>
+<p>（1）哈希函数实现的一般是从一个<strong>大的集合</strong>（部分元素，空间位置上一般不连续）到一个<strong>小的集合</strong>（空间连续）的映射</p>
+<p>（2）一个好的哈希函数，对于记录中的任何关键字，将其映射到地址集合中任何一个地址的概率应该是相等的</p>
+<p>（3）即关键字经过哈希函数得到一个“随机的地址“</p>
+<p>6.哈希函数(要求)</p>
+<p>（1）哈希函数应是简单的，能在较短的时间内计算出结果。</p>
+<p>（2）哈希函数的定义域尽可能包括需要存储的全部关键字，如果散列表允许有 m 个地址时，其值域必须在 0 到 m-1 之间。</p>
+<p>（3）散列函数计算出来的地址应能均匀分布在整个地址空间中。</p>
+<p>7.哈希函数(直接定址法)</p>
+<p>（1）<strong>直接定址法</strong>中，哈希函数取关键字的线性函数： H(key) = a x key + b（其中a和b为常数）</p>
+<p>（2）<strong>直接定址法仅适合于地址集合的大小与关键字集合的大小相等</strong>的情况</p>
+<p>（3）当a=1时，H(key)=key，即用关键字作地址</p>
+<p>（4）在实际应用中能使用这种哈希函数的情况很少</p>
+<p>8.哈希函数(数字分析法)</p>
+<p>（1）假设关键字集合中的每个关键字都是由 s 位数字组成 (u1, u2, …, us)。</p>
+<p>（2）分析关键字集中的全体</p>
+<p>（3）从中提取<strong>分布均匀的若干位</strong>或它们的组合作为地址</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/a837e04d368a9faa7799a52305854407.png" alt="img"></p>
+<p>（4）数字分析法仅适用于<strong>事先明确</strong>知道表中所有关键码每一位数值的分布情况</p>
+<p>（5）数字分析法<strong>完全依赖于关键码集合</strong></p>
+<p>（6）如果换一个关键码集合，选择哪几位要重新决定</p>
+<p>9.哈希函数(平方取中法)</p>
+<p>（1）以关键字的平方值的<strong>中间几位</strong>作为存储地址。</p>
+<p>（2）求“<strong>关键字的平方值</strong>” 的目的是“扩大差别”</p>
+<p>（3）同时平方值的中间各位又能受到整个关键字中各位的影响。</p>
+<p>（4）此方法在词典处理中使用十分广泛。它先计算构成关键码的标识符的内码的平方, 然后按照散列表的大小取中间的若干位作为散列地址。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/8c221977aa45d8efb4c996a7ecea1c24.png" alt="img"></p>
+<p>（5）平方取中法是较常用的构造哈希函数的方法</p>
+<p>（6）适合于关键字中的每一位都有某些数字重复出现且频度很高的情况</p>
+<p>（7）中间所取的位数，由哈希表长决定</p>
+<p>10.哈希函数(折叠法)</p>
+<p>（1）将关键字分割成位数相同的若干部分(最后部分的倍数可以不同)，然后取它们的叠加和(舍去进位)为哈希地址。</p>
+<p>（2）移位叠加:将分割后的几部分低位对齐相加。</p>
+<p>（3）间界叠加:从一端沿分割界来回折送，然后对齐相加。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/7e447f01b0d85f7c219037010aa1bf1a.png" alt="img"></p>
+<p>（4）折叠法适合于关键字的<strong>数字位数特别多</strong>，而且每一位上数字分布大致均匀的情况。</p>
+<p>11.<strong>哈希函数(除留余数法)</strong></p>
+<p>（1）取关键字被某个不大于哈希表长m的数p除后所得余数为哈希地址： <strong>H(key) = key MOD p</strong> ( p≤m )</p>
+<p>m为表长 p为不大于m的素数或是不含20以下的<strong>质因子</strong></p>
+<p>（2）除留余数法是一种最简单、最常用的构造哈希函数的方法</p>
+<p>（3）不仅可以对关键字直接取模(MOD)，也<strong>可在折叠、平方取中等运算之后取模</strong></p>
+<p>12.处理冲突的方法</p>
+<p>“处理冲突” 的实际含义是：为产生冲突的地址寻找下一个哈希地址。</p>
+<p>处理冲突的方法主要有三种：<strong>1.开放定址法2.再哈希法3.链地址法</strong></p>
+<p>13.处理冲突的方法(开放定址法)</p>
+<p>（1）为产生冲突的地址 H(key) 求得一个地址序列： H0, H1, H2, …, Hs，1≤s≤m-1</p>
+<p>（2）Hi = [H(key)+di] MOD m</p>
+<p>i=1,2,…,s</p>
+<p>H(key)为哈希函数</p>
+<p>m为哈希表长</p>
+<p>（3）开放定址法－线性探测：</p>
+<p>当di取1,2,3,…,m-1时，称这种开放定址法为线性探测再散列</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/9b1376886c35a5689f8d5222603f7eef.png" alt="img"></p>
+<p>（4）开放定址法－二次探测：</p>
+<p>当di取= 1^2, -1^2，2^2, -2^2，3^2,…时，称这种开放定址法为二次探测再散列</p>
+<p>（5）特性</p>
+<p>当di取= 1^2, -1^2，2^2, -2^2，3^2,…时，称这种开放定址法为二次探测再散列；</p>
+<p>二次探测再散列：m=4j+3的素数时总能找到。</p>
+<p>缺点：易产生“二次聚集”，即在处理同义词的冲突过程中，又添加了非同义词的冲突，对查找不利</p>
+<p>14.处理冲突的方法(再哈希法)</p>
+<p>（1）构造若干个哈希函数，当发生冲突时，计算下一个哈希地址，直到冲突不再发生，即：Hi = Rhi(key) i=1,2,……k</p>
+<p>Rhi—不同的哈希函数</p>
+<p>（2）特点：不易产生聚集，但增加计算时间</p>
+<p>15.处理冲突的方法(链地址法)</p>
+<p>（1）将所有哈希地址相同的记录都链接在同一链表中</p>
+<p>（2）表头插入和表后插入</p>
+<p><strong>题目</strong>：已知一组关键字(19,14,23,1,68,20,84,27,55,11,10,79)哈希函数为： H(key)=key MOD 13,用链地址法处理冲突[表头插入]</p>
+<p>（注意左侧数组表示和空符号^)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/c3d4f291ed2c90e2697567e6b28489d1.png" alt="img"></p>
+<p>16.哈希表的实现</p>
+<p>17.哈希表的性能分析</p>
+<p>（1）虽然哈希表在关键字与记录的存储位置之间建立了直接映象，但由于“冲突”的产生，使得哈希表的查找过程仍然是一个给定值和关键字进行比较的过程</p>
+<p>（2）因此，仍需以平均查找长度(ASL)作为衡量哈希表的查找效率的量度</p>
+<p>（3）决定哈希表查找的ASL的因素：</p>
+<p>–1.选用的哈希函数</p>
+<p>–2.选用的处理冲突的方法</p>
+<p>–3.哈希表的装填因子：哈希表的装填因子是哈希表中填入的记录数与哈希表的长度的比值，即：<strong>α = 哈希表中填入的记录数 / 哈希表的长度</strong>。装填因子α标志哈希表的装满程序。</p>
+<p><em><strong>注意：散列表的平均查找长度依赖于装填因子，不直接依赖于n或m</strong></em></p>
+<p>（4）装填因子α越小，发生冲突的可能性就越小；装填因子α越大，发生冲突的可能性就越大。</p>
+<p>（5）平均查找长度ASL:</p>
+<p>线性探测再散列的哈希表查找成功时：ASL ≈ (½)(1 + 1/(1-α))</p>
+<p>ASL(成功)=(1/2)*(1+1/(1-记录数/哈希表长度))</p>
+<p>二次探测再散列的哈希表查找成功时：ASL ≈ -(1/α)ln(1-α)</p>
+<p>ASL(成功)=-(1/(记录数/哈希表长度))ln(1-记录数/哈希表长度)</p>
+<p>链地址法处理冲突的哈希表查找成功时：ASL ≈ (1 + α/2)</p>
+<p>ASL(成功)=(1+(记录数/哈希表长度)/2)</p>
+<h3 id="五、B-树-结点结构">五、B-树[结点结构]</h3>
+<p>1.B-树是一种特殊的<strong>多路平衡查找树</strong></p>
+<p>2.R.Bayer和E.Maccreight于1970年提出</p>
+<p>3.B-树是一种在<strong>外存文件系统</strong>中常用的<strong>动态索引</strong></p>
+<p>4.技术磁盘中文件的读写以“<strong>盘块</strong>”为单位进行</p>
+<p>5.将<strong>关键字索引</strong>信息，放在盘块中，可以加快数据的查找速度</p>
+<p>6.结点结构：</p>
+<p>（1）Ki是关键字，且Ki&lt;Ki+1</p>
+<p>（2）Ai是指向子树根结点的指针</p>
+<p>（3）Ai-1所指子树中所有结点的关键字均小于Ki</p>
+<p>（4）Ai 所指子树中所有结点的关键字均大于Ki</p>
+<p>（5）对于m阶B-树，ceil(m/2) -1≤n≤m-1 (分支数比关键字数目多一)</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/685eee884c55d4fdb56396efaee53d74.png" alt="img"></p>
+<p>7.m阶B-树定义:</p>
+<p>（1）树中每个结点至多有m棵子树（m-1个关键字）</p>
+<p>（2）<strong>若根结点不是叶子结点，则至少有两棵子树</strong></p>
+<p>（3）除根之外的<strong>所有非终端结点至少有 ceil(m/2) 棵子树</strong></p>
+<p>（4）所有叶子结点，都出现在同一层次上，且不带信息（可以看作是查找失败的结点，指向这些结点的指针为空指针）</p>
+<p>**题目:**3阶B-树（11个结点）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/efa70088b6901fcfdcab17c4d34e72e1.png" alt="img"></p>
+<p>(1)关键字比分支数少一（B-）,m=3(3阶)</p>
+<p>(2)关键字数目为n,ceil(3/2)-1&lt;=n&lt;=3-1即1&lt;=n&lt;=2</p>
+<p><strong>ceil(m/2)-1&lt;=n&lt;=m-1</strong></p>
+<p>(3)如图深度为3，结点数最少(所有都是关键字n=1,分支为2)：2^3-1=7;结点数最多(所有都是关键字n=2,分支为3)：1+3+3^2=13</p>
+<p><strong>结点数最少：2^h-1;结点数最多：1+m+m^2+…+m^(h-1)</strong></p>
+<h2 id="第十章：内部排序">第十章：内部排序</h2>
+<h3 id="一、排序">一、排序</h3>
+<p>1.排序</p>
+<p>（1）排序：将一个数据元素（或记录）的任意序列，重新排列成一个按关键字有序的序列</p>
+<p>（2）内部排序：在排序期间数据对象全部存放在<strong>内存</strong>的排序；</p>
+<p>（3）外部排序：在排序期间全部对象个数太多，不能同时存放在内存，必须根据排序过程的要求，不断在内、外存之间移动的排序。</p>
+<p>2.<strong>排序基本操作</strong>：</p>
+<p>（1）<strong>比较</strong>：比较两个关键字的大小</p>
+<p>（2）<strong>移动</strong>：将记录从一个位置移动至另一个位置</p>
+<p>3.排序时间复杂度</p>
+<p>排序的时间复杂度可用算法执行中的记录关键字<strong>比较次数</strong>与记录<strong>移动次数</strong>来衡量。</p>
+<p>4.排序方法的稳定性</p>
+<p>（1）如果在记录序列中有两个记录r[i]和r[j], 它们的关键字 key[i] == key[j] , 且在排序之前, 记录r[i]排在r[j]前面。</p>
+<p>（2）如果在排序之后, 记录r[i]仍在记录r[j]的前面, 则称这个排序方法是稳定的, 否则称这个排序方法是不稳定的。</p>
+<h3 id="二、插入排序">二、插入排序</h3>
+<p>1.直接插入排序</p>
+<p>（1）当插入第i(i≥1)个对象时, <strong>前面</strong>的r[0], r[1], …, r[i-1]已经<strong>排好序</strong>。</p>
+<p>（2）用r[i]的关键字与r[i-1], r[i-2], …的关键字顺序进行比较(和顺序查找类似)，如果小于，则将r[x]向后移动(插入位置后的记录向后顺移)</p>
+<p>（3）找到插入位置即将r[i]插入</p>
+<p>（4）每步将一个待排序的对象, 按其关键字大小, 插入到前面已经排好序的有序表的适当位置上, 直到对象全部插入为止。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/82df5956fb410d2783cdb2da8a95190f.jpeg" alt="img"></p>
+<p>（5）关键字比较次数和记录移动次数与记录关键字的初始排列有关。</p>
+<p>（6）最好情况下, 排序前记录已按关键字从小到大有序, 每趟只需与前面有序记录序列的最后一个记录比较1次, 移动2次记录, 总的关键字比较次数为 n-1, 记录<strong>移动次数为 2(n-1)</strong>。</p>
+<p>（7）最坏情况下, (i从1开始，下标从0开始)第i趟时第i个记录必须与前面i个记录都做关键字比较, 并且每做1次比较就要做1次数据移动。则总关键字比较次数KCN和记录移动次数RMN分别为</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/7426ba00280e26fabeb369496a007e24.png" alt="img"></p>
+<p>（8）在平均情况下的关键字比较次数和记录移动次数约为 n^2/4。</p>
+<p>（9）直接插入排序的时间复杂度为<strong>O(n^2)</strong>。</p>
+<p>（10）直接插入排序是一种<strong>稳定的排序方法</strong>。</p>
+<p>（11）直接插入排序最大的优点是简单，在<strong>记录数较少</strong>时，是比较好的办法。</p>
+<p>2.折半插入排序</p>
+<p>（1）折半插入排序在查找记录插入位置时，采用<strong>折半查找</strong>算法</p>
+<p>（2）折半查找比顺序查找快, 所以折半插入排序在查找上性能比直接插入排序好</p>
+<p>（3）但需要移动的记录数目与直接插入排序相同(为O(n2))</p>
+<p>（4）折半插入排序的时间复杂度为O(n^2)。</p>
+<p>（5）折半插入排序是一种稳定的排序方法</p>
+<p>3.希尔排序</p>
+<p>（1）从直接插入排序可以看出，当待排序列为正序时，时间复杂度为O(n)</p>
+<p>（2）若待排序列基本有序时，插入排序效率会提高希尔排序方法是先将待排序列分成<strong>若干子序列分别进行插入排序</strong>，待整个序列基本有序时，再对全体记录进行一次直接插入排序</p>
+<p>（3）希尔排序又称为<strong>缩小增量排序</strong>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/388fa4028c4c261d79f4fb416d5970cd.jpeg" alt="img"></p>
+<p>（4）算法：</p>
+<p>首先取一个整数 gap &lt; n(待排序记录数) 作为间隔, 将全部记录分为 <strong>gap 个子序列</strong>, 所有距离为 gap 的记录放在同一个子序列中。（gap为组数！）</p>
+<p>在每一个子序列中分别施行直接插入排序。然后缩小间隔 gap, 例如取 gap = gap/2。</p>
+<p>重复上述的子序列划分和排序工作，直到最后取gap = 1, 将所有记录放在同一个序列中排序为止。</p>
+<p>（5）算法分析：</p>
+<p>开始时 gap 的值较大, 子序列中的记录较少, 排序速度较快。</p>
+<p>随着排序进展, gap 值逐渐变小, 子序列中记录个数逐渐变多,由于前面大多数记录已基本有序, 所以排序速度仍然很快。</p>
+<p>Gap的取法有多种。 shell 提出取 gap = n/2，gap = gap/2，直到gap = 1。</p>
+<p>对特定的待排序记录序列，可以准确地估算关键字的比较次数和记录移动次数。</p>
+<p>希尔排序所需的比较次数和移动次数约为n^1.3</p>
+<p>当n趋于无穷时可减少到n x(log2 n)^2</p>
+<p>希尔排序的时间复杂度约为O(n x(log2 n)^2)</p>
+<p>希尔排序是一种不稳定的排序方法</p>
+<h3 id="三、快速排序">三、快速排序</h3>
+<p>1.冒泡排序</p>
+<p>（1）设待排序记录序列中的记录个数为n(下标从1到n)。</p>
+<p>（2）一般地，第i趟起泡排序从1到n-i+1依次比较相邻两个记录的关键字，如果发生逆序，则交换之</p>
+<p>i=1时，为第一趟排序，关键字最大的记录将被交换到最后一个位置</p>
+<p>i=2时，为第二趟排序，关键字次大的记录将被交换到最后第二个位置</p>
+<p>关键字小的记录不断上浮(起泡)，关键字大的记录不断下沉(每趟排序最大的一直沉到底)</p>
+<p>（3）其结果是这n-i+1个记录中，关键字最大的记录被交换到第n-i+1的位置上，最多作n-1趟。</p>
+<p>（4）最好情况：在记录的初始排列已经按关键字从小到大排好序时,此算法只执行一趟起泡,做n-1次关键字比较,不移动记录。</p>
+<p>（5）最好情况：在记录的初始排列已经按关键字从小到大排好序时,此算法只执行一趟起泡,做n-1次关键字比较,不移动记录</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/335cf4360ef62c16dcc426c0624c3662.png" alt="img"></p>
+<p>（6）起泡排序的时间复杂度为O(n^2)</p>
+<p>（7）起泡排序是一种稳定的排序方法</p>
+<p>（8）每一趟可以确定一个数的位置（从后往前）</p>
+<p>2.快速排序</p>
+<p>（1）任取待排序记录序列中的某个记录(例如取第一个记录)作为基准(枢),按照该记录的关键字大小,将整个记录序列划分为<strong>左右两个子序列</strong></p>
+<p>（2） 左侧子序列中所有记录的关键字都小于或等于基准记录的关键字</p>
+<p>（3）右侧子序列中所有记录的关键字都大于基准记录的关键字</p>
+<p>（4）基准记录则排在这两个子序列中间(这也是该记录最终应安放的位置)。</p>
+<p>（5）然后分别对这两个子序列重复施行上述方法，直到所有的记录都排在相应位置上为止。</p>
+<p>（6）基准记录也称为枢轴（或支点）记录。</p>
+<p>（7）算法：</p>
+<p>取序列第一个记录为枢轴记录，其关键字为Pivotkey。</p>
+<p>指针low指向序列第一个记录位置。</p>
+<p>指针high指向序列最后一个记录位置。</p>
+<p>一趟排序(某个子序列)过程：</p>
+<p>–1.从high指向的记录开始,向前找到第一个关键字的值小于Pivotkey的记录,将其放到low指向的位置,low+1</p>
+<p>–2.从low指向的记录开始,向后找到第一个关键字的值大于Pivotkey的记录,将其放到high指向的位置,high-1</p>
+<p>–3.重复1,2，直到<strong>low=high</strong>，将枢轴记录放在low(high)指向的位置</p>
+<p>对枢轴记录前后两个子序列执行相同的操作，直到每个子序列都只有一个记录为止。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/f95f241c8117cf752bb0525a22ee496c.png" alt="img"></p>
+<p>（8）性能分析：</p>
+<p>快速排序是一个递归过程。</p>
+<p>利用序列第一个记录作为基准，将整个序列划分为左右两个子序列。只要是关键字小于基准记录关键字的记录都移到序列左侧。</p>
+<p>如果每次划分对一个记录定位后, 该记录的左侧子序列与右侧子序列的长度相同, 则下一步将是对两个长度减半的子序列进行排序, 这是最理想的情况。</p>
+<p>可以证明, 快速排序的平均计算时间也是O(nlog2 n)。</p>
+<p>实验结果表明: 就平均计算时间而言, 快速排序是所有内排序方法中最好的一个。</p>
+<p>但快速排序是一种不稳定的排序方法。</p>
+<p>（9）在最坏情况下, 即待排序记录序列已经按其关键字从小到大排好序, 其递归树成为单支树, 时间复杂度达O(n2)</p>
+<p>每次划分只得到一个比上一次少一个记录的子序列。</p>
+<p>必须经过n-1 趟才能把所有记录定位,</p>
+<p>而且第 i 趟需要经过 n-i 次关键字比较才能找到第 i 个记录的安放位置，总的关键字比较次数将达到：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/3f181f78f7d35eac879f48961b433c8f.png" alt="img"></p>
+<p>（10）改进：枢轴记录取low、high、(low+high)/2三者指向记录关键字居中的记录。</p>
+<h3 id="四、选择排序">四、选择排序</h3>
+<p>1.简单选择排序</p>
+<p>（1）每一趟(例如第i趟,i=0,1,…,n-2)在后面n-i个待排序记录中选出关键字最小的记录,与第i个记录交换。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ad61cbd9d02d81bcfbb48dab261f8ce6.png" alt="img"></p>
+<p>（2）每趟可确定一个数（从前往后）</p>
+<h3 id="算法中的几个表示关系的缩写">算法中的几个表示关系的缩写</h3>
+<p>EQ 就是 EQUAL等于</p>
+<p>NE 就是 NOT EQUAL不等于</p>
+<p>GT 就是 GREATER THAN大于</p>
+<p>LT 就是 LESS THAN小于</p>
+<p>GE 就是 GREATER THAN OR EQUAL 大于等于</p>
+<p>LE 就是 LESS THAN OR EQUAL 小于等于</p>
+<p>（2）性能分析：</p>
+<p>直接选择排序的关键字比较次数 KCN 与记录的初始排列无关。</p>
+<p>设整个待排序记录序列有n个记录,则第i趟选择具有最小关键字记录所需的比较次数总是 n-i-1次。总的关键字比较次数为：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/ffa70eadbf35883eece48ef96aafdd95.png" alt="img"></p>
+<p>记录的移动次数与记录序列的初始排列有关。</p>
+<p>当这组记录的初始状态是按其关键字从小到大有序的时候,记录的移动次数RMN=0,达到最少。</p>
+<p>最坏情况是每一趟都要进行交换，总的记录移动次数为 RMN = 3(n-1)。</p>
+<p>直接选择排序是一种不稳定的排序方法。</p>
+<p>2.堆排序</p>
+<p>（1）设有一个关键字集合，按完全二叉树的顺序存储方式存放在一个一维数组中。对它们从根开始，自顶向下，同一层自左向右从 1 开始连续编号。若满足 Ki &gt;=K2i &amp;&amp; Ki &gt;=K2i+1则称该关键字集合构成一个堆(最大堆)</p>
+<p><em><strong>注意：只对根有要求，对左右节点大小关系顺序无要求</strong></em></p>
+<p>（2）最大堆（筛选）：</p>
+<p>输出根结点</p>
+<p>用最后结点代替根结点值（最后的！）</p>
+<p>比较根结点与两个子结点的值，如果小于其中一个子结点，则选择大的子结点与根结点交换</p>
+<p>继续将交换的结点与其子结点比较</p>
+<p>直到叶子结点或者根节点值大于两个子结点</p>
+<p>（2）创建初始堆：</p>
+<p>根据给定的序列，从1至n按顺序创建一个完全二叉树</p>
+<p>由**最后一个非终端结点(第n/2个结点)**开始至第1个结点，逐步做筛选（第n/2个！）</p>
+<p>（3）性能排序</p>
+<p>对于长度为n的序列，其对应的完全二叉树的深度为k(2^(k-1) &lt;= n &lt;= 2^k)</p>
+<p>对深度为k的堆，筛选算法中进行的关键字比较次数至多为2(k-1)次</p>
+<p>堆排序时间主要耗费在建初始堆和调整建新堆(筛选)上</p>
+<p>建初始堆最多做n/2次筛选</p>
+<p>对长度为n的序列，排序最多需要做<strong>n-1次</strong>调整建新堆(筛选)</p>
+<p>因此共需要O(nxk)量级的时间k = log2n</p>
+<p>堆排序时间复杂度为O(nlog2n)</p>
+<p>堆排序是一个不稳定的排序方法</p>
+<p>记录数较多时，推荐堆排序</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/643a20b4ae55f6c148f36b59a22f4cb3.jpeg" alt="img"></p>
+<h3 id="五、归并排序">五、归并排序</h3>
+<p>1.归并（有序！）</p>
+<p>（1）归并是将两个或两个以上的<strong>有序</strong>表合并成一个新的有序表。</p>
+<p>（2）两路归并</p>
+<p>假设待归并两个有序表长度分别为m和n，则两路归并后，新的有序表长度为m+n</p>
+<p>两路归并操作至多只需要m+n次移位和m+n次比较</p>
+<p>因此两路归并的时间复杂度为O(m+n)</p>
+<p>2.2路－归并排序</p>
+<p>（1）将n个记录看成是n个有序序列</p>
+<p>（2）将前后相邻的两个有序序列归并为一个有序序列(两路归并)（前后相邻！）</p>
+<p>（3）重复做两路归并操作，直到只有一个有序序列为止</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/e1e594680639ee04d6bfc0401f63d2af.png" alt="img"></p>
+<p>（4）性能分析：</p>
+<p>如果待排序的记录为n个，则需要做log2n趟两路归并排序</p>
+<p>每趟两路归并排序的时间复杂度为O(n)</p>
+<p>因此2路－归并排序的时间复杂度为O(nlog2n)</p>
+<p>归并排序是一种稳定的排序方法</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/b1b2a294e5da99805595af88dad60921.jpeg" alt="img"></p>
+<h3 id="六、基数排序">六、基数排序</h3>
+<p>1.多关键字的排序(最低位优先法LSD)</p>
+<p>（1）从最低位关键字kd起进行排序，</p>
+<p>（2）然后再对高一位的关键字排序，……</p>
+<p>（3）依次重复，直至对最高位关键字k1排序后，便成为一个有序序列</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/478eb8c0c814607f2520d04a6316a3fe.png" alt="img"></p>
+<p>2.链式基数排序</p>
+<p>（1）基数排序：借助“分配”和“收集”对单逻辑关键字进行排序的一种方法</p>
+<p>（2）链式基数排序方法：用链表作存储结构的基数排序</p>
+<p>（3）设置10个队列，f[i]和e[i]分别为第i个队列的头指针和尾指针</p>
+<p>（4）第i趟分配：根据第i位关键字的值，改变记录的指针，将链表中记录分配至10个链队列中，每个队列中记录关键字的第i位关键字相同</p>
+<p>（5）第i趟收集：改变所有非空队列的队尾记录的指针域，令其指向下一个非空队列的队头记录，重新将10个队列链成一个链表</p>
+<p>（6）从最低位至最高位，逐位执行上述两步操作，最后得到一个有序序列</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/1c6a3da9e6d1614f4a9515fd3938560a.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/4654749b5af35d9c60a749580c373b56.png" alt="img"></p>
+<p>（7）性能分析</p>
+<p>若每个关键字有 d 位,关键字的基数为radix 。</p>
+<p>需要重复执行d 趟“分配”与“收集”。</p>
+<p>每趟对 n 个对象进行“分配”，对radix个队列进行“收集”。</p>
+<p>总时间复杂度为O(d(n+radix))。</p>
+<p>若基数radix相同, 对于对象个数较多而关键字位数较少的情况, 使用链式基数排序较好。</p>
+<p>基数排序需要增加n+2radix个附加链接指针。</p>
+<p>基数排序是稳定的排序方法。</p>
+<h3 id="七、各种排序方法比较">七、各种排序方法比较</h3>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/e951527d987b045afdb8d574683c3a21.png" alt="img"></p>
+<p><em><strong>注意：在插入和选择排序中，若初始数据基本正序，则选用插入排序。</strong></em></p>
+<p>1.时间性能</p>
+<p>（1）</p>
+<p>时间复杂度为 O(nlogn)：快速排序、堆排序和归并排序</p>
+<p>时间复杂度为 O(n^2)：直接插入排序、冒泡排序、简单选择排序</p>
+<p>时间复杂度为 O(n): 基数排序</p>
+<p>（2）当待排记录序列按关键字顺序有序时</p>
+<p>直接插入排序和起泡排序能达到O(n)的时间复杂度；</p>
+<p>快速排序的时间性能蜕化为O(n^2) 。</p>
+<p>（3）简单选择排序、堆排序和归并排序的时间性能不随记录序列中关键字的分布而改变。</p>
+<p>2.空间性能</p>
+<p>（1）指的是排序过程中所需的辅助空间大小</p>
+<p>（2）所有的简单排序方法(包括：直接插入、起泡和简单选择) 和堆排序的空间复杂度为O(1)</p>
+<p>（3）快速排序为O(logn)，为递归程序执行过程中，栈所需的辅助空间；</p>
+<p>（4）归并排序所需辅助空间最多，其空间复杂度为 O(n);</p>
+<p>（5）链式基数排序需附设队列首尾指针，则空间复杂度为 O(rd)。</p>
+<p>3.排序方法的稳定性能</p>
+<p><strong>口诀：考试情绪不稳定，就快些选堆朋友吧！</strong></p>
+<p><strong>（不稳定：快-&gt;快速排序，些-&gt;希尔排序，选-&gt;直接选择排序，堆-&gt;堆排序）</strong></p>
+<p>（1）稳定的排序方法指的是，对于两个关键字相等的记录，它们在序列中的相对位置，在排序之前和经过排序之后，没有改变。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/7b8e05180e4e098cce7dfbe243486733.png" alt="img"></p>
+<p>（2） 当对多关键字的记录序列进行LSD方法排序时，必须采用稳定的排序方法。</p>
+<p>（3）对于不稳定的排序方法，只要能举出一个实例说明即可。</p>
+<p>（4）快速排序、堆排序和希尔排序是不稳定的排序方法。</p>
+<p>（5）所有时间复杂度为O(n^2) 的简单排序算法都是稳定的（直接选择排序算法除外）。</p>
+<p>（6）归并排序和基数排序是稳定的。</p>
+<p>所有排序整理：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="./../assets/c908938a22520d9d02cadbae61b87421.jpeg" alt="img"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/7eb63ac7.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pica.zhimg.com/80/v2-df6d07ad556b4545c44b04ab0cf8aebc_720w.webp" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数据结构复习其二</div></div></a></div><div class="next-post pull-right"><a href="/posts/f4171415.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-03015b20688cff356a57effde569902c_720w.webp" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">广州大学选课脚本</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><svg class="meta_icon" style="width:22px;height:22px;position:relative;top:5px"><use xlink:href="#icon-mulu1"></use></svg><span style="font-weight:bold">目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%BB%AA%E8%AE%BA"><span class="toc-text">第一章：数据结构绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE"><span class="toc-text">一、数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%85%83%E7%B4%A0"><span class="toc-text">二、数据元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E9%A1%B9"><span class="toc-text">三、数据项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1"><span class="toc-text">四、数据对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%BB%93%E6%9E%84"><span class="toc-text">五、结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">六、数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">七、数据结构要解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="toc-text">八、逻辑结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%EF%BC%88%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%EF%BC%89"><span class="toc-text">九、物理结构（存储结构）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">十、数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E7%AE%97%E6%B3%95"><span class="toc-text">十一、算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">十二、时间复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E7%A9%BA%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">十三、空间复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="toc-text">第二章：线性表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BA%BF%E6%80%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-text">一、线性数据结构的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="toc-text">二、线性表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%A1%BA%E5%BA%8F%E8%A1%A8"><span class="toc-text">三、顺序表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%93%BE%E8%A1%A8"><span class="toc-text">四、链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%80%E5%85%83%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="toc-text">五、一元多项式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%A1%BA%E5%BA%8F%E8%A1%A8%E4%B8%8E%E9%93%BE%E8%A1%A8%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">六、顺序表与链表的比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97"><span class="toc-text">第三章：栈和队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%88"><span class="toc-text">一、栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%98%9F%E5%88%97"><span class="toc-text">二、队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E4%B8%B2"><span class="toc-text">第四章：串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">一、字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%B2%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9E%E7%8E%B0"><span class="toc-text">二、串的表示和实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%B2%E7%9A%84%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-text">三、串的匹配算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E6%95%B0%E7%BB%84%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="toc-text">第五章：数组和广义表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E7%BB%84%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">一、数组的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E7%BB%84%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">二、数组的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8"><span class="toc-text">三、矩阵的压缩存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="toc-text">四、广义表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">第六章：树与二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A0%91%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="toc-text">一、树的概念与基本术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">二、二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">三、满二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">四、完全二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-text">五、二叉树的顺序存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-text">六、二叉树的链式存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E9%81%8D%E5%8E%86%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">七、遍历二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">八、线索二叉树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E6%A0%91%E4%B8%8E%E6%A3%AE%E6%9E%97"><span class="toc-text">十、树与森林</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E8%B5%AB%E5%A4%AB%E6%9B%BC%E6%A0%91%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8"><span class="toc-text">十一、赫夫曼树及其应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A%E5%9B%BE"><span class="toc-text">第七章：图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%9C%AF%E8%AF%AD"><span class="toc-text">一、图的定义与术语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-text">二、图的存储结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#img"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86"><span class="toc-text">三、图的遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%9B%BE%E7%9A%84%E8%BF%9E%E9%80%9A%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-text">四、图的连通性问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="toc-text">五、最短路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8"><span class="toc-text">六、有向无环图及其应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#img-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#img-3"><span class="toc-text"></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0%EF%BC%9A%E6%9F%A5%E6%89%BE"><span class="toc-text">第九章：查找</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9F%A5%E6%89%BE%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">一、查找的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9D%99%E6%80%81%E6%9F%A5%E6%89%BE%E8%A1%A8%EF%BC%88%E9%A1%BA%E5%BA%8F%E3%80%81%E6%8A%98%E5%8D%8A%E3%80%81%E5%88%86%E5%9D%97%EF%BC%89"><span class="toc-text">二、静态查找表（顺序、折半、分块）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8A%A8%E6%80%81%E6%9F%A5%E6%89%BE%E8%A1%A8"><span class="toc-text">三、动态查找表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">四、哈希表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81B-%E6%A0%91-%E7%BB%93%E7%82%B9%E7%BB%93%E6%9E%84"><span class="toc-text">五、B-树[结点结构]</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0%EF%BC%9A%E5%86%85%E9%83%A8%E6%8E%92%E5%BA%8F"><span class="toc-text">第十章：内部排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%8E%92%E5%BA%8F"><span class="toc-text">一、排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-text">二、插入排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-text">三、快速排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="toc-text">四、选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E8%A1%A8%E7%A4%BA%E5%85%B3%E7%B3%BB%E7%9A%84%E7%BC%A9%E5%86%99"><span class="toc-text">算法中的几个表示关系的缩写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-text">五、归并排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="toc-text">六、基数排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%90%84%E7%A7%8D%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95%E6%AF%94%E8%BE%83"><span class="toc-text">七、各种排序方法比较</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div id="ft"><div class="ft-item-1"><div class="t-top"><div class="t-t-l"><p class="ft-t t-l-t">随记</p><div class="bg-ad"><div>故事往往因鲜为人知而被掩饰，困苦因困而苦。旷野是四面八方的，前进是选择而不是逆行。</div><div class="btn-xz-box"><a class="btn-xz" target="_blank" rel="noopener" href="https://scp-wiki-cn.wikidot.com/wanderers:mang"> </a></div></div></div><div class="t-t-r"><p class="ft-t t-l-t">网站导航</p><ul class="ft-links"><li><a href="https://zhongye1.github.io/posts/3b4b656d.html">关于站长</a><a href="/box/nav/">网址导航</a></li><li><a href="/social/link/1/">我的朋友</a><a href="/comments/">留言栏</a></li><li><a href="/social/fcircle/">其他博客</a><a href="/archives/">文章归档</a></li><li><a href="/categories/">文章分类</a><a href="/tags/">文章标签</a></li><li><a href="/box/Gallery/">我的画廊</a><a href="/personal/bb/">隐藏空间</a></li><li><a href="/site/time/">建设进程</a><a href="/site/census/">网站统计</a></li></ul></div></div></div><div class="ft-item-2"><p class="ft-t">友链（欢迎添加</p><div class="ft-img-group"><div class="img-group-item"><a href="https://zhongye1.github.io/" title="柊野"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.gzhu.site/" title="站长搭的广大树洞"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-71152904edf11db5c8885548393ace6a_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0" title="柊野的B站空间"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-58b297e0356a934ce8595de873e5b70e_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://eureka1029.github.io/" title="水波"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://eureka1029.github.io/img/eureka.jpg" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.fomal.cn/" title="Fomalhaut"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.bitiful.net/img/avatar.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="http://www.gzhu.edu.cn/index.htm" title="广州大学"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2025/03/05/67c8522bf290a.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://bocchi.rocks/" title="孤独摇滚"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/11/30/6749f6f41d521.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://blog.carry.fit/" title="carry"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-f4e5445ba9cd36acf8a6890f5c622a92_720w.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div></div></div></div><div class="copyright"><span><b>&copy;2023-2025</b></span><span><b>&nbsp;&nbsp;By 柊野</b></span></div><div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v6.3.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Frame-Hexo-blue.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.3.1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Theme-Butterfly-6513df.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用多线部署，主线路托管于Vercel"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Hosted-Vercel-brightgreen.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://user.51.la/" style="margin-inline:5px" title="本站数据分析得益于51la技术支持"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Analytics-51la-3db1eb.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://icp.gov.moe/?keyword=20226665" style="margin-inline:5px" title="本站已加入萌ICP豪华套餐，萌ICP备20226665号"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/萌ICP备-20226665-fe1384.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://bitiful.dogecast.com/buckets" style="margin-inline:5px" title="本网站经Service Worker分流至缤纷云对象存储"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Bucket-缤纷云-9c62da.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://www.netdun.net/" style="margin-inline:5px" title="本站使用网盾星球提供CDN加速与防护"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/CDN-网盾星球-fff2cc.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" title="本网站源码由Github提供存储仓库"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Source-Github-d021d6.svg" alt=""/></a></p></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="share" type="button" title="右键模式" onclick="changeMouseMode()"><i class="fas fa-mouse"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog right_side"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button class="share" type="button" title="分享链接" onclick="share()"><i class="fas fa-share-nodes"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i><span id="percent">0<span>%</span></span></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();"><i class="fa fa-search"></i><span>百度搜索</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:randomPost()"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:switchNightMode();"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="/personal/about/"><i class="fa fa-info-circle"></i><span>关于博客</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();"><i class="fas fa-cog"></i><span>美化设置</span></a><a class="rightMenu-item" href="javascript:rmf.fullScreen();"><i class="fas fa-expand"></i><span>切换全屏</span></a><a class="rightMenu-item" href="javascript:window.print();"><i class="fa-solid fa-print"></i><span>打印页面</span></a></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())
+setTimeout(function(){preloader.endLoading();}, 5000);
+document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'Zhongye1/Zhongye1.github.io',
+    'data-repo-id': 'R_kgDOKWw6mw',
+    'data-category-id': 'DIC_kwDOKWw6m84Cb_Up',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script src="/js/jquery.min.js"></script><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script async src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script><script defer type="text/javascript" src="https://cdn1.tianli0.top/npm/sweetalert2@8.19.0/dist/sweetalert2.all.js"></script><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_jituadf51kb.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_conde8ht15m.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_0vk7nzv6lpdm.js"></script><script async src="//at.alicdn.com/t/c/font_3586335_hsivh70x0fm.js"></script><script async src="//at.alicdn.com/t/c/font_3636804_gr02jmjr3y9.js"></script><script async src="//at.alicdn.com/t/c/font_3612150_kfv55xn3u2g.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_ipnrnckf7g7.js"></script><canvas id="universe"></canvas><canvas id="snow"></canvas><script defer src="/js/fomal.js"></script><div class="aplayer no-destroy" data-id="1941005079" data-server="netease" data-type="song" data-fixed="true" data-mini="true" data-listmaxheight="540px" data-listFolded="true" data-order="random" data-lrctype="-1" data-preload="none" data-autoplay="false" muted></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://lib.baomitu.com/pjax/0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["link[rel=\"canonical\"]","meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show","#web_bg",".js-pjax","#bibi","body > title","#app","#tag-echarts","#posts-echart","#categories-echarts"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://picx.zhimg.com/80/v2-e7f5f4107d19ededf9686a12c6363770_720w.webp?source=d16d100b);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/刘慈欣科幻集/&quot;);" href="javascript:void(0);">刘慈欣科幻集</a><span class="categoryBar-list-count">34</span><span class="categoryBar-list-descr">刘慈欣科幻小说集</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-aee1088402a3dba60d86b71c4c5ce4f2_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/随记/&quot;);" href="javascript:void(0);">随记</a><span class="categoryBar-list-count">33</span><span class="categoryBar-list-descr">一些随记和杂谈</span></li><li class="categoryBar-list-item" style="background:url(https://pic1.zhimg.com/80/v2-f8f67bac6b457af94c4bad5f6b928f94_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/博客美化/&quot;);" href="javascript:void(0);">博客美化</a><span class="categoryBar-list-count">10</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-92b32c509920899c39173f1593ab8100_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/Github项目/&quot;);" href="javascript:void(0);">Github项目</a><span class="categoryBar-list-count">8</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic4.zhimg.com/80/v2-11049fb8aba2211730759c6be6ae6963_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/漫画/&quot;);" href="javascript:void(0);">漫画</a><span class="categoryBar-list-count">9</span><span class="categoryBar-list-descr">孤独摇滚漫画集！</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/笔记/&quot;);" href="javascript:void(0);">笔记</a><span class="categoryBar-list-count">12</span><span class="categoryBar-list-descr">学习资料和笔记</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-06-25</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">LiteLoaderQQNT</a><div class="blog-slider__text">为你的QQ添加各种插件，并实现动态背景、美化主题、增加功能等功能</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-17</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">关于</a><div class="blog-slider__text">关于本博客站长</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pica.zhimg.com/80/v2-e8cfe5272808d7d34394ac62edb904f0_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-04</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">创建一个网络包解码器分析DEVP2P协议</a><div class="blog-slider__text">创建一个网络包解码器分析DEVP2P协议</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-a410b08c35e5288a57b75762ae482806_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">数据结构复习其一</a><div class="blog-slider__text">收集到的数据结构复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/v2-2d64b070c08f997649778c339779bdfe_b.jpeg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">高代知识点全汇总</a><div class="blog-slider__text">收集到的一些高代复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-03015b20688cff356a57effde569902c_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">广州大学选课脚本</a><div class="blog-slider__text">广大选课脚本, 可多线程自动选全校性选课和体育选课的课程</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-dc2545bcd93d0897f96a58dae80d32a8_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-20</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">孤独摇滚漫画索引</a><div class="blog-slider__text">本篇为目录索引、其他信息链接，剧情分析后续持续更新</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 320px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/site/census/'|| '/site/census/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("/api?null",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'null')
+    }
+  </script><!-- hexo injector body_end end --></body></html>

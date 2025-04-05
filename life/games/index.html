@@ -1,0 +1,1936 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><div id="myscoll"></div><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>游戏 | 柊野的博客</title><meta name="keywords" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学"><meta name="author" content="柊野"><meta name="copyright" content="柊野"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Nijika, whose ahoge can grow infinitely                                                                                Use your mouse or fingers to grab Nijika&#39;s ahoge and have fun!">
+<meta property="og:type" content="website">
+<meta property="og:title" content="游戏">
+<meta property="og:url" content="https://zhongye1.github.io/life/games/index.html">
+<meta property="og:site_name" content="柊野的博客">
+<meta property="og:description" content="Nijika, whose ahoge can grow infinitely                                                                                Use your mouse or fingers to grab Nijika&#39;s ahoge and have fun!">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-ba20c507888d74406842d10f0f9b1c03_720w.webp">
+<meta property="article:published_time" content="2022-08-28T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-05T16:05:56.251Z">
+<meta property="article:author" content="柊野">
+<meta property="article:tag" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic4.zhimg.com/80/v2-ba20c507888d74406842d10f0f9b1c03_720w.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zhongye1.github.io/life/games/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '游戏',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-08-06 00:05:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><style id="themeColor"></style><style id="rightSide"></style><style id="transPercent"></style><style id="blurNum"></style><style id="settingStyle"></style><style id="defineBg"></style><style id="menu_shadow"></style><script type="text/javascript" src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/map/js/china.js"></script><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="柊野的博客" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" onerror="onerror=null;src='/assets/r1.jpg'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">柊野的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="search faa-parent animated-hover" title="检索站内任何你想要的信息"><svg class="faa-tada icon" style="height:24px;width:24px;fill:currentColor;position:relative;top:6px" aria-hidden="true"><use xlink:href="#icon-search"></use></svg><span> 搜索</span></a></div><a class="meihua faa-parent animated-hover" onclick="toggleWinbox()" title="美化设置-自定义你的风格" id="meihua-button"><svg class="faa-tada icon" style="height:26px;width:26px;fill:currentColor;position:relative;top:8px" aria-hidden="true"><use xlink:href=""></use></svg></a><a class="sun_moon faa-parent animated-hover" onclick="switchNightMode()" title="浅色和深色模式转换" id="nightmode-button"><svg class="faa-tada" style="height:25px;width:25px;fill:currentColor;position:relative;top:7px" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="">       </use></svg></a><div id="toggle-menu"><a><i class="fas fa-bars fa-fw"></i></a></div></div></div></nav><div id="page-site-info"><h1 id="site-title">游戏</h1></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><body class="embedded_game locale_en game_layout_widget layout_widget responsive no_theme_toggle" data-host="itch.io" data-page_name="view_game">
+    <div class="header" id="header">
+        <h1 class="game_title" itemprop="name">Nijika, whose ahoge can grow infinitely</h1>
+    </div>
+    <div class="html_embed_widget base_widget embed_wrapper" id="html_embed_3570130">
+        <div class="game_frame game_loaded" data-height="400" style="height: 400px;">
+            <iframe allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share" allowtransparency="true" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true" id="game_drop" src="https://html-classic.itch.zone/html/7171745/index.html" frameborder="0" allowfullscreen="true" scrolling="no" style="width: 100%; height: 400px;"></iframe>
+        </div>
+        <div class="columns">
+            <div class="left_col column">
+                <p>Use your mouse or fingers to grab Nijika's ahoge and have fun!</p>
+            </div>
+        </div>
+    </div>
+<!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://picx.zhimg.com/80/v2-e7f5f4107d19ededf9686a12c6363770_720w.webp?source=d16d100b);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/刘慈欣科幻集/&quot;);" href="javascript:void(0);">刘慈欣科幻集</a><span class="categoryBar-list-count">34</span><span class="categoryBar-list-descr">刘慈欣科幻小说集</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-aee1088402a3dba60d86b71c4c5ce4f2_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/随记/&quot;);" href="javascript:void(0);">随记</a><span class="categoryBar-list-count">33</span><span class="categoryBar-list-descr">一些随记和杂谈</span></li><li class="categoryBar-list-item" style="background:url(https://pic1.zhimg.com/80/v2-f8f67bac6b457af94c4bad5f6b928f94_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/博客美化/&quot;);" href="javascript:void(0);">博客美化</a><span class="categoryBar-list-count">10</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-92b32c509920899c39173f1593ab8100_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/Github项目/&quot;);" href="javascript:void(0);">Github项目</a><span class="categoryBar-list-count">8</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic4.zhimg.com/80/v2-11049fb8aba2211730759c6be6ae6963_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/漫画/&quot;);" href="javascript:void(0);">漫画</a><span class="categoryBar-list-count">9</span><span class="categoryBar-list-descr">孤独摇滚漫画集！</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/笔记/&quot;);" href="javascript:void(0);">笔记</a><span class="categoryBar-list-count">12</span><span class="categoryBar-list-descr">学习资料和笔记</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-06-25</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">LiteLoaderQQNT</a><div class="blog-slider__text">为你的QQ添加各种插件，并实现动态背景、美化主题、增加功能等功能</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-17</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">关于</a><div class="blog-slider__text">关于本博客站长</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pica.zhimg.com/80/v2-e8cfe5272808d7d34394ac62edb904f0_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-04</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">创建一个网络包解码器分析DEVP2P协议</a><div class="blog-slider__text">创建一个网络包解码器分析DEVP2P协议</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-a410b08c35e5288a57b75762ae482806_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">数据结构复习其一</a><div class="blog-slider__text">收集到的数据结构复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/v2-2d64b070c08f997649778c339779bdfe_b.jpeg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">高代知识点全汇总</a><div class="blog-slider__text">收集到的一些高代复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-03015b20688cff356a57effde569902c_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">广州大学选课脚本</a><div class="blog-slider__text">广大选课脚本, 可多线程自动选全校性选课和体育选课的课程</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-dc2545bcd93d0897f96a58dae80d32a8_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-20</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">孤独摇滚漫画索引</a><div class="blog-slider__text">本篇为目录索引、其他信息链接，剧情分析后续持续更新</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 320px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/site/census/'|| '/site/census/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("/api?null",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'null')
+    }
+  </script><!-- hexo injector body_end end --></body>
+<ul>
+<li><strong>When Seika appears, throw her Bocchi-chan.</strong></li>
+<li><strong>More than two bocchis have a chance to make kita appear!</strong></li>
+<li>加载出问题可以刷新几下</li>
+</ul>
+<hr>
+<h2 id="本站小程序汇总">本站小程序汇总</h2>
+<div class="site-card-group"><a class="site-card" href="https://zhongye1.github.io/posts/mikumiku.html"><div class="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic4.zhimg.com/80/v2-ef01864e8e0ce9ec7cb1a110c5a167eb_720w.webp"/></div><div class="info"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic4.zhimg.com/80/v2-ef01864e8e0ce9ec7cb1a110c5a167eb_720w.webp"/><span class="title">MikuMikuTap</span><span class="desc">Miku音乐小游戏</span></div></a>
+<a class="site-card" href="https://zhongye1.github.io/posts/b61fa24.html"><div class="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-76497e2e4bea1d60679b0172c10c4e88_720w.webp"/></div><div class="info"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-03015b20688cff356a57effde569902c_720w.webp"/><span class="title">Uahh</span><span class="desc">申论生成器</span></div></a>
+<a class="site-card" href="https://zhongye1.github.io/posts/6a1b8162.html"><div class="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.itch.zone/aW1nLzExMDAyNTEwLnBuZw==/347x500/T7GaAa.png"/></div><div class="info"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-88d2ec402c1018cec57110c295e85a30_720w.webp"/><span class="title">Nijika</span><span class="desc">孤独摇滚同人小游戏</span></div></a>
+<a class="site-card" href="https://zhongye1.github.io/posts/e9a290f3.html"><div class="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/v2-2b28074e3f3148a2bad283c553184c8a_b.jpg"/></div><div class="info"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-88d2ec402c1018cec57110c295e85a30_720w.webp"/><span class="title">Colsrch</span><span class="desc">强风大背头</span></div></a>
+<a class="site-card" target="_blank" rel="noopener" href="https://air.moe/funs/Sakana/"><div class="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/80/v2-d090c1caed7bb1c9d169fb842b5e5d1d_720w.webp"/></div><div class="info"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/80/v2-d090c1caed7bb1c9d169fb842b5e5d1d_720w.webp"/><span class="title">Sakana</span><span class="desc">Sakana~🐟</span></div></a></div>
+<h2 id="其他游戏项目汇总">其他游戏项目汇总</h2>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>游戏</th>
+<th>说明</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1</td>
+<td>杀死国王：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/kill-the-king.html">https://haiyong.site/moyu/kill-the-king.html</a></td>
+<td>疯狂点击空格键就行</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>挡板小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/danban.html">https://haiyong.site/moyu/danban.html</a></td>
+<td>随心所欲的放挡板，挡住下面掉下来的球球</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>吃豆人游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dou.html">https://haiyong.site/moyu/dou.html</a></td>
+<td>吃豆人在走路的时候不会停下，只能转方向。通过你的智慧去闯关吧🎉</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>4</td>
+<td>飞越天空之城：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fytkzc/">https://haiyong.site/moyu/fytkzc/</a></td>
+<td>我靠，一飞冲天了！要不要分享给小伙伴乐呵乐呵？</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>5</td>
+<td>⭐️飞行员训练：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fxyxl/">https://haiyong.site/moyu/fxyxl/</a></td>
+<td>飞行员实战训练</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>6</td>
+<td>⭐️挑战繁简字：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/ftz/">https://haiyong.site/moyu/ftz/</a></td>
+<td>测试水平杠杠的，去香港和台湾都平趟了</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>7</td>
+<td>任意球大师：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/freekick/">https://haiyong.site/moyu/freekick/</a></td>
+<td>训练任意球射门技巧，国足没你不行</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>8</td>
+<td>和爸爸合张影：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fqj/">https://haiyong.site/moyu/fqj/</a></td>
+<td>你有多长时间没和老爸合过影了？</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>9</td>
+<td>让屋子飞！：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/flyhouse/">https://haiyong.site/moyu/flyhouse/</a></td>
+<td>点击炸弹，金币，气球，可以触发炸弹爆炸，收集金币和绑上气球。按住房子可以拖动。划屏出现保护。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>10</td>
+<td>⭐️我来帮老师阅卷！：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fkqbg/">https://haiyong.site/moyu/fkqbg/</a></td>
+<td>帮老师阅卷修改错别字</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>11</td>
+<td>⭐️疯狂的方块：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fkdfk/">https://haiyong.site/moyu/fkdfk/</a></td>
+<td>挺有意思的，有点消消乐的感觉</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>12</td>
+<td>疯狂猜图：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fkct/">https://haiyong.site/moyu/fkct/</a></td>
+<td>好玩的看图猜词游戏，知识面大考验，脑力激荡</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>13</td>
+<td>鸡乐盒 Plus：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/ikun-home/">https://haiyong.site/moyu/ikun-home/</a></td>
+<td>点击按钮就会发出只因声，喜欢的话可以分享给身边的ikun！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>14</td>
+<td>⭐️鸡你太美：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jlh/">https://haiyong.site/moyu/jlh/</a></td>
+<td>点击按钮就会发出鸡声，跟上面 鸡乐盒 Plus 差不多（见13）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>15</td>
+<td>疯狂猜水果：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fkcsg/">https://haiyong.site/moyu/fkcsg/</a></td>
+<td>挑战你的水果知识</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>16</td>
+<td>⭐️小猪飞飞：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/feiyu/">https://haiyong.site/moyu/feiyu/</a></td>
+<td>点击屏幕跨越障碍，相信大家都玩过类似的游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>17</td>
+<td>⭐️我要飞的更高：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/feidegenggao/">https://haiyong.site/moyu/feidegenggao/</a></td>
+<td>踩云朵往上飞，看你能飞多高</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>18</td>
+<td>废柴勇士：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fcys/">https://haiyong.site/moyu/fcys/</a></td>
+<td>最新虐心小游戏废柴勇士，听说没人能过37秒。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>19</td>
+<td>测测你今年的发财关键：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fcl/">https://haiyong.site/moyu/fcl/</a></td>
+<td>预测你的财富运势</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>20</td>
+<td>堆雪人：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/epicsnowman/">https://haiyong.site/moyu/epicsnowman/</a></td>
+<td>堆雪人-7k7k手机小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>21</td>
+<td>小球吃钻石：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dzt/">https://haiyong.site/moyu/dzt/</a></td>
+<td>别让小球掉下去了</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>22</td>
+<td>快来打我呀！：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dwy/">https://haiyong.site/moyu/dwy/</a></td>
+<td>体验打击的乐趣</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>23</td>
+<td>读心术：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/duxinshu/">https://haiyong.site/moyu/duxinshu/</a></td>
+<td>只有3%的人能识破的怪物读心术</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>24</td>
+<td>看看你有多老：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/duolao/">https://haiyong.site/moyu/duolao/</a></td>
+<td>测试你的反应速度，推测你的年龄</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>25</td>
+<td>一起来抢吧：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dumpling/">https://haiyong.site/moyu/dumpling/</a></td>
+<td>挺无聊的一个游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>26</td>
+<td>堆木头：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/duimutou/">https://haiyong.site/moyu/duimutou/</a></td>
+<td>反应速度测试小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>27</td>
+<td>动态视力：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dtsl/">https://haiyong.site/moyu/dtsl/</a></td>
+<td>测试你的视力</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>28</td>
+<td>⭐️打击者：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/djz/">https://haiyong.site/moyu/djz/</a></td>
+<td>飞机大战小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>29</td>
+<td>⭐️电锯切割狂：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/djqgk/">https://haiyong.site/moyu/djqgk/</a></td>
+<td>听名字挺变态，其实是一个很好玩的休闲游戏，把图形分成面积相等的两份、三份或者更多， 需要用到一些数学知识</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>30</td>
+<td>地球日：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/diqiuri/">https://haiyong.site/moyu/diqiuri/</a></td>
+<td>一起为地球穿新衣</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>31</td>
+<td>钓鱼：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/diaoyu/">https://haiyong.site/moyu/diaoyu/</a></td>
+<td>史上最寂寞的游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>32</td>
+<td>点炮过大年：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dianpao/">https://haiyong.site/moyu/dianpao/</a></td>
+<td>体验过年的乐趣</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>33</td>
+<td>⭐️最强电灯泡：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/diandeng/">https://haiyong.site/moyu/diandeng/</a></td>
+<td>益智类小游戏，用最少的步数来完成</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>34</td>
+<td>搭汉堡：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dhb/">https://haiyong.site/moyu/dhb/</a></td>
+<td>类似堆房子，盖塔楼小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>35</td>
+<td>⭐️魔兽城堡：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/demoncastle/">https://haiyong.site/moyu/demoncastle/</a></td>
+<td>恶魔入侵，赶快拿起宝剑杀敌！抵抗恶魔，保护城堡！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>36</td>
+<td>⭐️大长腿：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dct/">https://haiyong.site/moyu/dct/</a></td>
+<td>这游戏看似很简单，其实一点都不监督</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>37</td>
+<td>逗比测试：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dbcs">https://haiyong.site/moyu/dbcs</a></td>
+<td>测试你是什么类型的都逗比</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>38</td>
+<td>上山打老虎：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dalaohu/">https://haiyong.site/moyu/dalaohu/</a></td>
+<td>看到老虎，两个手指打死；看到苍蝇，一个手指按死。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>39</td>
+<td>⭐️宠物大营救：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cwdyj/">https://haiyong.site/moyu/cwdyj/</a></td>
+<td>消灭方块，来将宠物移到底部，也类似消消乐</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>40</td>
+<td>⭐️查开房记录：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/ckf/">https://haiyong.site/moyu/ckf/</a></td>
+<td>输入好友姓名，查查ta有多少条开房记录</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>41</td>
+<td>蟹黄满满：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cpx/">https://haiyong.site/moyu/cpx/</a></td>
+<td>类似打地鼠，游戏源码可用于餐饮行业营销</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>42</td>
+<td>⭐️核心球：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/coreball/">https://haiyong.site/moyu/coreball/</a></td>
+<td>见缝插针</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>43</td>
+<td>拆开情侣：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/ckql/">https://haiyong.site/moyu/ckql/</a></td>
+<td>腹黑上线，守护光棍</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>44</td>
+<td>⭐️超级染色体：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cjrst/">https://haiyong.site/moyu/cjrst/</a></td>
+<td>看看你需要多少步可以完成消除</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>45</td>
+<td>超级马里奥：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cjmla/">https://haiyong.site/moyu/cjmla/</a></td>
+<td>不太好玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>46</td>
+<td>⭐️吃货大作战2：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/chdzz/">https://haiyong.site/moyu/chdzz/</a></td>
+<td>还可以，考研反应速度的</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>47</td>
+<td>吃货大作战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/chdazuozhan/">https://haiyong.site/moyu/chdazuozhan/</a></td>
+<td>体验吃货的乐趣</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>48</td>
+<td>⭐️拆弹专家：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cdzj/">https://haiyong.site/moyu/cdzj/</a></td>
+<td>这个也还可以，看看你眼力、反应速度如何</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>49</td>
+<td>抽绷带：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cbd/">https://haiyong.site/moyu/cbd/</a></td>
+<td>体验绷带的乐趣</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>50</td>
+<td>潮爷爷带你装逼带你飞：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cyydnf/">https://haiyong.site/moyu/cyydnf/</a></td>
+<td>由下往上滑动屏幕，控制翅膀舞动的节奏，让老爷爷带你装逼带你飞</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>51</td>
+<td>⭐️糖果粉碎世界：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/candyrain/">https://haiyong.site/moyu/candyrain/</a></td>
+<td>闯关小游戏，加载需要点时间</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>52</td>
+<td>⭐️八爪鱼拉拉手：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bzylls/">https://haiyong.site/moyu/bzylls/</a></td>
+<td>益智类小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>53</td>
+<td>冰桶挑战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bttz/">https://haiyong.site/moyu/bttz/</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>54</td>
+<td>变态测试题：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/btcst/">https://haiyong.site/moyu/btcst/</a></td>
+<td>开启掉节操之旅</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>55</td>
+<td>逼死强迫症2：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bsqpz2/">https://haiyong.site/moyu/bsqpz2/</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>56</td>
+<td>⭐️逼死强迫症：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bsqpz/">https://haiyong.site/moyu/bsqpz/</a></td>
+<td>自定义生成带有角标消息的头像 （支持上传）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>57</td>
+<td>神算子：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/brainie/">https://haiyong.site/moyu/brainie/</a></td>
+<td>适合小朋友玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>58</td>
+<td>奔跑吧男子：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bpbnzh/">https://haiyong.site/moyu/bpbnzh/</a></td>
+<td>类似奔跑吧兄弟</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>59</td>
+<td>斑马斑马跳：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bmbmt/">https://haiyong.site/moyu/bmbmt/</a></td>
+<td>需要在手机端玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>60</td>
+<td>合体积木：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/blockgame/">https://haiyong.site/moyu/blockgame/</a></td>
+<td>益智类闯关小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>61</td>
+<td>打虎英雄：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bljqzffxwz/">https://haiyong.site/moyu/bljqzffxwz/</a></td>
+<td>暴力街区之反腐小王子</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>62</td>
+<td>68小鸟：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/68xn/">https://haiyong.site/moyu/68xn/</a></td>
+<td>控制小鸟别撞到刺了</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>63</td>
+<td>⭐️糖果丘比特：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/ai/">https://haiyong.site/moyu/ai/</a></td>
+<td>益智类闯关小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>64</td>
+<td>病毒入侵者：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/coronavirus-invaders/">https://haiyong.site/moyu/coronavirus-invaders/</a></td>
+<td>纯CSS游戏病毒入侵者</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>65</td>
+<td>刮刮乐·好运十倍：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/guaguale/">https://haiyong.site/moyu/guaguale/</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>66</td>
+<td>Win12 网页版：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/win12/">https://haiyong.site/moyu/win12/</a></td>
+<td>Windows 12 网页版抢先体验</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>67</td>
+<td>飙车追妹子：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/biaoche">https://haiyong.site/moyu/biaoche</a></td>
+<td>h5手机端飙车追妹子</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>68</td>
+<td>保护老板：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bhlb">https://haiyong.site/moyu/bhlb</a></td>
+<td>不想被老板炒鱿鱼的话，表忠心的机会来了</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>69</td>
+<td>⭐️《水果保卫战》：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/sgbwz">https://haiyong.site/moyu/sgbwz</a></td>
+<td>仿燃烧的蔬菜</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>70</td>
+<td>暴打小苹果：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bdxpg">https://haiyong.site/moyu/bdxpg</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>71</td>
+<td>暴打神经猫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bdsjm">https://haiyong.site/moyu/bdsjm</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>72</td>
+<td>马走日-步步惊心：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bbjx">https://haiyong.site/moyu/bbjx</a></td>
+<td>请在手机端试玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>73</td>
+<td>⭐️地面突击队：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dmtjd">https://haiyong.site/moyu/dmtjd</a></td>
+<td>2.5D游戏《地面突击队》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>74</td>
+<td>棒打疯猫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bdfm">https://haiyong.site/moyu/bdfm</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>75</td>
+<td>吃包子大赛：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/baozi">https://haiyong.site/moyu/baozi</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>76</td>
+<td>空战1942：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/1942">https://haiyong.site/moyu/1942</a></td>
+<td>飞机大战小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>77</td>
+<td>123算术题：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/123sst">https://haiyong.site/moyu/123sst</a></td>
+<td>愚人节专题123算术题</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>78</td>
+<td>3D拳击：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/3dboxing">https://haiyong.site/moyu/3dboxing</a></td>
+<td>选择一个拳手进行战斗</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>79</td>
+<td>愤怒的小红帽：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fndxhm">https://haiyong.site/moyu/fndxhm</a></td>
+<td>网页版愤怒的小红帽游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>80</td>
+<td>⭐️坦克游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tank">https://haiyong.site/moyu/tank</a></td>
+<td>支持单/双人</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>81</td>
+<td>⭐️糖果麻将游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/sweety-mahjong/game">https://haiyong.site/moyu/sweety-mahjong/game</a></td>
+<td>html5糖果麻将游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>82</td>
+<td>锅打灰太狼：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gdhtl">https://haiyong.site/moyu/gdhtl</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>83</td>
+<td>激流勇进小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jlyj">https://haiyong.site/moyu/jlyj</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>84</td>
+<td>⭐️奔跑吧霸王龙：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bawanglong.html">https://haiyong.site/moyu/bawanglong.html</a></td>
+<td>chrome浏览器的小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>85</td>
+<td>⭐️在线桌球：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/zhuoqiu">https://haiyong.site/moyu/zhuoqiu</a></td>
+<td>HTML在线桌球</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>86</td>
+<td>⭐️国防游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/zsjfy">https://haiyong.site/moyu/zsjfy</a></td>
+<td>中世纪的国防游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>87</td>
+<td>青蛙吃苍蝇：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/qwccy">https://haiyong.site/moyu/qwccy</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>88</td>
+<td>扫雷：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/saolei-2.html">https://haiyong.site/moyu/saolei-2.html</a></td>
+<td>H5经典小游戏扫雷</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>89</td>
+<td>⭐️飞机大战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fjdz">https://haiyong.site/moyu/fjdz</a></td>
+<td>H5版飞机大战游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>90</td>
+<td>井字棋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jingziqi">https://haiyong.site/moyu/jingziqi</a></td>
+<td>H5井字棋人机/双人游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>91</td>
+<td>⭐️经典版坦克大战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tkdz">https://haiyong.site/moyu/tkdz</a></td>
+<td>经典版坦克大战单/双人游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>92</td>
+<td>消灭方块：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xmfk">https://haiyong.site/moyu/xmfk</a></td>
+<td>HTML消灭方块小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>93</td>
+<td>⭐️五子棋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wuziqi.html">https://haiyong.site/moyu/wuziqi.html</a></td>
+<td>尝试一下和人工智能下五子棋</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>94</td>
+<td>⭐️五子棋2.0版：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wzq">https://haiyong.site/moyu/wzq</a></td>
+<td>多种模式的五子棋游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>95</td>
+<td>⭐️H5五子棋游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wzq-2">https://haiyong.site/moyu/wzq-2</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>96</td>
+<td>天天消消乐：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xxl">https://haiyong.site/moyu/xxl</a></td>
+<td>HTML天天消消乐游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>97</td>
+<td>极速漂移赛车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jisupiaoyisaiche">https://haiyong.site/moyu/jisupiaoyisaiche</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>98</td>
+<td>下一个数字：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xygsz">https://haiyong.site/moyu/xygsz</a></td>
+<td>html5敏捷类游戏《下一个数字》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>99</td>
+<td>西部牛仔：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xbnz">https://haiyong.site/moyu/xbnz</a></td>
+<td>html5西部牛仔枪战游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>100</td>
+<td>全民飞机大战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/qmfjdz">https://haiyong.site/moyu/qmfjdz</a></td>
+<td>HTML5微信版《全民飞机大战》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>101</td>
+<td>⭐️飞跃的奶酪：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/flyingcheese">https://haiyong.site/moyu/flyingcheese</a></td>
+<td>html5益智游戏《飞跃的奶酪》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>102</td>
+<td>桌球游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/taiqiu">https://haiyong.site/moyu/taiqiu</a></td>
+<td>试试在线版台球</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>103</td>
+<td>⭐️盖楼游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/towergame">https://haiyong.site/moyu/towergame</a></td>
+<td>来啊盖楼啊</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>104</td>
+<td>黑杰克21点：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hjk21">https://haiyong.site/moyu/hjk21</a></td>
+<td>黑杰克21点游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>105</td>
+<td>⭐️天津麻将：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tjmj">https://haiyong.site/moyu/tjmj</a></td>
+<td>网页版天津麻将小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>106</td>
+<td>海盗入侵：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hddzz">https://haiyong.site/moyu/hddzz</a></td>
+<td>海盗大作战在线网页塔防小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>107</td>
+<td>⭐️连星星：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/lianxingxing">https://haiyong.site/moyu/lianxingxing</a></td>
+<td>html5益智游戏《连星星》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>108</td>
+<td>⭐️繁衍战争：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/fanyan">https://haiyong.site/moyu/fanyan</a></td>
+<td>html5策略游戏《繁衍战争》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>109</td>
+<td>机甲战士：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jijia">https://haiyong.site/moyu/jijia</a></td>
+<td>无限火力机甲战士射击类游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>110</td>
+<td>星际争霸：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/starcraft">https://haiyong.site/moyu/starcraft</a></td>
+<td>HTML5版星际争霸完全版</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>111</td>
+<td>⭐️简易单机版斗地主：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/doudizhu">https://haiyong.site/moyu/doudizhu</a></td>
+<td>简易单机版斗地主棋牌类游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>112</td>
+<td>⭐️解救海盗船长：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jiejiuhaidao">https://haiyong.site/moyu/jiejiuhaidao</a></td>
+<td>解救海盗船长休闲类游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>113</td>
+<td>侠盗罗宾汉：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xiadaoluobinhan">https://haiyong.site/moyu/xiadaoluobinhan</a></td>
+<td>html5潜行游戏《侠盗罗宾汉》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>114</td>
+<td>⭐️罗斯魔影：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/luosimoying">https://haiyong.site/moyu/luosimoying</a></td>
+<td>html5魔法消除游戏《罗斯魔影》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>115</td>
+<td>高达战争：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gaoda">https://haiyong.site/moyu/gaoda</a></td>
+<td>html5横版射击游戏《高达战争》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>116</td>
+<td>⭐️植物大战僵尸：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/pvz">https://haiyong.site/moyu/pvz</a></td>
+<td>植物大战僵尸网页版</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>117</td>
+<td>新召唤师峡谷大冒险：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/damaoxian">https://haiyong.site/moyu/damaoxian</a></td>
+<td>英雄联盟简易版</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>118</td>
+<td>🐓 只因你太美：<a target="_blank" rel="noopener" href="https://wanghao221.github.io/ji">https://wanghao221.github.io/ji</a></td>
+<td>今天也是为哥哥努力的一天呢！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>119</td>
+<td>萌怪大冒险：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/mgdmx">https://haiyong.site/moyu/mgdmx</a></td>
+<td>html5横版萌怪大冒险游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>120</td>
+<td>保卫机器人：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/bwjqr">https://haiyong.site/moyu/bwjqr</a></td>
+<td>html5机器人防护益智游戏SRC</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>121</td>
+<td>兔子快跑：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tuzikuaipao">https://haiyong.site/moyu/tuzikuaipao</a></td>
+<td>html5兔子快跑大冒险游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>122</td>
+<td>⭐️第三人称射击游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/SpaceHuggers">https://haiyong.site/moyu/SpaceHuggers</a></td>
+<td>你有十条命，杀死所有的敌人</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>123</td>
+<td>魂斗罗：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hundouluo">https://haiyong.site/moyu/hundouluo</a></td>
+<td>HTML5魂斗罗之突围游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>124</td>
+<td>召唤神龙：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/zhsl">https://haiyong.site/moyu/zhsl</a></td>
+<td>召唤神龙-红宝石无敌版</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>125</td>
+<td>公园停车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tingche">https://haiyong.site/moyu/tingche</a></td>
+<td>HTML5公园停车游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>126</td>
+<td>密室逃生：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/msts">https://haiyong.site/moyu/msts</a></td>
+<td>html5《密室逃生》微信游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>127</td>
+<td>⭐️危险货车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/weixiandehuoche">https://haiyong.site/moyu/weixiandehuoche</a></td>
+<td>html5物理特技游戏《危险货车》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>128</td>
+<td>亡者之城：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wzzc">https://haiyong.site/moyu/wzzc</a></td>
+<td>3D版生化危机(胆小勿入)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>129</td>
+<td>⭐️黄金矿工：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hjkg">https://haiyong.site/moyu/hjkg</a></td>
+<td>全新版黄金矿工，黄金矿机千斤顶</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>130</td>
+<td>⭐️特工卡尔施：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tegong">https://haiyong.site/moyu/tegong</a></td>
+<td>终极平衡挑战html5游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>131</td>
+<td>⭐️魔法蛋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/magicegg">https://haiyong.site/moyu/magicegg</a></td>
+<td>动物大作战物理射击类html5游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>132</td>
+<td>飞越天险：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/feiyue">https://haiyong.site/moyu/feiyue</a></td>
+<td>html5横版飞行游戏《飞跃驼峰航线》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>133</td>
+<td>光头强：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/guangtouqiang">https://haiyong.site/moyu/guangtouqiang</a></td>
+<td>疯狂光头强</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>134</td>
+<td>太空跑酷：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/taikong">https://haiyong.site/moyu/taikong</a></td>
+<td>Three.js炫彩太空跑酷VR小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>135</td>
+<td>⭐️弗莱迪的物理实验：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/flddsy">https://haiyong.site/moyu/flddsy</a></td>
+<td>html5物理游戏《佛莱迪的试验》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>136</td>
+<td>骑士冒险：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/qishi">https://haiyong.site/moyu/qishi</a></td>
+<td>html5横版街机风格骑士冒险游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>137</td>
+<td>⭐️是男人就下100层：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/100">https://haiyong.site/moyu/100</a></td>
+<td>游戏内只能左右行走不能跳跃，看看你能下多少层吧</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>138</td>
+<td>是英雄就下一百层：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/yingxiong.html">https://haiyong.site/moyu/yingxiong.html</a></td>
+<td>简易版是男人就下100层（见137）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>139</td>
+<td>⭐️墓地逃亡：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/mdtw">https://haiyong.site/moyu/mdtw</a></td>
+<td>死亡墓地大逃亡HTML5游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>140</td>
+<td>森林协奏曲：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/senlin">https://haiyong.site/moyu/senlin</a></td>
+<td>html5休闲游戏《森林协奏曲》</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>141</td>
+<td>⭐️中国象棋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xiangqi">https://haiyong.site/moyu/xiangqi</a></td>
+<td>HTML5中国象棋游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>142</td>
+<td>红蓝旋转：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hlxz">https://haiyong.site/moyu/hlxz</a></td>
+<td>纪念碑谷画风小游戏，红蓝小球，一同向前！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>143</td>
+<td>⭐️小霸王游戏机：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xbw">https://haiyong.site/moyu/xbw</a></td>
+<td>HTML版小霸王游戏机，一代人的回忆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>144</td>
+<td>win10：<a target="_blank" rel="noopener" href="https://haiyong.site/win/">https://haiyong.site/win/</a></td>
+<td>仿windows桌面主题特效</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>145</td>
+<td>维京战争：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/weijing">https://haiyong.site/moyu/weijing</a></td>
+<td>网页塔防小游戏维京战争HTML5手机游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>146</td>
+<td>水果忍者：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/shuiguorenzhe">https://haiyong.site/moyu/shuiguorenzhe</a></td>
+<td>HTML5版水果忍者游戏，一代人的回忆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>147</td>
+<td>捕鱼达人：<a target="_blank" rel="noopener" href="https://wanghao221.github.io/buyudaren">https://wanghao221.github.io/buyudaren</a></td>
+<td>HTML5版捕鱼达人，一代人的回忆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>148</td>
+<td>超级玛丽：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/mario">https://haiyong.site/moyu/mario</a></td>
+<td>小霸王里可以玩原版（见143）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>149</td>
+<td>跳房子：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tiaofangzi.html">https://haiyong.site/moyu/tiaofangzi.html</a></td>
+<td>js实现一个点击跳跃逃离房屋坍塌小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>150</td>
+<td>一个都不能死：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/yigedoubunengsi">https://haiyong.site/moyu/yigedoubunengsi</a></td>
+<td>看看你能坚持多久</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>151</td>
+<td>赛车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/saiche">https://haiyong.site/moyu/saiche</a></td>
+<td>传统的赛车游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>152</td>
+<td>石头剪刀布：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/shitoujiandaobu">https://haiyong.site/moyu/shitoujiandaobu</a></td>
+<td>完全靠运气（谁先赢十局谁获胜）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>153</td>
+<td>⭐️过马路小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/guomalu.html">https://haiyong.site/moyu/guomalu.html</a></td>
+<td>three实现三维路上过马路避让汽车游戏代码(键盘的上下左右键也可以哦)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>154</td>
+<td>自定义生成树：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/shengchengshu.html">https://haiyong.site/moyu/shengchengshu.html</a></td>
+<td>按住并拖动可环顾四周，右上角可自定义生成</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>155</td>
+<td>⭐️2048：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/2048.html">https://haiyong.site/moyu/2048.html</a></td>
+<td>经典 2048 小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>156</td>
+<td>纸牌记忆游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/zhipaijiyi.html">https://haiyong.site/moyu/zhipaijiyi.html</a></td>
+<td>考验你的记忆力和反应速度</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>157</td>
+<td>逗猫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/doumao.html">https://haiyong.site/moyu/doumao.html</a></td>
+<td>小球逗猫玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>158</td>
+<td>保护鸡蛋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/baohujidan.html">https://haiyong.site/moyu/baohujidan.html</a></td>
+<td>你需要点击（或触摸）鸡蛋来将它们保存在篮子中</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>159</td>
+<td>打地鼠：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dadishu.html">https://haiyong.site/moyu/dadishu.html</a></td>
+<td>哦咧哇dadishu咪哒！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>160</td>
+<td>HTML5拉杆子过关小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/laganziguoguan">https://haiyong.site/moyu/laganziguoguan</a></td>
+<td>我不会告诉你其实还有个游戏跟这个几乎一模一样</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>161</td>
+<td>⭐️斗地主：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/doudizhu.html">https://haiyong.site/moyu/doudizhu.html</a></td>
+<td>勉勉强强能玩</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>162</td>
+<td>弹珠打砖块游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/danzhu.html">https://haiyong.site/moyu/danzhu.html</a></td>
+<td>弹珠在服务器里留下的足迹</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>163</td>
+<td>I-am-Airplane：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/feiji.html">https://haiyong.site/moyu/feiji.html</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>164</td>
+<td>飞机炸弹💣：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/feijizhadan.html">https://haiyong.site/moyu/feijizhadan.html</a></td>
+<td>开始之前先等个红绿灯</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>165</td>
+<td>⭐️爱吹风的小狮子🦁：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/lion.html">https://haiyong.site/moyu/lion.html</a></td>
+<td>按住并拖动以产生风，小狮子一定会很舒服❤</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>166</td>
+<td>打喷嚏的喷火龙：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/penhuolong.html">https://haiyong.site/moyu/penhuolong.html</a></td>
+<td>点击的时间越长，它打喷嚏的力度越大</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>167</td>
+<td>宠物精灵对战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/pokemon.html">https://haiyong.site/moyu/pokemon.html</a></td>
+<td>选择你的玩家和宠物精灵进行对战</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>168</td>
+<td>切方块小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/qiefangkuai.html">https://haiyong.site/moyu/qiefangkuai.html</a></td>
+<td>容易漏划的玩家建议玩休闲模式👀</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>169</td>
+<td>人工智障：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/rengongzhizh.html">https://haiyong.site/moyu/rengongzhizh.html</a></td>
+<td>一个不会聊天的聊天机器人</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>170</td>
+<td>保护芯堆：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/baohuduixin.html">https://haiyong.site/moyu/baohuduixin.html</a></td>
+<td>你是个保护罩，控制他保护护罩里面的芯堆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>171</td>
+<td>⭐️俄罗斯方块：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/eluosi.html">https://haiyong.site/moyu/eluosi.html</a></td>
+<td>手机电脑都能玩，外观也很奈斯</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>172</td>
+<td>户外滑雪：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/huaxue.html">https://haiyong.site/moyu/huaxue.html</a></td>
+<td>游戏实现了三维户外滑雪场景🛹（加载稍微慢些）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>173</td>
+<td>视觉差贪吃蛇：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tan.html">https://haiyong.site/moyu/tan.html</a></td>
+<td>游戏实现视觉差效果，会有不同的感觉（手机也能玩）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>174</td>
+<td>CPS测速：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cesu.html">https://haiyong.site/moyu/cesu.html</a></td>
+<td>测试你的手速有多快🚀</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>175</td>
+<td>圣诞老人过桥：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/santa-claus.html">https://haiyong.site/moyu/santa-claus.html</a></td>
+<td>看看你能玩到多少分</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>176</td>
+<td>三只小鸡：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/sanzhiji.html">https://haiyong.site/moyu/sanzhiji.html</a></td>
+<td>点击屏幕任意位置，看看三只小鸡如何跟着它动</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>177</td>
+<td>⭐️Tamagotchi养成小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tamagotchi">https://haiyong.site/moyu/tamagotchi</a></td>
+<td>养成类（弱智）小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>178</td>
+<td>3D酷炫拼魔方：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/mofang">https://haiyong.site/moyu/mofang</a></td>
+<td>魔方任意旋转和拼接，看看你能不能拼完整🎆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>179</td>
+<td>⭐️盖塔楼：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/tower-blocks.html">https://haiyong.site/moyu/tower-blocks.html</a></td>
+<td>单击(或按空格)放置砖块，看看你能堆多高</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>180</td>
+<td>小飞鱼🐳：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xiaofeiyu.html">https://haiyong.site/moyu/xiaofeiyu.html</a></td>
+<td>移动鼠标来改变速度和方向</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>181</td>
+<td>扫雷：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/saolei.html">https://haiyong.site/moyu/saolei.html</a></td>
+<td>看似简单的扫雷，其实一点都不简单</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>182</td>
+<td>⭐️双人五子棋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wu.html">https://haiyong.site/moyu/wu.html</a></td>
+<td>多种五子棋模式任你选择</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>183</td>
+<td>⭐️蜘蛛纸牌：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/zhizhuzhipai.html">https://haiyong.site/moyu/zhizhuzhipai.html</a></td>
+<td>一代人的回忆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>184</td>
+<td>射箭游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/">https://haiyong.site/moyu/</a></td>
+<td>拉回弓箭并射出去！</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>185</td>
+<td>⭐️小熊吃星星（61关）：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xiaoxiongchixingxing.html">https://haiyong.site/moyu/xiaoxiongchixingxing.html</a></td>
+<td>拖动网格旋转，熊熊和星星随着网格移动，橙色链接保持原位；蓝色链接随网格移动，旋转网格以不同方式连接蓝色和橙色链接。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>186</td>
+<td>⭐️见缝插针：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/chazhen.html">https://haiyong.site/moyu/chazhen.html</a></td>
+<td>看看你能插到多少关</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>187</td>
+<td>AI井字棋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xxoo.html">https://haiyong.site/moyu/xxoo.html</a></td>
+<td>井字棋1.0版本</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>188</td>
+<td>双人井字棋bug版：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xxoo2.html">https://haiyong.site/moyu/xxoo2.html</a></td>
+<td>井字棋2.0版本，升级出BUG了</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>189</td>
+<td>双人井字棋升级版：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/xxoo3.html">https://haiyong.site/moyu/xxoo3.html</a></td>
+<td>井字棋3.0版本，适合双人玩的棋类小游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>190</td>
+<td>⭐️闯关小游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/simplejsgame.html">https://haiyong.site/moyu/simplejsgame.html</a></td>
+<td>简单的 JavaScript 闯关游戏 请用电脑打开，上下左右控制方向 吃完所有金币进入下一关</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>191</td>
+<td>无限跑酷：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/wuxianpaoku.html">https://haiyong.site/moyu/wuxianpaoku.html</a></td>
+<td>一个有趣好玩的无限跑酷游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>192</td>
+<td>虫子走迷宫🐛：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/paocaimigong.html">https://haiyong.site/moyu/paocaimigong.html</a></td>
+<td>假如你是一只虫子，控制自己去吃你最爱的卷心菜</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>193</td>
+<td>撕衣服👗：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/siyifu">https://haiyong.site/moyu/siyifu</a></td>
+<td>模拟衣服撕扯效果</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>194</td>
+<td>鼠标🖱走迷宫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/migong.html">https://haiyong.site/moyu/migong.html</a></td>
+<td>使用鼠标光标跟随从绿色标记到末尾的线（共5关）</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>195</td>
+<td>⭐️影子分身闯关：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/quwei.html">https://haiyong.site/moyu/quwei.html</a></td>
+<td>一个特别有科技感的闯关游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>196</td>
+<td>⭐️吃豆人游戏：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/dou.html">https://haiyong.site/moyu/dou.html</a></td>
+<td>吃豆人在走路的时候不会停下，只能转方向。通过你的智慧去闯关吧🎉</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>197</td>
+<td>⭐3D小车车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/cheche/">https://haiyong.site/moyu/cheche/</a></td>
+<td>超级好玩的3D小车车</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>198</td>
+<td>越摇越快乐：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/staggeringbeauty/">https://haiyong.site/moyu/staggeringbeauty/</a></td>
+<td>一个魔性并且解压的游戏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>199</td>
+<td>⭐1v1.LOL：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/1v1lol/">https://haiyong.site/moyu/1v1lol/</a></td>
+<td>1v1.LOL</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>200</td>
+<td>⭐奇幻驾驶团：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/adventure-drivers/">https://haiyong.site/moyu/adventure-drivers/</a></td>
+<td>adventure-drivers</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>201</td>
+<td>功夫猫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gongfumao/">https://haiyong.site/moyu/gongfumao/</a></td>
+<td>喵星人简直要占领地球的节奏</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>202</td>
+<td>钢琴大师：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gqds/">https://haiyong.site/moyu/gqds/</a></td>
+<td>钢琴大师</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>203</td>
+<td>国庆乐“翻”天：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gqffk/">https://haiyong.site/moyu/gqffk/</a></td>
+<td>国庆乐“翻”天</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>204</td>
+<td>⭐挺住18秒！：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gqtz/">https://haiyong.site/moyu/gqtz/</a></td>
+<td>挺住18秒！躲开条子</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>205</td>
+<td>⭐高尔夫花园：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/grfhy/">https://haiyong.site/moyu/grfhy/</a></td>
+<td>高尔夫花园</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>206</td>
+<td>龟兔再跑：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gtzp/">https://haiyong.site/moyu/gtzp/</a></td>
+<td>龟兔再跑之乌龟乌龟跳</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>207</td>
+<td>股大爷：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gudaye/">https://haiyong.site/moyu/gudaye/</a></td>
+<td>股市模拟-出任CEO，赢取白富美，走上人生巅峰</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>208</td>
+<td>⭐古老的矿石：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gulaodekuangshi/">https://haiyong.site/moyu/gulaodekuangshi/</a></td>
+<td>古老的矿石</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>209</td>
+<td>⭐怪物联盟：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/gwlm/">https://haiyong.site/moyu/gwlm/</a></td>
+<td>怪物联盟</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>210</td>
+<td>⭐表情包制作大全：<a target="_blank" rel="noopener" href="https://tools.haiyong.site/biaoqingbao">https://tools.haiyong.site/biaoqingbao</a></td>
+<td>表情包制作大全</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>211</td>
+<td>⭐画个圆：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hgy">https://haiyong.site/moyu/hgy</a></td>
+<td>画个圆</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>212</td>
+<td>欢乐钓鱼：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hldy">https://haiyong.site/moyu/hldy</a></td>
+<td>欢乐钓鱼</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>213</td>
+<td>⭐滑雪大挑战：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/hxdtz">https://haiyong.site/moyu/hxdtz</a></td>
+<td>滑雪大挑战</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>214</td>
+<td>激光防线：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jg">https://haiyong.site/moyu/jg</a></td>
+<td>激光防线</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>215</td>
+<td>贱人配对：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jianren">https://haiyong.site/moyu/jianren</a></td>
+<td>贱人配对</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>216</td>
+<td>⭐抛鸡蛋：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jidan">https://haiyong.site/moyu/jidan</a></td>
+<td>抛鸡蛋</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>217</td>
+<td>进击的方块：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jjdfk">https://haiyong.site/moyu/jjdfk</a></td>
+<td>进击的方块</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>218</td>
+<td>⭐解开绳子：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jksz">https://haiyong.site/moyu/jksz</a></td>
+<td>解开绳子</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>219</td>
+<td>贱鸟跳跳：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jntt">https://haiyong.site/moyu/jntt</a></td>
+<td>贱鸟跳跳</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>221</td>
+<td>一起寻找蔡依林：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jolin">https://haiyong.site/moyu/jolin</a></td>
+<td>一起寻找蔡依林</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>222</td>
+<td>激射神经猫：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jssjm">https://haiyong.site/moyu/jssjm</a></td>
+<td>激射神经猫</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>223</td>
+<td>⭐街头篮球：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jtlq">https://haiyong.site/moyu/jtlq</a></td>
+<td>街头篮球</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>224</td>
+<td>一起蛙蛙跳：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jumpingfrog">https://haiyong.site/moyu/jumpingfrog</a></td>
+<td>清凉一夏，一起蛙蛙跳!!</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>225</td>
+<td>极限超车：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/jxcc">https://haiyong.site/moyu/jxcc</a></td>
+<td>极限超车</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>226</td>
+<td>⭐球跑者：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/qiupaozhe">https://haiyong.site/moyu/qiupaozhe</a></td>
+<td>球跑者</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>227</td>
+<td>⭐电子木鱼 ：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/muyu">https://haiyong.site/moyu/muyu</a></td>
+<td>敲电子木鱼，见机械佛祖，得赛博真经</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>228</td>
+<td>⭐随机生成美少女图片 ：<a target="_blank" rel="noopener" href="https://tools.haiyong.site/heisi/">https://tools.haiyong.site/heisi/</a></td>
+<td>随机生成heisi美少女图片</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>229</td>
+<td>⭐Emoji自定义表情编辑器：<a target="_blank" rel="noopener" href="https://haiyong.site/moyu/emoji-editor">https://haiyong.site/moyu/emoji-editor</a></td>
+<td>Emoji自定义表情编辑器DEMO演示</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="author_top is-center"><div class="card-info-avatar"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" onerror="this.onerror=null;this.src='/assets/r1.jpg'" alt="avatar"/></div><div class="author-status-box"><div class="author-status"><g-emoji class="g-emoji" alias="palm_tree" fallback-src="https://lskypro.acozycotage.net/LightPicture/2022/12/fe1dc0402e623096.jpg">📟</g-emoji><span>在图书馆...</span></div></div></div><b><div class="author-info__name">柊野</div></b><div class="author-info__description">in GZHU...</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Zhongye1" title="前往作者的Github"><span>我的github</span><i class="faa-passing animated" style="padding-left:20px;display:inline-block;vertical-align:middle;"><svg class="icon" style="height:28px;width:28px;fill:currentColor;position:relative;top:5px"><use xlink:href="#icon-xiaoqiche"></use></svg></i></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="/assets/QRCode.jpg" target="_blank" title="微信"><svg class="social_icon faa-tada" aria-hidden="true" style="width:1.15em;height:1.15em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weixin"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://user.qzone.qq.com/2760913192" target="_blank" title="QQ"><svg class="social_icon faa-tada" aria-hidden="true" style="width:1.15em;height:1.15em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-QQ"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0ttps://space.bilibili.com/220757832" target="_blank" title="B站"><svg class="social_icon faa-tada" aria-hidden="true" style="width:1.15em;height:1.15em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="mailto:2760913192@qq.com" target="_blank" title="QQ邮箱"><svg class="social_icon faa-tada" aria-hidden="true" style="width:1.15em;height:1.15em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-youxiang"></use></svg></a><a class="social-icon faa-parent animated-hover" href="/atom.xml" target="_blank" title="RSS"><svg class="social_icon faa-tada" aria-hidden="true" style="width:1.15em;height:1.15em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-RSS"></use></svg></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><a class="faa-parent animated-hover"><svg class="faa-tada icon" style="height:25px;width:25px;fill:currentColor;position:relative;top:5px" aria-hidden="true"><use xlink:href="#icon-gonggao"></use></svg></a><span style="font-weight:bold">留言</span></div><div class="announcement_content"><p>技术宅拯救世界！</p></div><div id="welcome-info">   </div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/ec1ceb96.html" title="2024一些笔记（概率论）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic4.zhimg.com/80/v2-ba20c507888d74406842d10f0f9b1c03_720w.webp" onerror="this.onerror=null;this.src='/assets/r2.jpg'" alt="2024一些笔记（概率论）"/></a><div class="content"><a class="title" href="/posts/ec1ceb96.html" title="2024一些笔记（概率论）">2024一些笔记（概率论）</a><time datetime="2025-03-09T14:51:00.000Z" title="发表于 2025-03-09 22:51:00">2025-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/a12f4d8d.html" title="2024一些笔记（常微分）"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic4.zhimg.com/80/v2-3de3176a0df272e933eadde20ff98e4b_720w.webp" onerror="this.onerror=null;this.src='/assets/r2.jpg'" alt="2024一些笔记（常微分）"/></a><div class="content"><a class="title" href="/posts/a12f4d8d.html" title="2024一些笔记（常微分）">2024一些笔记（常微分）</a><time datetime="2025-03-09T14:51:00.000Z" title="发表于 2025-03-09 22:51:00">2025-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/1f092045.html" title="三月"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/v2-59e4679ba11c333dde41264d44dc72e6_r.jpg" onerror="this.onerror=null;this.src='/assets/r2.jpg'" alt="三月"/></a><div class="content"><a class="title" href="/posts/1f092045.html" title="三月">三月</a><time datetime="2025-03-05T11:17:28.000Z" title="发表于 2025-03-05 19:17:28">2025-03-05</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/01/"><span class="card-archive-list-date">一月 2025</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/12/"><span class="card-archive-list-date">十二月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/10/"><span class="card-archive-list-date">十月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/09/"><span class="card-archive-list-date">九月 2024</span><span class="card-archive-list-count">8</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><span class="card-archive-list-count">8</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><a class="faa-parent animated-hover"><svg class="faa-tada icon" style="height:25px;width:25px;fill:currentColor;position:relative;top:5px" aria-hidden="true"><use xlink:href="#icon-shujutongji2"></use></svg></a><span style="font-weight:bold">博客信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">130</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2023-08-08T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">57.7w</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-04-05T05:53:06.757Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div id="ft"><div class="ft-item-1"><div class="t-top"><div class="t-t-l"><p class="ft-t t-l-t">随记</p><div class="bg-ad"><div>故事往往因鲜为人知而被掩饰，困苦因困而苦。旷野是四面八方的，前进是选择而不是逆行。</div><div class="btn-xz-box"><a class="btn-xz" target="_blank" rel="noopener" href="https://scp-wiki-cn.wikidot.com/wanderers:mang"> </a></div></div></div><div class="t-t-r"><p class="ft-t t-l-t">网站导航</p><ul class="ft-links"><li><a href="https://zhongye1.github.io/posts/3b4b656d.html">关于站长</a><a href="/box/nav/">网址导航</a></li><li><a href="/social/link/1/">我的朋友</a><a href="/comments/">留言栏</a></li><li><a href="/social/fcircle/">其他博客</a><a href="/archives/">文章归档</a></li><li><a href="/categories/">文章分类</a><a href="/tags/">文章标签</a></li><li><a href="/box/Gallery/">我的画廊</a><a href="/personal/bb/">隐藏空间</a></li><li><a href="/site/time/">建设进程</a><a href="/site/census/">网站统计</a></li></ul></div></div></div><div class="ft-item-2"><p class="ft-t">友链（欢迎添加</p><div class="ft-img-group"><div class="img-group-item"><a href="https://zhongye1.github.io/" title="柊野"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.gzhu.site/" title="站长搭的广大树洞"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-71152904edf11db5c8885548393ace6a_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0" title="柊野的B站空间"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-58b297e0356a934ce8595de873e5b70e_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://eureka1029.github.io/" title="水波"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://eureka1029.github.io/img/eureka.jpg" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.fomal.cn/" title="Fomalhaut"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.bitiful.net/img/avatar.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="http://www.gzhu.edu.cn/index.htm" title="广州大学"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2025/03/05/67c8522bf290a.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://bocchi.rocks/" title="孤独摇滚"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/11/30/6749f6f41d521.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://blog.carry.fit/" title="carry"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-f4e5445ba9cd36acf8a6890f5c622a92_720w.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div></div></div></div><div class="copyright"><span><b>&copy;2023-2025</b></span><span><b>&nbsp;&nbsp;By 柊野</b></span></div><div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v6.3.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Frame-Hexo-blue.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.3.1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Theme-Butterfly-6513df.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用多线部署，主线路托管于Vercel"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Hosted-Vercel-brightgreen.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://user.51.la/" style="margin-inline:5px" title="本站数据分析得益于51la技术支持"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Analytics-51la-3db1eb.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://icp.gov.moe/?keyword=20226665" style="margin-inline:5px" title="本站已加入萌ICP豪华套餐，萌ICP备20226665号"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/萌ICP备-20226665-fe1384.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://bitiful.dogecast.com/buckets" style="margin-inline:5px" title="本网站经Service Worker分流至缤纷云对象存储"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Bucket-缤纷云-9c62da.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://www.netdun.net/" style="margin-inline:5px" title="本站使用网盾星球提供CDN加速与防护"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/CDN-网盾星球-fff2cc.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" title="本网站源码由Github提供存储仓库"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Source-Github-d021d6.svg" alt=""/></a></p></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="share" type="button" title="右键模式" onclick="changeMouseMode()"><i class="fas fa-mouse"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog right_side"></i></button><button class="share" type="button" title="分享链接" onclick="share()"><i class="fas fa-share-nodes"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i><span id="percent">0<span>%</span></span></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();"><i class="fa fa-search"></i><span>百度搜索</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:randomPost()"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:switchNightMode();"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="/personal/about/"><i class="fa fa-info-circle"></i><span>关于博客</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();"><i class="fas fa-cog"></i><span>美化设置</span></a><a class="rightMenu-item" href="javascript:rmf.fullScreen();"><i class="fas fa-expand"></i><span>切换全屏</span></a><a class="rightMenu-item" href="javascript:window.print();"><i class="fa-solid fa-print"></i><span>打印页面</span></a></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())
+setTimeout(function(){preloader.endLoading();}, 5000);
+document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})</script><div class="js-pjax"></div><script src="/js/jquery.min.js"></script><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script async src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script><script defer type="text/javascript" src="https://cdn1.tianli0.top/npm/sweetalert2@8.19.0/dist/sweetalert2.all.js"></script><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_jituadf51kb.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_conde8ht15m.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_0vk7nzv6lpdm.js"></script><script async src="//at.alicdn.com/t/c/font_3586335_hsivh70x0fm.js"></script><script async src="//at.alicdn.com/t/c/font_3636804_gr02jmjr3y9.js"></script><script async src="//at.alicdn.com/t/c/font_3612150_kfv55xn3u2g.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_ipnrnckf7g7.js"></script><canvas id="universe"></canvas><canvas id="snow"></canvas><script defer src="/js/fomal.js"></script><div class="aplayer no-destroy" data-id="1941005079" data-server="netease" data-type="song" data-fixed="true" data-mini="true" data-listmaxheight="540px" data-listFolded="true" data-order="random" data-lrctype="-1" data-preload="none" data-autoplay="false" muted></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://lib.baomitu.com/pjax/0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["link[rel=\"canonical\"]","meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show","#web_bg",".js-pjax","#bibi","body > title","#app","#tag-echarts","#posts-echart","#categories-echarts"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

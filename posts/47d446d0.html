@@ -1,0 +1,794 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><div id="myscoll"></div><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>高代知识点全汇总 | 柊野的博客</title><meta name="keywords" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学"><meta name="author" content="柊野"><meta name="copyright" content="柊野"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="收集到的一些高代复习资料">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高代知识点全汇总">
+<meta property="og:url" content="https://zhongye1.github.io/posts/47d446d0.html">
+<meta property="og:site_name" content="柊野的博客">
+<meta property="og:description" content="收集到的一些高代复习资料">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-2d64b070c08f997649778c339779bdfe_b.jpeg">
+<meta property="article:published_time" content="2024-07-25T19:27:55.000Z">
+<meta property="article:modified_time" content="2024-07-31T04:32:21.995Z">
+<meta property="article:author" content="柊野">
+<meta property="article:tag" content="Java,AI,算法,代码,博客,Butterfly,Hexo,柊野,广州大学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/v2-2d64b070c08f997649778c339779bdfe_b.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zhongye1.github.io/posts/47d446d0"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '高代知识点全汇总',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-31 12:32:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><style id="themeColor"></style><style id="rightSide"></style><style id="transPercent"></style><style id="blurNum"></style><style id="settingStyle"></style><style id="defineBg"></style><style id="menu_shadow"></style><script type="text/javascript" src="https://unpkg.zhimg.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/dist/echarts.min.js"></script><script src="https://npm.elemecdn.com/echarts@4.9.0/map/js/china.js"></script><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="柊野的博客" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" onerror="onerror=null;src='/assets/r1.jpg'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">柊野的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-drive-file"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-expand">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up"></use></svg><span class="menu_word" style="font-size:17px"> 休闲</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/life/music/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-double-up">                   </use></svg><span class="menu_word" style="font-size:17px"> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/movies/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-file-video">                   </use></svg><span class="menu_word" style="font-size:17px"> 影院</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/life/games/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shebei">                   </use></svg><span class="menu_word" style="font-size:17px"> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink"></use></svg><span class="menu_word" style="font-size:17px"> 收藏</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/box/gallery/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-image">                   </use></svg><span class="menu_word" style="font-size:17px"> 画廊</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/dhs/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-subscribe-add">                   </use></svg><span class="menu_word" style="font-size:17px"> 我的追番</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/box/nav/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-zidian">                   </use></svg><span class="menu_word" style="font-size:17px"> Github项目推荐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-email"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-Launch">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shuju">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon icon-subscribe" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-swap"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/posts/a8a0d075.html"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-weizhi">                   </use></svg><span class="menu_word" style="font-size:17px"> 访客分布地图</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_xiangmugongdi">                   </use></svg><span class="menu_word" style="font-size:17px"> 建设</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-cedaohang_yunyingguanli">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/AKN/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shrink">                   </use></svg><span class="menu_word" style="font-size:17px"> 站点02</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-bianji">                   </use></svg><span class="menu_word" style="font-size:17px"> 随记</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABC/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 测试页面</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/ABM/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-more">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="search faa-parent animated-hover" title="检索站内任何你想要的信息"><svg class="faa-tada icon" style="height:24px;width:24px;fill:currentColor;position:relative;top:6px" aria-hidden="true"><use xlink:href="#icon-search"></use></svg><span> 搜索</span></a></div><a class="meihua faa-parent animated-hover" onclick="toggleWinbox()" title="美化设置-自定义你的风格" id="meihua-button"><svg class="faa-tada icon" style="height:26px;width:26px;fill:currentColor;position:relative;top:8px" aria-hidden="true"><use xlink:href=""></use></svg></a><a class="sun_moon faa-parent animated-hover" onclick="switchNightMode()" title="浅色和深色模式转换" id="nightmode-button"><svg class="faa-tada" style="height:25px;width:25px;fill:currentColor;position:relative;top:7px" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="">       </use></svg></a><div id="toggle-menu"><a><i class="fas fa-bars fa-fw"></i></a></div></div></div></nav><div id="post-info"><h1 class="post-title">高代知识点全汇总</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><svg class="meta_icon post-meta-icon" style="width:30px;height:30px;position:relative;top:10px"><use xlink:href="#icon-rili"></use></svg><span class="post-meta-label">发表于 </span><time class="post-meta-date-created" datetime="2024-07-25T19:27:55.000Z" title="发表于 2024-07-26 03:27:55">2024-07-26</time><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-gengxin1"></use></svg><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-31T04:32:21.995Z" title="更新于 2024-07-31 12:32:21">2024-07-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-biaoqian"></use></svg><a class="post-meta-categories" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:8px"><use xlink:href="#icon-charuword"></use></svg><span class="post-meta-label">字数总计:</span><span class="word-count">6201</span><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:20px;height:20px;position:relative;top:5px"><use xlink:href="#icon-shizhong"></use></svg><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="高代知识点全汇总"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:5px"><use xlink:href="#icon-eye"></use></svg><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><details class="folding-tag" cyan open><summary> CSDN上的一些知识点合集（点击折叠） </summary>
+              <div class='content'>
+              <h4 id="第一章——矩阵及初等变换">第一章——矩阵及初等变换</h4><p><strong>§1.1. 矩阵及其运算</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99618446">线性代数学习笔记——第一讲——线性代数课程绪论</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99618603">线性代数学习笔记——第二讲——矩阵的定义及示例</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99618805">线性代数学习笔记——第三讲——矩阵加法及数乘</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99618841">线性代数学习笔记——第四讲——矩阵乘法的定义</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99657438">线性代数学习笔记——第五讲——矩阵乘法的性质</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99660769">线性代数学习笔记——第六讲——矩阵的转置</a><br><strong>§1.2. 高斯消元法与矩阵的初等变换</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99721392">线性代数学习笔记——第八讲——矩阵的初等变换</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99722636">线性代数学习笔记——第九讲——初等矩阵</a></p><p><strong>§1.3. 逆矩阵</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99726807">线性代数学习笔记——第十讲——逆矩阵的定义</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99729891">线性代数学习笔记——第十一讲——逆矩阵的计算（利用初等变换求逆矩阵）</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99730636">线性代数学习笔记——第十二讲——求解矩阵方程</a><br><strong>§1.4. 分块矩阵</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99663452">线性代数学习笔记——第七讲——分块矩阵</a></p><h4 id="第二章——行列式">第二章——行列式</h4><p><strong>§2.1. n阶行列式的定义</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99747212">线性代数学习笔记——第十三讲——行列式的定义</a></p><p><strong>§2.2. n阶行列式的性质</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99762801">线性代数学习笔记——第十四讲——行列式的性质</a><br><strong>§2.3. Laplace定理</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99766891">线性代数学习笔记——第十五讲——行列式按行（列）展开</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99770920">线性代数学习笔记——第十六讲——行列式的计算</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99773351">线性代数学习笔记——第十七讲——伴随矩阵与逆矩阵</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99887040">线性代数学习笔记——第十八讲——抽象矩阵的可逆性</a><br><strong>§2.4. Cramer法则</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99889327">线性代数学习笔记——第十九讲——克拉默法则</a><br><strong>§2.5. 矩阵的秩</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99890960">线性代数学习笔记——第二十讲——矩阵秩的定义</a>、</p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99893849">线性代数学习笔记——第二十一讲——矩阵秩的等式</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99895726">线性代数学习笔记——第二十二讲——矩阵秩的不等式</a></p><h4 id="第三章——几何空间">第三章——几何空间</h4><p><strong>§3.1. 空间直角坐标系与向量</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/99999238">线性代数学习笔记——第二十三讲——空间直角坐标系</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100005855">线性代数学习笔记——第二十四讲——向量及其线性运算</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100006195">线性代数学习笔记——第二十五讲——向量在轴上的投影</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100026005"> 线性代数学习笔记——第二十六讲——向量线性运算的几何意义</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100026531">线性代数学习笔记——第二十七讲——向量的方向余弦</a><br><strong>§3.2. 向量的乘法</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100027126">线性代数学习笔记——第二十八讲——向量内积的概念与性质</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100085857">线性代数学习笔记——第二十九讲——向量内积的坐标形式</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100086031">线性代数学习笔记——第三十讲——向量外积的概念与性质</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100086376">线性代数学习笔记——第三十一讲——向量外积的坐标形式</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100087151">线性代数学习笔记——第三十二讲——向量混合积的概念与性质</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100087236">线性代数学习笔记——第三十三讲——向量混合积的几何意义</a></p><h4 id="第四章——n维向量空间">第四章——n维向量空间</h4><p><strong>§4.1. n维向量空间的概念</strong></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100167321">线性代数学习笔记——第四十讲——n维向量空间的概念</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100167541">线性代数学习笔记——第四十一讲——n维向量空间的子空间</a><br><strong>§4.2. 向量组的线性相关性</strong></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100167651">线性代数学习笔记——第四十二讲——向量组的线性组合</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100167901">线性代数学习笔记——第四十三讲——向量组之间的线性表出</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100525200">线性代数学习笔记——第四十四讲——线性相关性的概念</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100528562">线性代数学习笔记——第四十五讲——线性相关性的判定</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100529249">线性代数学习笔记——第四十六讲——线性相关基本定理</a><br><strong>§4.3. 向量组的秩与最大无关组</strong></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100545185">线性代数学习笔记——第四十七讲——向量组的秩与最大无关组的概念</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100545450">线性代数学习笔记——第四十八讲——矩阵的列秩和行秩</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100545669">线性代数学习笔记——第四十九讲——向量组之间的线性表出和秩</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100545879">线性代数学习笔记——第五十讲——最大无关组的性质和等价叙述</a><br><strong>§4.4. 线性方程组解的结构</strong></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100563945">线性代数学习笔记——第五十一讲——n维向量空间的基、维数与坐标</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100564018">线性代数学习笔记——第五十二讲——齐次方程组解的性质和基础解系</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100564726">线性代数学习笔记——第五十三讲——齐次方程组求解实例</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100568940">线性代数学习笔记——第五十四讲——非齐次方程组解的性质</a></p><p><a target="_blank" rel="noopener" href="https://mp.csdn.net/postedit/100569281">线性代数学习笔记——第五十五讲——非齐次方程组求解实例</a></p><h4 id="第五章——特征值与特征向量">第五章——特征值与特征向量</h4><p><strong>5.1 特征值与特征向量的概念与计算</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100584392">线性代数学习笔记——第五十六讲——特征值及特征向量的定义</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100584678">线性代数学习笔记——第五十七讲——特征子空间</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100584921">线性代数学习笔记——第五十八讲——特征值与特征向量的判定</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100585358">线性代数学习笔记——第五十九讲——特征值与特征向量的计算</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100585433"> 线性代数学习笔记——第六十讲——特征多项式</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100654266">线性代数学习笔记——第六十一讲——矩阵函数、逆矩阵、伴随矩阵的特征值与特征向量</a><br><strong>§5.2 矩阵的相似对角化</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100654621">线性代数学习笔记——第六十二讲——矩阵的相似对角化引例</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100654919">线性代数学习笔记——第六十三讲——相似的定义与性质</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100661294">线性代数学习笔记——第六十四讲——相似对角化的判定（1）</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100662028">线性代数学习笔记——第六十五讲——相似对角化的判定（2）</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100665386">线性代数学习笔记——第六十六讲——矩阵方幂的计算</a></p><p><strong>§5.3 n维向量空间的正交性</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100669700">线性代数学习笔记——第六十七讲——向量的内积</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100670303">线性代数学习笔记——第六十八讲——柯西—施瓦兹（Cauchy-Schwarz）不等式</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100676734">线性代数学习笔记——第六十九讲——正交向量组与标准正交基</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100677372">线性代数学习笔记——第七十讲——格拉姆—施密特（Gram-Schmidt）正交化方法</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100677838">线性代数学习笔记——第七十一讲——正交矩阵</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100708919">线性代数学习笔记——第七十二讲——共轭矩阵</a></p><p><strong>§5.4实对称矩阵的相似对角化</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100715687">线性代数学习笔记——第七十三讲——实对称矩阵的特征值与特征向量</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100715880">线性代数学习笔记——第七十四讲——实对称矩阵的相似对角化</a></p><h4 id="第六章——二次型与二次曲面">第六章——二次型与二次曲面</h4><p><strong>§6.1.实二次型</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100750410">线性代数学习笔记——第七十五讲——二次型及其矩阵表示</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100751105">线性代数学习笔记——第七十六讲——矩阵的合同</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100751420">线性代数学习笔记——第七十七讲——用配方法化二次型为标准型</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100751854">线性代数学习笔记——第七十八讲——用正交变换化二次型为标准型</a><br><strong>§6.2. 正定二次型</strong></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100752201">线性代数学习笔记——第七十九讲——正定二次型的概念</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100752518">线性代数学习笔记——第八十讲——正定二次型的性质（1）</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100780293">线性代数学习笔记——第八十一讲——正定二次型的性质（2）</a></p><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hpdlzu80100/article/details/100780570">线性代数学习笔记——第八十二讲——二次型的其它类型</a></p>
+              </div>
+            </details>
+<p>一些总结，可能较零碎。</p>
+<hr>
+<p>本节是线代某些知识点总结，可能较零碎。</p>
+<p>对于简单的知识点，例如“两行对应成比例，<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%A1%8C%E5%88%97%E5%BC%8F&amp;spm=1001.2101.3001.7020">行列式</a>为0&quot;就不讲了。暂时不举例题，有时间会继续补充！</p>
+<h4 id="一-初等行-列变换">一.初等行/列变换</h4>
+<h5 id="1-计算行列式时，行列变换都可">1.计算行列式时，行列变换都可</h5>
+<p>因为<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?D%3DD%5E%7BT%7D" alt="D=D^{T}">，所以不论动行/列都是等价的。</p>
+<blockquote>
+<p>变换规则：</p>
+<p>1.“倍乘”：行列式的某行(列)乘某个元素k。相应的，若行列式中某行(列)元素有公因子k(k≠0)，则k可提到行列式外面，即:</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be10e4590.png" alt="img"></p>
+<p>2.“互换”：行列式中两行(列)互换，行列式变号。</p>
+<p>3.“倍加”：某行(列)的k倍加到另一行(列)，行列式不变。</p>
+</blockquote>
+<h5 id="2-求矩阵的秩时，行列变换都可">2.求<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9&amp;spm=1001.2101.3001.7020">矩阵的秩</a>时，行列变换都可</h5>
+<p>因为初等变换不改变某个矩阵非零子式的最高阶数，秩指的就是非零子式的最高阶数。</p>
+<blockquote>
+<p>初等变换的规则：</p>
+<p>1.“倍乘”：一个非零常数乘矩阵矩阵的某一行(列)。</p>
+<p>2.“互换”：互换矩阵中某两行(列)的位置。</p>
+<p>3.“倍加”：将矩阵的某一行(列)的k倍加到令一行(列)。</p>
+<p><strong>注意：</strong></p>
+<p>某矩阵乘元素k，是矩阵中的每个元素都成k，要与行列式区分。</p>
+<p>也就是<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?%7CkA%7C%3Dk%5En%7CA%7C" alt="|kA|=k^n|A|">。</p>
+</blockquote>
+<h5 id="3-解线性方程组时，仅能使用初等行变换">3.解<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84&amp;spm=1001.2101.3001.7020">线性方程组</a>时，仅能使用初等行变换</h5>
+<p>因为矩阵的每一种初等行变换都对应着线性方程组的同解变换，而作列变换会改变原来的方程。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1291006.png" alt="img"></p>
+<h5 id="4-判定解的情况，单纯求r-A-r-A-b-的过程行列变换都可">**4.**判定解的情况，单纯求r(A),r(A,b)的过程行列变换都可</h5>
+<p><strong>注</strong>：将r(A,b)化行阶梯求秩时，往往我们需要<strong>同时得到r(A)</strong>，如果想用列变换的话，<strong>只能对A单独列变换</strong>，千万不要将b列和A的列混合运算，这样r(A)就不准了。(但r(A,b)是准的)。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be11a1aaf.png" alt="img"><br>
+但是，如果涉及到求通解或唯一解，那么就只能做行变换化行阶梯了，所以建议一开始就只做行变换。</p>
+<blockquote>
+<p><strong>总结</strong>：求解的过程，就只进行<strong>初等行变换化行阶梯</strong>求秩，并且顺势化为行最简型求解**。**</p>
+</blockquote>
+<h5 id="5-求向量组极大无关组、线性表出关系，则仅行变换"><strong>5.求向量组极大无关组、线性表出关系，则仅行变换</strong></h5>
+<p>因为初等行变换不改变列向量组的线性表出关系。例如下图，<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?%5Cbeta" alt="\beta">矩阵中，![\beta_{3}=\beta_{2} +\beta_{1}](<a target="_blank" rel="noopener" href="https://latex.csdn.net/eq?%5Cbeta_%7B3%7D%3D%5Cbeta_%7B2%7D">https://latex.csdn.net/eq?\beta_{3}%3D\beta_{2}</a> +\beta_{1})，<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?%5Calpha" alt="\alpha">矩阵同样有这样的关系。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be11d0e76.png" alt="img"></p>
+<h5 id="6-求向量组的秩时，行列变换都可">6.求向量组的秩时，行列变换都可</h5>
+<p>求向量组的秩，其实最后会转化为求矩阵的秩，原理就是**“矩阵的秩=行向量组的秩=列向量组的秩”，**所以求向量组的秩也是行列变换都可。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be12a3bfe.png" alt="img"></p>
+<p>但是一般求向量组的秩后面会继续求解极大无关组/线性表出关系，这时只能做行变换，所以还是建议从开头就只使用行变换。</p>
+<h5 id="7-求特征值时，行列变换都可">7.求特征值时，行列变换都可</h5>
+<p>因为特征多项式本质上是行列式，求行列式时，行列都可以换。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be12cb40c.png" alt="img"></p>
+<h5 id="8-求特征向量时，仅做行变换">8.求特征向量时，仅做行变换</h5>
+<p>因为求特征向量时，本质是在解线性方程组，只能进行初等行变换。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be12abf5d.png" alt="img"></p>
+<h5 id="9-求逆矩阵时，对-A-E-仅做初等行变换">9.求逆矩阵时，对(A,E)仅做初等行变换</h5>
+<p>因为以A−1𝐴−1左乘A得到E，以A−1𝐴−1左乘E得到A−1𝐴−1，以A−1𝐴−1左乘的过程就是做初等行变换的过程。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be136ee86.png" alt="img"></p>
+<p>所以怎么体现A和E做了完全一样的A−1𝐴−1所带来的初等行变换，就是将A，E横着拼在一起，此时做的初等行变换就是同步的了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be13a4143.png" alt="img"></p>
+<h5 id=""></h5>
+<h5 id="总结："><strong>总结：</strong></h5>
+<blockquote>
+<p>除了① 求行列式的值（求特征值本质上就是求行列式的值）和 ② 单纯求秩，行列变换都可，其余情况通通只做行变换。</p>
+</blockquote>
+<h4 id="二-要牢记">二.要牢记</h4>
+<p>先写那么多，后面有再补充：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be14cf11b.png" alt="img"></p>
+<p>一些推导：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be155866b.png" alt="img"></p>
+<p>对于AB ≠ BA的补充：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be15c5aa1.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be14e0fc5.jpeg" alt="img"></p>
+<p><strong>1.矩阵的逆</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1690f49.png" alt="img"></p>
+<p>推导如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be168227d.png" alt="img"></p>
+<p><strong>初等矩阵的逆：</strong><br>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be16ad19b.png" alt="img"></p>
+<p><strong>2.矩阵的伴随</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be16d31f9.png" alt="img"></p>
+<h4 id="三-某某子式">三.某某子式</h4>
+<h5 id="1-余子式">1.余子式</h5>
+<p>在n阶行列式中，去掉元素a所在的第i行、第j列元素，由剩下的元素按原来的位置与顺序组成的n-1阶行列式称为元素a的余子式，记作Mij𝑀𝑖𝑗。</p>
+<h5 id="2-代数余子式">2.代数余子式</h5>
+<p>余子式Mij𝑀𝑖𝑗乘(−1)i+j(−1)𝑖+𝑗后称为a的代数余子式，记作AAij𝐴𝑖𝑗</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be177aa2f.png" alt="img"></p>
+<h5 id="3-k阶子式">3.k阶子式</h5>
+<p>给定一个矩阵，任取k行，任取k 列，共k2𝑘2个数构成的行列式，出现在矩阵的秩中，定义如下：</p>
+<p>设A是mxn矩阵，则若存在k阶子式不为零，而任意k+1阶子式(如果有的话)全为零，则r(A)=k，且若A为nxn矩阵，则：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be17bac82.png" alt="img"></p>
+<h5 id="-2"></h5>
+<h5 id="4-k阶主子式">4.k阶主子式</h5>
+<p>指在行列式中选k行k列，但要求行和列的下标相同。如：行为r1、r2、r3，列必须为c1、c2、c3；行为r2、r3、r5，列必须为c2、c3、c5。因此，k阶主子式不唯一。</p>
+<p>这在矩阵相似会用到，下面会讲。</p>
+<h5 id="5-顺序主子式">5.顺序主子式</h5>
+<p>顺序主子式是在主子式上再加限定，顺序主子式是由 1~k 行和 1~k 列所确定的子式。</p>
+<blockquote>
+<p><strong>例如：</strong></p>
+<p>1阶时：取第1行，第1列</p>
+<p>2阶时：取第1、2行，第1、2列</p>
+<p>3阶时：取第1、2、3行，第1、2、3列</p>
+<p>4阶时：取第1、2、3、4行，第1、2、3、4列</p>
+<p>实际上，主子式的主对角线元素是原 n 阶行列式的主对角线元素的一部分，<strong>且顺序相同。</strong></p>
+<p>所以k 阶主子式是不唯一的，而 <strong>k 阶顺序主子式是唯一的</strong>。</p>
+</blockquote>
+<p>用在判断<strong>二次型正定</strong>上，下面会讲。</p>
+<h4 id="四-矩阵的秩">四.矩阵的秩</h4>
+<p>① 0 &lt;= r(A) &lt;= min{m,n}</p>
+<p>② r(kA)=r(A)(k ≠ 0)</p>
+<p>③ r(AB) &lt;= min{r(A),r(B)}</p>
+<p>④ r(A+B) &lt;=r(A)+r(B)</p>
+<p>⑤</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be17ac8a1.png" alt="img"></p>
+<p>r(A)=n-1,r(A*)=1的证明：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1808208.jpeg" alt="img"></p>
+<p>进而可得出一个重要结论：</p>
+<blockquote>
+<p><em><em><em>*</em>*****************A************m****∗****n********************B************n****∗****s**************=****0************𝐴𝑚∗𝑛𝐵𝑛∗𝑠=0*****</em>*</em>，则r(A)+r(B)&lt;=n****</p>
+</blockquote>
+<p>所以，看到A*B就要想到两个结论：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be18c42df.png" alt="img"></p>
+<p>⑥ 设A是m*n矩阵，P,Q分别是m阶，n阶可逆矩阵，则</p>
+<blockquote>
+<p>r(A)=r(PA)=r(AQ)=r(PAQ)</p>
+</blockquote>
+<p>⑦ r(A)=r(AT)𝑟(𝐴𝑇)=r(AAT𝐴𝐴𝑇)=r(ATA𝐴𝑇𝐴)</p>
+<p>关于⑤的例题：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1968a2a.png" alt="img"></p>
+<p>为什么Ax=b有n-r+1个线性无关的解：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1a401a8.png" alt="img"></p>
+<h5 id="-3"></h5>
+<h4 id="五-常用特征值与特征向量">五.常用特征值与特征向量</h4>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1977f3e.png" alt="img"></p>
+<p><strong>注意这样一道例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1989394.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1a81805.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1a5656c.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1a9ec52.png" alt="img"></p>
+<p>关于特征值的一些提示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1bd81d8.png" alt="img"></p>
+<h4 id="六-矩阵，向量组，方程组">六.矩阵，向量组，方程组</h4>
+<p><strong>矩阵，向量组</strong></p>
+<blockquote>
+<p>① <strong>向量组</strong>是由有限个相同维数的行向量或者列向量组成，其中向量是由n个实数组成的有序数组,是一个n<em>1的矩阵(n维列向量)或是一个1</em>n的矩阵(n维行向量)。</p>
+<p>② <strong>矩阵</strong>是由m*n个数排列成m行n列的数表。</p>
+<p><strong>一个向量组可以看作是一个矩阵的列（或行）向量集合</strong>。如果一个矩阵有n列，那么这n列就可以看作是一个由n个向量组成的向量组。反过来，一个矩阵也可以看作是由其列（或行）向量组成的向量组。</p>
+</blockquote>
+<h5 id="1-怎么判断两个矩阵等价">1.怎么判断两个矩阵等价</h5>
+<blockquote>
+<p>矩阵等价的前提：A与B是****同型****矩阵，即A,B行数，列数相同</p>
+<p>矩阵等价的<strong>充要条件</strong>：</p>
+<p>① r(A)=r(B)</p>
+<p>② PAQ=B，P,Q可逆</p>
+</blockquote>
+<h5 id="2-怎么判断两个向量组是等价向量组">2.怎么判断两个向量组是等价向量组</h5>
+<blockquote>
+<p>向量组等价的前提：A，B矩阵****同维****</p>
+<p>若r( Ⅰ )=r(α1,α2,α3,α4𝛼1,𝛼2,𝛼3,𝛼4…) r(Ⅱ)=r(β1,β2,β3,β4𝛽1,𝛽2,𝛽3,𝛽4…)</p>
+<p>向量组等价的<strong>充要条件</strong>：<br>
+① r(Ⅰ)=r(Ⅱ)，且(Ⅰ)可由(Ⅱ)线性表出（单向表出即可）</p>
+<p>② r(Ⅱ)=r(Ⅰ)，且(Ⅱ)可由(Ⅰ)线性表出（单向表出即可）</p>
+<p>③ r(α1,α2,α3,α4𝛼1,𝛼2,𝛼3,𝛼4…) =r(β1,β2,β3,β4𝛽1,𝛽2,𝛽3,𝛽4…) =r(α1,α2,α3,α4𝛼1,𝛼2,𝛼3,𝛼4…,β1,β2,β3,β4𝛽1,𝛽2,𝛽3,𝛽4…)，即</p>
+<p>r(Ⅰ)=r(Ⅱ)=r(Ⅰ，Ⅱ)</p>
+<p>④ Ⅰ和Ⅱ能够相互线性表示。</p>
+</blockquote>
+<blockquote>
+<p><strong>总结：</strong><br>
+① 两个矩阵A与B等价指的是A可以通过有限次初等变换变成B。两个不同型矩阵是不可能等价<br>
+乡<br>
+② 两个向量组等价只指的是它们能够互相线性表示，它们各自所含向量的个数可能是不一样的。</p>
+</blockquote>
+<p><strong>例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1c02c42.png" alt="img"></p>
+<blockquote>
+<p>D.即使Ⅰ 和 Ⅱ 同为n维向量组，但是s与t的关系未知，也就是行数相等，列数未知，所以A，B两个矩阵可能不同型，不能等价。</p>
+<p>B.(Ⅰ)可由（Ⅱ）表示，缺少其他条件，如果① 加上(Ⅱ)可由(Ⅰ)线性表出 或者② r(Ⅰ)=r(Ⅱ)就对了</p>
+<p>C正确</p>
+<p>D r(A)=r(B)，只能推出两个向量组秩相同，缺少其他条件，如果加上① 加上(Ⅱ)可由(Ⅰ)线性表出 或者②加上(Ⅰ )可由(Ⅱ)线性表出或者③ r(Ⅰ)=r(Ⅱ)=r(Ⅰ，Ⅱ)，就对了。</p>
+</blockquote>
+<h5 id="3-矩阵和向量等价的比较">3.矩阵和向量等价的比较</h5>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1bf17fc.png" alt="img"></p>
+<p><strong>例题：</strong></p>
+<h5 id="img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1c75912.png" alt="img"></h5>
+<blockquote>
+<p>A.(α1,α2,α3,0𝛼1,𝛼2,𝛼3,0)能与(α1,α2,α3𝛼1,𝛼2,𝛼3)相互线性表示，但是(α1,α2,α3,0𝛼1,𝛼2,𝛼3,0)不是Ax=0的基础解系</p>
+<p>B.基础解系一定是线性无关的，但是B选项3个向量是线性相关的（3个向量相加=0）</p>
+<p>C.像上面举的例子一样，α1α2𝛼1𝛼2，β1β2𝛽1𝛽2等秩，但是α1α2𝛼1𝛼2与β1β2𝛽1𝛽2不能相互线性表示。</p>
+<p>D.<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1c58bf6.png" alt="img"></p>
+<p>在(α1,α2,α3𝛼1,𝛼2,𝛼3)的右边乘可逆矩阵，不改变原来矩阵的秩，且(β1,β2,β3𝛽1,𝛽2,𝛽3)与(α1,α2,α3𝛼1,𝛼2,𝛼3)能相互线性表示</p>
+<p><strong>所以，求Ax=0的另一个基础解析，需要满足与(*<em>******************α********1**********,**********α********2**********,**********α********3******************𝛼1,𝛼2,𝛼3*****</em>)等价且等秩。</strong></p>
+</blockquote>
+<h5 id="-4"></h5>
+<h5 id="4-同解方程组">4.同解方程组</h5>
+<p>若两个方程组Am∗nx=0𝐴𝑚∗𝑛𝑥=0与Bs∗nx=0𝐵𝑠∗𝑛𝑥=0有完全相同的解，则称它们为同解方程组</p>
+<blockquote>
+<p><strong>充要条件：</strong></p>
+<p>① Ax=0的解满足Bx=0，且Bx=0的解满足Ax=0(互相把解代入求出结果即可)</p>
+<p>② r(A)=r(B)，且Ax=0的解满足Bx=0(或Bx=0的解满足Ax=0)</p>
+<p>③ r(A)=r(B)=r([AB][𝐴𝐵])(三秩相同)</p>
+</blockquote>
+<p><strong>例1：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1c67ad1.png" alt="img"></p>
+<p><strong>例2：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1da3ebf.png" alt="img"></p>
+<p><strong>例3：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1da5b0a.png" alt="img"></p>
+<h5 id="-5"></h5>
+<h4 id="七-齐次线性方程组和非齐次线性方程组">七.齐次线性方程组和非齐次线性方程组</h4>
+<blockquote>
+<p><strong>齐次线性方程组有解的条件：</strong></p>
+<p>① r(A)=n时，方程组有<strong>唯一零解</strong>。</p>
+<p>② r(A)=r&lt;n时，方程组有非零解（无穷多解），且有n-r个线性无关解</p>
+<p><strong>齐次方程组其实就是解和系数的正交</strong>，例如，给你一个条件：</p>
+<p>α1=2α2+α3𝛼1=2𝛼2+𝛼3----&gt;α1−2α2−α3+0α4=0𝛼1−2𝛼2−𝛼3+0𝛼4=0</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1dbfe23.png" alt="img"></p>
+<p>则(1 -2 -1 0)就是齐次方程组的基础解系</p>
+</blockquote>
+<blockquote>
+<p><strong>非齐次线性无关组有解的条件：</strong></p>
+<p>① 若r(4)≠r([A,b])，则方程组无解；<br>
+② 若r(A)=r([A,b])=n，则方程组有唯一解；<br>
+③ r(A)=r([A,b])=r&lt;n，则方程组有无穷多解。</p>
+</blockquote>
+<blockquote>
+<p>非齐次方程组的通解的求法：</p>
+<p>①求Ax=0的解</p>
+<p>② 求Ax=b的一个特解</p>
+<p>③ 非齐次方程组的通解=齐次方程组的解+一个非齐次的特解</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1ed632d.png" alt="img"></p>
+<blockquote>
+<p>如果A行满秩，则r(A)=r(A|b)，那么方程组一定有解。</p>
+<p>如果A列满秩，则r(A)与r(A|b)的关系不确定：</p>
+<p>① <strong>r(A)&lt;r(A|b)，则无解</strong></p>
+<p>② <strong>r(A)=r(A|b)&lt;n，有无穷多解</strong></p>
+<p>③ <strong>r(A)=r(A|b)=n，有唯一解</strong></p>
+</blockquote>
+<p><strong>非齐次方程组解的性质：</strong></p>
+<blockquote>
+<p>若η1η2η3𝜂1𝜂2𝜂3是非齐次线性方程组Ax=b的解，ξ𝜉是对应齐次方程组Ax=0的解，则：<br>
+(1) η1−η2𝜂1−𝜂2是Ax=0的解；（2）kξ+η𝑘𝜉+𝜂是Ax=b的解</p>
+</blockquote>
+<p>扩展：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1ec96b0.png" alt="img"></p>
+<blockquote>
+<p>解释：</p>
+<p>1.p个解的任意组合，都是齐次线性方程组的解</p>
+<p>2.非齐次的解线性组合也能得到齐次线性方程组的解，但是需要满足k1+k2+…+kp=0，例如，α1−α2𝛼1−𝛼2=0(1-1=0),α1−α2𝛼1−𝛼2就是齐次线性方程组的解。</p>
+<p>3.非齐次的解线性组合也能得到非齐次线性方程组的解，但是需要满足k1+k2+…+kp=1，例如，(α1+α2)/2(𝛼1+𝛼2)/2，就是非齐次线性方程组的一个解。</p>
+<p>4.齐次线性方程组的解与非齐次线性方程组的解相加，得到的是非齐次线性方程组的解。</p>
+<p>5.r(A)=r，A就有n-r个线性无关的解，而x1,x2,…xn−r𝑥𝑛−𝑟刚好是Ax=0的n-r个线性无关解，所以</p>
+<p>k1x1+k2x2+…+kn−rxn−r𝑘𝑛−𝑟𝑥𝑛−𝑟是Ax=0的解。</p>
+</blockquote>
+<p><strong>例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1eca0c3.png" alt="img"></p>
+<blockquote>
+<p>A.α1−α2𝛼1−𝛼2是组合系数是1-1=0，α1−α2𝛼1−𝛼2是Ax=0的解</p>
+<p>B.3α1−2α23𝛼1−2𝛼2是Ax=b的解，C,D同理。</p>
+</blockquote>
+<h5 id="-6"></h5>
+<h4 id="八-对比记忆"><strong>八.对比记忆</strong></h4>
+<p><strong>1.</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1f5ee5b.png" alt="img"></p>
+<p><strong>矩阵A的tr(A)：tra(A)=矩阵A的迹=对角线元素之和</strong></p>
+<p>**2.**对于秩为1的n阶矩阵A或A=αβT𝛼𝛽𝑇(或βTα𝛽𝑇𝛼)（a,β都是n维非零列向量），其特征值为λ1λ2λ3…λn−1𝜆1𝜆2𝜆3…𝜆𝑛−1=0，λn=∑ni=1aii=βTα𝜆𝑛=∑𝑖=1𝑛𝑎𝑖𝑖=𝛽𝑇𝛼（或αTβ𝛼𝑇𝛽）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be1f593c8.png" alt="img"></p>
+<p><strong>3.</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be204a814.png" alt="img"></p>
+<p><strong>例题1：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2066a1e.png" alt="img"></p>
+<p><strong>例题2：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be20bc1f4.png" alt="img"></p>
+<h4 id="九-相似与正交"><strong>九.相似与正交</strong></h4>
+<p>存在n阶可逆矩阵P，使得P−1AP=B𝑃−1𝐴𝑃=𝐵,则称A相似于B，记为A~B</p>
+<blockquote>
+<p>若A~B</p>
+<p>① |A|=|B|</p>
+<p>② r(A)=r(B)</p>
+<p>③ tr(A)=tr(B)</p>
+<p>④ λA=λB𝜆𝐴=𝜆𝐵（|λE−A|=|λE−B||𝜆𝐸−𝐴|=|𝜆𝐸−𝐵|）</p>
+<p>⑤ r(λE−A)=r(λE−B)𝑟(𝜆𝐸−𝐴)=𝑟(𝜆𝐸−𝐵)</p>
+<p><em><strong>*⑥ A，B各阶主子式之和分别相同*</strong></em></p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be222816e.png" alt="img"></p>
+<p>也就是说，A与B即使特征值相同，但也不一定相似。但是如果A，B都是实对称矩阵，那么相似，则一定特征值相同（实对称矩阵一定能相似对角化，特征值相同一定能相似于同一个对角矩阵，根据传递性A~B）。</p>
+<p><strong>那么怎么判定矩阵相似呢？</strong></p>
+<blockquote>
+<p>① 定义法</p>
+<p>存在n阶可逆矩阵P，使得P−1AP=B𝑃−1𝐴𝑃=𝐵</p>
+<p>② 传递法</p>
+<p>A~ΛΛ，ΛΛ~B，则A~B，其中ΛΛ为对角阵</p>
+<p>这就要说到矩阵的相似对角化</p>
+</blockquote>
+<p><strong>矩阵可相似对角化的条件：</strong></p>
+<blockquote>
+<p><strong>充要条件：</strong></p>
+<p>① n阶矩阵A可相似对角化↔有n个线性无关的特征向量。</p>
+<p>② n阶矩阵A可相似对角化↔A对应于每个k重特征值都有k个线性无关的特征向量</p>
+<p><strong>必要条件：</strong></p>
+<p>③ n阶矩阵A有n个不同特征值→A可相似对角化</p>
+<p>④ n阶矩阵为<strong>实对称矩阵</strong>→A可相似对角化</p>
+</blockquote>
+<p>对于矩阵相似对角化的步骤：</p>
+<blockquote>
+<p>① 求特征值</p>
+<p>② 求特征向量</p>
+<p>③ 正交化（如果需要的话），单位化η1η2η3…ηn𝜂1𝜂2𝜂3…𝜂𝑛</p>
+<p>④ 令Q=[η1η2η3…ηn𝜂1𝜂2𝜂3…𝜂𝑛],则Q为正交矩阵，且Q−1AQ=QTAQ=Λ𝑄−1𝐴𝑄=𝑄𝑇𝐴𝑄=Λ</p>
+</blockquote>
+<p>上面提到了实对称矩阵，实对称矩阵就是组成A的元素都是实数。对于实对称矩阵（AT=A𝐴𝑇=𝐴）要记住：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2250f42.png" alt="img"></p>
+<blockquote>
+<p><strong>对于正交，你需要记住：</strong><br>
+① αTβ=0𝛼𝑇𝛽=0，则<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?%5Calpha" alt="\alpha">，<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://latex.csdn.net/eq?%5Cbeta" alt="\beta">是正交向量</p>
+<p>② 若满足ATA=E𝐴𝑇𝐴=𝐸，则A是正交矩阵</p>
+<p>ATA=E𝐴𝑇𝐴=𝐸↔A−1=AT𝐴−1=𝐴𝑇</p>
+</blockquote>
+<p>例题：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be20c78f6.png" alt="img"></p>
+<p><strong>不可对角化的矩阵怎么判断相似：</strong></p>
+<p><strong>例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2286469.png" alt="img"></p>
+<blockquote>
+<p>如果A与B相似，那么：</p>
+<p>对于任意实数k和整数n，有(A+kE)n(𝐴+𝑘𝐸)𝑛与(B+kE)n(𝐵+𝑘𝐸)𝑛相似</p>
+<p>对于上面这道题，取k=-1，n=1，判断哪两个矩阵相似。</p>
+</blockquote>
+<p><strong>矩阵相似还可得出：</strong></p>
+<blockquote>
+<p>① A~B，Ak=Bk𝐴𝑘=𝐵𝑘，f(A)=f(B)</p>
+<p>② 若A~B，且A可逆，则A−1𝐴−1~B−1𝐵−1，f(A−1𝐴−1)=f(B−1𝐵−1)</p>
+<p>③ 若A~B，A∗𝐴∗~B∗𝐵∗</p>
+<p>④ 若A~B，AT𝐴𝑇~BT𝐵𝑇</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be22f103e.png" alt="img"></p>
+</blockquote>
+<p><strong>注：</strong></p>
+<h4 id="img-2"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be23741bd.png" alt="img"></h4>
+<h5 id="-7"></h5>
+<h4 id="十-合同">十.合同</h4>
+<p>设A，B为n阶矩阵，若存在可逆矩阵C，使得CTAC=B𝐶𝑇𝐴𝐶=𝐵，则称A与B合同，即A≅B𝐴≅𝐵。A与B合同，就是指同一个<strong>二次型</strong>在<strong>可逆线性变换</strong>下的两个不同状态的联系。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be23716ca.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be23c6528.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be240b87e.png" alt="img"></p>
+<p>**注：**由于我们已经规定，对称矩阵才是二次型矩阵，所以二次型矩阵都是对称矩阵，相应的和对称矩阵合同的矩阵也是对称矩阵。</p>
+<p><strong>例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be23c6692.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be245dd6f.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be24aba92.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be24a8cd1.png" alt="img"></p>
+<h5 id="-8"></h5>
+<h4 id="十一-二次型">十一.二次型</h4>
+<p>关于二次型化标准型或规范型的方法：配方法，正交变化有总结如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be260b287.png" alt="img"></p>
+<p><strong>所以我们可以进一步得到</strong></p>
+<h5 id="等价，合同和相似的关系："><strong>等价，合同和相似的关系：</strong></h5>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be26b3cd5.png" alt="img"></p>
+<p>**注：**相似一定合同的前提条件是A，B都是实对称矩阵</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2634cf1.png" alt="img"></p>
+<p><strong>例题：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be265a9df.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be27a8028.png" alt="img"></p>
+<p>关于配方法和正交变换分别给一个例题：<br>
+<strong>配方法：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be28c1744.png" alt="img"></p>
+<p><strong>正交变换：</strong><br>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be27ea985.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be27d854c.png" alt="img"></p>
+<blockquote>
+<p>① 若λ1=λ2𝜆1=𝜆2，那么两个同一特征值对应的特征向量需要正交化，如果本来就正交可以不做这一步，所以在计算特征值的时候，可以将两个特征向量写为正交的，这样就免去了施密特正交化，直接进入单位化即可。</p>
+<p>② λ1≠λ2≠λ3𝜆1≠𝜆2≠𝜆3，那么不用进行施密特正交，直接单位化即可。</p>
+</blockquote>
+<p><strong>常见题型：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be27a8802.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be28ccb91.png" alt="img"></p>
+<p>这里记录一个例题：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be29b50e6.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be29d5c66.png" alt="img"></p>
+<p>若二次型中只有混合项，没有平方项，要怎么做？</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2a51d99.png" alt="img"></p>
+<h4 id="十二-二次型正定">十二.二次型正定</h4>
+<blockquote>
+<p><strong>二次型正定的充要条件：</strong><br>
+n元二次型f=xTAx𝑓=𝑥𝑇𝐴𝑥正定↔对任意x≠0，有xTAx𝑥𝑇𝐴𝑥&gt;0（定义）</p>
+<p>① ↔f的正惯性指数p=n</p>
+<p>② ↔存在可逆矩阵D，使得A=DTD𝐴=𝐷𝑇𝐷</p>
+<p>③ ↔A≅E𝐴≅𝐸，A与E合同</p>
+<p>② ③推导：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be29ead4d.png" alt="img"></p>
+<p>④↔A的特征值λ𝜆&gt;0</p>
+<p>⑤↔A的全部顺序主子式&gt;0</p>
+<p><strong>二次型正定的必要条件：</strong></p>
+<p>① aii𝑎𝑖𝑖&gt;0，对角线元素全部大于0</p>
+<p>② |A|&gt;0</p>
+</blockquote>
+<p>最好是使用充要条件① ④ ⑤判断二次型是否正定，如果非要用定义法，来看个例题：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2b97057.png" alt="img"></p>
+<p>注意上题，不能直接将f判定为正定：</p>
+<p>因为将二次型化为标准型的过程一定要做<strong>可逆线性变换</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2b73fd4.png" alt="img"></p>
+<p><strong>例题1：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2bde67d.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2bbdd65.jpeg" alt="img"></p>
+<p><strong>例题2：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2c370ad.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2bd06ac.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2de5d54.png" alt="img"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/07/31/66a9be2f0a59c.png" alt="img"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/dc9c528b.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-d163bd005712d70995ab263d28b541bc_720w.webp" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数学分析笔记其二</div></div></a></div><div class="next-post pull-right"><a href="/posts/7eb63ac7.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pica.zhimg.com/80/v2-df6d07ad556b4545c44b04ab0cf8aebc_720w.webp" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数据结构复习其二</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><svg class="meta_icon" style="width:22px;height:22px;position:relative;top:5px"><use xlink:href="#icon-mulu1"></use></svg><span style="font-weight:bold">目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%E2%80%94%E2%80%94%E7%9F%A9%E9%98%B5%E5%8F%8A%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2"><span class="toc-text">第一章——矩阵及初等变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%E2%80%94%E2%80%94%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="toc-text">第二章——行列式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%E2%80%94%E2%80%94%E5%87%A0%E4%BD%95%E7%A9%BA%E9%97%B4"><span class="toc-text">第三章——几何空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E2%80%94n%E7%BB%B4%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4"><span class="toc-text">第四章——n维向量空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%E2%80%94%E2%80%94%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-text">第五章——特征值与特征向量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%E2%80%94%E2%80%94%E4%BA%8C%E6%AC%A1%E5%9E%8B%E4%B8%8E%E4%BA%8C%E6%AC%A1%E6%9B%B2%E9%9D%A2"><span class="toc-text">第六章——二次型与二次曲面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%88%9D%E7%AD%89%E8%A1%8C-%E5%88%97%E5%8F%98%E6%8D%A2"><span class="toc-text">一.初等行&#x2F;列变换</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E8%AE%A1%E7%AE%97%E8%A1%8C%E5%88%97%E5%BC%8F%E6%97%B6%EF%BC%8C%E8%A1%8C%E5%88%97%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF"><span class="toc-text">1.计算行列式时，行列变换都可</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%B1%82%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9%E6%97%B6%EF%BC%8C%E8%A1%8C%E5%88%97%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF"><span class="toc-text">2.求矩阵的秩时，行列变换都可</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%A7%A3%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E6%97%B6%EF%BC%8C%E4%BB%85%E8%83%BD%E4%BD%BF%E7%94%A8%E5%88%9D%E7%AD%89%E8%A1%8C%E5%8F%98%E6%8D%A2"><span class="toc-text">3.解线性方程组时，仅能使用初等行变换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%88%A4%E5%AE%9A%E8%A7%A3%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%8C%E5%8D%95%E7%BA%AF%E6%B1%82r-A-r-A-b-%E7%9A%84%E8%BF%87%E7%A8%8B%E8%A1%8C%E5%88%97%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF"><span class="toc-text">**4.**判定解的情况，单纯求r(A),r(A,b)的过程行列变换都可</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E6%B1%82%E5%90%91%E9%87%8F%E7%BB%84%E6%9E%81%E5%A4%A7%E6%97%A0%E5%85%B3%E7%BB%84%E3%80%81%E7%BA%BF%E6%80%A7%E8%A1%A8%E5%87%BA%E5%85%B3%E7%B3%BB%EF%BC%8C%E5%88%99%E4%BB%85%E8%A1%8C%E5%8F%98%E6%8D%A2"><span class="toc-text">5.求向量组极大无关组、线性表出关系，则仅行变换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E6%B1%82%E5%90%91%E9%87%8F%E7%BB%84%E7%9A%84%E7%A7%A9%E6%97%B6%EF%BC%8C%E8%A1%8C%E5%88%97%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF"><span class="toc-text">6.求向量组的秩时，行列变换都可</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-%E6%B1%82%E7%89%B9%E5%BE%81%E5%80%BC%E6%97%B6%EF%BC%8C%E8%A1%8C%E5%88%97%E5%8F%98%E6%8D%A2%E9%83%BD%E5%8F%AF"><span class="toc-text">7.求特征值时，行列变换都可</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#8-%E6%B1%82%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E6%97%B6%EF%BC%8C%E4%BB%85%E5%81%9A%E8%A1%8C%E5%8F%98%E6%8D%A2"><span class="toc-text">8.求特征向量时，仅做行变换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#9-%E6%B1%82%E9%80%86%E7%9F%A9%E9%98%B5%E6%97%B6%EF%BC%8C%E5%AF%B9-A-E-%E4%BB%85%E5%81%9A%E5%88%9D%E7%AD%89%E8%A1%8C%E5%8F%98%E6%8D%A2"><span class="toc-text">9.求逆矩阵时，对(A,E)仅做初等行变换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link"><span class="toc-text"></span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-text">总结：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-%E8%A6%81%E7%89%A2%E8%AE%B0"><span class="toc-text">二.要牢记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-%E6%9F%90%E6%9F%90%E5%AD%90%E5%BC%8F"><span class="toc-text">三.某某子式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%BD%99%E5%AD%90%E5%BC%8F"><span class="toc-text">1.余子式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E4%BB%A3%E6%95%B0%E4%BD%99%E5%AD%90%E5%BC%8F"><span class="toc-text">2.代数余子式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-k%E9%98%B6%E5%AD%90%E5%BC%8F"><span class="toc-text">3.k阶子式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#-2"><span class="toc-text"></span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-k%E9%98%B6%E4%B8%BB%E5%AD%90%E5%BC%8F"><span class="toc-text">4.k阶主子式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E9%A1%BA%E5%BA%8F%E4%B8%BB%E5%AD%90%E5%BC%8F"><span class="toc-text">5.顺序主子式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B-%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9"><span class="toc-text">四.矩阵的秩</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#-3"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94-%E5%B8%B8%E7%94%A8%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-text">五.常用特征值与特征向量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AD-%E7%9F%A9%E9%98%B5%EF%BC%8C%E5%90%91%E9%87%8F%E7%BB%84%EF%BC%8C%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="toc-text">六.矩阵，向量组，方程组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E7%9F%A9%E9%98%B5%E7%AD%89%E4%BB%B7"><span class="toc-text">1.怎么判断两个矩阵等价</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E5%90%91%E9%87%8F%E7%BB%84%E6%98%AF%E7%AD%89%E4%BB%B7%E5%90%91%E9%87%8F%E7%BB%84"><span class="toc-text">2.怎么判断两个向量组是等价向量组</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E7%9F%A9%E9%98%B5%E5%92%8C%E5%90%91%E9%87%8F%E7%AD%89%E4%BB%B7%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-text">3.矩阵和向量等价的比较</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#img"><span class="toc-text"></span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#-4"><span class="toc-text"></span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%90%8C%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="toc-text">4.同解方程组</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#-5"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%83-%E9%BD%90%E6%AC%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E5%92%8C%E9%9D%9E%E9%BD%90%E6%AC%A1%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="toc-text">七.齐次线性方程组和非齐次线性方程组</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#-6"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AB-%E5%AF%B9%E6%AF%94%E8%AE%B0%E5%BF%86"><span class="toc-text">八.对比记忆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%9D-%E7%9B%B8%E4%BC%BC%E4%B8%8E%E6%AD%A3%E4%BA%A4"><span class="toc-text">九.相似与正交</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#img-2"><span class="toc-text"></span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#-7"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%81-%E5%90%88%E5%90%8C"><span class="toc-text">十.合同</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#-8"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%81%E4%B8%80-%E4%BA%8C%E6%AC%A1%E5%9E%8B"><span class="toc-text">十一.二次型</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AD%89%E4%BB%B7%EF%BC%8C%E5%90%88%E5%90%8C%E5%92%8C%E7%9B%B8%E4%BC%BC%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9A"><span class="toc-text">等价，合同和相似的关系：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C-%E4%BA%8C%E6%AC%A1%E5%9E%8B%E6%AD%A3%E5%AE%9A"><span class="toc-text">十二.二次型正定</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div id="ft"><div class="ft-item-1"><div class="t-top"><div class="t-t-l"><p class="ft-t t-l-t">随记</p><div class="bg-ad"><div>故事往往因鲜为人知而被掩饰，困苦因困而苦。旷野是四面八方的，前进是选择而不是逆行。</div><div class="btn-xz-box"><a class="btn-xz" target="_blank" rel="noopener" href="https://scp-wiki-cn.wikidot.com/wanderers:mang"> </a></div></div></div><div class="t-t-r"><p class="ft-t t-l-t">网站导航</p><ul class="ft-links"><li><a href="https://zhongye1.github.io/posts/3b4b656d.html">关于站长</a><a href="/box/nav/">网址导航</a></li><li><a href="/social/link/1/">我的朋友</a><a href="/comments/">留言栏</a></li><li><a href="/social/fcircle/">其他博客</a><a href="/archives/">文章归档</a></li><li><a href="/categories/">文章分类</a><a href="/tags/">文章标签</a></li><li><a href="/box/Gallery/">我的画廊</a><a href="/personal/bb/">隐藏空间</a></li><li><a href="/site/time/">建设进程</a><a href="/site/census/">网站统计</a></li></ul></div></div></div><div class="ft-item-2"><p class="ft-t">友链（欢迎添加</p><div class="ft-img-group"><div class="img-group-item"><a href="https://zhongye1.github.io/" title="柊野"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://avatars.githubusercontent.com/u/145737758?v=4" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.gzhu.site/" title="站长搭的广大树洞"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-71152904edf11db5c8885548393ace6a_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://space.bilibili.com/446805121?spm_id_from=333.1007.0.0" title="柊野的B站空间"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-58b297e0356a934ce8595de873e5b70e_720w.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://eureka1029.github.io/" title="水波"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://eureka1029.github.io/img/eureka.jpg" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.fomal.cn/" title="Fomalhaut"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.bitiful.net/img/avatar.webp" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="http://www.gzhu.edu.cn/index.htm" title="广州大学"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2025/03/05/67c8522bf290a.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://bocchi.rocks/" title="孤独摇滚"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://free-img.400040.xyz/4/2024/11/30/6749f6f41d521.png" alt=""/></a></div><div class="img-group-item"><a target="_blank" rel="noopener" href="https://blog.carry.fit/" title="carry"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-f4e5445ba9cd36acf8a6890f5c622a92_720w.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div></div></div></div><div class="copyright"><span><b>&copy;2023-2025</b></span><span><b>&nbsp;&nbsp;By 柊野</b></span></div><div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v6.3.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Frame-Hexo-blue.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.3.1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Theme-Butterfly-6513df.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用多线部署，主线路托管于Vercel"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Hosted-Vercel-brightgreen.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://user.51.la/" style="margin-inline:5px" title="本站数据分析得益于51la技术支持"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/Analytics-51la-3db1eb.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://icp.gov.moe/?keyword=20226665" style="margin-inline:5px" title="本站已加入萌ICP豪华套餐，萌ICP备20226665号"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/萌ICP备-20226665-fe1384.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://bitiful.dogecast.com/buckets" style="margin-inline:5px" title="本网站经Service Worker分流至缤纷云对象存储"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Bucket-缤纷云-9c62da.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://www.netdun.net/" style="margin-inline:5px" title="本站使用网盾星球提供CDN加速与防护"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://sourcebucket.s3.ladydaily.com/badge/CDN-网盾星球-fff2cc.svg" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" title="本网站源码由Github提供存储仓库"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://sourcebucket.s3.ladydaily.com/badge/Source-Github-d021d6.svg" alt=""/></a></p></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="share" type="button" title="右键模式" onclick="changeMouseMode()"><i class="fas fa-mouse"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog right_side"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button class="share" type="button" title="分享链接" onclick="share()"><i class="fas fa-share-nodes"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i><span id="percent">0<span>%</span></span></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();"><i class="fa fa-search"></i><span>百度搜索</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:randomPost()"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:switchNightMode();"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="/personal/about/"><i class="fa fa-info-circle"></i><span>关于博客</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();"><i class="fas fa-cog"></i><span>美化设置</span></a><a class="rightMenu-item" href="javascript:rmf.fullScreen();"><i class="fas fa-expand"></i><span>切换全屏</span></a><a class="rightMenu-item" href="javascript:window.print();"><i class="fa-solid fa-print"></i><span>打印页面</span></a></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())
+setTimeout(function(){preloader.endLoading();}, 5000);
+document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'Zhongye1/Zhongye1.github.io',
+    'data-repo-id': 'R_kgDOKWw6mw',
+    'data-category-id': 'DIC_kwDOKWw6m84Cb_Up',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !false) {
+  if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script src="/js/jquery.min.js"></script><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script async src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script><script defer type="text/javascript" src="https://cdn1.tianli0.top/npm/sweetalert2@8.19.0/dist/sweetalert2.all.js"></script><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_jituadf51kb.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_conde8ht15m.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_0vk7nzv6lpdm.js"></script><script async src="//at.alicdn.com/t/c/font_3586335_hsivh70x0fm.js"></script><script async src="//at.alicdn.com/t/c/font_3636804_gr02jmjr3y9.js"></script><script async src="//at.alicdn.com/t/c/font_3612150_kfv55xn3u2g.js"></script><script async src="//at.alicdn.com/t/c/font_4540263_ipnrnckf7g7.js"></script><canvas id="universe"></canvas><canvas id="snow"></canvas><script defer src="/js/fomal.js"></script><div class="aplayer no-destroy" data-id="1941005079" data-server="netease" data-type="song" data-fixed="true" data-mini="true" data-listmaxheight="540px" data-listFolded="true" data-order="random" data-lrctype="-1" data-preload="none" data-autoplay="false" muted></div><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/butterfly-extsrc/1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://lib.baomitu.com/pjax/0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["link[rel=\"canonical\"]","meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show","#web_bg",".js-pjax","#bibi","body > title","#app","#tag-echarts","#posts-echart","#categories-echarts"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://picx.zhimg.com/80/v2-e7f5f4107d19ededf9686a12c6363770_720w.webp?source=d16d100b);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/刘慈欣科幻集/&quot;);" href="javascript:void(0);">刘慈欣科幻集</a><span class="categoryBar-list-count">34</span><span class="categoryBar-list-descr">刘慈欣科幻小说集</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-aee1088402a3dba60d86b71c4c5ce4f2_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/随记/&quot;);" href="javascript:void(0);">随记</a><span class="categoryBar-list-count">33</span><span class="categoryBar-list-descr">一些随记和杂谈</span></li><li class="categoryBar-list-item" style="background:url(https://pic1.zhimg.com/80/v2-f8f67bac6b457af94c4bad5f6b928f94_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/博客美化/&quot;);" href="javascript:void(0);">博客美化</a><span class="categoryBar-list-count">10</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-92b32c509920899c39173f1593ab8100_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/Github项目/&quot;);" href="javascript:void(0);">Github项目</a><span class="categoryBar-list-count">8</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(https://pic4.zhimg.com/80/v2-11049fb8aba2211730759c6be6ae6963_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/漫画/&quot;);" href="javascript:void(0);">漫画</a><span class="categoryBar-list-count">9</span><span class="categoryBar-list-descr">孤独摇滚漫画集！</span></li><li class="categoryBar-list-item" style="background:url(https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/笔记/&quot;);" href="javascript:void(0);">笔记</a><span class="categoryBar-list-count">12</span><span class="categoryBar-list-descr">学习资料和笔记</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://dashboard.4everland.org/" style="margin-inline:5px" data-title="本站采用多线部署，备用线路托管于4EVERLAND" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-4EVERLAND-22DDDD?style=flat&amp;logo=IPFS" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-06-25</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">LiteLoaderQQNT</a><div class="blog-slider__text">为你的QQ添加各种插件，并实现动态背景、美化主题、增加功能等功能</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/96a2d8b4.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/80/v2-bf4481accae1dc117377e6e97d33fa22_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-09-17</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">关于</a><div class="blog-slider__text">关于本博客站长</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/3b4b656d.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pica.zhimg.com/80/v2-e8cfe5272808d7d34394ac62edb904f0_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-11-04</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">创建一个网络包解码器分析DEVP2P协议</a><div class="blog-slider__text">创建一个网络包解码器分析DEVP2P协议</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/1104.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-a410b08c35e5288a57b75762ae482806_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">数据结构复习其一</a><div class="blog-slider__text">收集到的数据结构复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/4536146e.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic3.zhimg.com/v2-2d64b070c08f997649778c339779bdfe_b.jpeg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">高代知识点全汇总</a><div class="blog-slider__text">收集到的一些高代复习资料</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/47d446d0.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-03015b20688cff356a57effde569902c_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">广州大学选课脚本</a><div class="blog-slider__text">广大选课脚本, 可多线程自动选全校性选课和体育选课的课程</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/f4171415.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://pic1.zhimg.com/80/v2-dc2545bcd93d0897f96a58dae80d32a8_720w.webp" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-07-20</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">孤独摇滚漫画索引</a><div class="blog-slider__text">本篇为目录索引、其他信息链接，剧情分析后续持续更新</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/b2eb46ff.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 320px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/site/census/'|| '/site/census/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("/api?null",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'null')
+    }
+  </script><!-- hexo injector body_end end --></body></html>

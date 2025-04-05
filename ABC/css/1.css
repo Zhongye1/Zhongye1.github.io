@@ -1,0 +1,463 @@
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+footer {
+    background-color: #555;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 1em;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+    color: rgb(117, 171, 251);
+}
+
+
+/* 重置默认样式 */
+* {
+}
+
+/* 头部 */
+header {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 主体内容 */
+main {
+    margin-top: 0%;
+    min-height: calc(100vh - 5rem);
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.gallery1 {
+    background-color: #fefefe1d;
+    width: 100%;
+}
+
+
+/* 新样式 *//* 新样式 *//* 新样式 *//* 新样式 *//* 新样式 *//* 新样式 *//* 新样式 *//* 新样式 */
+
+
+body, html {
+    font-weight: bold;
+    width: 100%;
+    background: #e1e1e1 url("../background.jpg") no-repeat center center fixed;
+    -moz-background-size: cover;
+    /* background-position-x: left; */
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+}
+/* 打字效果的字体样式 */
+.content {
+    font-size: 32px; /* 字体大小 */
+    color: #ffffff; /* 文字颜色 */
+    text-shadow: 5px 5px 5px rgba(255, 255, 255, 0); /* 文字阴影 */
+    text-align: center; /* 文本居中 */
+    line-height: 1; /* 行高 */
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.content::after{
+    content:'|';
+    animation: blink 0.4s step-end infinite;
+    margin-left: 5px; /* 根据需要调整间距 */
+}
+
+/* 定义闪烁动画 */
+@keyframes blink {
+    from, to {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* 其他文本样式 */
+.text-content {
+    font-family: Arial, sans-serif; /* 默认字体 */
+    font-size: 18px; /* 字体大小 */
+    color: #fdfdfd; /* 文字颜色 */
+    text-align: center; /* 文本居中 */
+    line-height: 1.6; /* 行高 */
+    max-width: 800px; /* 最大宽度 */
+    margin: 0 auto; /* 水平居中 */
+    padding: 20px;
+}
+
+/* 导航栏样式 */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(152, 152, 152, 0.5);
+    color: white;
+    text-align: center;
+    padding: -14px;
+    height: 50px;
+    /* width: auto; */
+}
+
+header ul {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+header li {
+    display: inline;
+    margin: 0 10px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+/* 特色图片样式 */
+.feature-image {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 画廊样式 */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.gallery img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 600px) {
+    .gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+.top{
+    margin: 0 auto;
+    margin-top: 296px;
+    /* background-color: #ffffff; */
+    width: 100%;
+    height: 1325px;
+    background: #e1e1e1 url("../img/122.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+
+
+.flex-md-row mb-4 box-shadow h-xl-300{
+    margin-top: 100px;
+}
+
+.blank1{
+    height: 30px;
+}
+
+.top2{
+    margin-top: 200px;
+    margin-bottom: 300px;
+    background-color: #ffffff;
+    width: 100%;
+    background: url("../img/122.png") no-repeat center center fixed;
+    background-image: url("../img/122.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#biaoti {
+    font-family: 'Comic Sans MS'; /* 字体 */
+    font-size: 50px; 
+    color: #ffffff; 
+    text-align: center; /* 文本居中对齐 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+    letter-spacing: 2px; 
+    word-spacing: 5px; 
+    line-height: 1.5; 
+
+}
+
+
+  .waterfall-container {
+    column-count: 3;
+    column-gap: 20px;
+    width: 80%;
+  }
+
+  .waterfall-item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .waterfall-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+  }
+
+  .waterfall-item:hover {
+    transform: scale(1.15);
+    box-shadow: 0 8px 16px rgba(213, 212, 212, 0.2);
+  }
+
+  .waterfall-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-decoration-break: clone;
+    box-shadow: 0 4px 8px rgb(255, 255, 255); /* 添加阴影 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .waterfall-item:hover::after {
+    opacity: 1;}
+
+    a {
+        outline: none;
+        color: rgb(107, 165, 231);
+        text-decoration: none;
+        padding: 5px 10px; /* 添加内边距 */
+        border-radius: 5px; /* 圆角 */
+        transition: all 0.3s ease; /* 所有属性的过渡效果 */
+    }
+    
+    a:hover {
+        text-decoration: none;
+        color: #6b6b6b;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+        transform: translateY(-2px); /* 微小向上移动，增加点击感 */
+    }
+
+
+.jieshao1, .jieshao2, .jieshao3, .jieshao4, .jieshao0 {
+    background-color: #e1e1e1;
+     /* 可选：为内容添加内边距 */
+    width: 100%; /* 确保容器宽度一致 */
+    /* height: 500px; */
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed; /* 如果你希望背景固定不动 */
+    background-size: cover; /* 背景图片覆盖整个容器 */
+}
+
+/* 单独定义每个类的背景图片 */
+.jieshao0 {
+    background-image: url("../img/12.jpg");
+    margin-bottom: -49px;
+    height: 848px;
+    /* margin-top: 63px; */
+}
+
+.jieshao1 {
+    background-image: url("../img/bocchi1.png");
+}
+
+.jieshao2 {
+    background-image: url("../img/nijika.png");
+}
+
+.jieshao3 {
+    background-image: url("../img/ryo.png");
+}
+
+.jieshao4 {
+    background-image: url("../img/kita.png");
+}
+
+.flex-md-row.mb-4.box-shadow.h-xl-300 {
+    background: #e1e1e1 url("../bocchi.png") no-repeat center center fixed;
+
+}
+
+.video-container {
+    width: 100%;
+    /* height: 223px; */
+    position: relative;
+    overflow: hidden;
+    margin: 10px auto; /* 居中并添加一些顶部间距 */
+  }
+
+  .video-container video {
+    width: 400px;
+    height: 274px;
+    object-fit: cover; /* 保持宽高比，并填充容器 */
+    border-radius: 10px; /* 圆角边框 */
+    box-shadow: 0 4px 8px rgba(212, 212, 212, 0.495); /* 阴影效果 */
+  }
+
+  .jieshu{
+    text-align: left;
+    background-color: #9c99999e;
+    border-radius: 10px; /* 圆角边框 */
+    transition: transform 0.2s ease-in-out; /* 添加过渡效果 */
+  }
+
+/* 容器 */
+.BOC2 {
+    margin: 20px;
+    COLOR: white;
+    text-align: center;
+    /* background-color: #f4f4f591; */
+}
+
+
+
+.music{/* width: 100%; *//* margin: auto; */}
+.scroll-prompt {
+    position: absolute; /* 绝对定位 */
+    left: 50%; /* 居中 */
+    transform: translateX(-50%); /* 水平居中调整 */
+    bottom: 10px; /* 距离底部10px */
+    animation: bounce 2s infinite; /* 添加弹跳动画 */
+}
+
+.scroll-prompt i {
+    font-size: 48px; /* 图标的大小 */
+    color: #ccc; /* 图标的颜色 *//* 绝对定位 *//* 绝对定位 *//* 绝对定位 *//* 绝对定位 *//* 绝对定位 */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.biaoti{
+    margin-top: 100px;
+    font-size: 72px; /* 字体大小 */
+    height: 200px;
+
+}
+.quote {
+  font-style: italic;
+  color: #7ccdff;
+  margin-bottom: 20px;
+}
+.info {
+  contain-intrinsic-block-size: auto 100px;
+  /* background: #e1e1e1 url("./img/21.jpg") no-repeat center center fixed; */
+  width: 100%;
+  box-shadow: 0 0 10px rgba(245, 244, 244, 0.1);
+  height: 1311px;
+  /* margin-top: 100px; */
+}
+.top2{margin-top: -48px;margin-bottom: 20px;/* background-color: #ffffff; */width: 100%;background: url("./img/122.png") no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;}
+
+.img-hover-effect {
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding-top: -2px;
+}
+
+.img-hover-effect:hover {
+    transform: scale(1.1); /* 鼠标悬停时放大 */
+    box-shadow: 0 4px 8px rgb(255 255 255); /* 阴影 */
+}
+
+.img-hover-effect1 {
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #e8e8e840;
+    border-radius: 5px; /* 圆角 */
+    transition: all 0.3s ease; /* 所有属性的过渡效果 */
+}
+
+.img-hover-effect1:hover {
+    transform: scale(1.1); /* 鼠标悬停时放大 */
+    box-shadow: 0 4px 8px rgb(255 255 255); /* 阴影 */
+    background-color: #02020287;
+}
+
+.RE0{
+    color: #ffffff;
+    margin: auto;
+    width: 100%;
+    background-color: rgba(216, 216, 216, 0.231);
+    font-size: 30px;
+}
+.RE{
+    color: #ffffff;
+    margin: auto;
+    width: 100%;
+    background-color: rgba(216, 216, 216, 0);
+    font-size: 20px; 
+    
+
+.blank2{
+    height: 40px;
+}
+}
+.music{
+    width: 100%;
+    margin: auto;
+}
+
+

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="动漫,圣地巡礼,柊野">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 响应式视口设置 -->
+    <title>圣地巡礼地图</title>
+    <!-- 引入百度地图API -->
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ&s=1"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #mapContainer {
+            width: 100%;
+            height: calc(100% - 70px); /* 考虑到底部表单的高度 */
+        }
+        #searchForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background-color: white;
+            z-index: 1000;
+        }
+        #searchForm label, #searchForm input, #searchForm button {
+            margin-bottom: 5px;
+        }
+        @media screen and (max-width: 768px) {
+            #searchForm label, #searchForm input, #searchForm button {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script>
+        // 确保BMap对象定义完成后再执行后续代码
+        window.onload = function() {
+            let map = null;
+            // 初始化百度地图
+            function initBaiduMap() {
+                map = new BMap.Map("mapContainer");
+                // 设置地图选项
+                map.enableScrollWheelZoom(true); // 启用滚轮缩放
+                map.addControl(new BMap.NavigationControl()); // 添加导航控件
+                map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
+                // 设置地图的初始中心点和缩放级别
+                map.centerAndZoom(new BMap.Point(116.404, 39.915), 12);
+                return map;
+            }
+            // 清除地图上的所有标记
+            function clearMarkers(map) {
+                var allOverlays = map.getOverlays();
+                for (var i = 0; i < allOverlays.length; i++) {
+                    if (allOverlays[i].setMap) {
+                        allOverlays[i].setMap(null);
+                    }
+                }
+            }
+            // 从API获取数据
+            function fetchLandmarks(subjectID) {
+                Promise.all([
+                    fetch(`https://api.anitabi.cn/bangumi/${subjectID}/lite`),
+                    fetch(`https://api.anitabi.cn/bangumi/${subjectID}/points/detail?haveImage=true`)
+                ])
+                .then(responses => Promise.all(responses.map(r => r.json())))
+                .then(([bangumiData, landmarksData]) => {
+                    if (!bangumiData || !Array.isArray(landmarksData)) {
+                        alert('没有找到与提供的Bangumi作品ID匹配的数据QAQ');
+                        return;
+                    }
+                    clearMarkers(map); // 在添加新的地标之前清除旧的标记
+                    landmarksData.forEach(point => {
+                        addMarkerToMap(point, map, bangumiData);
+                    });
+                    if (bangumiData && bangumiData.geo && bangumiData.zoom) {
+                        map.centerAndZoom(new BMap.Point(bangumiData.geo[1], bangumiData.geo[0]), bangumiData.zoom);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching landmarks:', error);
+                    alert('Error,请输入有效的Bangumi ID😂');
+                });
+            }
+            // 在百度地图上添加标记
+            function addMarkerToMap(point, map, bangumiData) {
+                if (!point.geo || !point.geo[0] || !point.geo[1]) {
+                    console.error('Invalid geo coordinates:', point);
+                    return;
+                }
+                var p = new BMap.Point(point.geo[1], point.geo[0]); // 注意坐标顺序
+                var marker = new BMap.Marker(p);  // 创建标注
+                map.addOverlay(marker);              // 将标注添加到地图中       
+                // 创建信息窗口
+                var infoWindowContent = `
+                    <b>${bangumiData ? bangumiData.cn : '未知番剧'}: ${point.cn || '未知地标'}</b><br>
+                    ${point.name || '未知名称'}<br>
+                    <img src="${point.image ? point.image.replace('?plan=h160', '?plan=h360') : '无图片'}" width="100" height="auto"><br>
+                    Origin: ${point.origin || '未知来源'}<br>
+                    <a href="${point.originURL || '#'}" target="_blank">${point.originURL || '无链接'}</a>
+                `;  // 创建信息窗口内容
+                var infoWindow = new BMap.InfoWindow(infoWindowContent);  // 创建信息窗口
+                marker.addEventListener("click", function(){ // 添加点击事件
+                    this.openInfoWindow(infoWindow, map, p); // 打开信息窗口
+                });
+            }
+            // 绑定表单提交事件处理程序
+            document.getElementById('searchForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // 阻止表单默认提交行为
+                const subjectID = document.getElementById('subjectID').value;
+                if (subjectID.trim() === '') {
+                    alert('请输入有效的Bangumi作品ID。');
+                    return;
+                }
+                fetchLandmarks(subjectID);
+            });
+            // 初始化地图
+            initBaiduMap();
+        }
+    </script>
+</head>
+<body>
+    <div id="mapContainer"></div>
+    <!-- 底部搜索表单 -->
+    <form id="searchForm">
+        <label for="subjectID">请输入Bangumi番剧ID:</label>
+        <input type="text" id="subjectID" name="subjectID" placeholder="例如: 328609（孤独摇滚）">
+        <button type="submit">检索</button>
+        <a href="/posts/ac0edfe5.html">【教程】如何查找Bangumi番剧ID</a>
+    </form>
+</body>
+</html>

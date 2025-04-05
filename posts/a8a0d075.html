@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>柊野的博客-访客分布</title>
+<style type="text/css">
+    body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+<pre><code>#allmap &#123;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+&#125;
+
+p &#123;
+    margin-left: 5px;
+    font-size: 14px;
+&#125;
+
+.openInfo &#123;
+    margin: 4px 0;
+&#125;
+
+.my_label &#123;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+&#125;
+
+.openInfo_div &#123;
+    width: 100%;
+    height: 80%;
+    overflow-y: auto;
+&#125;
+
+.BMap_bubble_content &#123;
+    height: 100%!important;
+&#125;
+
+.openInfo&gt;* &#123;
+    vertical-align: middle;
+&#125;
+
+/* 返回博客按钮=========================================================== */
+.button &#123;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    background-image: url('https://pic4.zhimg.com/v2-68ff3d189ef7ec060222261a98892e67_b.webp'); /* 图片路径 */
+    background-size: cover; /* 使图片填充整个按钮区域 */
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 170px; /* 设置按钮的宽度为图片的宽度 */
+    height: 90px; /* 设置按钮的高度为图片的高度 */
+&#125;
+
+.button2 &#123;
+    background-color: #008CBA; /* 蓝色备用背景颜色 */
+&#125;
+</code></pre>
+</style>
+<!-- 将所有的 script 标签放在这里 -->
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ&s=1"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<!-- 将不安全的http升级为https -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+</head>
+<body>
+<div style="position:absolute;top:0;z-index:99999;background-color:rgba(0,0,0,0.2);width:100%;color:#FFFFFF;">
+    <center>
+        <h2>柊野的博客-访客分布-Апрель （访客IP地图）</h2>
+    </center>
+</div>
+<div style="position:absolute;bottom:20px;left:0;z-index:99999;background-color:rgba(0,0,0,0.2);">
+    <h3 style="color:#FFFFFF;">好好好</h3>
+    <p></p>
+    <a href="https://zhongye1.github.io/" class="button button2" target="_blank">返回博客主页</a>
+</div>
+<div style="position:absolute;bottom:0;right:0;z-index:99999;background-color:rgba(0,0,0,0.2);">
+    <h4 style="color:#FFFFFF;">
+        <br/>
+        进博客就会点亮你的位置，想不到吧hhh
+        <br/>
+        访问博客都会被记录在此（
+        <br/>
+        顺带位置依据是IP，IP不能精确定位但可以确定城市
+        <br/>
+        所以站长不太可能找上门（除非你也在广州大学
+        <br/>
+        <br/>来看看你和站长有多远
+        <br/><font color="#80bfff">站长QQ 2760913192</font>
+        <br/>                        ————柊野
+        <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1261190516'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1261190516%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+    </h4>
+</div>
+<div id="allmap"></div>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    map.centerAndZoom("中国", 6);
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+    map.setMapStyle({ style: 'midnight' }); // 修正语法错误
+
+    var point = new BMap.Point(116.418261, 39.921984);
+    map.centerAndZoom(point, 6);
+
+    var data_info = [
+    
+		[114.4942, 37.0631, "China-Hebei-Xingtai", "https://bf3.axibug.com/hunter_map/icon/c1.png"],
+
+		[104.93457341, 33.39447997, "256", "https://bf3.axibug.com/hunter_map/icon/c2.png"],
+    		
+		[108.3146, 22.8137, "China-Guangxi-","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[113.380249, 23.04721, "300","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[113.380249, 23.09721, "77","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[120.59246739, 30.00236458, "293","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[106.7167, 26.5833, "China-Guizhou-","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[114.248084,30.601824, "HB","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+    
+		[114.248084,30.701824, "HB","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+    
+		[114.248084,30.621824, "298","https://bf3.axibug.com/hunter_map/icon/c3.png"],
+    
+		[113.507593,30.366792, "298","https://bf3.axibug.com/hunter_map/icon/c4.png"],
+		
+		[120.14887182, 33.37986188, "223","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[113.1117, 28.1783, "China-Hunan-Changsha","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[114.35164212, 34.80185418, "210","https://bf3.axibug.com/hunter_map/icon/c3.png"],
+		
+		[114.4, 23.0833, "China-Guangdong-Huizhou","https://bf3.axibug.com/hunter_map/icon/c3.png"],
+		
+		[106.5531, 29.5569, "China-Chongqing-","https://bf3.axibug.com/hunter_map/icon/c3.png"],
+		
+		[115.89352755, 28.689578, "163","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.25, 23.1167, "China-Guangdong-","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[108.92427443, 23.55225469, "17","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[117.67620468, 24.51706478, "255","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[114.1861241, 22.29358599, "2912","https://bf3.axibug.com/hunter_map/icon/c3.png"],
+		
+		[112.247378,32.457298, "58","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[119.3061, 26.0614, "China-Fujian-Fuzhou","https://bf3.axibug.com/hunter_map/icon/c2.png"],
+		
+		[115.37292429, 22.7787305, "339","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.834145,22.687907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[120.36132599, 23.77722277, "9000","https://bf3.axibug.com/hunter_map/icon/c1.png"],
+		
+		[106.5531, 29.5569, "China-Chongqing-Chongqing","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[120.3694, 36.066, "China-Shandong-Qingdao","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[106.53063501, 29.54460611, "132","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.834145,22.687907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.834145,22.687907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.854145,22.687907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.634145,22.687907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.834145,22.587907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.834145,22.6827907, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.277627,23.132179, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.237627,23.133179, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.277627,23.1331179, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.382333,23.045547, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.382333,23.045547, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.382433,23.045547, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.382323,23.045547, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.382333,23.045247, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+		
+		[113.382333,23.045447, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+		[113.382333,23.045557, "SZ","https://bf3.axibug.com/hunter_map/icon/c6.png"],
+
+			];
+      
+  	var opts = {
+        width: 390, // 信息窗口宽度
+        height: 200, // 信息窗口高度
+        title: "", // 信息窗口标题
+    };
+
+    for (var i = 0; i < data_info.length; i++) {
+        var marker = new BMap.Marker(new BMap.Point(data_info[i][0], data_info[i][1])); // 创建标注
+        var myIcon = new BMap.Icon(data_info[i][3], new BMap.Size(25, 25), {}); 
+        marker.setIcon(myIcon);
+        map.addOverlay(marker); // 将标注添加到地图中
+        addClickHandler(marker, data_info[i][2]);
+    }
+
+    function addClickHandler(marker, id) {
+        marker.addEventListener("click", function (e) {
+            openInfo(e, id);
+        });
+    }
+
+    var nowpoint;
+
+    function openInfo(e, id) {
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        nowpoint = point;
+        ajax(id, point);
+    }
+
+    function ajax(id, point) {
+        // 这里应该添加 AJAX 请求的代码
+        // 示例代码：
+        // $.ajax({
+        //     url: "your-url-here",
+        //     data: { id: id, point: point },
+        //     success: function (data) {
+        //         // 处理成功后的逻辑
+        //     },
+        //     error: function () {
+        //         // 处理错误后的逻辑
+        //     }
+        // });
+    }
+</script>
+</body>
+</html>
