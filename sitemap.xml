@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://zhongye1.github.io/social/link/index.html</loc>
+    
+    <lastmod>2025-09-04</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://zhongye1.github.io/posts/fb69579b.html</loc>
     
     <lastmod>2025-07-31</lastmod>
@@ -104,15 +113,6 @@
     <loc>https://zhongye1.github.io/posts/9db9b179.html</loc>
     
     <lastmod>2025-03-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://zhongye1.github.io/social/link/index.html</loc>
-    
-    <lastmod>2025-03-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
