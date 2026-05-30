@@ -1,4 +1,3 @@
-
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
@@ -21,8 +20,6 @@ import remarkMath from "remark-math";
 import rehypeCallouts from "rehype-callouts";
 import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig, siteConfig } from "./src/config";
-import { i18n } from "./src/i18n/translation";
-import I18nKey from "./src/i18n/i18nKey";
 import { pluginLanguageBadge } from "expressive-code-language-badge"; /* Language Badge */
 import { pluginCollapsible } from "expressive-code-collapsible"; /* Collapsible */
 import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
@@ -39,6 +36,7 @@ import rehypeExternalLinks from "./src/plugins/rehype-external-links.mjs";
 import rehypeFigure from "./src/plugins/rehype-figure.mjs";
 import { remarkImageGrid } from "./src/plugins/remark-image-grid.js";
 import { plantumlConfig } from "./src/config";
+import { clickToSource } from "astro-click-to-source";
 
 if (process.env.NODE_ENV === "development") {
     setMaxListeners(20);
@@ -50,11 +48,6 @@ export default defineConfig({
 
     base: "/",
     trailingSlash: "always",
-
-    server: {
-        host: "0.0.0.0",
-        port: 3000,
-    },
 
     // 图像优化配置
     image: {
@@ -70,6 +63,7 @@ export default defineConfig({
     },
 
     integrations: [
+        clickToSource(),
         swup({
             theme: false,
             animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
@@ -123,7 +117,7 @@ export default defineConfig({
                     : []),
                 pluginCollapsibleSections(),
                 pluginLineNumbers(),
-                // pluginCollapsible 配置 - 从expressiveCodeConfig读取设置，使用i18n文本
+                // pluginCollapsible 配置 - 从expressiveCodeConfig读取设置，使用中文文本
                 ...(expressiveCodeConfig.pluginCollapsible?.enable === true
                     ? [
                           pluginCollapsible({
@@ -136,18 +130,10 @@ export default defineConfig({
                               defaultCollapsed:
                                   expressiveCodeConfig.pluginCollapsible
                                       .defaultCollapsed ?? true,
-                              expandButtonText: i18n(
-                                  I18nKey.codeCollapsibleShowMore,
-                              ),
-                              collapseButtonText: i18n(
-                                  I18nKey.codeCollapsibleShowLess,
-                              ),
-                              expandedAnnouncement: i18n(
-                                  I18nKey.codeCollapsibleExpanded,
-                              ),
-                              collapsedAnnouncement: i18n(
-                                  I18nKey.codeCollapsibleCollapsed,
-                              ),
+                              expandButtonText: "展开",
+                              collapseButtonText: "收起",
+                              expandedAnnouncement: "代码块已展开",
+                              collapsedAnnouncement: "代码块已折叠",
                           }),
                       ]
                     : []),
