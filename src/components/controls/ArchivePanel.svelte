@@ -27,6 +27,12 @@ interface Group {
 	posts: Post[];
 }
 
+type FilterLabelKey = "tags" | "categories";
+
+function filterLabel(key: FilterLabelKey) {
+	return key === "tags" ? "标签" : "分类";
+}
+
 interface ActiveFilter {
 	labelKey: FilterLabelKey;
 	values: string[];
