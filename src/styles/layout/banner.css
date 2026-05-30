@@ -1,0 +1,129 @@
+/* Banner layout styles - extracted from Layout.astro */
+/* CSS variables --banner-height-home and --banner-height are injected via define:vars in Layout */
+
+@layer components {
+  .enable-banner #wallpaper-wrapper {
+    height: var(--banner-height-home);
+    transform: translateY(var(--banner-height-extend));
+  }
+
+  .enable-banner #banner {
+    height: var(--banner-height-home);
+    transform: translateY(0);
+  }
+
+  .enable-banner #main-grid {
+    transform: translateY(var(--banner-height-extend));
+  }
+
+  .enable-banner #top-row {
+    height: calc(var(--banner-height-home) - 4.5rem);
+    @apply transition-all duration-300;
+  }
+
+  /* 全屏壁纸模式 */
+  .no-banner-layout #wallpaper-wrapper.wallpaper-fullscreen {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    position: relative;
+    top: 0;
+    transform: none;
+    overflow: hidden;
+  }
+
+  .no-banner-layout #wallpaper-wrapper.wallpaper-fullscreen img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@layer utilities {
+  .enable-banner #sidebar-sticky {
+    top: calc(1rem - var(--banner-height-extend)) !important;
+  }
+  .enable-banner #left-sidebar-sticky {
+    top: calc(1rem - var(--banner-height-extend)) !important;
+  }
+  .enable-banner #right-sidebar-sticky {
+    top: calc(1rem - var(--banner-height-extend)) !important;
+  }
+
+  body.enable-banner.sticky-navbar #sidebar-sticky,
+  body.enable-banner.sticky-navbar #left-sidebar-sticky,
+  body.enable-banner.sticky-navbar #right-sidebar-sticky {
+    top: calc(5.5rem - var(--banner-height-extend)) !important;
+  }
+
+  .navbar-hidden {
+    @apply opacity-0 -translate-y-16;
+  }
+
+  body.sticky-navbar #top-row {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 80 !important;
+    height: 4.5rem !important;
+  }
+
+  body.sticky-navbar #navbar-wrapper {
+    position: static !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  body.sticky-navbar #navbar-wrapper.navbar-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html[data-wallpaper-mode="none"] body.sticky-navbar #sidebar-sticky,
+  html[data-wallpaper-mode="none"] body.sticky-navbar #left-sidebar-sticky,
+  html[data-wallpaper-mode="none"] body.sticky-navbar #right-sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #left-sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #right-sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #left-sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #right-sidebar-sticky {
+    top: 5.5rem !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  body.enable-banner:not(.lg\:is-home) #main-grid {
+    transform: none !important;
+  }
+
+  body.enable-banner:not(.lg\:is-home) #top-row {
+    height: auto !important;
+  }
+
+  body.enable-banner:not(.lg\:is-home) #sidebar-sticky,
+  body.enable-banner:not(.lg\:is-home) #left-sidebar-sticky,
+  body.enable-banner:not(.lg\:is-home) #right-sidebar-sticky {
+    top: 1rem !important;
+  }
+
+  html[data-wallpaper-mode="none"] body.sticky-navbar #sidebar-sticky,
+  html[data-wallpaper-mode="none"] body.sticky-navbar #left-sidebar-sticky,
+  html[data-wallpaper-mode="none"] body.sticky-navbar #right-sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #left-sidebar-sticky,
+  html[data-wallpaper-mode="overlay"] body.sticky-navbar #right-sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #left-sidebar-sticky,
+  body.sticky-navbar.no-banner-layout #right-sidebar-sticky {
+    top: 5.5rem !important;
+  }
+
+  body.sticky-navbar #top-row {
+    height: 4.5rem !important;
+  }
+}

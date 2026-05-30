@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './layout/banner.css';
 @import './layout-styles.css';
 @import './navbar.css';
 @import './banner-title.css';

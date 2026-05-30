@@ -1,0 +1,113 @@
+---
+import {
+	backgroundWallpaper,
+	expressiveCodeConfig,
+	siteConfig,
+} from "@/config";
+import { BANNER_HEIGHT_EXTEND } from "@/constants/constants";
+
+const configHue = siteConfig.themeColor.hue;
+const defaultMode = siteConfig.themeColor.defaultMode ?? "light";
+const darkTheme = expressiveCodeConfig.darkTheme;
+const lightTheme = expressiveCodeConfig.lightTheme;
+const cardTransparentOpacity = backgroundWallpaper.overlay?.cardOpacity ?? 0.6;
+---
+
+<script
+  is:inline
+  define:vars={{
+    configHue,
+    defaultMode,
+    darkTheme,
+    lightTheme,
+    cardTransparentOpacity,
+    BANNER_HEIGHT_EXTEND,
+  }}
+>
+  // 主题初始化 - 与setting-utils.ts保持一致
+  const LIGHT_MODE = "light";
+  const DARK_MODE = "dark";
+  const SYSTEM_MODE = "system";
+
+  // 获取存储的主题，如果没有则使用默认值
+  const theme = localStorage.getItem("theme") || defaultMode;
+
+  // 获取系统主题
+  function getSystemTheme() {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? DARK_MODE
+      : LIGHT_MODE;
+  }
+
+  // 解析主题（如果是system模式，则获取系统主题）
+  function resolveTheme(themeValue) {
+    if (themeValue === SYSTEM_MODE) {
+      return getSystemTheme();
+    }
+    return themeValue;
+  }
+
+  const resolvedTheme = resolveTheme(theme);
+  const isDark = resolvedTheme === DARK_MODE;
+
+  // 应用主题
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+
+  // Set the theme for Expressive Code
+  document.documentElement.setAttribute(
+    "data-theme",
+    isDark ? darkTheme : lightTheme
+  );
+
+  // Load the hue from local storage
+  const hue = localStorage.getItem("hue") || configHue;
+  document.documentElement.style.setProperty("--hue", hue);
+
+  // 设置卡片透明度（全屏透明模式下使用），优先使用用户自定义值
+  const storedCardOpacity = localStorage.getItem("overlayCardOpacity");
+  const parsedCardOpacity = storedCardOpacity === null ? NaN : Number.parseFloat(storedCardOpacity);
+  const resolvedCardOpacity = Number.isFinite(parsedCardOpacity)
+    ? Math.min(1, Math.max(0, parsedCardOpacity))
+    : cardTransparentOpacity;
+  document.documentElement.style.setProperty("--card-transparent-opacity", String(resolvedCardOpacity));
+
+  // calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
+  // 使用更准确的窗口高度计算
+  function calculateBannerHeightExtend() {
+    let offset = Math.floor(
+      window.innerHeight * (BANNER_HEIGHT_EXTEND / 100)
+    );
+    offset = offset - (offset % 4);
+    document.documentElement.style.setProperty(
+      "--banner-height-extend",
+      `${offset}px`
+    );
+  }
+
+  // 立即设置初始值
+  calculateBannerHeightExtend();
+
+  // 在下一帧重新计算精确值（仅在值变化时更新，避免闪烁）
+  requestAnimationFrame(() => {
+    const oldValue = parseInt(
+      document.documentElement.style.getPropertyValue(
+        "--banner-height-extend"
+      )
+    );
+    calculateBannerHeightExtend();
+    const newValue = parseInt(
+      document.documentElement.style.getPropertyValue(
+        "--banner-height-extend"
+      )
+    );
+    // 如果值变化了，再更新一次确保准确
+    if (Math.abs(oldValue - newValue) > 4) {
+      // 如果有明显变化，延迟一帧再更新，避免闪烁
+      requestAnimationFrame(calculateBannerHeightExtend);
+    }
+  });
+</script>

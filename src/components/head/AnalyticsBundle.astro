@@ -1,0 +1,34 @@
+---
+import GoogleAnalytics from "@components/analytics/GoogleAnalytics.astro";
+import La51Analytics from "@components/analytics/La51Analytics.astro";
+import MicrosoftClarity from "@components/analytics/MicrosoftClarity.astro";
+import UmamiAnalytics from "@components/analytics/UmamiAnalytics.astro";
+import { siteConfig } from "@/config";
+---
+
+{siteConfig.analytics?.googleAnalyticsId && (
+  <GoogleAnalytics analyticsId={siteConfig.analytics.googleAnalyticsId} />
+)}
+{siteConfig.analytics?.microsoftClarityId && (
+  <MicrosoftClarity clarityId={siteConfig.analytics.microsoftClarityId} />
+)}
+{siteConfig.analytics?.umamiAnalytics?.websiteId && (
+  <UmamiAnalytics
+    websiteId={siteConfig.analytics.umamiAnalytics.websiteId}
+    scriptUrl={siteConfig.analytics.umamiAnalytics.scriptUrl}
+    replaysScriptUrl={siteConfig.analytics.umamiAnalytics.replaysScriptUrl}
+    trackOutboundLinks={siteConfig.analytics.umamiAnalytics.trackOutboundLinks}
+    collectWebVitals={siteConfig.analytics.umamiAnalytics.collectWebVitals}
+    replays={siteConfig.analytics.umamiAnalytics.replays}
+  />
+)}
+{siteConfig.analytics?.la51Analytics?.Id && (
+  <La51Analytics
+    analyticsId={siteConfig.analytics.la51Analytics.Id}
+    sdkUrl={siteConfig.analytics.la51Analytics?.sdkUrl}
+    ck={siteConfig.analytics.la51Analytics?.ck}
+    autoTrack={siteConfig.analytics.la51Analytics?.autoTrack}
+    hashMode={siteConfig.analytics.la51Analytics?.hashMode}
+    screenRecord={siteConfig.analytics.la51Analytics?.screenRecord}
+  />
+)}
