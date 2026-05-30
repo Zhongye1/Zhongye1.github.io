@@ -33,6 +33,9 @@
       "@layouts/*": [
         "./src/layouts/*"
       ],
+      "@rehype-callouts-theme": [
+        "./node_modules/rehype-callouts/theme/*"
+      ],
       "@/*": [
         "./src/*"
       ]

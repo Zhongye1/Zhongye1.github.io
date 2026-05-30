@@ -1,115 +1,115 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import Icon from "@/components/common/Icon.svelte";
-	import { DARK_MODE, LIGHT_MODE, SYSTEM_MODE } from "@/constants/constants";
-	import type { LIGHT_DARK_MODE } from "@/types/config.ts";
-	import {
-		applyThemeToDocument,
-		getStoredTheme,
-		setTheme,
-	} from "@/utils/setting-utils";
+import { onMount } from "svelte";
+import Icon from "@/components/common/Icon.svelte";
+import { DARK_MODE, LIGHT_MODE, SYSTEM_MODE } from "@/constants/constants";
+import type { LIGHT_DARK_MODE } from "@/types/config.ts";
+import {
+	applyThemeToDocument,
+	getStoredTheme,
+	setTheme,
+} from "@/utils/setting-utils";
 
-	// Define Swup type for window object
-	interface SwupHooks {
-		on(event: string, callback: () => void): void;
+// Define Swup type for window object
+interface SwupHooks {
+	on(event: string, callback: () => void): void;
+}
+
+interface SwupInstance {
+	hooks?: SwupHooks;
+}
+
+type WindowWithSwup = Window & { swup?: SwupInstance };
+
+let mode: LIGHT_DARK_MODE = $state(LIGHT_MODE);
+let displayedMode: LIGHT_DARK_MODE = $state(LIGHT_MODE); // 显示的实际主题
+
+/** 直接切换亮/暗模式 */
+function toggleTheme() {
+	if (mode === SYSTEM_MODE) {
+		// system 模式时，切换到系统当前外观的反向
+		const isSystemDark = window.matchMedia(
+			"(prefers-color-scheme: dark)",
+		).matches;
+		mode = isSystemDark ? LIGHT_MODE : DARK_MODE;
+	} else {
+		mode = mode === DARK_MODE ? LIGHT_MODE : DARK_MODE;
 	}
+	setTheme(mode);
+	updateDisplayedMode();
+}
 
-	interface SwupInstance {
-		hooks?: SwupHooks;
+// 更新显示的主题（用于显示当前实际主题）
+function updateDisplayedMode() {
+	if (mode === SYSTEM_MODE) {
+		const isSystemDark = window.matchMedia(
+			"(prefers-color-scheme: dark)",
+		).matches;
+		displayedMode = isSystemDark ? DARK_MODE : LIGHT_MODE;
+	} else {
+		displayedMode = mode;
 	}
+}
 
-	type WindowWithSwup = Window & { swup?: SwupInstance };
+onMount(() => {
+	const storedTheme = getStoredTheme();
+	mode = storedTheme;
+	updateDisplayedMode();
 
-	let mode: LIGHT_DARK_MODE = $state(LIGHT_MODE);
-	let displayedMode: LIGHT_DARK_MODE = $state(LIGHT_MODE); // 显示的实际主题
-
-	/** 直接切换亮/暗模式 */
-	function toggleTheme() {
-		if (mode === SYSTEM_MODE) {
-			// system 模式时，切换到系统当前外观的反向
-			const isSystemDark = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			).matches;
-			mode = isSystemDark ? LIGHT_MODE : DARK_MODE;
-		} else {
-			mode = mode === DARK_MODE ? LIGHT_MODE : DARK_MODE;
+	// 确保DOM状态与存储的主题一致（只对非system模式检查）
+	if (storedTheme !== SYSTEM_MODE) {
+		const currentTheme = document.documentElement.classList.contains("dark")
+			? DARK_MODE
+			: LIGHT_MODE;
+		if (storedTheme !== currentTheme) {
+			applyThemeToDocument(storedTheme);
 		}
-		setTheme(mode);
-		updateDisplayedMode();
 	}
 
-	// 更新显示的主题（用于显示当前实际主题）
-	function updateDisplayedMode() {
-		if (mode === SYSTEM_MODE) {
-			const isSystemDark = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			).matches;
-			displayedMode = isSystemDark ? DARK_MODE : LIGHT_MODE;
-		} else {
-			displayedMode = mode;
-		}
+	// 如果是system模式，监听系统主题变化
+	if (storedTheme === SYSTEM_MODE) {
+		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+		const handleSystemChange = () => {
+			updateDisplayedMode();
+		};
+		mediaQuery.addEventListener("change", handleSystemChange);
 	}
 
-	onMount(() => {
-		const storedTheme = getStoredTheme();
-		mode = storedTheme;
+	// 添加Swup监听
+	const handleContentReplace = () => {
+		const newTheme = getStoredTheme();
+		mode = newTheme;
 		updateDisplayedMode();
+	};
 
-		// 确保DOM状态与存储的主题一致（只对非system模式检查）
-		if (storedTheme !== SYSTEM_MODE) {
-			const currentTheme = document.documentElement.classList.contains("dark")
-				? DARK_MODE
-				: LIGHT_MODE;
-			if (storedTheme !== currentTheme) {
-				applyThemeToDocument(storedTheme);
+	const win = window as WindowWithSwup;
+	if (win.swup?.hooks) {
+		win.swup.hooks.on("content:replace", handleContentReplace);
+	} else {
+		document.addEventListener("swup:enable", () => {
+			const w = window as WindowWithSwup;
+			if (w.swup?.hooks) {
+				w.swup.hooks.on("content:replace", handleContentReplace);
 			}
-		}
+		});
+	}
 
-		// 如果是system模式，监听系统主题变化
-		if (storedTheme === SYSTEM_MODE) {
-			const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-			const handleSystemChange = () => {
-				updateDisplayedMode();
-			};
-			mediaQuery.addEventListener("change", handleSystemChange);
-		}
-
-		// 添加Swup监听
-		const handleContentReplace = () => {
+	// 监听主题变化事件
+	const handleThemeChange = () => {
+		if (mode !== SYSTEM_MODE) {
 			const newTheme = getStoredTheme();
 			mode = newTheme;
 			updateDisplayedMode();
-		};
-
-		const win = window as WindowWithSwup;
-		if (win.swup?.hooks) {
-			win.swup.hooks.on("content:replace", handleContentReplace);
 		} else {
-			document.addEventListener("swup:enable", () => {
-				const w = window as WindowWithSwup;
-				if (w.swup?.hooks) {
-					w.swup.hooks.on("content:replace", handleContentReplace);
-				}
-			});
+			updateDisplayedMode();
 		}
+	};
 
-		// 监听主题变化事件
-		const handleThemeChange = () => {
-			if (mode !== SYSTEM_MODE) {
-				const newTheme = getStoredTheme();
-				mode = newTheme;
-				updateDisplayedMode();
-			} else {
-				updateDisplayedMode();
-			}
-		};
+	window.addEventListener("theme-change", handleThemeChange);
 
-		window.addEventListener("theme-change", handleThemeChange);
-
-		return () => {
-			window.removeEventListener("theme-change", handleThemeChange);
-		};
-	});
+	return () => {
+		window.removeEventListener("theme-change", handleThemeChange);
+	};
+});
 </script>
 
 <button

@@ -49,7 +49,7 @@ const componentMap = {
 	stats: SiteStats,
 	calendar: Calendar,
 	music: Music,
-} satisfies Record<WidgetComponentType, typeof Profile>;
+} as Record<WidgetComponentType, (_props: Record<string, any>) => any>;
 
 // 获取侧边栏位置
 const side = (Astro.props.side ||

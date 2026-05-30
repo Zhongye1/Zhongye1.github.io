@@ -19,10 +19,10 @@ import NavMenuPanel from "./NavMenuPanel.astro";
 
 // 为 window 对象添加自定义属性的类型声明
 declare global {
-    interface Window {
-        semifullScrollHandler?: (() => void) | undefined;
-        initSemifullScrollDetection?: () => void;
-    }
+	interface Window {
+		semifullScrollHandler?: (() => void) | undefined;
+		initSemifullScrollDetection?: () => void;
+	}
 }
 
 const className = Astro.props.class;

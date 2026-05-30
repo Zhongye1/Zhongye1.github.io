@@ -1,6 +1,8 @@
 /* Banner layout styles - extracted from Layout.astro */
 /* CSS variables --banner-height-home and --banner-height are injected via define:vars in Layout */
 
+@reference 'tailwindcss';
+
 @layer components {
   .enable-banner #wallpaper-wrapper {
     height: var(--banner-height-home);

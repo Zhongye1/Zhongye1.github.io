@@ -3,6 +3,7 @@ import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
 import { formatDateToYYYYMMDD } from "@utils/date-utils";
 import { Icon } from "astro-icon/components";
+
 const posts = await getSortedPosts();
 const recentPosts = posts.slice(0, 6);
 ---
