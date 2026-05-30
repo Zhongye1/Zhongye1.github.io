@@ -14,9 +14,12 @@ dependencies:
   '@astrojs/markdown-remark':
     specifier: ^7.2.0
     version: 7.2.0
+  '@astrojs/markdown-satteri':
+    specifier: ^0.2.1
+    version: 0.2.1
   '@astrojs/mdx':
     specifier: ^6.0.1
-    version: 6.0.1(astro@6.4.2)
+    version: 6.0.1(@astrojs/markdown-satteri@0.2.1)(astro@6.4.2)
   '@astrojs/rss':
     specifier: ^4.0.18
     version: 4.0.18
@@ -140,6 +143,9 @@ dependencies:
   satori:
     specifier: ^0.26.0
     version: 0.26.0
+  satteri:
+    specifier: ^0.6.3
+    version: 0.6.3
   sharp:
     specifier: ^0.34.5
     version: 0.34.5
@@ -169,6 +175,9 @@ devDependencies:
   '@iconify-json/svg-spinners':
     specifier: ^1.2.4
     version: 1.2.4
+  '@tailwindcss/postcss':
+    specifier: ^4.3.0
+    version: 4.3.0
   '@tailwindcss/vite':
     specifier: ^4.3.0
     version: 4.3.0(vite@8.0.14)
@@ -201,6 +210,11 @@ packages:
 
   /@adobe/css-tools@4.3.3:
     resolution: {integrity: sha512-rE0Pygv0sEZ4vBWHlAgJLGDU7Pm8xoO6p3wsEceb7GYAjScrOHpEo8KK/eVkAcnSM+slAEtXjA2JpdjLp4fJQQ==}
+
+  /@alloc/quick-lru@5.2.0:
+    resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
+    engines: {node: '>=10'}
+    dev: true
 
   /@antfu/install-pkg@1.1.0:
     resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
@@ -450,6 +464,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@astrojs/markdown-satteri@0.2.1:
+    resolution: {integrity: sha512-rsdT8ucMLmu1v/POYApJcfH/t30Yuae6pZdfFU0yG3Kya8pwNItcJ6TLqUACRlRV9W50g4gLIxCwwfWjKsJ67w==}
+    dependencies:
+      '@astrojs/internal-helpers': 0.10.0
+      github-slugger: 2.0.0
+      satteri: 0.6.3
+    dev: false
+
   /@astrojs/mdx@5.0.6(astro@6.4.2):
     resolution: {integrity: sha512-4dKe0ZMmqujofPNDHahzClkwinn9f8jHPcaXcgdGvPAlboD2mjzkUCofli2cBnxYAkdfhC6d50gBJ8i/cH8gHw==}
     engines: {node: '>=22.12.0'}
@@ -474,7 +496,7 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/mdx@6.0.1(astro@6.4.2):
+  /@astrojs/mdx@6.0.1(@astrojs/markdown-satteri@0.2.1)(astro@6.4.2):
     resolution: {integrity: sha512-J5K8F7A1LMH+cj+dcxm+uAeIznkfwxMcRpG7DD6ABNDOt8da98ph6ie4TD+4FV/ojVOJK0PQGWY4hmxQORLv0w==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
@@ -486,6 +508,7 @@ packages:
     dependencies:
       '@astrojs/internal-helpers': 0.10.0
       '@astrojs/markdown-remark': 7.2.0
+      '@astrojs/markdown-satteri': 0.2.1
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
       astro: 6.4.2(rollup@2.80.0)(stylus@0.64.0)
@@ -1907,6 +1930,50 @@ packages:
     dev: true
     optional: true
 
+  /@bruits/satteri-darwin-arm64@0.6.3:
+    resolution: {integrity: sha512-oKgMfpmNzQ8vaqmkE37PBu8tOyVjoOc4s+DV2tLpWvO6WO467qn/+Nbcirm/ceer7wUM8v4vMLGcZO0gkRzBEg==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@bruits/satteri-darwin-x64@0.6.3:
+    resolution: {integrity: sha512-9I5pbwZRWH5LvhoCtwpRr4rYSDe43/dLvps6zO70ipVF2XbH4rJ20T+EfvPcmou5jsWMsq9Ybn5GX3PwlSrBaw==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@bruits/satteri-linux-x64-gnu@0.6.3:
+    resolution: {integrity: sha512-aFfw2DL2HpIcAQ8I3ZEtKuz+/GoF0H0sq387jAlvr00Q7buiiFbvARFuQlvTk00N7u3SJIh/3+YkKssTJDT+yQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@bruits/satteri-wasm32-wasi@0.6.3:
+    resolution: {integrity: sha512-DdpfnJ+04Mb4YtHaxAeETUvhdxFKg3URnroGY39FvweJEgeXx8cFNutuF5w904BhqaiblhmF76AoBnJwNLxsXg==}
+    engines: {node: '>=14.0.0'}
+    cpu: [wasm32]
+    requiresBuild: true
+    dependencies:
+      '@emnapi/core': 1.9.1
+      '@emnapi/runtime': 1.9.1
+      '@napi-rs/wasm-runtime': 1.1.4(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)
+    dev: false
+    optional: true
+
+  /@bruits/satteri-win32-x64-msvc@0.6.3:
+    resolution: {integrity: sha512-J/CZqACnBbv77eImx/JeO5RmCuCyliihiC81u3M4VobA8eupsygaPen3/UFFqf3yfeHvMlE3myilouh/2iHMOA==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@capsizecss/unpack@4.0.0:
     resolution: {integrity: sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA==}
     engines: {node: '>=18'}
@@ -1996,10 +2063,35 @@ packages:
       tslib: 2.8.1
     optional: true
 
+  /@emnapi/core@1.9.1:
+    resolution: {integrity: sha512-mukuNALVsoix/w1BJwFzwXBN/dHeejQtuVzcDsfOEsdpCumXb/E9j8w11h5S54tT1xhifGfbbSm/ICrObRb3KA==}
+    requiresBuild: true
+    dependencies:
+      '@emnapi/wasi-threads': 1.2.0
+      tslib: 2.8.1
+    dev: false
+    optional: true
+
   /@emnapi/runtime@1.10.0:
     resolution: {integrity: sha512-ewvYlk86xUoGI0zQRNq/mC+16R1QeDlKQy21Ki3oSYXNgLb45GV1P6A0M+/s6nyCuNDqe5VpaY84BzXGwVbwFA==}
     dependencies:
       tslib: 2.8.1
+    optional: true
+
+  /@emnapi/runtime@1.9.1:
+    resolution: {integrity: sha512-VYi5+ZVLhpgK4hQ0TAjiQiZ6ol0oe4mBx7mVv7IflsiEp0OWoVsp/+f9Vc1hOhE0TtkORVrI1GvzyreqpgWtkA==}
+    requiresBuild: true
+    dependencies:
+      tslib: 2.8.1
+    dev: false
+    optional: true
+
+  /@emnapi/wasi-threads@1.2.0:
+    resolution: {integrity: sha512-N10dEJNSsUx41Z6pZsXU8FjPjpBEplgH24sfkmITrBED1/U2Esum9F3lfLrMjKHHjmi557zQn7kR9R+XWXu5Rg==}
+    requiresBuild: true
+    dependencies:
+      tslib: 2.8.1
+    dev: false
     optional: true
 
   /@emnapi/wasi-threads@1.2.1:
@@ -2677,6 +2769,19 @@ packages:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
       '@tybys/wasm-util': 0.10.2
+    optional: true
+
+  /@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1):
+    resolution: {integrity: sha512-3NQNNgA1YSlJb/kMH1ildASP9HW7/7kYnRI2szWJaofaS1hWmbGI4H+d3+22aGzXXN9IJ+n+GiFVcGipJP18ow==}
+    requiresBuild: true
+    peerDependencies:
+      '@emnapi/core': ^1.7.1
+      '@emnapi/runtime': ^1.7.1
+    dependencies:
+      '@emnapi/core': 1.9.1
+      '@emnapi/runtime': 1.9.1
+      '@tybys/wasm-util': 0.10.2
+    dev: false
     optional: true
 
   /@nodable/entities@2.1.1:
@@ -3628,6 +3733,16 @@ packages:
       '@tailwindcss/oxide-wasm32-wasi': 4.3.0
       '@tailwindcss/oxide-win32-arm64-msvc': 4.3.0
       '@tailwindcss/oxide-win32-x64-msvc': 4.3.0
+    dev: true
+
+  /@tailwindcss/postcss@4.3.0:
+    resolution: {integrity: sha512-Jm05Tjx+9yCLGv5qw1c+84Psds8MnyrEQYCB+FFk2lgGiUjlRqdxke4mVTuYrj2xnVZqKim2Apr5ySuQRYAw/w==}
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      '@tailwindcss/node': 4.3.0
+      '@tailwindcss/oxide': 4.3.0
+      postcss: 8.5.15
+      tailwindcss: 4.3.0
     dev: true
 
   /@tailwindcss/typography@0.5.19(tailwindcss@4.3.0):
@@ -8843,6 +8958,21 @@ packages:
       parse-css-color: 0.2.1
       postcss-value-parser: 4.2.0
       yoga-layout: 3.2.1
+    dev: false
+
+  /satteri@0.6.3:
+    resolution: {integrity: sha512-iY5xd2tBDQveYRFkL1F0cegkabWSVoXHi64e1p49SiCs1bZDaqTQPGQI+PqEQIaWkz0iqK80CuQQUYvhsssviw==}
+    dependencies:
+      '@types/estree-jsx': 1.0.5
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      '@types/unist': 3.0.3
+    optionalDependencies:
+      '@bruits/satteri-darwin-arm64': 0.6.3
+      '@bruits/satteri-darwin-x64': 0.6.3
+      '@bruits/satteri-linux-x64-gnu': 0.6.3
+      '@bruits/satteri-wasm32-wasi': 0.6.3
+      '@bruits/satteri-win32-x64-msvc': 0.6.3
     dev: false
 
   /sax@1.4.4:
