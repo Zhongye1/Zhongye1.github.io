@@ -1,6 +1,4 @@
 <script lang="ts">
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { onMount } from "svelte";
 import DropdownItem from "@/components/common/DropdownItem.svelte";
 import DropdownPanel from "@/components/common/DropdownPanel.svelte";
@@ -132,7 +130,7 @@ onMount(() => {
                 onclick={() => switchScheme(LIGHT_MODE)}
             >
                 <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem] mr-3"></Icon>
-                {i18n(I18nKey.lightMode)}
+                {"浅色模式"}
             </DropdownItem>
             <DropdownItem
                 role="menuitem"
@@ -141,7 +139,7 @@ onMount(() => {
                 onclick={() => switchScheme(DARK_MODE)}
             >
                 <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem] mr-3"></Icon>
-                {i18n(I18nKey.darkMode)}
+                {"深色模式"}
             </DropdownItem>
             <DropdownItem
                 role="menuitem"
@@ -150,7 +148,7 @@ onMount(() => {
                 onclick={() => switchScheme(SYSTEM_MODE)}
             >
                 <Icon icon="material-symbols:brightness-auto-outline-rounded" class="text-[1.25rem] mr-3"></Icon>
-                {i18n(I18nKey.systemMode)}
+                {"跟随系统"}
             </DropdownItem>
         </DropdownPanel>
     </div>

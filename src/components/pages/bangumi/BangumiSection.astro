@@ -1,7 +1,5 @@
 ---
 import ClientPagination from "@/components/common/ClientPagination.astro";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import type { UserSubjectCollection } from "@/types/bangumi";
 import Card from "./Card.astro";
 import FilterControls from "./FilterControls.astro";
@@ -42,46 +40,46 @@ const getFilterLabel = (type: "collect" | "doing" | "wish") => {
 	if (isGame) {
 		switch (type) {
 			case "collect":
-				return i18n(I18nKey.bangumiFilterGamePlayed);
+				return "已玩";
 			case "doing":
-				return i18n(I18nKey.bangumiFilterGamePlaying);
+				return "在玩";
 			case "wish":
-				return i18n(I18nKey.bangumiFilterGameWish);
+				return "想玩";
 		}
 	}
 	if (isBook) {
 		switch (type) {
 			case "collect":
-				return i18n(I18nKey.bangumiFilterBookRead);
+				return "已读";
 			case "doing":
-				return i18n(I18nKey.bangumiFilterBookReading);
+				return "在读";
 			case "wish":
-				return i18n(I18nKey.bangumiFilterBookWish);
+				return "想读";
 		}
 	}
 	if (isMusic) {
 		switch (type) {
 			case "collect":
-				return i18n(I18nKey.bangumiFilterMusicListened);
+				return "已听";
 			case "doing":
-				return i18n(I18nKey.bangumiFilterMusicListening);
+				return "在听";
 			case "wish":
-				return i18n(I18nKey.bangumiFilterMusicWish);
+				return "想听";
 		}
 	}
 	// Default (Anime/Real)
 	switch (type) {
 		case "collect":
-			return i18n(I18nKey.bangumiFilterWatched);
+			return "已看";
 		case "doing":
-			return i18n(I18nKey.bangumiFilterWatching);
+			return "在看";
 		case "wish":
-			return i18n(I18nKey.bangumiFilterWish);
+			return "想看";
 	}
 };
 
 const filters = [
-	{ value: "all", label: i18n(I18nKey.bangumiFilterAll), count: items.length },
+	{ value: "all", label: "全部", count: items.length },
 	{
 		value: "collect",
 		label: getFilterLabel("collect"),
@@ -99,12 +97,12 @@ const filters = [
 	},
 	{
 		value: "on_hold",
-		label: i18n(I18nKey.bangumiFilterOnHold),
+		label: "搁置",
 		count: statusCounts.on_hold || 0,
 	},
 	{
 		value: "dropped",
-		label: i18n(I18nKey.bangumiFilterDropped),
+		label: "抛弃",
 		count: statusCounts.dropped || 0,
 	},
 ].filter((filter) => filter.value === "all" || filter.count > 0);
@@ -143,8 +141,8 @@ const defaultFilter = "all"; // 默认显示全部，用户可以通过筛选器
     </>
   ) : (
     <div class="text-center py-12">
-      <h3 class="text-xl font-medium text-gray-600 dark:text-gray-400 mb-2">{i18n(I18nKey.bangumiNoData)}</h3>
-      <p class="text-gray-500 dark:text-gray-500">{i18n(I18nKey.bangumiNoDataDescription)}</p>
+      <h3 class="text-xl font-medium text-gray-600 dark:text-gray-400 mb-2">{"暂无数据"}</h3>
+      <p class="text-gray-500 dark:text-gray-500">{"这里还没有内容，快去添加一些吧"}</p>
     </div>
   )}
 </div>

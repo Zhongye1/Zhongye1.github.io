@@ -10,8 +10,6 @@ import MusicPlayer from "@/components/features/MusicPlayer.astro";
 import { backgroundWallpaper, navBarConfig, siteConfig } from "@/config";
 import { musicPlayerConfig } from "@/config/musicConfig";
 import { LinkPresets } from "@/constants/link-presets";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { LinkPreset, type NavBarLink } from "@/types/config";
 import { getFallbackFormat, getImageFormats } from "@/utils/image-utils";
 import { isHomePage } from "@/utils/layout-utils";
@@ -139,7 +137,7 @@ if (isLocalSrcLogo) {
                     client:load
                 />
                 {musicPlayerConfig.showInNavbar && (
-                    <button aria-label={i18n(I18nKey.music)} class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="music-player-switch">
+                    <button aria-label={"音乐"} class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="music-player-switch">
                         <Icon name="material-symbols:music-note-rounded" is:inline class="text-[1.25rem]"></Icon>
                     </button>
                 )}

@@ -2,9 +2,6 @@
 import type { MarkdownHeading } from "astro";
 import "@/styles/toc.css";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
-
 interface Props {
 	headings: MarkdownHeading[];
 	class?: string;
@@ -15,7 +12,7 @@ const { headings: _headings = [], class: className, style } = Astro.props;
 ---
 
 <WidgetLayout 
-  name={i18n(I18nKey.tableOfContents)} 
+  name={"目录"} 
   id="sidebar-toc"
   class={className}
   style={style}

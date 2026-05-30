@@ -1,8 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
-
 interface Props {
 	totalItems: number;
 	itemsPerPage: number;
@@ -70,7 +67,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         data-page="prev"
         data-section={sectionId}
         disabled={currentPage === 1}
-        aria-label={i18n(I18nKey.bangumiPrevPage)}
+        aria-label={"上一页"}
       >
         <Icon name="material-symbols:chevron-left-rounded" class="text-[1.75rem]" />
       </button>
@@ -88,7 +85,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         data-page="next"
         data-section={sectionId}
         disabled={currentPage === totalPages}
-        aria-label={i18n(I18nKey.bangumiNextPage)}
+        aria-label={"下一页"}
       >
         <Icon name="material-symbols:chevron-right-rounded" class="text-[1.75rem]" />
       </button>
@@ -102,7 +99,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         data-page="prev"
         data-section={sectionId}
         disabled={currentPage === 1}
-        aria-label={i18n(I18nKey.bangumiPrevPage)}
+        aria-label={"上一页"}
       >
         <Icon name="material-symbols:chevron-left-rounded" class="text-[1.75rem]" />
       </button>
@@ -138,7 +135,7 @@ const pageNumbers = generatePageNumbers(currentPage, totalPages);
         data-page="next"
         data-section={sectionId}
         disabled={currentPage === totalPages}
-        aria-label={i18n(I18nKey.bangumiNextPage)}
+        aria-label={"下一页"}
       >
         <Icon name="material-symbols:chevron-right-rounded" class="text-[1.75rem]" />
       </button>

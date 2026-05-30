@@ -9,8 +9,6 @@ import {
 	getEnabledFriends,
 	siteConfig,
 } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 // 检查页面是否启用
@@ -37,9 +35,8 @@ const items = getEnabledFriends();
 const allTags = [...new Set(items.flatMap((item) => item.tags || []))].sort();
 
 // 页面标题和描述
-const title = friendsPageConfig.title || i18n(I18nKey.friends);
-const description =
-	friendsPageConfig.description || i18n(I18nKey.friendsDescription);
+const title = friendsPageConfig.title || "友链";
+const description = friendsPageConfig.description || "欢迎交换友链！";
 ---
 
 <MainGridLayout title={title} description={description}>
@@ -80,7 +77,7 @@ const description =
               <input
                 type="text"
                 data-search
-                placeholder={i18n(I18nKey.searchFriends) || "搜索友链..."}
+                placeholder={"搜索友链" || "搜索友链..."}
                 class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-(--line-divider) bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:border-(--primary) focus:ring-1 focus:ring-(--primary) outline-none transition-all duration-200 text-sm"
               />
             </div>
@@ -89,7 +86,7 @@ const description =
                 data-tag="all"
                 class="btn-regular px-3 py-1.5 rounded-lg bg-(--primary) text-white hover:bg-(--primary) transition-colors duration-200 text-sm font-medium"
               >
-                {i18n(I18nKey.all)}
+                {"全部"}
               </button>
               {allTags.map((tag) => (
                 <button
@@ -109,7 +106,7 @@ const description =
           items.length === 0 && (
             <div class="col-span-full flex flex-col items-center justify-center py-12 text-neutral-400 dark:text-neutral-500">
               <Icon name="material-symbols:group-off-outline" class="text-4xl mb-3" />
-              <div class="text-sm">{i18n(I18nKey.friendsEmpty)}</div>
+              <div class="text-sm">{"暂无友链"}</div>
             </div>
           )
         }
@@ -175,7 +172,7 @@ const description =
       {/* 搜索无结果提示 */}
       <div class="friends-empty hidden flex-col items-center justify-center py-12 text-neutral-400 dark:text-neutral-500">
         <Icon name="material-symbols:search-off-rounded" class="text-4xl mb-3" />
-        <div class="text-sm">{i18n(I18nKey.searchNoResults)}</div>
+        <div class="text-sm">{"没有找到相关结果"}</div>
       </div>
     </div>
   </div>

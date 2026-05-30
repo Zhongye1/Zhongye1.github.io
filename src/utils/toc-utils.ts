@@ -3,9 +3,6 @@
  * 用于 SidebarTOC 和 FloatingTOC 的共享逻辑
  */
 
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
-
 export interface TOCConfig {
 	contentId: string;
 	indicatorId: string;
@@ -116,7 +113,7 @@ export class TOCManager {
 	 * 空状态文案
 	 */
 	private getEmptyStateHTML(): string {
-		return `<div class="text-center py-8 text-gray-500 dark:text-gray-400"><p>${i18n(I18nKey.tocEmpty)}</p></div>`;
+		return `<div class="text-center py-8 text-gray-500 dark:text-gray-400"><p>当前页面没有目录</p></div>`;
 	}
 
 	/**

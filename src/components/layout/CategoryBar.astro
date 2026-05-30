@@ -1,6 +1,4 @@
 ---
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { Icon } from "astro-icon/components";
 import { getCategoryList, getSortedPostsList } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
@@ -30,7 +28,7 @@ const archiveUrl = url("/archive/");
       class="category-pill text-sm px-2 py-1 rounded-lg shrink-0
              transition-colors duration-150 ease-out flex items-center justify-center"
       data-category-name=""
-      aria-label={i18n(I18nKey.home)}
+      aria-label={"首页"}
     >
       <Icon name="material-symbols:home" class="text-lg" />
     </a>
@@ -40,7 +38,7 @@ const archiveUrl = url("/archive/");
              transition-colors duration-150 ease-out flex items-center justify-center"
       data-category-name="__archive__"
     >
-      {i18n(I18nKey.archive)}
+      {"归档"}
       <span class="text-xs opacity-60 ml-1">{totalPosts}</span>
     </a>
     <div class="category-divider shrink-0"></div>

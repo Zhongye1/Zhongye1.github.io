@@ -2,8 +2,6 @@
 import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import {
 	getCategoryList,
 	getSortedPosts,
@@ -59,50 +57,50 @@ const lastPostDate = latestPost
 	? latestPost.data.published.toISOString()
 	: null;
 
-const todayText = i18n(I18nKey.today);
+const todayText = "今天";
 
 const stats = [
 	{
 		icon: "material-symbols:article-outline",
-		label: i18n(I18nKey.siteStatsPostCount),
+		label: "文章数",
 		value: posts.length,
 	},
 	{
 		icon: "material-symbols:folder-outline",
-		label: i18n(I18nKey.siteStatsCategoryCount),
+		label: "分类数",
 		value: categories.length,
 	},
 	{
 		icon: "material-symbols:label-outline",
-		label: i18n(I18nKey.siteStatsTagCount),
+		label: "标签数",
 		value: tags.length,
 	},
 	{
 		icon: "material-symbols:text-ad-outline-rounded",
-		label: i18n(I18nKey.siteStatsTotalWords),
+		label: "总字数",
 		value: totalWords,
 		formatted: true,
 	},
 	{
 		icon: "material-symbols:calendar-clock-outline",
-		label: i18n(I18nKey.siteStatsRunningDays),
+		label: "运行天数",
 		value: 0, // 将由客户端更新
-		suffix: i18n(I18nKey.siteStatsDays).replace("{days}", ""),
+		suffix: "{days} 天".replace("{days}", ""),
 		dynamic: true,
 		id: "running-days",
 	},
 	{
 		icon: "mingcute:heartbeat-line",
-		label: i18n(I18nKey.siteStatsLastUpdate),
+		label: "最后更新",
 		value: 0, // 将由客户端更新
-		suffix: i18n(I18nKey.siteStatsDaysAgo).replace("{days}", ""),
+		suffix: "{days} 天前".replace("{days}", ""),
 		dynamic: true,
 		id: "last-update",
 	},
 ];
 ---
 
-<WidgetLayout name={i18n(I18nKey.siteStats)} id="site-stats" class={className} style={style}>
+<WidgetLayout name={"站点统计"} id="site-stats" class={className} style={style}>
   <div class="flex flex-col gap-2">
     {stats.map((stat) => (
       <div class="flex items-center justify-between px-3 py-1.5">

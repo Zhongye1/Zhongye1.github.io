@@ -1,7 +1,5 @@
 ---
 import { musicPlayerConfig } from "@/config/musicConfig";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
 
 const config = musicPlayerConfig;
@@ -36,22 +34,22 @@ const managerConfigStr = JSON.stringify({
 	playMode: config.playMode ?? "list",
 	showLyrics: config.showLyrics ?? true,
 	i18n: {
-		noPlaying: i18n(I18nKey.musicNoPlaying),
-		lyrics: i18n(I18nKey.musicLyrics),
-		volume: i18n(I18nKey.musicVolume),
-		playMode: i18n(I18nKey.musicPlayMode),
-		prev: i18n(I18nKey.musicPrev),
-		next: i18n(I18nKey.musicNext),
-		playlist: i18n(I18nKey.musicPlaylist),
-		noLyrics: i18n(I18nKey.musicNoLyrics),
-		loadingLyrics: i18n(I18nKey.musicLoadingLyrics),
-		failedLyrics: i18n(I18nKey.musicFailedLyrics),
-		noSongs: i18n(I18nKey.musicNoSongs),
-		error: i18n(I18nKey.musicError),
-		play: i18n(I18nKey.musicPlay),
-		pause: i18n(I18nKey.musicPause),
-		progress: i18n(I18nKey.musicProgress),
-		noCover: i18n(I18nKey.musicNoCover),
+		noPlaying: "暂无播放",
+		lyrics: "歌词",
+		volume: "音量",
+		playMode: "播放模式",
+		prev: "上一首",
+		next: "下一首",
+		playlist: "播放列表",
+		noLyrics: "暂无歌词",
+		loadingLyrics: "歌词加载中...",
+		failedLyrics: "歌词加载失败",
+		noSongs: "暂无歌曲",
+		error: "播放出错了",
+		play: "播放",
+		pause: "暂停",
+		progress: "播放进度",
+		noCover: "暂无封面",
 	},
 });
 ---

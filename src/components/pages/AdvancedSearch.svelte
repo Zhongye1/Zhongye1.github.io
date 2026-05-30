@@ -1,13 +1,11 @@
 <script lang="ts">
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { onMount } from "svelte";
 import Icon from "@/components/common/Icon.svelte";
 import type { SearchResult } from "@/global";
 import { url as formatUrl } from "@/utils/url-utils";
 
 // --- Props ---
-export let title = i18n(I18nKey.search);
+export let title = "搜索";
 export let description = "";
 
 // --- State ---
@@ -138,7 +136,7 @@ const handleInput = () => {
             <input
                 type="text"
                 class="block w-full p-4 pl-10 text-sm bg-transparent border border-black/10 dark:border-white/10 rounded-lg focus:ring-2 focus:ring-(--primary) focus:border-(--primary) hover:border-black/20 dark:hover:border-white/20 text-75 placeholder:opacity-50 transition-colors outline-hidden"
-                placeholder={i18n(I18nKey.search)}
+                placeholder={"搜索"}
                 bind:value={keyword}
                 on:input={handleInput}
             >
@@ -170,11 +168,11 @@ const handleInput = () => {
             </div>
         {:else if keyword}
             <div class="card-base p-10 text-center text-50 rounded-(--radius-large)">
-                {i18n(I18nKey.searchNoResults)}
+                {"没有找到相关结果"}
             </div>
         {:else}
              <div class="card-base p-10 text-center text-50 rounded-(--radius-large)">
-                {i18n(I18nKey.searchTypeSomething)}
+                {"输入关键词开始搜索"}
             </div>
         {/if}
     </div>

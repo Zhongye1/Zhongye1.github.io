@@ -1,6 +1,4 @@
 ---
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { encryptContent } from "@utils/crypto-utils";
 import { Icon } from "astro-icon/components";
 
@@ -16,12 +14,12 @@ const rawHtml = await Astro.slots.render("default");
 const encryptedData = encryptContent(rawHtml, password, slug);
 
 const labels = {
-	protected: i18n(I18nKey.passwordProtected),
-	desc: i18n(I18nKey.passwordProtectedDesc),
-	hint: i18n(I18nKey.passwordHint),
-	placeholder: i18n(I18nKey.passwordPlaceholder),
-	submit: i18n(I18nKey.passwordSubmit),
-	error: i18n(I18nKey.passwordError),
+	protected: "该内容已加密保护",
+	desc: "请输入密码以访问此内容",
+	hint: "密码提示",
+	placeholder: "请输入访问密码",
+	submit: "提交",
+	error: "密码错误，请重试",
 };
 ---
 

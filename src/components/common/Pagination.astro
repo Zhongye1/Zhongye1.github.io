@@ -1,8 +1,6 @@
 ---
 import type { Page } from "astro";
 import { Icon } from "astro-icon/components";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -66,10 +64,10 @@ const getPageUrl = (p: number) => {
   -->
 
   <!-- 分页控件 -->
-  <div class="flex flex-row gap-3 justify-center" role="navigation" aria-label={i18n(I18nKey.postList)}>
+  <div class="flex flex-row gap-3 justify-center" role="navigation" aria-label={"文章列表"}>
     <a
       href={page.url.prev || "#"}
-      aria-label={i18n(I18nKey.paginationPrev)}
+      aria-label={"上一页"}
       aria-disabled={page.url.prev === undefined ? "true" : "false"}
       tabindex={page.url.prev === undefined ? "-1" : "0"}
       class:list={[
@@ -103,7 +101,7 @@ const getPageUrl = (p: number) => {
           return (
             <a
               href={url(getPageUrl(p))}
-              aria-label={`${i18n(I18nKey.paginationPage)} ${p}`}
+              aria-label={`${"第 {page} 页"} ${p}`}
               class="btn-card w-11 h-11 rounded-lg overflow-hidden active:scale-[0.85]"
             >
               {p}
@@ -114,7 +112,7 @@ const getPageUrl = (p: number) => {
     </div>
     <a
       href={page.url.next || "#"}
-      aria-label={i18n(I18nKey.paginationNext)}
+      aria-label={"下一页"}
       aria-disabled={page.url.next === undefined ? "true" : "false"}
       tabindex={page.url.next === undefined ? "-1" : "0"}
       class:list={[

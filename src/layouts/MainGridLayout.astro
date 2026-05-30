@@ -23,8 +23,6 @@ import {
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "@/constants/constants";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 import { getImageQuality } from "@/utils/image-utils";
 import { getBackgroundImages, isHomePage } from "@/utils/layout-utils";
@@ -695,20 +693,20 @@ const bannerCarouselInterval = Math.max(
                     <div class="banner-post-meta-list flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-white/90 text-sm md:text-base">
                         <span class="inline-flex items-center gap-1.5">
                             <Icon name="material-symbols:calendar-month-outline-rounded" class="text-[1.05em]" />
-                            <span>{i18n(I18nKey.publishedAt)} {formatDateToYYYYMMDD(bannerPostMeta.published)}</span>
+                            <span>{"发布于"} {formatDateToYYYYMMDD(bannerPostMeta.published)}</span>
                         </span>
                         {bannerPostMeta.updated &&
                             bannerPostMeta.updated.getTime() !== bannerPostMeta.published.getTime() && (
                                 <span class="inline-flex items-center gap-1.5">
                                     <Icon name="material-symbols:update-rounded" class="text-[1.05em]" />
-                                    <span>{i18n(I18nKey.updatedAt)} {formatDateToYYYYMMDD(bannerPostMeta.updated)}</span>
+                                    <span>{"更新于"} {formatDateToYYYYMMDD(bannerPostMeta.updated)}</span>
                                 </span>
                             )}
                         {typeof bannerPostMeta.words === "number" && (
                             <span class="inline-flex items-center gap-1.5">
                                 <Icon name="material-symbols:ink-pen-outline-rounded" class="text-[1.05em]" />
                                 <span>
-                                    {bannerPostMeta.words} {i18n(bannerPostMeta.words === 1 ? I18nKey.wordCount : I18nKey.wordsCount)}
+                                    {bannerPostMeta.words} {(bannerPostMeta.words === 1  ? "个字" : "个字")}
                                 </span>
                             </span>
                         )}
@@ -716,7 +714,7 @@ const bannerCarouselInterval = Math.max(
                             <span class="inline-flex items-center gap-1.5">
                                 <Icon name="material-symbols:schedule-outline-rounded" class="text-[1.05em]" />
                                 <span>
-                                    {bannerPostMeta.minutes} {i18n(bannerPostMeta.minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)} · {i18n(I18nKey.readTime)}
+                                    {bannerPostMeta.minutes} {(bannerPostMeta.minutes === 1  ? "分钟" : "分钟")} · {"阅读时长"}
                                 </span>
                             </span>
                         )}

@@ -1,8 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
-
 interface Props {
 	id: string;
 	name?: string;
@@ -43,16 +40,16 @@ const className = Astro.props.class;
     {isCollapsed && <div class="expand-btn px-4 -mb-2">
         <button
             class="btn-plain rounded-lg w-full h-9"
-            title={i18n(I18nKey.more)}
-            aria-label={i18n(I18nKey.more)}
-            data-show-more={i18n(I18nKey.more)}
-            data-show-less={i18n(I18nKey.collapse)}
+            title={"更多"}
+            aria-label={"更多"}
+            data-show-more={"更多"}
+            data-show-less={"收起"}
             data-expanded="false"
         >
             <div class="text-(--primary) flex items-center justify-center gap-2 -translate-x-2">
                 <Icon name="material-symbols:more-horiz" class="toggle-icon-more text-[1.75rem]" aria-hidden="true"></Icon>
                 <Icon name="material-symbols:keyboard-arrow-up-rounded" class="toggle-icon-less hidden text-[1.75rem]" aria-hidden="true"></Icon>
-                <span class="toggle-text">{i18n(I18nKey.more)}</span>
+                <span class="toggle-text">{"更多"}</span>
             </div>
         </button>
     </div>}

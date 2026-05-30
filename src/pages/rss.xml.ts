@@ -2,8 +2,6 @@ import { loadRenderers } from "astro:container";
 import { render } from "astro:content";
 import { getContainerRenderer as getMDXRenderer } from "@astrojs/mdx";
 import rss, { type RSSFeedItem } from "@astrojs/rss";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { getSortedPosts } from "@utils/content-utils";
 import { formatDateI18nWithTime } from "@utils/date-utils";
 import { url } from "@utils/url-utils";
@@ -33,7 +31,7 @@ export async function GET(context: APIContext) {
 				pubDate: post.data.published,
 				description: post.data.description || "",
 				link: url(`/posts/${post.id}/`),
-				content: i18n(I18nKey.passwordProtectedRss),
+				content: "本文已加密保护，请访问网站查看。",
 			});
 			continue;
 		}

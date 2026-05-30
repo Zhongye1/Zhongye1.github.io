@@ -4,8 +4,6 @@ import {
 	WALLPAPER_NONE,
 	WALLPAPER_OVERLAY,
 } from "@constants/constants";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import { getStoredWallpaperMode, setWallpaperMode } from "@utils/setting-utils";
 import { onMount } from "svelte";
 import DropdownItem from "@/components/common/DropdownItem.svelte";
@@ -54,7 +52,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				onclick={() => switchWallpaperMode(WALLPAPER_BANNER)}
 			>
 				<Icon icon="material-symbols:image-outline" class="text-[1.25rem] mr-3"></Icon>
-				{i18n(I18nKey.wallpaperBannerMode)}
+				{"Banner 模式"}
 			</DropdownItem>
 			<DropdownItem
 				role="menuitem"
@@ -63,7 +61,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				onclick={() => switchWallpaperMode(WALLPAPER_OVERLAY)}
 			>
 				<Icon icon="material-symbols:wallpaper" class="text-[1.25rem] mr-3"></Icon>
-				{i18n(I18nKey.wallpaperOverlayMode)}
+				{"全屏透明模式"}
 			</DropdownItem>
 			<DropdownItem
 				role="menuitem"
@@ -72,7 +70,7 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 				onclick={() => switchWallpaperMode(WALLPAPER_NONE)}
 			>
 				<Icon icon="material-symbols:hide-image-outline" class="text-[1.25rem] mr-3"></Icon>
-				{i18n(I18nKey.wallpaperNoneMode)}
+				{"纯色背景"}
 			</DropdownItem>
 		</DropdownPanel>
 	</div>

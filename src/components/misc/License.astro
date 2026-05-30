@@ -2,8 +2,6 @@
 import { Icon } from "astro-icon/components";
 import { licenseConfig } from "@/config/licenseConfig";
 import { profileConfig } from "@/config/profileConfig";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 
 interface Props {
@@ -37,7 +35,7 @@ const postUrl = sourceLink || decodeURIComponent(Astro.url.toString());
   <div class="flex flex-col sm:flex-row gap-3 sm:gap-6 mt-2">
     <div>
       <div class="transition text-black/30 dark:text-white/30 text-sm">
-        {i18n(I18nKey.author)}
+        {"作者"}
       </div>
       <div class="transition text-black/75 dark:text-white/75 line-clamp-2">
         {author || profileConf.name}
@@ -45,7 +43,7 @@ const postUrl = sourceLink || decodeURIComponent(Astro.url.toString());
     </div>
     <div>
       <div class="transition text-black/30 dark:text-white/30 text-sm">
-        {i18n(I18nKey.publishedAt)}
+        {"发布于"}
       </div>
       <div class="transition text-black/75 dark:text-white/75 line-clamp-2">
         {formatDateToYYYYMMDD(pubDate)}
@@ -53,7 +51,7 @@ const postUrl = sourceLink || decodeURIComponent(Astro.url.toString());
     </div>
     <div>
       <div class="transition text-black/30 dark:text-white/30 text-sm">
-        {i18n(I18nKey.license)}
+        {"版权声明"}
       </div>
       <a
         href={licenseName ? licenseUrl || undefined : licenseConf.url}

@@ -5,8 +5,6 @@ import {
 	WALLPAPER_NONE,
 	WALLPAPER_OVERLAY,
 } from "@constants/constants";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
 import {
 	getDefaultBannerCarouselEnabled,
 	getDefaultBannerTitleEnabled,
@@ -167,9 +165,9 @@ let overlaySliderItems = $derived<OverlaySliderItem[]>([
 	{
 		key: "opacity",
 		enabled: isOverlayOpacitySwitchable,
-		label: i18n(I18nKey.overlayOpacity),
+		label: "壁纸透明度",
 		displayValue: `${Math.round(overlayOpacity * 100)}%`,
-		ariaLabel: i18n(I18nKey.overlayOpacity),
+		ariaLabel: "壁纸透明度",
 		min: 20,
 		max: 100,
 		step: 1,
@@ -181,9 +179,9 @@ let overlaySliderItems = $derived<OverlaySliderItem[]>([
 	{
 		key: "blur",
 		enabled: isOverlayBlurSwitchable,
-		label: i18n(I18nKey.overlayBlur),
+		label: "背景模糊",
 		displayValue: `${overlayBlur.toFixed(1)}px`,
-		ariaLabel: i18n(I18nKey.overlayBlur),
+		ariaLabel: "背景模糊",
 		min: 0,
 		max: 20,
 		step: 0.5,
@@ -195,9 +193,9 @@ let overlaySliderItems = $derived<OverlaySliderItem[]>([
 	{
 		key: "cardOpacity",
 		enabled: isOverlayCardOpacitySwitchable,
-		label: i18n(I18nKey.overlayCardOpacity),
+		label: "卡片透明度",
 		displayValue: `${Math.round(overlayCardOpacity * 100)}%`,
-		ariaLabel: i18n(I18nKey.overlayCardOpacity),
+		ariaLabel: "卡片透明度",
 		min: 20,
 		max: 100,
 		step: 1,
@@ -422,7 +420,9 @@ onMount(() => {
 // 监听布局变化事件
 onMount(() => {
 	const handleCustomEvent = (event: Event) => {
-		const customEvent = event as CustomEvent<{ layout: "list" | "grid" }>;
+		const customEvent = event as CustomEvent<{
+			layout: "list" | "grid";
+		}>;
 		currentLayout = customEvent.detail.layout;
 	};
 
@@ -490,312 +490,466 @@ $effect(() => {
 </script>
 
 {#if hasAnyContent}
-<div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-2">
-    <!-- Theme Color Section -->
-    {#if showThemeColor}
-    <div class="mt-2 mb-2">
-        <div class="flex flex-row gap-2 mb-2 items-center justify-between">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3
+    <div
+        id="display-setting"
+        class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-2"
+    >
+        <!-- Theme Color Section -->
+        {#if showThemeColor}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3
                 before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
                 before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.themeColor)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90"
-                        class:opacity-0={hue === defaultHue} class:pointer-events-none={hue === defaultHue} onclick={resetHue}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
+                >
+                    主题色
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={hue === defaultHue}
+                        class:pointer-events-none={hue === defaultHue}
+                        onclick={resetHue}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
+                        </div>
+                    </button>
+                </div>
+                <div class="flex gap-1">
+                    <div
+                        id="hueValue"
+                        class="transition bg-(--btn-regular-bg) w-10 h-7 rounded-md flex justify-center
+                font-bold text-sm items-center text-(--btn-content)"
+                    >
+                        {hue}
                     </div>
-                </button>
-            </div>
-            <div class="flex gap-1">
-                <div id="hueValue" class="transition bg-(--btn-regular-bg) w-10 h-7 rounded-md flex justify-center
-                font-bold text-sm items-center text-(--btn-content)">
-                    {hue}
                 </div>
             </div>
-        </div>
-        <div class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded select-none">
-            <input aria-label={i18n(I18nKey.themeColor)} type="range" min="0" max="360" bind:value={hue}
-                   class="slider" id="colorSlider" step="5" style="width: 100%">
-        </div>
-    </div>
-    {/if}
+            <div
+                class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded select-none"
+            >
+                <input
+                    aria-label="主题色"
+                    type="range"
+                    min="0"
+                    max="360"
+                    bind:value={hue}
+                    class="slider"
+                    id="colorSlider"
+                    step="5"
+                    style="width: 100%"
+                />
+            </div>
+        {/if}
 
-    <!-- Wallpaper Mode Section -->
-    {#if isWallpaperSwitchable}
-        <div class="mt-2 mb-2">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+        <!-- Wallpaper Mode Section -->
+        {#if isWallpaperSwitchable}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
                 before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
                 before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.wallpaperMode)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90"
-                        class:opacity-0={wallpaperMode === defaultWallpaperMode} class:pointer-events-none={wallpaperMode === defaultWallpaperMode} onclick={resetWallpaperMode}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
-                    </div>
-                </button>
-            </div>
-            <div class="flex gap-2">
-                <button
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={wallpaperMode !== WALLPAPER_BANNER}
-                    class:bg-(--btn-regular-bg-hover)={wallpaperMode === WALLPAPER_BANNER}
-                    onclick={() => switchWallpaperMode(WALLPAPER_BANNER)}
                 >
-                    <Icon icon="material-symbols:image-outline" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-xs font-medium">{i18n(I18nKey.wallpaperBannerMode)}</span>
-                </button>
-                <button
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={wallpaperMode !== WALLPAPER_FULLSCREEN}
-                    class:bg-(--btn-regular-bg-hover)={wallpaperMode === WALLPAPER_FULLSCREEN}
-                    onclick={() => switchWallpaperMode(WALLPAPER_FULLSCREEN)}
-                >
-                    <Icon icon="material-symbols:wallpaper" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-xs font-medium">{i18n(I18nKey.wallpaperFullscreenMode)}</span>
-                </button>
-            </div>
-            <div class="flex gap-2 mt-2">
-                <button
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={wallpaperMode !== WALLPAPER_OVERLAY}
-                    class:bg-(--btn-regular-bg-hover)={wallpaperMode === WALLPAPER_OVERLAY}
-                    onclick={() => switchWallpaperMode(WALLPAPER_OVERLAY)}
-                >
-                    <Icon icon="material-symbols:full-coverage-outline-rounded" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-xs font-medium">{i18n(I18nKey.wallpaperOverlayMode)}</span>
-                </button>
-                <button
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={wallpaperMode !== WALLPAPER_NONE}
-                    class:bg-(--btn-regular-bg-hover)={wallpaperMode === WALLPAPER_NONE}
-                    onclick={() => switchWallpaperMode(WALLPAPER_NONE)}
-                >
-                    <Icon icon="material-symbols:hide-image-outline" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-xs font-medium">{i18n(I18nKey.wallpaperNoneMode)}</span>
-                </button>
-            </div>
-        </div>
-    {/if}
-
-    <!-- Overlay Settings Section -->
-    {#if wallpaperMode === WALLPAPER_OVERLAY && hasOverlaySettings}
-        <div class="mt-2 mb-2">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
-                before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
-                before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.overlaySettings)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md active:scale-90"
-                        class:opacity-0={overlaySettingsIsDefault} class:pointer-events-none={overlaySettingsIsDefault} onclick={resetOverlaySettings}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
-                    </div>
-                </button>
-            </div>
-            <div class="space-y-2">
-                {#each overlaySliderItems as item (item.key)}
-                    {#if item.enabled}
-                        <div class="rounded-md bg-(--btn-regular-bg) p-2">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-sm font-medium text-(--btn-content) opacity-80">{item.label}</span>
-                                <span class="text-xs text-(--btn-content)">{item.displayValue}</span>
-                            </div>
-                            <input
-                                aria-label={item.ariaLabel}
-                                type="range"
-                                min={item.min}
-                                max={item.max}
-                                step={item.step}
-                                value={item.value}
-                                oninput={(e) => item.onValueChange(Number((e.currentTarget as HTMLInputElement).value))}
-                                class="slider w-full overlay-slider"
-                            />
+                    壁纸模式
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={wallpaperMode === defaultWallpaperMode}
+                        class:pointer-events-none={wallpaperMode ===
+                            defaultWallpaperMode}
+                        onclick={resetWallpaperMode}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
                         </div>
+                    </button>
+                </div>
+                <div class="flex gap-2">
+                    <button
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={wallpaperMode !== WALLPAPER_BANNER}
+                        class:bg-(--btn-regular-bg-hover)={wallpaperMode ===
+                            WALLPAPER_BANNER}
+                        onclick={() => switchWallpaperMode(WALLPAPER_BANNER)}
+                    >
+                        <Icon
+                            icon="material-symbols:image-outline"
+                            class="text-[1.25rem] shrink-0"
+                        ></Icon>
+                        <span class="text-xs font-medium">横幅模式</span>
+                    </button>
+                    <button
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={wallpaperMode !==
+                            WALLPAPER_FULLSCREEN}
+                        class:bg-(--btn-regular-bg-hover)={wallpaperMode ===
+                            WALLPAPER_FULLSCREEN}
+                        onclick={() =>
+                            switchWallpaperMode(WALLPAPER_FULLSCREEN)}
+                    >
+                        <Icon
+                            icon="material-symbols:wallpaper"
+                            class="text-[1.25rem] shrink-0"
+                        ></Icon>
+                        <span class="text-xs font-medium">全屏模式</span>
+                    </button>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <button
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={wallpaperMode !== WALLPAPER_OVERLAY}
+                        class:bg-(--btn-regular-bg-hover)={wallpaperMode ===
+                            WALLPAPER_OVERLAY}
+                        onclick={() => switchWallpaperMode(WALLPAPER_OVERLAY)}
+                    >
+                        <Icon
+                            icon="material-symbols:full-coverage-outline-rounded"
+                            class="text-[1.25rem] shrink-0"
+                        ></Icon>
+                        <span class="text-xs font-medium">覆盖模式</span>
+                    </button>
+                    <button
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={wallpaperMode !== WALLPAPER_NONE}
+                        class:bg-(--btn-regular-bg-hover)={wallpaperMode ===
+                            WALLPAPER_NONE}
+                        onclick={() => switchWallpaperMode(WALLPAPER_NONE)}
+                    >
+                        <Icon
+                            icon="material-symbols:hide-image-outline"
+                            class="text-[1.25rem] shrink-0"
+                        ></Icon>
+                        <span class="text-xs font-medium">无壁纸</span>
+                    </button>
+                </div>
+            </div>
+        {/if}
+
+        <!-- Overlay Settings Section -->
+        {#if wallpaperMode === WALLPAPER_OVERLAY && hasOverlaySettings}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+                before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
+                before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
+                >
+                    覆盖设置
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={overlaySettingsIsDefault}
+                        class:pointer-events-none={overlaySettingsIsDefault}
+                        onclick={resetOverlaySettings}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
+                        </div>
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    {#each overlaySliderItems as item (item.key)}
+                        {#if item.enabled}
+                            <div class="rounded-md bg-(--btn-regular-bg) p-2">
+                                <div
+                                    class="flex items-center justify-between mb-1"
+                                >
+                                    <span
+                                        class="text-sm font-medium text-(--btn-content) opacity-80"
+                                        >{item.label}</span
+                                    >
+                                    <span class="text-xs text-(--btn-content)"
+                                        >{item.displayValue}</span
+                                    >
+                                </div>
+                                <input
+                                    aria-label={item.ariaLabel}
+                                    type="range"
+                                    min={item.min}
+                                    max={item.max}
+                                    step={item.step}
+                                    value={item.value}
+                                    oninput={(e) =>
+                                        item.onValueChange(
+                                            Number(
+                                                (
+                                                    e.currentTarget as HTMLInputElement
+                                                ).value,
+                                            ),
+                                        )}
+                                    class="slider w-full overlay-slider"
+                                />
+                            </div>
+                        {/if}
+                    {/each}
+                </div>
+            </div>
+        {/if}
+
+        <!-- Banner Settings Section -->
+        {#if (wallpaperMode === WALLPAPER_BANNER || wallpaperMode === WALLPAPER_FULLSCREEN) && hasBannerSettings}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+                before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
+                before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
+                >
+                    壁纸设置
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={bannerSettingsIsDefault}
+                        class:pointer-events-none={bannerSettingsIsDefault}
+                        onclick={resetBannerSettings}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
+                        </div>
+                    </button>
+                </div>
+                <div class="space-y-1">
+                    <!-- Banner Title Switch -->
+                    {#if isBannerTitleSwitchable}
+                        <button
+                            class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                            class:bg-(--btn-regular-bg-hover)={bannerTitleEnabled}
+                            onclick={toggleBannerTitleEnabled}
+                        >
+                            <Icon
+                                icon="material-symbols:titlecase-rounded"
+                                class="text-[1.25rem] shrink-0"
+                            ></Icon>
+                            <span class="text-sm flex-1">横幅标题</span>
+                            <div
+                                class="w-10 h-5 rounded-full transition-all duration-200 relative"
+                                class:bg-(--primary)={bannerTitleEnabled}
+                                class:bg-(--btn-regular-bg-active)={!bannerTitleEnabled}
+                            >
+                                <div
+                                    class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
+                                    class:left-0.5={!bannerTitleEnabled}
+                                    class:left-5={bannerTitleEnabled}
+                                ></div>
+                            </div>
+                        </button>
                     {/if}
-                {/each}
+                    <!-- Banner Carousel Switch -->
+                    {#if isBannerCarouselSwitchable}
+                        <button
+                            class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                            class:bg-(--btn-regular-bg-hover)={bannerCarouselEnabled}
+                            onclick={toggleBannerCarouselEnabled}
+                        >
+                            <Icon
+                                icon="material-symbols:view-carousel-outline"
+                                class="text-[1.25rem] shrink-0"
+                            ></Icon>
+                            <span class="text-sm flex-1">横幅轮播</span>
+                            <div
+                                class="w-10 h-5 rounded-full transition-all duration-200 relative"
+                                class:bg-(--primary)={bannerCarouselEnabled}
+                                class:bg-(--btn-regular-bg-active)={!bannerCarouselEnabled}
+                            >
+                                <div
+                                    class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
+                                    class:left-0.5={!bannerCarouselEnabled}
+                                    class:left-5={bannerCarouselEnabled}
+                                ></div>
+                            </div>
+                        </button>
+                    {/if}
+                    <!-- Waves Animation Switch -->
+                    {#if isWavesSwitchable}
+                        <button
+                            class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                            class:bg-(--btn-regular-bg-hover)={wavesEnabled}
+                            onclick={toggleWavesEnabled}
+                        >
+                            <Icon
+                                icon="material-symbols:airwave-rounded"
+                                class="text-[1.25rem] shrink-0"
+                            ></Icon>
+                            <span class="text-sm flex-1">水波纹动画</span>
+                            <div
+                                class="w-10 h-5 rounded-full transition-all duration-200 relative"
+                                class:bg-(--primary)={wavesEnabled}
+                                class:bg-(--btn-regular-bg-active)={!wavesEnabled}
+                            >
+                                <div
+                                    class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
+                                    class:left-0.5={!wavesEnabled}
+                                    class:left-5={wavesEnabled}
+                                ></div>
+                            </div>
+                        </button>
+                    {/if}
+                    <!-- Gradient Transition Switch -->
+                    {#if isGradientSwitchable}
+                        <button
+                            class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                            class:bg-(--btn-regular-bg-hover)={gradientEnabled}
+                            onclick={toggleGradientEnabled}
+                        >
+                            <Icon
+                                icon="material-symbols:gradient"
+                                class="text-[1.25rem] shrink-0"
+                            ></Icon>
+                            <span class="text-sm flex-1">渐变过渡</span>
+                            <div
+                                class="w-10 h-5 rounded-full transition-all duration-200 relative"
+                                class:bg-(--primary)={gradientEnabled}
+                                class:bg-(--btn-regular-bg-active)={!gradientEnabled}
+                            >
+                                <div
+                                    class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
+                                    class:left-0.5={!gradientEnabled}
+                                    class:left-5={gradientEnabled}
+                                ></div>
+                            </div>
+                        </button>
+                    {/if}
+                </div>
             </div>
-        </div>
-    {/if}
+        {/if}
 
-    <!-- Banner Settings Section -->
-    {#if (wallpaperMode === WALLPAPER_BANNER || wallpaperMode === WALLPAPER_FULLSCREEN) && hasBannerSettings}
-        <div class="mt-2 mb-2">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+        <!-- Effects Settings Section -->
+        {#if isSakuraSwitchable}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
                 before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
                 before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.wallpaperSettings)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90"
-                        class:opacity-0={bannerSettingsIsDefault} class:pointer-events-none={bannerSettingsIsDefault} onclick={resetBannerSettings}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
-                    </div>
-                </button>
+                >
+                    特效设置
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={sakuraEnabled === defaultSakuraEnabled}
+                        class:pointer-events-none={sakuraEnabled ===
+                            defaultSakuraEnabled}
+                        onclick={() => {
+                            sakuraEnabled = defaultSakuraEnabled;
+                            setSakuraEnabled(defaultSakuraEnabled);
+                        }}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
+                        </div>
+                    </button>
+                </div>
+                <div class="space-y-1">
+                    <button
+                        class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                        class:bg-(--btn-regular-bg-hover)={sakuraEnabled}
+                        onclick={toggleSakuraEnabled}
+                    >
+                        <Icon
+                            icon="mdi:flower-poppy"
+                            class="text-[1.25rem] shrink-0"
+                        ></Icon>
+                        <span class="text-sm flex-1">樱花特效</span>
+                        <div
+                            class="w-10 h-5 rounded-full transition-all duration-200 relative"
+                            class:bg-(--primary)={sakuraEnabled}
+                            class:bg-(--btn-regular-bg-active)={!sakuraEnabled}
+                        >
+                            <div
+                                class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
+                                class:left-0.5={!sakuraEnabled}
+                                class:left-5={sakuraEnabled}
+                            ></div>
+                        </div>
+                    </button>
+                </div>
             </div>
-            <div class="space-y-1">
-                <!-- Banner Title Switch -->
-                {#if isBannerTitleSwitchable}
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={bannerTitleEnabled}
-                    onclick={toggleBannerTitleEnabled}
-                >
-                    <Icon icon="material-symbols:titlecase-rounded" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.wallpaperTitle)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={bannerTitleEnabled}
-                         class:bg-(--btn-regular-bg-active)={!bannerTitleEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!bannerTitleEnabled}
-                             class:left-5={bannerTitleEnabled}></div>
-                    </div>
-                </button>
-                {/if}
-                <!-- Banner Carousel Switch -->
-                {#if isBannerCarouselSwitchable}
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={bannerCarouselEnabled}
-                    onclick={toggleBannerCarouselEnabled}
-                >
-                    <Icon icon="material-symbols:view-carousel-outline" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.wallpaperCarousel)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={bannerCarouselEnabled}
-                         class:bg-(--btn-regular-bg-active)={!bannerCarouselEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!bannerCarouselEnabled}
-                             class:left-5={bannerCarouselEnabled}></div>
-                    </div>
-                </button>
-                {/if}
-                <!-- Waves Animation Switch -->
-                {#if isWavesSwitchable}
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={wavesEnabled}
-                    onclick={toggleWavesEnabled}
-                >
-                    <Icon icon="material-symbols:airwave-rounded" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.wavesAnimation)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={wavesEnabled}
-                         class:bg-(--btn-regular-bg-active)={!wavesEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!wavesEnabled}
-                             class:left-5={wavesEnabled}></div>
-                    </div>
-                </button>
-                {/if}
-                <!-- Gradient Transition Switch -->
-                {#if isGradientSwitchable}
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={gradientEnabled}
-                    onclick={toggleGradientEnabled}
-                >
-                    <Icon icon="material-symbols:gradient" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.gradientTransition)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={gradientEnabled}
-                         class:bg-(--btn-regular-bg-active)={!gradientEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!gradientEnabled}
-                             class:left-5={gradientEnabled}></div>
-                    </div>
-                </button>
-                {/if}
-            </div>
-        </div>
-    {/if}
+        {/if}
 
-    <!-- Effects Settings Section -->
-    {#if isSakuraSwitchable}
-        <div class="mt-2 mb-2">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+        <!-- Layout Switch Section -->
+        {#if allowLayoutSwitch}
+            <div class="mt-2 mb-2">
+                <div
+                    class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
                 before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
                 before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.effectsSettings)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90"
-                        class:opacity-0={sakuraEnabled === defaultSakuraEnabled} class:pointer-events-none={sakuraEnabled === defaultSakuraEnabled} onclick={() => { sakuraEnabled = defaultSakuraEnabled; setSakuraEnabled(defaultSakuraEnabled); }}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
-                    </div>
-                </button>
-            </div>
-            <div class="space-y-1">
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={sakuraEnabled}
-                    onclick={toggleSakuraEnabled}
                 >
-                    <Icon icon="mdi:flower-poppy" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.sakuraEffect)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={sakuraEnabled}
-                         class:bg-(--btn-regular-bg-active)={!sakuraEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!sakuraEnabled}
-                             class:left-5={sakuraEnabled}></div>
-                    </div>
-                </button>
+                    文章列表布局
+                    <button
+                        aria-label="Reset to Default"
+                        class="btn-regular w-7 h-7 rounded-md active:scale-90"
+                        class:opacity-0={currentLayout ===
+                            effectiveDefaultLayout}
+                        class:pointer-events-none={currentLayout ===
+                            effectiveDefaultLayout}
+                        onclick={resetLayout}
+                    >
+                        <div class="text-(--btn-content)">
+                            <Icon
+                                icon="fa7-solid:arrow-rotate-left"
+                                class="text-[0.875rem]"
+                            ></Icon>
+                        </div>
+                    </button>
+                </div>
+                <div class="flex gap-2">
+                    <button
+                        aria-label="列表模式"
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={currentLayout !== "list"}
+                        class:bg-(--btn-regular-bg-hover)={currentLayout ===
+                            "list"}
+                        disabled={isSwitching}
+                        onclick={switchLayout}
+                        title="列表模式"
+                    >
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+                        </svg>
+                        <span class="text-xs font-medium">列表模式</span>
+                    </button>
+                    <button
+                        aria-label="网格模式"
+                        class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
+                        class:opacity-60={currentLayout !== "grid"}
+                        class:bg-(--btn-regular-bg-hover)={currentLayout ===
+                            "grid"}
+                        disabled={isSwitching}
+                        onclick={switchLayout}
+                        title="网格模式"
+                    >
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z"
+                            />
+                        </svg>
+                        <span class="text-xs font-medium">网格模式</span>
+                    </button>
+                </div>
             </div>
-        </div>
-    {/if}
-
-    <!-- Layout Switch Section -->
-    {#if allowLayoutSwitch}
-        <div class="mt-2 mb-2">
-            <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
-                before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
-                before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
-            >
-                {i18n(I18nKey.postListLayout)}
-                <button aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90"
-                        class:opacity-0={currentLayout === effectiveDefaultLayout} class:pointer-events-none={currentLayout === effectiveDefaultLayout} onclick={resetLayout}>
-                    <div class="text-(--btn-content)">
-                        <Icon icon="fa7-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
-                    </div>
-                </button>
-            </div>
-            <div class="flex gap-2">
-                <button
-                    aria-label={i18n(I18nKey.postListLayoutList)}
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={currentLayout !== 'list'}
-                    class:bg-(--btn-regular-bg-hover)={currentLayout === 'list'}
-                    disabled={isSwitching}
-                    onclick={switchLayout}
-                    title={i18n(I18nKey.postListLayoutList)}
-                >
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
-                    </svg>
-                    <span class="text-xs font-medium">{i18n(I18nKey.postListLayoutList)}</span>
-                </button>
-                <button
-                    aria-label={i18n(I18nKey.postListLayoutGrid)}
-                    class="flex-1 btn-regular rounded-md py-2 px-3 flex items-center justify-center gap-2 active:scale-95 transition-all relative overflow-hidden"
-                    class:opacity-60={currentLayout !== 'grid'}
-                    class:bg-(--btn-regular-bg-hover)={currentLayout === 'grid'}
-                    disabled={isSwitching}
-                    onclick={switchLayout}
-                    title={i18n(I18nKey.postListLayoutGrid)}
-                >
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z"/>
-                    </svg>
-                    <span class="text-xs font-medium">{i18n(I18nKey.postListLayoutGrid)}</span>
-                </button>
-            </div>
-        </div>
-    {/if}
-</div>
+        {/if}
+    </div>
 {/if}
-
 
 <style lang="stylus">
     #display-setting

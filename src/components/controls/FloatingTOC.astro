@@ -3,8 +3,6 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import FloatingButton from "@/components/common/FloatingButton.astro";
 import { sidebarLayoutConfig } from "@/config/sidebarConfig";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import "@/styles/toc.css";
 
 interface Props {
@@ -45,7 +43,7 @@ const sidebarPosition = sidebarLayoutConfig.position;
         <h3
             class="text-lg font-bold text-(--primary) flex items-center gap-2"
         >
-            {i18n(I18nKey.tableOfContents)}
+            {"目录"}
         </h3>
         <button
             onclick="window.toggleFloatingTOC()"

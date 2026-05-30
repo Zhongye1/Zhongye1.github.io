@@ -3,7 +3,7 @@ import { fontConfig } from "./fontConfig";
 
 // 定义站点语言
 // 语言代码，例如：'zh_CN', 'zh_TW', 'en', 'ja', 'ru'。
-const SITE_LANG = "zh_CN";
+export const SITE_LANG = "zh_CN";
 
 export const siteConfig: SiteConfig = {
 	// 站点标题
@@ -241,7 +241,4 @@ export const siteConfig: SiteConfig = {
 	// 字体配置
 	// 在src/config/fontConfig.ts中配置具体字体
 	font: fontConfig,
-
-	// 站点语言，在本配置文件顶部SITE_LANG定义
-	lang: SITE_LANG,
 };

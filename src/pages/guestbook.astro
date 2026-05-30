@@ -4,8 +4,6 @@ import Comment from "@components/comment/index.astro";
 import Markdown from "@components/common/Markdown.astro";
 import { Icon } from "astro-icon/components";
 import { commentConfig, siteConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 // 检查页面是否启用
@@ -25,8 +23,8 @@ const { Content } = await render(guestbookPost);
 const isCommentEnabled = commentConfig?.type && commentConfig.type !== "none";
 
 // 页面标题和描述
-const title = i18n(I18nKey.guestbook);
-const description = i18n(I18nKey.guestbookDescription);
+const title = "留言板";
+const description = "欢迎留言交流！";
 ---
 
 <MainGridLayout title={title} description={description}>
@@ -79,9 +77,9 @@ const description = i18n(I18nKey.guestbookDescription);
               ></path>
             </svg>
           </div>
-          <p class="text-base mb-2">{i18n(I18nKey.commentNotConfigured)}</p>
+          <p class="text-base mb-2">{"评论系统尚未配置"}</p>
           <p class="text-sm text-(--content-meta) opacity-75">
-            {i18n(I18nKey.guestbookCommentHint)}
+            {"开启评论系统即可使用留言板功能"}
           </p>
         </div>
       </div>

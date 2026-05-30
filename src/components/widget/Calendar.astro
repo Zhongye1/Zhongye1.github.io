@@ -2,8 +2,6 @@
 import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config/siteConfig";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -13,35 +11,27 @@ interface Props {
 
 const { class: className, style } = Astro.props;
 
-// 月份名称（使用 i18n）
+// 月份名称
 const monthNames = [
-	i18n(I18nKey.calendarJanuary),
-	i18n(I18nKey.calendarFebruary),
-	i18n(I18nKey.calendarMarch),
-	i18n(I18nKey.calendarApril),
-	i18n(I18nKey.calendarMay),
-	i18n(I18nKey.calendarJune),
-	i18n(I18nKey.calendarJuly),
-	i18n(I18nKey.calendarAugust),
-	i18n(I18nKey.calendarSeptember),
-	i18n(I18nKey.calendarOctober),
-	i18n(I18nKey.calendarNovember),
-	i18n(I18nKey.calendarDecember),
+	"一月",
+	"二月",
+	"三月",
+	"四月",
+	"五月",
+	"六月",
+	"七月",
+	"八月",
+	"九月",
+	"十月",
+	"十一月",
+	"十二月",
 ];
 
-// 星期名称（简写，使用 i18n）
-const weekDays = [
-	i18n(I18nKey.calendarSunday),
-	i18n(I18nKey.calendarMonday),
-	i18n(I18nKey.calendarTuesday),
-	i18n(I18nKey.calendarWednesday),
-	i18n(I18nKey.calendarThursday),
-	i18n(I18nKey.calendarFriday),
-	i18n(I18nKey.calendarSaturday),
-];
+// 星期名称（简写）
+const weekDays = ["日", "一", "二", "三", "四", "五", "六"];
 
 // 年份文本
-const yearText = i18n(I18nKey.year);
+const yearText = "年";
 
 // 获取当前语言
 const currentLang = siteConfig.lang || "en";

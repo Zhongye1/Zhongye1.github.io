@@ -1,6 +1,4 @@
 ---
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import type { UserSubjectCollection } from "@/types/bangumi";
 import { getLqipProps } from "@/utils/lqip-utils";
 
@@ -40,26 +38,26 @@ const getStatusText = (type: number) => {
 
 	switch (type) {
 		case 1: // Wish
-			if (subjectType === 1) return i18n(I18nKey.bangumiStatusBookWish);
-			if (subjectType === 3) return i18n(I18nKey.bangumiStatusMusicWish);
-			if (subjectType === 4) return i18n(I18nKey.bangumiStatusGameWish);
-			return i18n(I18nKey.bangumiStatusWish);
+			if (subjectType === 1) return "想读";
+			if (subjectType === 3) return "想听";
+			if (subjectType === 4) return "想玩";
+			return "想看";
 		case 2: // Collect (Played/Watched/Read/Listened)
-			if (subjectType === 1) return i18n(I18nKey.bangumiStatusBookRead);
-			if (subjectType === 3) return i18n(I18nKey.bangumiStatusMusicListened);
-			if (subjectType === 4) return i18n(I18nKey.bangumiStatusGamePlayed);
-			return i18n(I18nKey.bangumiStatusWatched);
+			if (subjectType === 1) return "已读";
+			if (subjectType === 3) return "已听";
+			if (subjectType === 4) return "已玩";
+			return "已看";
 		case 3: // Doing (Playing/Watching/Reading/Listening)
-			if (subjectType === 1) return i18n(I18nKey.bangumiStatusBookReading);
-			if (subjectType === 3) return i18n(I18nKey.bangumiStatusMusicListening);
-			if (subjectType === 4) return i18n(I18nKey.bangumiStatusGamePlaying);
-			return i18n(I18nKey.bangumiStatusWatching);
+			if (subjectType === 1) return "在读";
+			if (subjectType === 3) return "在听";
+			if (subjectType === 4) return "在玩";
+			return "在看";
 		case 4:
-			return i18n(I18nKey.bangumiStatusOnHold);
+			return "搁置";
 		case 5:
-			return i18n(I18nKey.bangumiStatusDropped);
+			return "抛弃";
 		default:
-			return i18n(I18nKey.bangumiStatusUnknown);
+			return "未知";
 	}
 };
 

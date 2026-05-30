@@ -1,7 +1,5 @@
 ---
 import FloatingButton from "@/components/common/FloatingButton.astro";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { url } from "@/utils/url-utils";
 ---
 
@@ -9,7 +7,7 @@ import { url } from "@/utils/url-utils";
 <FloatingButton
   id="back-to-home-btn"
   icon="material-symbols:home-outline-rounded"
-  ariaLabel={i18n(I18nKey.home)}
+  ariaLabel={"首页"}
   onclick="backToHome()"
   class="hide"
 />

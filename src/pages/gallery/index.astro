@@ -2,8 +2,6 @@
 import { Icon } from "astro-icon/components";
 import AlbumCard from "@/components/pages/gallery/AlbumCard.astro";
 import { galleryConfig, siteConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { getAlbumCover, scanAlbumPhotos } from "@/utils/gallery-utils";
 
@@ -12,8 +10,8 @@ if (!siteConfig.pages.gallery) {
 	return Astro.redirect("/404/");
 }
 
-const title = i18n(I18nKey.gallery);
-const description = i18n(I18nKey.galleryDescription);
+const title = "相册";
+const description = "用影像记录生活中的美好瞬间";
 
 // 构建相册数据（扫描照片、获取封面）
 const albums = galleryConfig.albums.map((album) => {
@@ -61,7 +59,7 @@ const allTags = [...new Set(albums.flatMap((a) => a.tags || []))].sort();
             <input
               type="text"
               data-search
-              placeholder={i18n(I18nKey.searchAlbums)}
+              placeholder={"搜索相册"}
               class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-(--line-divider) bg-transparent text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 focus:border-(--primary) focus:ring-1 focus:ring-(--primary) outline-none transition-all duration-200 text-sm"
             />
           </div>
@@ -71,7 +69,7 @@ const allTags = [...new Set(albums.flatMap((a) => a.tags || []))].sort();
                 data-tag="all"
                 class="btn-regular px-3 py-1.5 rounded-lg bg-(--primary) text-white hover:bg-(--primary) transition-colors duration-200 text-sm font-medium"
               >
-                {i18n(I18nKey.all)}
+                {"全部"}
               </button>
               {allTags.map((tag) => (
                 <button
@@ -107,13 +105,13 @@ const allTags = [...new Set(albums.flatMap((a) => a.tags || []))].sort();
           {/* 搜索无结果提示 */}
           <div class="albums-empty hidden flex-col items-center justify-center py-12 text-neutral-400 dark:text-neutral-500">
             <Icon name="material-symbols:search-off-rounded" class="text-4xl mb-3" />
-            <div class="text-sm">{i18n(I18nKey.searchNoResults)}</div>
+            <div class="text-sm">{"没有找到相关结果"}</div>
           </div>
         </>
       ) : (
         <div class="flex flex-col items-center justify-center py-16 text-neutral-400 dark:text-neutral-500">
           <Icon name="material-symbols:photo-library" class="text-6xl mb-4 opacity-50" />
-          <p class="text-lg">{i18n(I18nKey.galleryNoAlbums)}</p>
+          <p class="text-lg">{"暂无相册"}</p>
         </div>
       )}
     </div>

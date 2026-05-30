@@ -2,8 +2,6 @@
 import Comment from "@components/comment/index.astro";
 import { Icon } from "astro-icon/components";
 import { commentConfig, siteConfig, sponsorConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { getLqipProps } from "@/utils/lqip-utils";
 import { url } from "@/utils/url-utils";
@@ -19,9 +17,9 @@ const isCommentEnabled =
 	commentConfig.type !== "none" &&
 	sponsorConfig.showComment !== false;
 
-const title = sponsorConfig.title || i18n(I18nKey.sponsorTitle);
+const title = sponsorConfig.title || "赞助作者";
 const description =
-	sponsorConfig.description || i18n(I18nKey.sponsorDescription);
+	sponsorConfig.description || "如果这个博客帮助到了你，欢迎请我喝杯咖啡";
 const enabledMethods = sponsorConfig.methods.filter((method) => method.enabled);
 const sponsors = sponsorConfig.sponsors || [];
 const showSponsorsList = sponsorConfig.showSponsorsList !== false;
@@ -91,7 +89,7 @@ function getQrLqipProps(qrCode: string) {
                             <div class="lqip-placeholder absolute inset-0 rounded-lg pointer-events-none" style={getQrLqipProps(method.qrCode).style} aria-hidden="true"></div>
                             <img
                               src={url(method.qrCode)}
-                              alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+                              alt={`${method.name} ${"扫码赞助"}`}
                               class="relative w-full h-full object-contain opacity-0 transition-opacity duration-500 ease-out"
                               loading="lazy"
                             />
@@ -105,7 +103,7 @@ function getQrLqipProps(qrCode: string) {
                             rel="noopener noreferrer"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-(--primary) text-white dark:text-black/70 rounded-lg font-medium hover:bg-(--primary)/90 active:scale-95 transition-all"
                           >
-                            <span>{i18n(I18nKey.sponsorGoTo)}</span>
+                            <span>{"前往"}</span>
                             <Icon name="fa7-solid:arrow-up-right-from-square" class="text-sm" />
                           </a>
                         )}
@@ -126,7 +124,7 @@ function getQrLqipProps(qrCode: string) {
               <Icon name="material-symbols:emoji-people-rounded" class="text-[1.25rem] text-(--primary)" />
             </div>
             <h2 class="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-              {i18n(I18nKey.sponsorList)}
+              {"赞助列表"}
             </h2>
           </div>
           {sponsors.length > 0 && (
@@ -181,7 +179,7 @@ function getQrLqipProps(qrCode: string) {
           </div>
         ) : (
           <div class="text-center py-12 text-neutral-500 dark:text-neutral-500">
-            <p>{i18n(I18nKey.sponsorEmpty)}</p>
+            <p>{"暂无赞助记录"}</p>
           </div>
         )}
       </div>

@@ -1,8 +1,6 @@
 <script lang="ts">
 import { onMount } from "svelte";
 
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { getPostUrlBySlug } from "@/utils/url-utils";
 
 export let tags: string[] = [];
@@ -30,7 +28,7 @@ interface Group {
 }
 
 interface ActiveFilter {
-	labelKey: I18nKey;
+	labelKey: FilterLabelKey;
 	values: string[];
 }
 
@@ -51,21 +49,22 @@ function formatTag(tagList: string[]) {
 }
 
 function formatFilterValues(filter: ActiveFilter) {
-	const prefix = filter.labelKey === I18nKey.tags ? "#" : "";
+	const prefix = filter.labelKey === "tags" ? "#" : "";
 	return filter.values.map((value) => `${prefix}${value}`).join(" / ");
 }
 
 function resolvePrimaryFilter(filters: ActiveFilter[]) {
 	return (
-		filters.find((filter) => filter.labelKey === I18nKey.tags) ??
-		filters[0] ??
-		null
+		filters.find((filter) => filter.labelKey === "tags") ?? filters[0] ?? null
 	);
 }
 
 function formatFilterSummary(filters: ActiveFilter[]) {
 	return filters
-		.map((filter) => `${i18n(filter.labelKey)}: ${formatFilterValues(filter)}`)
+		.map(
+			(filter) =>
+				`${filterLabel(filter.labelKey)}: ${formatFilterValues(filter)}`,
+		)
 		.join("  ·  ");
 }
 
@@ -74,18 +73,18 @@ onMount(async () => {
 	const currentFilters: ActiveFilter[] = [];
 
 	if (categories.length > 0) {
-		currentFilters.push({ labelKey: I18nKey.categories, values: categories });
+		currentFilters.push({ labelKey: "categories", values: categories });
 	}
 
 	if (uncategorized) {
 		currentFilters.push({
-			labelKey: I18nKey.categories,
-			values: [i18n(I18nKey.uncategorized)],
+			labelKey: "categories",
+			values: ["未分类"],
 		});
 	}
 
 	if (tags.length > 0) {
-		currentFilters.push({ labelKey: I18nKey.tags, values: tags });
+		currentFilters.push({ labelKey: "tags", values: tags });
 	}
 
 	activeFilters = currentFilters;
@@ -147,7 +146,7 @@ onMount(async () => {
 		<div class="mb-5">
 			<div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
 				<div class="min-w-0 text-sm text-75">
-					<span class="text-50">{i18n(primaryFilter.labelKey)}</span>
+					<span class="text-50">{filterLabel(primaryFilter.labelKey)}</span>
 					<span class="mx-2 text-30">/</span>
 					<span class="font-semibold text-(--primary)">{formatFilterValues(primaryFilter)}</span>
 					{#if secondaryFilters.length > 0}
@@ -155,9 +154,9 @@ onMount(async () => {
 					{/if}
 				</div>
 				<div class="shrink-0 text-xs text-50">
-					{filteredPostCount} {i18n(filteredPostCount === 1 ? I18nKey.postCount : I18nKey.postsCount)}
+					{filteredPostCount} {(filteredPostCount === 1  ? "篇" : "篇")}
 					<span class="mx-1.5 text-30">·</span>
-					{groups.length} {i18n(I18nKey.year)}
+					{groups.length} {"年"}
 				</div>
 			</div>
 		</div>
@@ -176,7 +175,7 @@ onMount(async () => {
 					></div>
 				</div>
 				<div class="w-[70%] md:w-[80%] transition text-left text-50">
-					{group.posts.length} {i18n(group.posts.length === 1 ? I18nKey.postCount : I18nKey.postsCount)}
+					{group.posts.length} {(group.posts.length === 1  ? "篇" : "篇")}
 				</div>
 			</div>
 

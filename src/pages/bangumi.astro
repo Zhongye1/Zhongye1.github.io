@@ -3,8 +3,6 @@ import { Icon } from "astro-icon/components";
 import BangumiSection from "@/components/pages/bangumi/BangumiSection.astro";
 import TabNav from "@/components/pages/bangumi/TabNav.astro";
 import { siteConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import type {
 	UserSubjectCollection,
@@ -44,19 +42,19 @@ const bangumiConfig = {
 
 // 分类映射
 const categoryMap = {
-	book: { id: "book", name: i18n(I18nKey.bangumiCategoryBook), subjectType: 1 },
+	book: { id: "book", name: "书籍", subjectType: 1 },
 	anime: {
 		id: "anime",
-		name: i18n(I18nKey.bangumiCategoryAnime),
+		name: "动画",
 		subjectType: 2,
 	},
 	music: {
 		id: "music",
-		name: i18n(I18nKey.bangumiCategoryMusic),
+		name: "音乐",
 		subjectType: 3,
 	},
-	game: { id: "game", name: i18n(I18nKey.bangumiCategoryGame), subjectType: 4 },
-	real: { id: "real", name: i18n(I18nKey.bangumiCategoryReal), subjectType: 6 },
+	game: { id: "game", name: "游戏", subjectType: 4 },
+	real: { id: "real", name: "三次元", subjectType: 6 },
 };
 
 // 获取Bangumi数据的函数 - 支持分页获取所有数据
@@ -194,7 +192,7 @@ if (categoryOrder.length > 0) {
 const activeTab = tabs[0]?.id || "anime";
 ---
 
-<MainGridLayout title={i18n(I18nKey.bangumi)} description={i18n(I18nKey.bangumiSubtitle)}>
+<MainGridLayout title={"番组计划"} description={"我的追番 / 游戏 / 读书 / 音乐记录"}>
   <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
     <div class="card-base z-10 px-9 py-6 relative w-full">
         <!-- 页面标题 -->
@@ -205,14 +203,14 @@ const activeTab = tabs[0]?.id || "anime";
                         <Icon name="material-symbols:movie" class="text-[1.5rem]"></Icon>
                     </div>
                     <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-                        {i18n(I18nKey.bangumi)}
+                        {"番组计划"}
                     </div>
                 </div>
                 <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                    {i18n(I18nKey.bangumiSubtitle)}
+                    {"我的追番 / 游戏 / 读书 / 音乐记录"}
                 </p>
                 <p class="text-xs text-neutral-500 dark:text-neutral-500 mt-2">
-                    {i18n(I18nKey.bangumiLastUpdated)} {buildTime}
+                    {"最后更新于"} {buildTime}
                 </p>
             </div>
 
@@ -223,10 +221,10 @@ const activeTab = tabs[0]?.id || "anime";
             <Icon name="material-symbols:error-outline" class="text-[2rem] text-red-500" />
           </div>
           <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">
-            {i18n(I18nKey.bangumiFetchError)}
+            {"获取 Bangumi 数据失败"}
           </h2>
           <p class="text-black/60 dark:text-white/60 mb-4 max-w-md mx-auto">
-            {i18n(I18nKey.bangumiFetchErrorDesc)}
+            {"请检查网络连接和用户ID配置"}
           </p>
         </div>
       ) : tabs.length > 0 ? (
@@ -249,10 +247,10 @@ const activeTab = tabs[0]?.id || "anime";
             <Icon name="material-symbols:settings" class="text-[2rem] text-(--btn-content)" />
           </div>
           <h2 class="text-xl font-semibold text-black/80 dark:text-white/80 mb-3">
-            {isUserIdConfigured ? i18n(I18nKey.bangumiEmpty) : "未配置 Bangumi 用户ID"}
+            {isUserIdConfigured ? "还没有任何记录" : "未配置 Bangumi 用户ID"}
           </h2>
           <p class="text-black/60 dark:text-white/60 mb-4 max-w-md mx-auto">
-            {isUserIdConfigured ? i18n(I18nKey.bangumiEmptyReason) : "请在 src/config/siteConfig.ts 中配置你的 Bangumi 用户ID"}
+            {isUserIdConfigured ? "快去 Bangumi 添加你的追番记录吧！" : "请在 src/config/siteConfig.ts 中配置你的 Bangumi 用户ID"}
           </p>
         </div>
       )}

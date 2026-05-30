@@ -1,8 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
 import { commentConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
 import { getCategoryUrl, getTagUrl } from "@/utils/url-utils";
 
@@ -53,7 +51,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
     pinned && (
       <div class="pinned-btn flex items-center gap-1 bg-(--btn-regular-bg) text-(--btn-content) rounded-md px-2 py-1.5 font-bold">
         <Icon name="material-symbols:pinboard" class="text-xl" />
-        <span class="text-sm">{i18n(I18nKey.pinned)}</span>
+        <span class="text-sm">{"置顶"}</span>
       </div>
     )
   }
@@ -100,7 +98,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
         class="link-lg transition text-50 text-sm font-medium
                             hover:text-(--primary) dark:hover:text-(--primary) whitespace-nowrap"
       >
-        {category || i18n(I18nKey.uncategorized)}
+        {category || "未分类"}
       </a>
     </div>
   </div>
@@ -121,7 +119,7 @@ const path = customPath || (id ? `/posts/${id}` : "");
                {tag.trim()}
              </a>
            ))}
-           {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(I18nKey.noTags)}</div>}
+           {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{"暂无标签"}</div>}
          </div>
        </div>
      )
@@ -141,10 +139,10 @@ const path = customPath || (id ? `/posts/${id}` : "");
             />
           </div>
           <span class="text-50 text-sm font-medium mr-1">
-            {i18n(I18nKey.pageViews)}
+            {"阅读量"}
           </span>
           <span class="text-50 text-sm font-medium" id="twikoo_visitors">
-            {i18n(I18nKey.pageViewsLoading)}
+            {"加载中..."}
           </span>
         </div>
       )
@@ -160,9 +158,9 @@ const path = customPath || (id ? `/posts/${id}` : "");
             <Icon name="material-symbols:visibility-outline-rounded" class="text-xl" />
           </div>
           <span class="text-50 text-sm font-medium mr-1">
-            {i18n(I18nKey.pageViews)}
+            {"阅读量"}
           </span>
-          <span class="text-50 text-sm font-medium waline-pageview-count" data-path={path}>{i18n(I18nKey.pageViewsLoading)}</span>
+          <span class="text-50 text-sm font-medium waline-pageview-count" data-path={path}>{"加载中..."}</span>
         </div>
       )
   }
@@ -177,9 +175,9 @@ const path = customPath || (id ? `/posts/${id}` : "");
                             <Icon name="material-symbols:visibility-outline-rounded" class="text-xl" />
                         </div>
                         <span class="text-50 text-sm font-medium mr-1">
-                            {i18n(I18nKey.pageViews)}
+                            {"阅读量"}
                         </span>
-                        <span class="text-50 text-sm font-medium artalk-pv-count" data-path={path}>{i18n(I18nKey.pageViewsLoading)}</span>
+                        <span class="text-50 text-sm font-medium artalk-pv-count" data-path={path}>{"加载中..."}</span>
                     </div>
         )
     }

@@ -15,8 +15,6 @@ export type SiteConfig = {
 	description?: string; // 网站描述，用于生成 <meta name="description">
 	keywords?: string[]; // 站点关键词，用于生成 <meta name="keywords">
 
-	lang: "en" | "zh_CN" | "zh_TW" | "ja" | "ru";
-
 	themeColor: {
 		hue: number;
 		fixed: boolean;
@@ -705,8 +703,8 @@ export type FriendLink = {
 };
 
 export type FriendsPageConfig = {
-	title?: string; // 页面标题，留空则使用 i18n 中的翻译
-	description?: string; // 页面描述，留空则使用 i18n 中的翻译
+	title?: string; // 页面标题，留空则使用默认翻译
+	description?: string; // 页面描述，留空则使用默认翻译
 	showCustomContent?: boolean; // 是否显示自定义内容（friends.mdx）
 	showComment?: boolean; // 是否显示评论区，默认 true
 	randomizeSort?: boolean; // 是否打乱排序，如果为 true，将忽略 weight，随机排序
@@ -774,7 +772,7 @@ export type SponsorMethod = {
 
 // 赞助者列表项
 export type SponsorItem = {
-	name: string; // 赞助者名称，如果想显示匿名，可以直接设置为"匿名"或使用 i18n
+	name: string; // 赞助者名称，如果想显示匿名，可以直接设置为"匿名"或使用默认翻译
 	avatar?: string; // 赞助者头像图片路径(可选,相对于 public 目录 或者 网络图片)
 	amount?: string; // 赞助金额（可选）
 	date?: string; // 赞助日期（可选，ISO 格式）
@@ -782,7 +780,7 @@ export type SponsorItem = {
 
 // 赞助配置
 export type SponsorConfig = {
-	title?: string; // 页面标题，默认使用 i18n
+	title?: string; // 页面标题，默认使用默认翻译
 	description?: string; // 页面描述文本
 	usage?: string; // 赞助用途说明
 	methods: SponsorMethod[]; // 赞助方式列表

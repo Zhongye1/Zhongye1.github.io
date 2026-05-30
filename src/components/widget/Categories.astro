@@ -2,8 +2,6 @@
 import ButtonLink from "@/components/common/ButtonLink.astro";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { sidebarLayoutConfig } from "@/config";
-import I18nKey from "@/i18n/i18nKey";
-import { i18n } from "@/i18n/translation";
 import { getCategoryList } from "@/utils/content-utils";
 import { url } from "@/utils/url-utils";
 
@@ -33,7 +31,7 @@ const style = Astro.props.style;
 const archivePath = url("/archive/");
 ---
 
-<WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
+<WidgetLayout name={"分类"} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
                 class={className} style={style}
 >
     <div id="categories-widget-data" class="hidden" data-archive-path={archivePath}></div>
