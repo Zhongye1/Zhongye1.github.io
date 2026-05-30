@@ -87,7 +87,8 @@ const defaultOverlayBlur = getDefaultOverlayBlur();
 let overlayCardOpacity = $state(getDefaultOverlayCardOpacity());
 const defaultOverlayCardOpacity = getDefaultOverlayCardOpacity();
 
-const isWallpaperSwitchable = backgroundWallpaper.switchable ?? true;
+// TODO: 临时停用壁纸模式切换，后续大改页面时移除
+const isWallpaperSwitchable = false; // backgroundWallpaper.switchable ?? true;
 const allowLayoutSwitch = siteConfig.postListLayout.allowSwitch;
 let effectiveDefaultLayout = $derived(
 	isMobileWidth ? mobileDefaultLayout : defaultLayout,

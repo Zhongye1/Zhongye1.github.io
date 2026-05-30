@@ -839,23 +839,15 @@ function adjustMainContentTransparency(enable: boolean) {
 	}
 }
 
-export function setWallpaperMode(mode: WALLPAPER_MODE): void {
-	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.setItem !== "function"
-	) {
-		return;
-	}
-	localStorage.setItem("wallpaperMode", mode);
-	applyWallpaperModeToDocument(mode);
-	if (typeof window !== "undefined") {
-		window.dispatchEvent(
-			new CustomEvent("wallpaperModeChange", {
-				detail: { mode },
-			}),
-		);
-	}
+export function setWallpaperMode(_mode: WALLPAPER_MODE): void {
+	// TODO: 临时硬编码为全屏模式，后续大改页面时移除
+	if (typeof window === "undefined") return;
+	applyWallpaperModeToDocument(WALLPAPER_FULLSCREEN);
+	window.dispatchEvent(
+		new CustomEvent("wallpaperModeChange", {
+			detail: { mode: WALLPAPER_FULLSCREEN },
+		}),
+	);
 }
 
 export function initWallpaperMode(): void {
@@ -866,24 +858,8 @@ export function initWallpaperMode(): void {
 }
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
-	// 检查是否在浏览器环境中
-	if (
-		typeof localStorage === "undefined" ||
-		typeof localStorage.getItem !== "function"
-	) {
-		return backgroundWallpaper.mode;
-	}
-
-	const isSwitchable = backgroundWallpaper.switchable ?? true;
-	if (!isSwitchable) {
-		localStorage.removeItem("wallpaperMode");
-		return backgroundWallpaper.mode;
-	}
-
-	return (
-		(localStorage.getItem("wallpaperMode") as WALLPAPER_MODE) ||
-		backgroundWallpaper.mode
-	);
+	// TODO: 临时硬编码为全屏模式，后续大改页面时移除
+	return WALLPAPER_FULLSCREEN;
 }
 
 // Overlay settings functions
