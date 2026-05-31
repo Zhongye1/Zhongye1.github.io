@@ -1,12 +1,16 @@
 ---
 uuid: 0213a810-1fcf-11f1-bb31-61446932a1bd
 title: 2026-03-14-Windows 上的包管理利器 - Chocolatey
-category: 归档
 mathjax: true
 abbrlink: 26594
 published: 2026-03-15 01:55:37
-
+category: 工具
+tags:
+    - Chocolatey
+    - Windows
+    - 包管理
 ---
+
 Chocolatey 是一款专为 Windows 系统开发的、基于 NuGet 的包管理器工具，类似于 Node.js 的 npm，MacOS 的 brew，Ubuntu 的 apt-get，它简称为 choco。Chocolatey 的设计目标是成为一个去中心化的框架，便于开发者按需快速安装应用程序和工具。
 
 Chocolatey 的官网： [https://chocolatey.org/](https://cloud.tencent.com/developer/tools/blog-entry?target=https%3A%2F%2Fchocolatey.org%2F&objectId=2329788&objectType=1&contentType=undefined)

@@ -1,15 +1,17 @@
 ---
 uuid: 39fc0b60-e419-11f0-9577-6394da2b0a5c
 title: 2025-12-28-力扣百题速练（Javascript、TypeScript）Vol.3
-category: 力扣
 mathjax: true
 abbrlink: 42325
 published: 2025-12-29 02:15:44
-taggs:
-    - 前端开发
-    - JavaScript
+category: 力扣
+tags:
+    - 力扣
     - 算法
+    - JavaScript
+    - 链表
 ---
+
 
 依旧刷题中
 

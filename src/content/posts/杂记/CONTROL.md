@@ -2,10 +2,14 @@
 title: 神作
 abbrlink: 59e27b0e
 date: 2023-09-25 13:03:59
-tags:
 cover: https://picx.zhimg.com/80/v2-d8ce38956e8a6187963d3e7bf624d4e9_720w.webp?source=2c26e567
-
+category: 随记
+tags:
+    - 随记
+    - 游戏
+    - Control
 ---
+
 
 游戏control，帅炸了
 

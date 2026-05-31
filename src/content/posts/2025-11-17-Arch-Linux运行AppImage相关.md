@@ -1,11 +1,16 @@
 ---
 uuid: 1f51b700-c359-11f0-8c7c-dbe8bd99c6cd
 title: 2025-11-17-Arch-Linux运行AppImage相关
-category: 归档
 mathjax: true
 abbrlink: 11830
 published: 2025-11-17 09:59:59
+category: 工具
+tags:
+    - Arch Linux
+    - AppImage
+    - Linux
 ---
+
 > [AppImage](https://link.zhihu.com/?target=https%3A//appimage.org/)是一种可执行文件格式，类似于 Windows 的 exe 文件，macOS 的 app 文件，不过 AppImage 是运行在 Linux 上的可执行文件，而且是可以运行在不同发行版本的 Linux，如 Ubuntu, Debian, openSUSE, RHEL, CentOS, Fedora, Arch Linux ...
 
 运行时

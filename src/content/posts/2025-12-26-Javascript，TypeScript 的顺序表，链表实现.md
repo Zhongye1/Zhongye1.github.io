@@ -1,11 +1,17 @@
 ---
 uuid: 9d053150-e211-11f0-b4dd-8b5a45240b4b
 title: 2025-12-26-Javascript/TypeScript 的顺序表，链表实现
-category: 数据结构
 mathjax: true
 abbrlink: 46758
 published: 2025-12-26 12:16:12
+category: 数据结构
+tags:
+    - 数据结构
+    - 顺序表
+    - 链表
+    - TypeScript
 ---
+
 
 JavaScript 原生提供了 Array 作为高效的动态顺序表实现，但为了理解底层原理，通常需要手动实现。链表则需要完全手动实现，因为 JavaScript 无内置链表结构。
 

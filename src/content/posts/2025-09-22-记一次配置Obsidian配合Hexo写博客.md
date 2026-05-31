@@ -6,7 +6,14 @@ published: 2025-09-22 16:47:52
 description: ""
 mathjax: true
 cover: ""
+category: 博客
+tags:
+    - 博客
+    - Obsidian
+    - Hexo
+    - 写作工具
 ---
+
 ~~测试，现在新写了个插件，晚上回来整~~
 
 

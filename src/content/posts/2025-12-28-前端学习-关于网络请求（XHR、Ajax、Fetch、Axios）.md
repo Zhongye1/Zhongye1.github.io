@@ -1,11 +1,17 @@
 ---
 uuid: a3988380-e3c1-11f0-ae2f-db43cc23fe97
 title: 2025-10-28 前端学习-关于网络请求（Fetch、Axios、Ajax、XHR）
-category: 前端
 mathjax: true
 abbrlink: 61262
 published: 2025-10-28 15:48:46
+category: 前端
+tags:
+    - 前端
+    - 网络请求
+    - Axios
+    - Fetch
 ---
+
 # XHR、Ajax、Fetch、Axios
 
 当涉及前端网络请求时，有许多工具/技术可供选择，包括 Fetch、Axios、Ajax 和 XHR 等。这些技术在发送和处理HTTP请求方面提供了不同的功能和方法。本文将深入探讨这些技术的特点、优势和用法，帮你更好地理解并选择最适合项目需求的技术。

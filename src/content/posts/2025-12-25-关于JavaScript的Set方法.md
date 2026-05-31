@@ -1,11 +1,16 @@
 ---
 uuid: 00d730c0-e163-11f0-a1ae-d9dba5bd8c7d
 title: 2025-12-25-ES6-关于JavaScript的Set 方法
-category: 归档
 mathjax: true
 abbrlink: 27040
 published: 2025-12-25 15:26:18
+category: 前端
+tags:
+    - ES6
+    - JavaScript
+    - Set
 ---
+
 # JavaScript Set 方法详解
 
 ## 1. Set 是什么？

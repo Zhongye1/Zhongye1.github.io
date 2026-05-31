@@ -1,12 +1,17 @@
 ---
 uuid: cac34990-f76c-11f0-9729-b78eb0e3d0b6
 title: 2026-01-22-GitHub Action 自动同步博客到 GitHub 主页
-category: 归档
 mathjax: true
 abbrlink: 18209
 published: 2026-01-22 16:31:47
-
+category: 博客
+tags:
+    - 博客
+    - GitHub Actions
+    - RSS
+    - 自动化
 ---
+
 只要博客支持 RSS 输出（通常为 rss.xml 或 atom.xml），通过使用 **blog-post-workflow** 这个 GitHub Action，即可实现每当博客更新时，GitHub 主页会自动抓取并生成文章列表，来展示开发者的活跃度与技术积累。
 
 ## 基础介绍和使用步骤

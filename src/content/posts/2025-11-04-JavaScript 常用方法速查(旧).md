@@ -1,10 +1,15 @@
 ---
 title: 2025-11-04-JavaScript 常用方法速查
-category: 前端
 mathjax: true
 abbrlink: 36778
 published: 2025-11-04 15:29:35
+category: 前端
+tags:
+    - JavaScript
+    - 速查
+    - 前端
 ---
+
 
 这是旧的一版，归档于 2025-11-04
 

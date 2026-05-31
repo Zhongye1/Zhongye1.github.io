@@ -6,10 +6,15 @@ abbrlink: 39599
 description: typora+picgo+兰空图床打造markdown写作环境
 cover: 'https://image.imtop1.moe/ZZOkbW.webp'
 published: 2024-07-31 12:56:23
-
-
-
+category: 博客
+tags:
+    - 博客
+    - Typora
+    - PicGo
+    - 图床
+    - Markdown
 ---
+
 兰空图床安装可以去看另一篇文章 [搭建一个属于自己的图床](https://blog.imtop1.moe/archives/299/)
 
 ## 一、安装和配置picgo

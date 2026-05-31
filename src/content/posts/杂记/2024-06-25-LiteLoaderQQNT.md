@@ -1,9 +1,5 @@
 ---
 title: LiteLoaderQQNT
-tags:
-  - null
-categories:
-  - Github项目
 mathjax: true
 abbrlink: 96a2d8b4
 sticky: 2
@@ -11,7 +7,13 @@ swiper_index: 3
 date: 2024-06-25 11:03:08
 cover: https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp
 description: 为你的QQ添加各种插件，并实现动态背景、美化主题、增加功能等功能
+category: 工具
+tags:
+    - QQ
+    - 插件
+    - LiteLoader
 ---
+
 
 
 

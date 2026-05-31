@@ -1,11 +1,18 @@
 ---
 uuid: 1fa522e0-c7a6-11f0-beab-eb8961f00b4e
 title: '2025-11-22- 关于前端包管理器npm,pnpm,yarn和bun以及我为何选择后者'
-category: Github项目
 mathjax: true
 abbrlink: 15722
 published: 2025-11-22 21:21:15
+category: 前端
+tags:
+    - 前端
+    - 包管理器
+    - npm
+    - pnpm
+    - Bun
 ---
+
 **因为快。**
 
 2025 年，Bun 作为一个「全能型」运行时 + 包管理器，在实际项目中对传统包管理器（npm/yarn/pnpm）确实有相当大的优势，很多人已经开始抛弃 npm/yarn/pnpm，转用 Bun 作为前端项目的包管理器

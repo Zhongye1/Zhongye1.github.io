@@ -1,11 +1,17 @@
 ---
 uuid: 8bf8c9a0-e156-11f0-8c74-e5dcd76d125c
 title: 2025-12-25-力扣百题速练（Javascript/TypeScript）Vol.1
-category: 力扣
 mathjax: true
 abbrlink: 39687
 published: 2025-12-25 13:57:08
+category: 力扣
+tags:
+    - 力扣
+    - 算法
+    - JavaScript
+    - 两数之和
 ---
+
 简单刷个力扣百题，完球了这玩意从大二下开坑以来就没刷完，现在后端转前端也要那前端那一套来过一趟，还有几天字节面试了都
 
 

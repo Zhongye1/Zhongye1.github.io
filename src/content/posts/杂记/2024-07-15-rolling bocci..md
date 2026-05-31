@@ -1,15 +1,17 @@
 ---
 title: Rolling BOCCI.
-tags:
-  - 同人
-categories:
-  - null
 mathjax: true
 abbrlink: '804e8777'
 date: 2024-07-15 21:25:56
 description: 孤滚同人手书
 cover: https://pic3.zhimg.com/80/v2-5fd4bd1eea119d670312d6193ac03efe_720w.webp
+category: 随记
+tags:
+    - 随记
+    - 同人
+    - 手书
 ---
+
 
 
 

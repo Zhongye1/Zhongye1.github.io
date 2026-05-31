@@ -5,7 +5,10 @@ category: 算法
 mathjax: true
 abbrlink: 47427
 published: 2025-12-26 11:20:25
-
+tags:
+    - 算法
+    - JavaScript
+    - 数据类型转换
 ---
 ## 字符串，数组，数字的转换
 

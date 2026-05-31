@@ -1,13 +1,18 @@
 ---
 uuid: 093daeab-1054-11f0-9848-0b39a1ee406d
 title: 使用Neo4j图数据科学库（GDS）实现中心度分析
-tags:
-  - Neo4j
 mathjax: true
 description: 计算PageRank、度中心性、亲密中心性、介数中心性和各节点的度数
 abbrlink: 19918
 published: 2025-04-02 23:37:24
+category: 数据结构
+tags:
+    - Neo4j
+    - 图数据库
+    - 中心度分析
+    - PageRank
 ---
+
 
 
 **安装并加载GDS库**  

@@ -6,12 +6,13 @@ mathjax: true
 description: 给你的网站加上 Github Contributions Chart！
 abbrlink: 14584
 published: 2024-07-12 20:02:50
-
-
-
-
-
+category: 博客
+tags:
+    - 博客
+    - GitHub
+    - 数据可视化
 ---
+
 # 在博客网站等地方引用 Github 贡献图表
 
 

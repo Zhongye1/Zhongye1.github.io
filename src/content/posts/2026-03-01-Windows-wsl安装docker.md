@@ -1,11 +1,17 @@
 ---
 uuid: ede62ea0-156d-11f1-831d-452b2349953b
 title: 2026-03-01-Windows wsl安装docker
-category: 归档
 mathjax: true
 abbrlink: 7505
 published: 2026-03-01 20:55:31
+category: 工具
+tags:
+    - Docker
+    - WSL
+    - Windows
+    - 安装
 ---
+
 Docker是一个开源的容器平台，它允许开发者将应用程序及其依赖项打包到一个轻量级、可移植的容器中。
 ### 第一步：系统准备
 

@@ -2,9 +2,14 @@
 title: Quadim四叉树风格化图像/视频渲染
 abbrlink: 39fce9a0
 date: 2023-10-21 11:27:06
-tags: github
-category: Github项目
+category: 工具
+tags:
+    - Quadim
+    - 图像处理
+    - 四叉树
+    - Rust
 ---
+
 
 # Quadim
 

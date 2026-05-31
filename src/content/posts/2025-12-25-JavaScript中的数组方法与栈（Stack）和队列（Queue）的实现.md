@@ -1,11 +1,17 @@
 ---
 uuid: d935da50-e16f-11f0-9b30-811c9d6eaab4
 title: 2025-11-29-JavaScript中的数组方法与栈（Stack）和队列（Queue）的实现
-category: 归档
 mathjax: true
 abbrlink: 28254
 published: 2025-11-29 16:58:15
+category: 数据结构
+tags:
+    - 数据结构
+    - 栈
+    - 队列
+    - JavaScript
 ---
+
 JavaScript 中的数组方法完全可以用来实现栈（Stack）和队列（Queue）的基本功能
 
 这是因为栈和队列本质上是对“插入”和“删除”操作位置的限制，而数组的push、pop、unshift、shift这些方法正好提供了在**两端**高效操作的能力

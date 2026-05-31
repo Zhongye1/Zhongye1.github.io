@@ -1,11 +1,17 @@
 ---
 uuid: 679d8e00-e346-11f0-bc84-e1466639a44a
 title: 2025-11-15-配置 dnscrypt-proxy 实现加密 DNS 服务（Windows）
-category: 笔记
 mathjax: true
 abbrlink: 32233
 published: 2025-11-15 01:06:37
+category: 笔记
+tags:
+    - DNS
+    - 加密
+    - 网络安全
+    - Windows
 ---
+
 ## 简介
 
 随着互联网的飞速发展，网络安全问题日益成为公众关注的焦点。从个人用户到企业机构，如何保护网络通信的安全性成为了不可忽视的问题。而在这之中，域名系统（DNS）作为互联网的基础服务之一，其安全性直接影响着整个网络环境的安全性。

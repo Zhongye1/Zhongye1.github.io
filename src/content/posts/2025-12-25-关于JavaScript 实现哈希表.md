@@ -1,12 +1,16 @@
 ---
 uuid: 39948050-e142-11f0-8dff-b364c748d078
 title: 2025-11-27-JavaScript 实现哈希表
-category: 数据结构
 mathjax: true
 abbrlink: 39960
 published: 2025-11-27 11:31:39
-
+category: 数据结构
+tags:
+    - 数据结构
+    - 哈希表
+    - JavaScript
 ---
+
 # JavaScript 实现哈希表
 
 **哈希表**（Hash Table，散列表）是一种通过键（Key）直接访问值（Value）的数据结构，通过哈希函数将键映射到表中的位置

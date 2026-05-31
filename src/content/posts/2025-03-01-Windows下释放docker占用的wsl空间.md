@@ -6,12 +6,14 @@ description: Windows下释放Docker所占用的WSL磁盘空间
 cover: 'https://pic3.zhimg.com/v2-518ec4398811abb43d2630b1b09af77e_1440w.jpg'
 abbrlink: 33014
 published: 2025-03-01 13:54:15
-
-
-
-
-
+category: 工具
+tags:
+    - Docker
+    - WSL
+    - Windows
+    - 磁盘清理
 ---
+
 ## Windows下释放Docker所占用的WSL磁盘空间
 
 使用下面的命令清理镜像：

@@ -1,11 +1,16 @@
 ---
 uuid: ad883950-e14e-11f0-a497-bfd03a5050bc
 title: 2025-11-25 关于链表(Javascript)
-category: 数据结构
 mathjax: true
 abbrlink: 33314
 published: 2025-11-25 13:00:48
+category: 数据结构
+tags:
+    - 数据结构
+    - 链表
+    - JavaScript
 ---
+
 ## 关于链表(Javascript)
 
 链表是一种常见的数据结构，由一系列节点组成，每个节点包含数据和指向下一个节点的引用，在 JavaScript 中广泛应用于算法问题和实际开发
