@@ -29,6 +29,7 @@ import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 import { remarkPlantuml } from "./src/plugins/remark-plantuml.js";
+import { remarkLangNormalize } from "./src/plugins/remark-lang-normalize.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
 import rehypeEmailProtection from "./src/plugins/rehype-email-protection.mjs";
@@ -202,6 +203,7 @@ export default defineConfig({
     markdown: {
         processor: unified({
             remarkPlugins: [
+                remarkLangNormalize,
                 remarkMath,
                 remarkReadingTime,
                 remarkImageGrid,
