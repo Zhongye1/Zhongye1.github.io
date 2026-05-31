@@ -34,7 +34,6 @@ GZHU 27 届 数据科学与大数据技术专业
 ![](https://picx.zhimg.com/v2-f120f0665060a10bf83feac99dbc74c9_r.jpg)
 ![](https://pic2.zhimg.com/v2-476aa714135a81c18d1c93727a7adc17_r.jpg)
 ![](https://pic2.zhimg.com/v2-bc3322dc7814113563ad8db885de085d_r.jpg)
-![](https://pic2.zhimg.com/80/v2-bc3322dc7814113563ad8db885de085d_720w.webp)
 [/grid]
 
 ### 支持我们的工作室！
