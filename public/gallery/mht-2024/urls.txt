@@ -1,0 +1,17 @@
+# 每行一个图片 URL，支持 jpg/png/webp/avif/gif后缀
+# # 号开头的行为注释，空行会被忽略
+# 示例：
+
+https://pic3.zhimg.com/80/v2-9e178bf58e17eecb8da3b1db6495d686_1440w.webp
+https://pic4.zhimg.com/80/v2-795003e889c521fe5d887c251e1b3eab_1440w.webp
+https://pic4.zhimg.com/80/v2-acc1b0716fe4b567e8cb430dc7daeda7_1440w.webp
+https://pic1.zhimg.com/80/v2-6bc601c6236672338d19cbcf72cb20b4_1440w.webp
+https://pic1.zhimg.com/80/v2-930933b7f9bcf66635ef6425ce6e7ac4_1440w.webp
+https://pic1.zhimg.com/80/v2-11f924cd729454218fc1fa947348c854_1440w.webp
+https://pic3.zhimg.com/80/v2-1c5244df81ac2bf8165bd30512efb9fe_1440w.webp
+https://pic3.zhimg.com/80/v2-cfda5eba72b7620e62be09ad83502b1a_1440w.webp
+https://pic2.zhimg.com/80/v2-7fab8b49112edbb7b82b886c27be3e29_1440w.webp
+https://pic2.zhimg.com/80/v2-8007c0d2a1e59c922a2fe26ba58c74dd_1440w.webp
+https://pic3.zhimg.com/80/v2-eac85e01097c82695febb5b7e37667ae_1440w.webp
+https://pic3.zhimg.com/80/v2-d142f2c07d9629c3327c3fadb2d2217a_1440w.webp
+https://pic1.zhimg.com/80/v2-7746497182ab2219b3cc37cc170c6700_1440w.webp
