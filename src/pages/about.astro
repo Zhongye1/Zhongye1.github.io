@@ -1,7 +1,9 @@
 ---
 
 import { getEntry, render } from "astro:content";
+import Comment from "@components/comment/index.astro";
 import Markdown from "@components/common/Markdown.astro";
+import { commentConfig } from "@/config";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 
 const aboutPost = await getEntry("spec", "about");
@@ -11,6 +13,8 @@ if (!aboutPost) {
 }
 
 const { Content } = await render(aboutPost);
+
+const isCommentEnabled = commentConfig?.type && commentConfig.type !== "none";
 ---
 <MainGridLayout title={"关于"} description={"关于"}>
     <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
@@ -19,5 +23,20 @@ const { Content } = await render(aboutPost);
                 <Content />
             </Markdown>
         </div>
+    </div>
+
+    <!-- 评论区 -->
+    <div class="mt-4">
+        {
+            isCommentEnabled ? (
+                <Comment post={aboutPost} customPath="/about/" />
+            ) : (
+                <div class="card-base p-8 mb-6 relative overflow-hidden">
+                    <div class="text-center py-8 text-(--content-meta)">
+                        <p class="text-base">{"评论系统尚未配置"}</p>
+                    </div>
+                </div>
+            )
+        }
     </div>
 </MainGridLayout>
