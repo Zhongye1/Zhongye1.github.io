@@ -46,6 +46,14 @@ Open Source Organization from Guangzhou-University
 
 ## 关于本站
 
+目前这个站点是第四次改造技术栈从hexo换astro，本站早期迭代页：
+
+[grid]
+![](https://pic1.zhimg.com/80/v2-9fe27c8996ec8773b72ebad72e97ac62_720w.webp?source=d16d100b)
+![](https://pic1.zhimg.com/80/v2-f1b8a7a92ecf21209cbcf06171532484_720w.webp?source=d16d100b)
+![](https://pica.zhimg.com/80/v2-d556c8e739d2a99c8964fd44439234ec_720w.webp?source=d16d100b)
+[/grid]
+
 如今博客是有点像是古早互联网时代的产物了，看的人注定是少数，所以能看到这还是很感谢各位
 
 2023 年时建的站，除了做技术沉淀之外，也想去顺手记录生活还是什么的

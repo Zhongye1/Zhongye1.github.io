@@ -6,11 +6,11 @@ GitHub： https://github.com/Zhongye1 <img src="https://visitor-badge.laobi.icu/
 
 ## Zhongye
 
--   来自湖北，南漂中
--   数据科学与大数据技术专业
--   GZHU 27 届
+- 来自湖北，南漂中
+- 数据科学与大数据技术专业
+- GZHU 27 届
 
-<img align="center" src="https://skillicons.dev/icons?i=py,cpp,java,spring,flask,fastapi,nodejs,js,ts,vue,react,vite,electron,html,less,tailwind,mysql,postgres,redis,mongodb,docker,nginx,git,npm,pnpm,bun,github,githubactions,postman,anaconda,arch,ubuntu,figma,vscode&perline=12&theme=light" />
+<img align="center" src="./public/assets/images/svg/skillsicon.svg" />
 
 ---
 
