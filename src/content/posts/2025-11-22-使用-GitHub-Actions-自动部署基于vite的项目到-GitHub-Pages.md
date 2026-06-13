@@ -1,6 +1,6 @@
 ---
 uuid: faa92410-c7cc-11f0-83f1-990039fbc5ca
-title: 2025-11-22- 使用 GitHub Actions 自动部署基于vite的项目到 GitHub Pages
+title: 2025-11-22-使用 GitHub Actions 自动部署前端项目到 GitHub Pages
 mathjax: true
 abbrlink: 33040
 published: 2025-11-23 01:59:24
@@ -12,7 +12,7 @@ tags:
     - 部署
 ---
 
-这篇笔记主要讲在新创建前端项目后，如何通过 GitHub-Actions 实现每次 push 到 main 分支后，GitHub 自动构建 → 自动发布页面的操作
+主要是新创建前端项目后，如何通过 GitHub-Actions 实现每次 push 到 main 分支后，GitHub 自动构建 → 自动发布页面的操作
 
 参考 https://zhongye1.github.io/BDdraw_DEV/#/
 其从仓库 https://github.com/Zhongye1/BDdraw_DEV 实现自动构建和部署

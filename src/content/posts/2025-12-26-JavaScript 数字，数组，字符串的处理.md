@@ -1,6 +1,6 @@
 ---
 uuid: d21722c0-e209-11f0-bf51-7b4c8d0f8062
-title: 2025-12-26-JavaScript 数字，数组，字符串的处理
+title: 2025-12-26-JavaScript 中数字，数组，字符串等数据类型的相关方法
 category: 算法
 mathjax: true
 abbrlink: 47427
@@ -10,6 +10,7 @@ tags:
     - JavaScript
     - 数据类型转换
 ---
+
 ## 字符串，数组，数字的转换
 
 **数字（Number）**、**字符串（String）** 和 **数组（Array）** 之间的相互转换算是常见操作了，常见转换方向、推荐方法、示例代码及说明如下：

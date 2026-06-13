@@ -1,6 +1,6 @@
 ---
 uuid: d935da50-e16f-11f0-9b30-811c9d6eaab4
-title: 2025-11-29-JavaScript中的数组方法与栈（Stack）和队列（Queue）的实现
+title: 2025-11-29-JavaScript中的数组方法与栈和队列的实现
 mathjax: true
 abbrlink: 28254
 published: 2025-11-29 16:58:15
