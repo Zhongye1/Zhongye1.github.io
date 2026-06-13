@@ -1,6 +1,6 @@
 ---
 uuid: 69b00720-c6a6-11f0-b614-1b2a61f63ef4
-title: 2025-11-21-Web可视化实现—canvas
+title: 2025-11-21-Web可视化实践—canvas
 mathjax: true
 abbrlink: 14933
 published: 2025-11-21 14:50:48
