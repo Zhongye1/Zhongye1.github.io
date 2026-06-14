@@ -1,6 +1,6 @@
 ---
 uuid: b8d70910-c4f4-11f0-83bd-25018b9748b8
-title: 2025-06-13-从上下文工程到 Agent Harness Engineering
+title: 2026-06-13-从上下文工程到 Agent Harness Engineering
 mathjax: true
 abbrlink: 29484
 published: 2026-06-13 21:06:20
