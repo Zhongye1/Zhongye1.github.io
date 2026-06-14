@@ -28,7 +28,7 @@ export const friendsConfig: FriendLink[] = [
         desc: "飞萤之火自无梦的长夜亮起，绽放在终竟的明天。",
         siteurl: "https://blog.cuteleaf.cn",
         tags: ["Blog"],
-        weight: 6, // 权重，数字越大排序越靠前
+        weight: 5, // 权重，数字越大排序越靠前
         enabled: true, // 是否启用
     },
     {
@@ -37,7 +37,7 @@ export const friendsConfig: FriendLink[] = [
         desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
         siteurl: "https://github.com/withastro/astro",
         tags: ["Framework"],
-        weight: 8,
+        weight: 5,
         enabled: true,
     },
     {
@@ -55,7 +55,7 @@ export const friendsConfig: FriendLink[] = [
         desc: "个人网站",
         siteurl: "https://zhongye1.github.io",
         tags: ["Blog"],
-        weight: 5,
+        weight: 6,
         enabled: true,
     },
     {
@@ -115,8 +115,17 @@ export const friendsConfig: FriendLink[] = [
     {
         title: "GZHU-193",
         imgurl: "https://pic1.zhimg.com/80/v2-593dd0a3b84d023b3827b97e81e0242a_720w.webp",
-        desc: "广州大学193号工作站",
+        desc: "GZHU-193工作室",
         siteurl: "https://guangzhou-university-site-193.github.io/GZHU-SITE/",
+        tags: ["Blog"],
+        weight: 5,
+        enabled: true,
+    },
+    {
+        title: "時雨てる",
+        imgurl: "https://avatars.githubusercontent.com/u/59642397?v=4",
+        desc: "時雨てる的博客站",
+        siteurl: "https://keqing.moe/",
         tags: ["Blog"],
         weight: 5,
         enabled: true,
