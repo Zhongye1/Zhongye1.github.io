@@ -5,6 +5,7 @@ mathjax: true
 abbrlink: 29484
 published: 2026-06-13 21:06:20
 category: 笔记
+description: 随着llm的发展，程序员的角色正在发生转变：不再是逐行敲代码的执行者，而是负责给出方向、保障代码质量、指挥模型干活的 "Builder"
 cover: "https://picx.zhimg.com/80/v2-d775deb465a9936f4e7b3f0098982c3b_720w.webp?source=d16d100b"
 tags:
     - 上下文工程
