@@ -2,7 +2,6 @@
 import { Icon } from "astro-icon/components";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { siteConfig } from "@/config";
-
 import {
     getCategoryList,
     getSortedPosts,
@@ -149,7 +148,7 @@ const stats = [
                 <span
                     id="busuanzi_value_site_pv"
                     class="text-base font-bold text-neutral-900 dark:text-neutral-100"
-                    >-</span
+                    >42296</span
                 >
                 <span
                     class="text-sm text-neutral-500 dark:text-neutral-400 ml-1"
@@ -172,11 +171,11 @@ const stats = [
                 <span
                     id="busuanzi_value_site_uv"
                     class="text-base font-bold text-neutral-900 dark:text-neutral-100"
-                    >-</span
+                    >29212</span
                 >
                 <span
                     class="text-sm text-neutral-500 dark:text-neutral-400 ml-1"
-                    >人次</span
+                    >人</span
                 >
             </div>
         </div>
@@ -238,6 +237,7 @@ const stats = [
 </script>
 
 <!-- 不蒜子访客统计脚本 -->
+<!-- TODO 访客后端服务 -->
 <script
     is:inline
     async
