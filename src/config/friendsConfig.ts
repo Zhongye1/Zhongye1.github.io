@@ -130,6 +130,15 @@ export const friendsConfig: FriendLink[] = [
         weight: 5,
         enabled: true,
     },
+    {
+        title: "雷顿",
+        imgurl: "https://file.leidun.pp.ua/leidun.png",
+        desc: "他睡觉时真的不打雷",
+        siteurl: "https://leidun.pp.ua",
+        tags: ["Blog"],
+        weight: 5,
+        enabled: true,
+    },
 ];
 
 // 获取启用的友链并进行排序
