@@ -139,6 +139,15 @@ export const friendsConfig: FriendLink[] = [
         weight: 5,
         enabled: true,
     },
+    {
+        title: "Shawn's blog",
+        imgurl: "https://b2.chix.pp.ua/icon.jpg",
+        desc: "Be happy and smile :)",
+        siteurl: "https://link.chichi.qzz.io/blog",
+        tags: ["Blog"],
+        weight: 5,
+        enabled: true,
+    },
 ];
 
 // 获取启用的友链并进行排序
