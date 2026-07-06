@@ -459,17 +459,17 @@ export type SidebarLayoutConfig = {
 };
 
 export type SakuraConfig = {
-	enable: boolean; // 是否启用樱花特效
-	switchable?: boolean; // 是否允许用户在设置中切换樱花特效
-	sakuraNum: number; // 樱花数量，默认21
-	limitTimes: number; // 樱花越界限制次数，-1为无限循环
+	enable: boolean; // 是否启用粒子特效
+	switchable?: boolean; // 是否允许用户在设置中切换
+	sakuraNum: number; // 粒子数量，默认 55
+	limitTimes: number; // 粒子越界限制次数，-1为无限循环
 	size: {
-		min: number; // 樱花最小尺寸倍数
-		max: number; // 樱花最大尺寸倍数
+		min: number; // 粒子最小半径
+		max: number; // 粒子最大半径
 	};
 	opacity: {
-		min: number; // 樱花最小不透明度
-		max: number; // 樱花最大不透明度
+		min: number; // 粒子最小不透明度
+		max: number; // 粒子最大不透明度
 	};
 	speed: {
 		horizontal: {
@@ -480,10 +480,19 @@ export type SakuraConfig = {
 			min: number; // 垂直移动速度最小值
 			max: number; // 垂直移动速度最大值
 		};
-		rotation: number; // 旋转速度
-		fadeSpeed: number; // 消失速度，不应大于最小不透明度
+		rotation: number; // 旋转速度（粒子模式不使用）
+		fadeSpeed: number; // 消失速度（粒子模式不使用）
 	};
-	zIndex: number; // 层级，确保樱花在合适的层级显示
+	zIndex: number; // 层级
+	// 粒子专属配置（可选，不填则使用默认值）
+	colors?: string[];       // 粒子颜色列表
+	glow?: boolean;          // 是否启用发光效果
+	glowRadius?: number;     // 发光半径
+	connectLines?: boolean;  // 是否启用粒子间连线
+	connectDistance?: number; // 连线最大距离
+	connectOpacity?: number; // 连线透明度
+	mouseRepel?: boolean;    // 是否启用鼠标排斥
+	mouseForce?: number;     // 鼠标排斥力度
 };
 
 // Spine 看板娘配置
