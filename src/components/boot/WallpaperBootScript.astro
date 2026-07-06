@@ -19,8 +19,8 @@ const baseUrl = import.meta.env.BASE_URL;
   const WALLPAPER_FULLSCREEN = "fullscreen";
   const WALLPAPER_OVERLAY = "overlay";
   const WALLPAPER_NONE = "none";
-  // TODO: 临时硬编码为全屏模式，后续大改页面时移除
-  const wallpaperMode = "fullscreen"; // isWallpaperSwitchable ? localStorage.getItem("wallpaperMode") || defaultWallpaperMode : defaultWallpaperMode;
+  // TODO: 临时硬编码为全屏透明模式，后续大改页面时移除
+  const wallpaperMode = "overlay"; // isWallpaperSwitchable ? localStorage.getItem("wallpaperMode") || defaultWallpaperMode : defaultWallpaperMode;
 
   // 设置data-wallpaper-mode属性
   document.documentElement.setAttribute(

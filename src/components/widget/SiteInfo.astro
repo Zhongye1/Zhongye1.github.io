@@ -1,0 +1,101 @@
+---
+import { Icon } from "astro-icon/components";
+import WidgetLayout from "@/components/common/WidgetLayout.astro";
+import { licenseConfig, siteConfig } from "@/config";
+import pkg from "@/../package.json";
+
+interface Props {
+    class?: string;
+    style?: string;
+}
+
+const { class: className, style } = Astro.props;
+
+// 构建时间（SSG 构建时的时间戳）
+const buildTime = new Date();
+const buildTimeStr = `${buildTime.getFullYear()}年${buildTime.getMonth() + 1}月${buildTime.getDate()}日 ${String(buildTime.getHours()).padStart(2, "0")}:${String(buildTime.getMinutes()).padStart(2, "0")}:${String(buildTime.getSeconds()).padStart(2, "0")}`;
+
+// 版本信息
+const blogVersion = pkg.version;
+const astroVersion = pkg.dependencies?.astro || "unknown";
+const pnpmVersion =
+    (pkg as any).packageManager?.replace("pnpm@", "") || "unknown";
+const nodeVersion = process.version;
+const osInfo = `${process.platform} / ${process.arch}`;
+
+// 许可与域名
+const licenseName = licenseConfig.name;
+const siteUrl = siteConfig.site_url?.replace(/^https?:\/\//, "") || "";
+
+const infoItems = [
+    {
+        icon: "material-symbols:cloud-outline",
+        label: "构建平台",
+        value: "GitHub Pages",
+    },
+    {
+        icon: "material-symbols:deployed-code-outline",
+        label: "博客版本",
+        value: `Firefly v${blogVersion}`,
+    },
+    {
+        icon: "material-symbols:license-outline",
+        label: "文章许可",
+        value: licenseName,
+    },
+    {
+        icon: "material-symbols:dns-outline",
+        label: "站点域名",
+        value: siteUrl,
+    },
+    {
+        icon: "material-symbols:code-blocks-outline",
+        label: "Astro",
+        value: `v${astroVersion}`,
+    },
+    {
+        icon: "material-symbols:info-outline",
+        label: "Node",
+        value: `v${nodeVersion}`,
+    },
+    {
+        icon: "material-symbols:package-outline",
+        label: "pnpm",
+        value: `v${pnpmVersion}`,
+    },
+    {
+        icon: "material-symbols:schedule-outline",
+        label: "构建时间",
+        value: buildTimeStr,
+    },
+    {
+        icon: "material-symbols:computer-outline",
+        label: "系统信息",
+        value: osInfo,
+    },
+];
+---
+
+<WidgetLayout name={"站点信息"} id="site-info" class={className} style={style}>
+    <div class="flex flex-col gap-2">
+        {
+            infoItems.map((item) => (
+                <div class="flex items-center justify-between px-3 py-1.5">
+                    <div class="flex items-center gap-2.5">
+                        <div class="text-(--primary) text-xl">
+                            <Icon name={item.icon} />
+                        </div>
+                        <span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm">
+                            {item.label}
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs font-medium text-neutral-600 dark:text-neutral-400 text-right">
+                            {item.value}
+                        </span>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</WidgetLayout>

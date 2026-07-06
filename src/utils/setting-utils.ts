@@ -858,8 +858,8 @@ export function initWallpaperMode(): void {
 }
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
-	// TODO: 临时硬编码为全屏模式，后续大改页面时移除
-	return WALLPAPER_FULLSCREEN;
+	// TODO: 临时硬编码为全屏透明模式，后续大改页面时移除
+	return WALLPAPER_OVERLAY;
 }
 
 // Overlay settings functions
