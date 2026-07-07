@@ -11,13 +11,8 @@ function extractText(node) {
 	return "";
 }
 
-/** 已注入客户端脚本的 tree 集合，保证同一棵树只注入一次渲染脚本 */
-const scriptInjectedTrees = new WeakSet();
-
 export function rehypeMermaid() {
 	return (tree) => {
-		let foundAny = false;
-
 		visit(tree, "element", (node) => {
 			if (
 				node.tagName === "div" &&
@@ -51,26 +46,20 @@ export function rehypeMermaid() {
 					],
 				);
 
-				// 替换原始节点（脚本不在此处注入，改为整棵树只注入一次）
+				// 创建客户端渲染脚本
+				const renderScript = h(
+					"script",
+					{
+						type: "text/javascript",
+					},
+					mermaidRenderScript,
+				);
+
+				// 替换原始节点
 				node.tagName = "div";
 				node.properties = { class: "mermaid-diagram-container" };
-				node.children = [mermaidContainer];
-
-				foundAny = true;
+				node.children = [mermaidContainer, renderScript];
 			}
 		});
-
-		// 整棵树只注入一次客户端渲染脚本，避免一页多图时重复注入相同脚本
-		if (foundAny && !scriptInjectedTrees.has(tree)) {
-			scriptInjectedTrees.add(tree);
-			const renderScript = h(
-				"script",
-				{
-					type: "text/javascript",
-				},
-				mermaidRenderScript,
-			);
-			tree.children = [...(tree.children || []), renderScript];
-		}
 	};
 }
