@@ -6,9 +6,9 @@ abbrlink: 38065
 published: 2026-07-06 14:10:49
 category: 笔记
 description: 主要关于spark系统，scala语言及编程，还有Breeze程序包等
-cover: https://pic1.zhimg.com/v2-47a2386737d78ba98266730b1c5fd062_1440w.jpg
+cover: https://pic3.zhimg.com/v2-c214460639704700846805991571706c_1440w.jpg
 tags:
-    - 分布式统计计算
+    - 分布式处理与计算
 ---
 
 # Spark系统与Scala语言
