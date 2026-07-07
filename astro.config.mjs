@@ -6,7 +6,6 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
 import { defineConfig } from "astro/config";
-import { unified } from "@astrojs/markdown-remark";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -58,7 +57,8 @@ export default defineConfig({
 
     experimental: {
         // Rust 编译器以提升构建性能（实验性），部分平台可能会导致构建失败，可以根据需要启用或禁用
-        rustCompiler: false,
+        // 已启用：@astrojs/compiler-rs 已在依赖中，可显著加快 .astro 编译；若某平台 CI 构建报错再回退为 false
+        rustCompiler: true,
         // 队列渲染以优化性能（实验性）
         queuedRendering: { enabled: true },
     },
@@ -201,61 +201,75 @@ export default defineConfig({
         mdx(),
     ],
     markdown: {
-        processor: unified({
-            remarkPlugins: [
-                remarkLangNormalize,
-                remarkMath,
-                remarkReadingTime,
-                remarkImageGrid,
-                remarkExcerpt,
-                remarkDirective,
-                remarkSectionize,
-                parseDirectiveNode,
-                remarkMermaid,
-                [remarkPlantuml, plantumlConfig],
+        // 使用 Astro 原生声明式配置替代手动 unified() processor。
+        // 这样 Astro 才能对每篇 Markdown 启用 Content Layer 缓存与单文件增量编译，
+        // 显著加快 dev 下的 HMR 与 build 的全量构建。
+        remarkPlugins: [
+            remarkLangNormalize,
+            remarkMath,
+            remarkReadingTime,
+            remarkImageGrid,
+            remarkExcerpt,
+            remarkDirective,
+            remarkSectionize,
+            parseDirectiveNode,
+            remarkMermaid,
+            [remarkPlantuml, plantumlConfig],
+        ],
+        rehypePlugins: [
+            // KaTeX 构建期渲染加速：
+            //   output: "html"   仅输出 HTML，不再额外生成 MathML，公式 DOM 体积与生成时间约减半
+            //   strict: false    关闭严格模式，跳过大量告警检查
+            //   throwOnError: false  公式出错时不中断构建
+            // 注：output:"html" 会牺牲部分屏幕阅读器无障碍能力，如需 MathML 可移除该项
+            [
+                rehypeKatex,
+                {
+                    katex,
+                    output: "html",
+                    strict: false,
+                    throwOnError: false,
+                },
             ],
-            rehypePlugins: [
-                [rehypeKatex, { katex }],
-                [rehypeCallouts, { theme: siteConfig.rehypeCallouts.theme }],
-                rehypeSlug,
-                rehypeMermaid,
-                rehypePlantuml,
-                rehypeFigure,
-                [rehypeExternalLinks, { siteUrl: siteConfig.site_url }],
-                [rehypeEmailProtection, { method: "base64" }], // 邮箱保护插件，支持 'base64' 或 'rot13'
-                [
-                    rehypeComponents,
-                    {
-                        components: {
-                            github: GithubCardComponent,
-                        },
+            [rehypeCallouts, { theme: siteConfig.rehypeCallouts.theme }],
+            rehypeSlug,
+            rehypeMermaid,
+            rehypePlantuml,
+            rehypeFigure,
+            [rehypeExternalLinks, { siteUrl: siteConfig.site_url }],
+            [rehypeEmailProtection, { method: "base64" }], // 邮箱保护插件，支持 'base64' 或 'rot13'
+            [
+                rehypeComponents,
+                {
+                    components: {
+                        github: GithubCardComponent,
                     },
-                ],
-                [
-                    rehypeAutolinkHeadings,
-                    {
-                        behavior: "append",
+                },
+            ],
+            [
+                rehypeAutolinkHeadings,
+                {
+                    behavior: "append",
+                    properties: {
+                        className: ["anchor"],
+                    },
+                    content: {
+                        type: "element",
+                        tagName: "span",
                         properties: {
-                            className: ["anchor"],
+                            className: ["anchor-icon"],
+                            "data-pagefind-ignore": true,
                         },
-                        content: {
-                            type: "element",
-                            tagName: "span",
-                            properties: {
-                                className: ["anchor-icon"],
-                                "data-pagefind-ignore": true,
+                        children: [
+                            {
+                                type: "text",
+                                value: "#",
                             },
-                            children: [
-                                {
-                                    type: "text",
-                                    value: "#",
-                                },
-                            ],
-                        },
+                        ],
                     },
-                ],
+                },
             ],
-        }),
+        ],
     },
     vite: {
         css: {
@@ -265,7 +279,14 @@ export default defineConfig({
         },
         server: {
             watch: {
-                ignored: ["**/package/**", "**/Firefly-docs/**"],
+                // 扩大忽略范围，减少 chokidar 监听压力，加快 dev 冷启动与 HMR
+                ignored: [
+                    "**/package/**",
+                    "**/Firefly-docs/**",
+                    "**/dist/**",
+                    "**/.astro/**",
+                    "**/node_modules/**",
+                ],
             },
         },
         resolve: {
