@@ -9,6 +9,9 @@ description: Spark 核心组件、Scala 编程基础与 Word Count 实例
 cover: https://pic1.zhimg.com/70/v2-bf9881cd32c068bc1da7626ca8294e1c_1440w.avis?source=172ae18b&biz_tag=Post
 tags:
     - 分布式处理与计算
+    - Spark
+    - Scala
+    - RDD
 ---
 
 # Spark系统与Scala语言
@@ -89,12 +92,16 @@ object SparkWordCount {
 ### Scala语言中的数据类型
 
 整数： Byte（2^8 | -128 到 127） 、 Short （2^16 | -32768 到 32767）、 Int （2^32 | -2147483648 到 2147483647）、 Long(2^64)
+
 浮点数： Float （单精度32）、 Double （浮点数64）
+
 字符： Char （字符）、 String （字符串）
+
 Boolean: true或false
+
 在具体声明中， '<value>' 表示字符， "<value>" 表示字符串
 
-### 三、值与变量声明
+### 值与变量声明
 
 ```scala
 val <Name>[:<type>] = <value>   // 常量（值），不可再赋值
@@ -910,7 +917,7 @@ val MAT = new BlockMatrix(blocks, 2, 2)
 | `import breeze.stats._`    | 统计包                                                                                            |
 | `breeze.stats.mean(Vec)`   | 求均值（或 `sum(Vec)/Vec.length`）                                                                |
 
-####常用分布
+#### 常用分布
 
 **调用**：`import breeze.stats.distributions._`
 
