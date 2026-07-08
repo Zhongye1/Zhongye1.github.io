@@ -5,7 +5,7 @@ mathjax: true
 abbrlink: 38065
 published: 2026-07-06 14:10:49
 category: 笔记
-description: 主要关于spark系统，scala语言及编程，还有Breeze程序包等
+description: Spark 核心组件、Scala 编程基础与 Word Count 实例
 cover: https://pic1.zhimg.com/70/v2-bf9881cd32c068bc1da7626ca8294e1c_1440w.avis?source=172ae18b&biz_tag=Post
 tags:
     - 分布式处理与计算
