@@ -132,9 +132,9 @@ export const friendsConfig: FriendLink[] = [
     },
     {
         title: "雷顿",
-        imgurl: "https://file.leidun.pp.ua/leidun.png",
+        imgurl: "https://file.houman.top/leidun.png",
         desc: "他睡觉时真的不打雷",
-        siteurl: "https://leidun.pp.ua",
+        siteurl: "https://blog.houman.top",
         tags: ["Blog"],
         weight: 5,
         enabled: true,

@@ -862,7 +862,7 @@ $effect(() => {
                             icon="mdi:flower-poppy"
                             class="text-[1.25rem] shrink-0"
                         ></Icon>
-                        <span class="text-sm flex-1">樱花特效</span>
+                        <span class="text-sm flex-1">粒子特效</span>
                         <div
                             class="w-10 h-5 rounded-full transition-all duration-200 relative"
                             class:bg-(--primary)={sakuraEnabled}
