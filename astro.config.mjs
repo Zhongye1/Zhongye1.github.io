@@ -203,6 +203,8 @@ export default defineConfig({
     ],
     markdown: {
         processor: unified({
+            gfm: true,
+            smartypants: false,
             remarkPlugins: [
                 remarkLangNormalize,
                 remarkMath,
