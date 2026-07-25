@@ -1,8 +1,8 @@
 ---
+abbrlink: f3a243ef
 uuid: b8d70910-c4f4-11f0-83bd-25018b9748b8
 title: 2026-06-13-从上下文工程到 Agent Harness Engineering
 mathjax: true
-abbrlink: 29484
 published: 2026-06-13 21:06:20
 category: 笔记
 description: 随着llm的发展，程序员的角色正在发生转变：不再是逐行敲代码的执行者，而是负责给出方向、保障代码质量、指挥模型干活的 "Builder"

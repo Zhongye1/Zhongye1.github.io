@@ -1,8 +1,8 @@
 ---
+abbrlink: b0d66ec2
 uuid: f3561dd0-e86a-11f0-8fd1-914b1152d8ed
 title: 分布式处理与计算：Spark系统与Scala语言
 mathjax: true
-abbrlink: 38065
 published: 2026-07-06 14:10:49
 category: 笔记
 description: Spark 核心组件、Scala 编程基础与 Word Count 实例

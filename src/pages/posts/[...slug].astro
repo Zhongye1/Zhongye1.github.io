@@ -13,6 +13,7 @@ import {
 	getPostUrlBySlug,
 	removeFileExtension,
 } from "@utils/url-utils";
+import { getAbbrlinkPath } from "@utils/abbrlink-utils";
 import { Icon } from "astro-icon/components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -50,6 +51,8 @@ const processedImage = processCoverImageSync(entry.data.image, entry.id);
 const apiUrls = getApiUrlList(entry.data.image, entry.id);
 const posterCoverUrl = entry.data.image || processedImage;
 const posterAvatarUrl = profileConfig.avatar;
+// 对外分享用短链（/p/<短码>/），访问后由壳页跳转回本长链
+const shareUrl = new URL(getAbbrlinkPath(entry), Astro.site).href;
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "BlogPosting",
@@ -250,7 +253,7 @@ const relatedPosts = await getRelatedPosts(entry, 5);
                                                         entry.data.published,
                                                     )}
                                                     coverImage={posterCoverUrl}
-                                                    url={Astro.url.href}
+                                                    url={shareUrl}
                                                     siteTitle={siteConfig.title}
                                                     avatar={posterAvatarUrl}
                                                 />
@@ -342,7 +345,7 @@ const relatedPosts = await getRelatedPosts(entry, 5);
                                                         entry.data.published,
                                                     )}
                                                     coverImage={posterCoverUrl}
-                                                    url={Astro.url.href}
+                                                    url={shareUrl}
                                                     siteTitle={siteConfig.title}
                                                     avatar={posterAvatarUrl}
                                                 />

@@ -180,6 +180,11 @@ export default defineConfig({
                 const url = new URL(page);
                 const pathname = url.pathname;
 
+                // abbrlink 短链跳转壳页不进 sitemap，SEO 权重集中在长 URL
+                if (pathname.startsWith("/p/")) {
+                    return false;
+                }
+
                 if (pathname === "/friends/" && !siteConfig.pages.friends) {
                     return false;
                 }

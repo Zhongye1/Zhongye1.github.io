@@ -1,0 +1,48 @@
+---
+/**
+ * abbrlink 短链跳转壳页
+ *
+ * 每篇文章额外生成一个 /p/<短码>/ 页面，本页不渲染文章正文，只负责跳转到长链。
+ * - 对用户：meta refresh + JS location.replace 立即跳到长 URL（replace 不留历史记录）
+ * - 对搜索引擎：noindex 不收录本壳页，canonical 指向长链，把权重让给长 URL
+ *
+ * 因此"短链只用于跳转访问，完整 URL 用于 SEO"。
+ */
+import { getSortedPosts } from "@utils/content-utils";
+import { getPostUrlBySlug } from "@utils/url-utils";
+import { getAbbrlink } from "@utils/abbrlink-utils";
+
+export async function getStaticPaths() {
+	const posts = await getSortedPosts();
+	return posts.map((entry) => ({
+		params: { abbrlink: getAbbrlink(entry) },
+		props: { target: getPostUrlBySlug(entry.id) },
+	}));
+}
+
+const { target } = Astro.props;
+// 组装成带域名的绝对地址（Astro.site 来自 astro.config 的 site 配置）
+const fullUrl = new URL(target, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="zh">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- 壳页不收录，跟随链接把权重交给长 URL -->
+		<meta name="robots" content="noindex, follow" />
+		<link rel="canonical" href={fullUrl} />
+		<meta http-equiv="refresh" content={`0; url=${fullUrl}`} />
+		<title>跳转中…</title>
+		<script
+			is:inline
+			set:html={`location.replace(${JSON.stringify(fullUrl)});`}
+		/>
+	</head>
+	<body>
+		<p>
+			正在跳转到 <a href={fullUrl}>{fullUrl}</a>
+		</p>
+	</body>
+</html>
