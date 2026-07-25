@@ -16,8 +16,8 @@ export interface ResponsiveSidebarConfig {
  *
  * 响应式布局（硬编码）：
  * - 768px及以下: 隐藏侧栏，显示底部mobileBottomComponents
- * - 769px-1279px: 根据position和tabletSidebar配置显示侧栏
- * - 1280px及以上: 根据position配置显示侧栏
+ * - 769px-1023px: 根据position和tabletSidebar配置显示侧栏
+ * - 1024px及以上: 根据position配置显示侧栏
  */
 export function getResponsiveSidebarConfig(): ResponsiveSidebarConfig {
 	const position = sidebarLayoutConfig.position;
@@ -40,7 +40,7 @@ export function getResponsiveSidebarConfig(): ResponsiveSidebarConfig {
 	// 响应式布局由 CSS 处理，这里仅用于判断是否有组件
 	const mobileShowSidebar = false; // 768px及以下不显示侧边栏
 	const tabletShowSidebar = sidebarLayoutConfig.enable; // 769px及以上显示
-	const desktopShowSidebar = sidebarLayoutConfig.enable; // 1280px及以上显示
+	const desktopShowSidebar = sidebarLayoutConfig.enable; // 1024px及以上显示
 
 	return {
 		isBothSidebars,
@@ -59,8 +59,8 @@ export function getResponsiveSidebarConfig(): ResponsiveSidebarConfig {
  *
  * 响应式设计：
  * - 768px及以下: 单列布局（grid-cols-1），隐藏侧栏，显示底部组件
- * - 769px-1279px: 根据position和tabletSidebar配置决定2列布局方向
- * - 1280px及以上: 根据position配置决定2列或3列布局
+ * - 769px-1023px: 根据position和tabletSidebar配置决定2列布局方向
+ * - 1024px及以上: 根据position配置决定2列或3列布局
  */
 export function generateGridClasses(config: ResponsiveSidebarConfig): {
 	gridCols: string;
@@ -74,13 +74,13 @@ export function generateGridClasses(config: ResponsiveSidebarConfig): {
 	) {
 		// 双侧边栏
 		if (config.tabletSidebar === "right") {
-			// 平板端显示右侧栏: 769-1279px [内容+右侧栏], 1280px+ [左+中+右]
+			// 平板端显示右侧栏: 769-1023px [内容+右侧栏], 1024px+ [左+中+右]
 			gridCols =
-				"grid-cols-1 md:grid-cols-[1fr_17.5rem] xl:grid-cols-[17.5rem_1fr_17.5rem]";
+				"grid-cols-1 md:grid-cols-[1fr_17.5rem] lg:grid-cols-[17.5rem_1fr_17.5rem]";
 		} else {
-			// 平板端显示左侧栏（默认）: 769-1279px [左侧栏+内容], 1280px+ [左+中+右]
+			// 平板端显示左侧栏（默认）: 769-1023px [左侧栏+内容], 1024px+ [左+中+右]
 			gridCols =
-				"grid-cols-1 md:grid-cols-[17.5rem_1fr] xl:grid-cols-[17.5rem_1fr_17.5rem]";
+				"grid-cols-1 md:grid-cols-[17.5rem_1fr] lg:grid-cols-[17.5rem_1fr_17.5rem]";
 		}
 	} else if (config.hasLeftComponents && !config.hasRightComponents) {
 		// 仅左侧边栏: 769px+显示左+中，768-以下单列
@@ -111,8 +111,8 @@ export function generateSidebarClasses(
 	];
 
 	if (config.isBothSidebars && config.tabletSidebar === "right") {
-		// 双侧栏+平板端显示右侧栏：左侧栏仅在1280px+显示
-		classes.push("xl:block");
+		// 双侧栏+平板端显示右侧栏：左侧栏仅在1024px+显示
+		classes.push("lg:block");
 	} else {
 		// 默认：左侧栏769px+显示
 		classes.push("md:block");
@@ -138,17 +138,17 @@ export function generateRightSidebarClasses(
 			"md:col-span-1",
 			"md:max-w-70",
 			"md:col-start-2", // 平板端在第2列
-			"xl:col-start-3", // 桌面端在第3列
+			"lg:col-start-3", // 桌面端在第3列
 		);
 	} else if (config.isBothSidebars) {
-		// 双侧栏+平板端显示左侧栏（默认）：仅1280px+显示
+		// 双侧栏+平板端显示左侧栏（默认）：仅1024px+显示
 		classes.push(
-			"xl:block",
-			"xl:row-start-1",
-			"xl:row-end-3",
-			"xl:col-span-1",
-			"xl:max-w-70",
-			"xl:col-start-3",
+			"lg:block",
+			"lg:row-start-1",
+			"lg:row-end-3",
+			"lg:col-span-1",
+			"lg:max-w-70",
+			"lg:col-start-3",
 		);
 	} else if (config.position === "right") {
 		// 仅右侧栏模式（非双侧栏）：769px+显示，在第2列
@@ -161,14 +161,14 @@ export function generateRightSidebarClasses(
 			"md:col-start-2",
 		);
 	} else {
-		// 其他情况：仅1280px+显示
+		// 其他情况：仅1024px+显示
 		classes.push(
-			"xl:block",
-			"xl:row-start-1",
-			"xl:row-end-3",
-			"xl:col-span-1",
-			"xl:max-w-70",
-			"xl:col-start-3",
+			"lg:block",
+			"lg:row-start-1",
+			"lg:row-end-3",
+			"lg:col-span-1",
+			"lg:max-w-70",
+			"lg:col-start-3",
 		);
 	}
 
@@ -196,16 +196,16 @@ export function generateMainContentClasses(
 			// 双侧栏+平板端右侧栏: 平板端内容在第1列，桌面端内容在第2列
 			classes.push("md:col-span-1");
 			classes.push("md:col-start-1");
-			classes.push("xl:col-span-1");
-			classes.push("xl:col-start-2");
-			classes.push("xl:col-end-3");
+			classes.push("lg:col-span-1");
+			classes.push("lg:col-start-2");
+			classes.push("lg:col-end-3");
 		} else {
 			// 双侧栏+平板端左侧栏（默认）: 内容始终在第2列
 			classes.push("md:col-span-1");
 			classes.push("md:col-start-2");
-			classes.push("xl:col-span-1");
-			classes.push("xl:col-start-2");
-			classes.push("xl:col-end-3");
+			classes.push("lg:col-span-1");
+			classes.push("lg:col-start-2");
+			classes.push("lg:col-end-3");
 		}
 	} else if (config.hasLeftComponents && !config.hasRightComponents) {
 		// 仅左侧边栏: 内容在第2列

@@ -36,10 +36,10 @@ export function updateMainGridCols() {
 				: tabletSidebar;
 		if (effectiveTabletSidebar === "right") {
 			newGridClasses =
-				"grid-cols-1 md:grid-cols-[1fr_17.5rem] xl:grid-cols-[17.5rem_1fr_17.5rem]";
+				"grid-cols-1 md:grid-cols-[1fr_17.5rem] lg:grid-cols-[17.5rem_1fr_17.5rem]";
 		} else {
 			newGridClasses =
-				"grid-cols-1 md:grid-cols-[17.5rem_1fr] xl:grid-cols-[17.5rem_1fr_17.5rem]";
+				"grid-cols-1 md:grid-cols-[17.5rem_1fr] lg:grid-cols-[17.5rem_1fr_17.5rem]";
 		}
 	} else if (sidebarPosition === "right") {
 		// 仅右侧栏
@@ -54,7 +54,7 @@ export function updateMainGridCols() {
 		"grid-cols-1",
 		"md:grid-cols-[17.5rem_1fr]",
 		"md:grid-cols-[1fr_17.5rem]",
-		"xl:grid-cols-[17.5rem_1fr_17.5rem]",
+		"lg:grid-cols-[17.5rem_1fr_17.5rem]",
 	].forEach((cls) => {
 		mainGrid.classList.remove(cls);
 	});
@@ -74,19 +74,19 @@ export function updateMainGridCols() {
 
 		if (shouldBothSidebars) {
 			// 文章页临时双侧栏：右侧栏移到第3列，主内容移到第2列，页脚居中
-			rightSidebar?.classList.add("xl:col-start-3");
-			swupContainer?.classList.add("xl:col-start-2", "xl:col-end-3");
+			rightSidebar?.classList.add("lg:col-start-3");
+			swupContainer?.classList.add("lg:col-start-2", "lg:col-end-3");
 			if (footer) {
-				footer.classList.remove("md:col-start-1", "xl:col-start-1");
-				footer.classList.add("xl:col-start-2");
+				footer.classList.remove("md:col-start-1", "lg:col-start-1");
+				footer.classList.add("lg:col-start-2");
 			}
 		} else {
 			// 非文章页：恢复2列布局定位
-			rightSidebar?.classList.remove("xl:col-start-3");
-			swupContainer?.classList.remove("xl:col-start-2", "xl:col-end-3");
+			rightSidebar?.classList.remove("lg:col-start-3");
+			swupContainer?.classList.remove("lg:col-start-2", "lg:col-end-3");
 			if (footer) {
-				footer.classList.add("md:col-start-1", "xl:col-start-1");
-				footer.classList.remove("xl:col-start-2");
+				footer.classList.add("md:col-start-1", "lg:col-start-1");
+				footer.classList.remove("lg:col-start-2");
 			}
 		}
 	}
