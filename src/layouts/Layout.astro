@@ -1,6 +1,5 @@
 ---
 import ReferrerPolicyScript from "@components/boot/ReferrerPolicyScript.astro";
-import SettingsBootScript from "@components/boot/SettingsBootScript.astro";
 // ── 启动脚本(is:inline 防闪烁) ──────────────────────────────
 import ThemeBootScript from "@components/boot/ThemeBootScript.astro";
 import WallpaperBootScript from "@components/boot/WallpaperBootScript.astro";
@@ -19,11 +18,9 @@ import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
 import { backgroundWallpaper, siteConfig } from "@/config";
 import { SITE_LANG } from "@/config/siteConfig";
 import {
-	BANNER_HEIGHT,
-	BANNER_HEIGHT_HOME,
 	PAGE_WIDTH,
 } from "@/constants/constants";
-import { getDefaultBackground, isHomePage } from "@/utils/layout-utils";
+import { isHomePage } from "@/utils/layout-utils";
 
 import "@/styles/main.css";
 import "@/styles/variables.styl";
@@ -39,7 +36,7 @@ interface Props {
 	postSlug?: string;
 }
 
-let { title, banner, description, lang, setOGTypeArticle, postSlug } =
+let { title, description, lang, setOGTypeArticle, postSlug } =
 	Astro.props;
 
 // apply a class to the body element to decide the height of the banner, only used for initial page load
@@ -49,22 +46,6 @@ const isHomePageCheck = isHomePage(Astro.url.pathname);
 
 // defines global css variables
 const configHue = siteConfig.themeColor.hue;
-
-// 获取导航栏透明模式配置
-const navbarTransparentMode =
-	backgroundWallpaper.common?.navbar?.transparentMode || "semi";
-// 判断是否应该显示顶部高光效果（只在full和semifull模式下显示）
-const shouldShowTopHighlight =
-	navbarTransparentMode === "full" || navbarTransparentMode === "semifull";
-
-if (!banner || typeof banner !== "string" || banner.trim() === "") {
-	banner = getDefaultBackground();
-}
-
-// TODO don't use post cover as banner for now
-banner = getDefaultBackground();
-
-const enableBanner = backgroundWallpaper.mode === "banner";
 
 let ogImageUrl: string | undefined;
 if (siteConfig.generateOgImages && postSlug) {
@@ -106,7 +87,6 @@ const siteLang = lang.replace("_", "-");
         <!-- 启动脚本（防闪烁，is:inline） -->
         <ThemeBootScript />
         <WallpaperBootScript />
-        <SettingsBootScript />
 
         <slot name="head" />
 
@@ -122,7 +102,6 @@ const siteLang = lang.replace("_", "-");
             {
                 "is-home": isHomePageCheck,
                 "lg:is-home": isHomePageCheck,
-                "enable-banner": enableBanner,
                 "sticky-navbar": siteConfig.navbar.stickyNavbar ?? false,
                 "enable-card-border": siteConfig.card?.border,
                 "card-follow-theme-hue": siteConfig.card?.followTheme,
@@ -137,8 +116,6 @@ const siteLang = lang.replace("_", "-");
     >
         <div id="progress-bar"></div>
 
-        <!-- 页面顶部渐变高光效果 - 只在full和semifull模式下显示 -->
-        {shouldShowTopHighlight && <div class="top-gradient-highlight" />}
         <ConfigCarrier />
         <MusicManager />
         <slot />
@@ -156,8 +133,6 @@ const siteLang = lang.replace("_", "-");
     define:vars={{
         configHue,
         "page-width": `${siteConfig.pageWidth ?? PAGE_WIDTH}rem`,
-        "banner-height-home": `${BANNER_HEIGHT_HOME}vh`,
-        "banner-height": `${BANNER_HEIGHT}vh`,
     }}
 ></style>
 

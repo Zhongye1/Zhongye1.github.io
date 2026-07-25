@@ -27,23 +27,14 @@ declare global {
 
 const className = Astro.props.class;
 
-// 获取导航栏透明模式配置
-const navbarTransparentMode =
-	backgroundWallpaper.mode === "banner"
-		? backgroundWallpaper.common?.navbar?.transparentMode || "semi"
-		: "semi";
+// 导航栏透明模式（覆盖模式下始终不透明）
+const navbarTransparentMode = "none";
 
-// 获取导航栏毛玻璃效果配置
-const navbarEnableBlur =
-	backgroundWallpaper.mode === "banner"
-		? (backgroundWallpaper.common?.navbar?.enableBlur ?? true)
-		: false;
+// 导航栏毛玻璃效果配置（覆盖模式下不启用）
+const navbarEnableBlur = false;
 
-// 获取导航栏模糊度
-const navbarBlur =
-	backgroundWallpaper.mode === "banner"
-		? (backgroundWallpaper.common?.navbar?.blur ?? 20)
-		: 0;
+// 导航栏模糊度（覆盖模式下为0）
+const navbarBlur = 0;
 
 // 获取导航栏标题，如果没有设置则使用 siteConfig.title
 const navbarTitle = siteConfig.navbar.title || siteConfig.title;

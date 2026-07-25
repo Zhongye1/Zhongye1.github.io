@@ -8,7 +8,6 @@ import { initImageLoadFadeIn } from "@/scripts/imageLoadFadeIn";
 import { initOutsideClickPanels } from "@/scripts/outsideClick";
 import { initResizeHandler, initScroll } from "@/scripts/scroll";
 import { setupSwup } from "@/scripts/swup";
-import { showBanner } from "@/scripts/swup/hooks/bannerSync";
 import { registerContentOverflowGlobalListeners } from "@/scripts/swup/hooks/contentOverflow";
 import { updateMainGridCols } from "@/scripts/swup/hooks/mainGridLayout";
 import { updateSidebarComponentsVisibility } from "@/scripts/swup/hooks/sidebarVisibility";
@@ -42,7 +41,6 @@ registerContentOverflowGlobalListeners();
 // ── 初始页面加载 ───────────────────────────────────────────
 if (document.readyState === "loading") {
 	document.addEventListener("DOMContentLoaded", () => {
-		showBanner();
 		scheduleContentOverflowEnhancements();
 		updateMainGridCols();
 		updateSidebarComponentsVisibility();
@@ -51,7 +49,6 @@ if (document.readyState === "loading") {
 		initIconLoader();
 	});
 } else {
-	showBanner();
 	scheduleContentOverflowEnhancements();
 	updateMainGridCols();
 	updateSidebarComponentsVisibility();
