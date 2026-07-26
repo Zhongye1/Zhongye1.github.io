@@ -78,10 +78,10 @@ const postsCollection = defineCollection({
 			password: z.string().optional().default(""),
 			passwordHint: z.string().optional().default(""),
 			// abbrlink 短码：手写则用手写值，留空则由 abbrlink-utils 用文件路径哈希兜底
-			abbrlink: z.preprocess(
-				(v) => (v == null ? "" : String(v)),
-				z.string(),
-			).optional().default(""),
+			abbrlink: z
+				.preprocess((v) => (v == null ? "" : String(v)), z.string())
+				.optional()
+				.default(""),
 
 			/* For internal use */
 			prevTitle: z.string().default(""),

@@ -1,12 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
+import pkg from "@/../package.json";
 import WidgetLayout from "@/components/common/WidgetLayout.astro";
 import { licenseConfig, siteConfig } from "@/config";
-import pkg from "@/../package.json";
 
 interface Props {
-    class?: string;
-    style?: string;
+	class?: string;
+	style?: string;
 }
 
 const { class: className, style } = Astro.props;
@@ -19,7 +19,7 @@ const buildTimeStr = `${buildTime.getFullYear()}年${buildTime.getMonth() + 1}�
 const blogVersion = pkg.version;
 const astroVersion = pkg.dependencies?.astro || "unknown";
 const pnpmVersion =
-    (pkg as any).packageManager?.replace("pnpm@", "") || "unknown";
+	(pkg as any).packageManager?.replace("pnpm@", "") || "unknown";
 const nodeVersion = process.version;
 const osInfo = `${process.platform} / ${process.arch}`;
 
@@ -28,51 +28,51 @@ const licenseName = licenseConfig.name;
 const siteUrl = siteConfig.site_url?.replace(/^https?:\/\//, "") || "";
 
 const infoItems = [
-    {
-        icon: "material-symbols:cloud-outline",
-        label: "构建平台",
-        value: "GitHub Pages",
-    },
-    {
-        icon: "material-symbols:deployed-code-outline",
-        label: "博客版本",
-        value: `Firefly v${blogVersion}`,
-    },
-    {
-        icon: "material-symbols:license-outline",
-        label: "文章许可",
-        value: licenseName,
-    },
-    {
-        icon: "material-symbols:dns-outline",
-        label: "站点域名",
-        value: siteUrl,
-    },
-    {
-        icon: "material-symbols:code-blocks-outline",
-        label: "Astro",
-        value: `v${astroVersion}`,
-    },
-    {
-        icon: "material-symbols:info-outline",
-        label: "Node",
-        value: `v${nodeVersion}`,
-    },
-    {
-        icon: "material-symbols:package-outline",
-        label: "pnpm",
-        value: `v${pnpmVersion}`,
-    },
-    {
-        icon: "material-symbols:schedule-outline",
-        label: "构建时间",
-        value: buildTimeStr,
-    },
-    {
-        icon: "material-symbols:computer-outline",
-        label: "系统信息",
-        value: osInfo,
-    },
+	{
+		icon: "material-symbols:cloud-outline",
+		label: "构建平台",
+		value: "GitHub Pages",
+	},
+	{
+		icon: "material-symbols:deployed-code-outline",
+		label: "博客版本",
+		value: `Firefly v${blogVersion}`,
+	},
+	{
+		icon: "material-symbols:license-outline",
+		label: "文章许可",
+		value: licenseName,
+	},
+	{
+		icon: "material-symbols:dns-outline",
+		label: "站点域名",
+		value: siteUrl,
+	},
+	{
+		icon: "material-symbols:code-blocks-outline",
+		label: "Astro",
+		value: `v${astroVersion}`,
+	},
+	{
+		icon: "material-symbols:info-outline",
+		label: "Node",
+		value: `v${nodeVersion}`,
+	},
+	{
+		icon: "material-symbols:package-outline",
+		label: "pnpm",
+		value: `v${pnpmVersion}`,
+	},
+	{
+		icon: "material-symbols:schedule-outline",
+		label: "构建时间",
+		value: buildTimeStr,
+	},
+	{
+		icon: "material-symbols:computer-outline",
+		label: "系统信息",
+		value: osInfo,
+	},
 ];
 ---
 

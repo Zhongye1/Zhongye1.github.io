@@ -7,13 +7,13 @@ import EncryptedPost from "@components/features/EncryptedPost.astro";
 import KatexManager from "@components/features/KatexManager.astro";
 import License from "@components/misc/License.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getAbbrlinkPath } from "@utils/abbrlink-utils";
 import { getRelatedPosts, getSortedPosts } from "@utils/content-utils";
 import {
 	getFileDirFromPath,
 	getPostUrlBySlug,
 	removeFileExtension,
 } from "@utils/url-utils";
-import { getAbbrlinkPath } from "@utils/abbrlink-utils";
 import { Icon } from "astro-icon/components";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";

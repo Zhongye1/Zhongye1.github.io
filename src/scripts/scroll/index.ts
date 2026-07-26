@@ -122,5 +122,4 @@ export function initScroll() {
 	scrollFunction();
 }
 
-export function initResizeHandler() {
-}
+export function initResizeHandler() {}

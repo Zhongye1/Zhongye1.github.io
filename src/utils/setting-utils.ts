@@ -240,7 +240,11 @@ export function applyWallpaperModeToDocument(
 	requestAnimationFrame(() => {
 		const body = document.body;
 
-		body.classList.remove("enable-banner", "wallpaper-transparent", "no-banner-layout");
+		body.classList.remove(
+			"enable-banner",
+			"wallpaper-transparent",
+			"no-banner-layout",
+		);
 
 		body.classList.add("wallpaper-transparent");
 		body.classList.add("no-banner-layout");
@@ -257,7 +261,11 @@ export function applyWallpaperModeToDocument(
 function ensureWallpaperState(mode: WALLPAPER_MODE) {
 	const body = document.body;
 
-	body.classList.remove("enable-banner", "wallpaper-transparent", "no-banner-layout");
+	body.classList.remove(
+		"enable-banner",
+		"wallpaper-transparent",
+		"no-banner-layout",
+	);
 
 	body.classList.add("wallpaper-transparent");
 	body.classList.add("no-banner-layout");

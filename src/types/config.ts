@@ -478,14 +478,14 @@ export type SakuraConfig = {
 	};
 	zIndex: number; // 层级
 	// 粒子专属配置（可选，不填则使用默认值）
-	colors?: string[];       // 粒子颜色列表
-	glow?: boolean;          // 是否启用发光效果
-	glowRadius?: number;     // 发光半径
-	connectLines?: boolean;  // 是否启用粒子间连线
+	colors?: string[]; // 粒子颜色列表
+	glow?: boolean; // 是否启用发光效果
+	glowRadius?: number; // 发光半径
+	connectLines?: boolean; // 是否启用粒子间连线
 	connectDistance?: number; // 连线最大距离
 	connectOpacity?: number; // 连线透明度
-	mouseRepel?: boolean;    // 是否启用鼠标排斥
-	mouseForce?: number;     // 鼠标排斥力度
+	mouseRepel?: boolean; // 是否启用鼠标排斥
+	mouseForce?: number; // 鼠标排斥力度
 };
 
 // Spine 看板娘配置

@@ -10,11 +10,11 @@ import {
 	getStoredOverlayCardOpacity,
 	getStoredOverlayOpacity,
 	getStoredSakuraEnabled,
+	setHue,
 	setOverlayBlur,
 	setOverlayCardOpacity,
 	setOverlayOpacity,
 	setSakuraEnabled,
-	setHue,
 } from "@utils/setting-utils";
 import { onMount } from "svelte";
 import Icon from "@/components/common/Icon.svelte";
@@ -91,9 +91,7 @@ let overlaySettingsIsDefault = $derived(
 			overlayCardOpacity === defaultOverlayCardOpacity),
 );
 const hasAnyContent =
-	showThemeColor ||
-	hasOverlaySettings ||
-	isSakuraSwitchable;
+	showThemeColor || hasOverlaySettings || isSakuraSwitchable;
 
 let overlaySliderItems = $derived<OverlaySliderItem[]>([
 	{
