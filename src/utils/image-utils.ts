@@ -1,8 +1,37 @@
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { coverImageConfig } from "../config/coverImageConfig";
 import { siteConfig } from "../config/siteConfig";
 import type { ImageFormat } from "../types/config";
 
 const { randomCoverImage } = coverImageConfig;
+
+let cachedFallbackUrls: string[] | null = null;
+
+/**
+ * 从 public/gallery/mht-2024/urls.txt 读取兜底封面图 URL 列表
+ */
+function readFallbackCoverUrls(): string[] {
+	if (cachedFallbackUrls) return cachedFallbackUrls;
+	try {
+		const filePath = path.join(
+			process.cwd(),
+			"public",
+			"gallery",
+			// "mht-2024",
+			"ice_carrier",
+			"urls.txt",
+		);
+		const content = fs.readFileSync(filePath, "utf-8");
+		cachedFallbackUrls = content
+			.split("\n")
+			.map((line) => line.trim())
+			.filter((line) => line && !line.startsWith("#"));
+		return cachedFallbackUrls;
+	} catch {
+		return [];
+	}
+}
 
 /**
  * 根据seed生成确定性hash值
@@ -29,6 +58,7 @@ function appendSeedParam(apiUrl: string, hash: number): string {
 /**
  * 处理文章封面图
  * 当image字段为"api"时，返回第一个API的URL（客户端会按顺序尝试所有API）
+ * 当image为空时，从兜底封面列表按seed确定性选取一张
  * @param image - 文章frontmatter中的image字段值
  * @param seed - 用于生成唯一URL的种子（文章id或slug）
  */
@@ -36,30 +66,35 @@ export function processCoverImageSync(
 	image: string | undefined,
 	seed?: string,
 ): string {
-	if (!image || image === "") {
+	if (image && image !== "") {
+		if (image !== "api") return image;
+
+		if (
+			randomCoverImage.enable &&
+			randomCoverImage.apis &&
+			randomCoverImage.apis.length > 0
+		) {
+			const hash = getSeedHash(seed);
+			return appendSeedParam(randomCoverImage.apis[0], hash);
+		}
 		return "";
 	}
 
-	if (image !== "api") {
-		return image;
+	// 文章未配封面时，从兜底列表按 seed 确定性选取
+	if (seed) {
+		const urls = readFallbackCoverUrls();
+		if (urls.length > 0) {
+			return urls[getSeedHash(seed) % urls.length];
+		}
 	}
 
-	if (
-		!randomCoverImage.enable ||
-		!randomCoverImage.apis ||
-		randomCoverImage.apis.length === 0
-	) {
-		return "";
-	}
-
-	// 始终使用第一个API，失败时由客户端按顺序尝试后续API
-	const hash = getSeedHash(seed);
-	return appendSeedParam(randomCoverImage.apis[0], hash);
+	return "";
 }
 
 /**
  * 获取所有随机封面图API URL列表（带seed参数）
  * 用于客户端按顺序尝试，第一个成功即使用，全部失败则显示回退图片
+ * 当image为空时，返回兜底封面列表（不含已选中的那张）
  * @param image - 文章frontmatter中的image字段值
  * @param seed - 用于生成唯一URL的种子（文章id或slug）
  */
@@ -67,12 +102,21 @@ export function getApiUrlList(
 	image: string | undefined,
 	seed?: string,
 ): string[] {
-	if (image !== "api" || !randomCoverImage.enable || !randomCoverImage.apis) {
-		return [];
+	if (image === "api" && randomCoverImage.enable && randomCoverImage.apis) {
+		const hash = getSeedHash(seed);
+		return randomCoverImage.apis.map((api) => appendSeedParam(api, hash));
 	}
 
-	const hash = getSeedHash(seed);
-	return randomCoverImage.apis.map((api) => appendSeedParam(api, hash));
+	// 兜底封面也提供fallback列表给客户端重试
+	if (!image && seed) {
+		const urls = readFallbackCoverUrls();
+		if (urls.length > 1) {
+			const primaryIdx = getSeedHash(seed) % urls.length;
+			return urls.filter((_, i) => i !== primaryIdx);
+		}
+	}
+
+	return [];
 }
 
 /**
