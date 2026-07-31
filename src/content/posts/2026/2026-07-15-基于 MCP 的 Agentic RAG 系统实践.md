@@ -1,11 +1,11 @@
 ---
 uuid: b8d70910-c4f4-11f4-21bd-26018b9748b8
 abblink: f77cee451
-title: 2026-07-15-使用RAG与上下文工程构建多模态AI系统
+title: 2026-07-15-基于 MCP 的 Agentic RAG 系统实践：从知识检索到自主行动
 mathjax: true
 published: 2026-07-15 21:06:20
 category: 笔记
-description: RAG、MCP 与 AI Agent 相关实践
+description: 记录一些将 RAG 检索能力封装为 MCP 服务的工程方案，构建一个能理解私域知识和调用外部工具的 Agentic RAG 系统，在生产环境中支撑多轮复杂问答与自动化任务，实现从“被动回答”到“自主行动”的跨越。
 cover: "https://pic3.zhimg.com/80/v2-8de8add37668cb28db59a368848a2992_720w.webp"
 tags:
     - RAG
@@ -449,16 +449,7 @@ Node 侧直接用官方的 `@modelcontextprotocol/sdk`,它把协议细节都封�
 
 ---
 
-### 八、关键设计决策与权衡
-
-**为什么用 gRPC 而不是 HTTP 连接 Node 和 Go?** 内部服务之间追求性能和强类型契约,gRPC 的 Protobuf 定义能让 Go 和 Node 两端共享一份接口契约,避免手写 JSON 对接的漂移;而对外面向模型的接口才用 MCP(本质是 JSON-RPC),因为那一层要的是通用性和可发现性。两种协议各司其职。
-**为什么不全用 Go 或全用 Node?** 全用 Node,检索内核在高 QPS 下的延迟和 CPU 密集计算会成为瓶颈;全用 Go,MCP 生态目前是 TS 最成熟,官方 SDK、社区工具、快速迭代都在 Node 侧,自己用 Go 从零实现协议层性价比低。双语言分工是在"贴合生态"和"贴合性能"之间取的最优解。
-**权限一定要下沉到检索层。** 企业 RAG 最大的安全风险是模型跨权限读到不该看的数据。权限过滤绝不能只在应用层做,必须把用户身份透传到检索内核,在向量检索时就用元数据 filter 把无权访问的 chunk 排除掉,从数据源头杜绝越权。
-**流式返回提升体验。** 检索 + 生成链路较长,MCP 的 Streamable HTTP 支持服务端流式推送,应该充分利用:检索结果和生成内容边产出边返回,让宿主和用户尽快看到反馈。
-
----
-
-### 九、Roadmap
+### Roadmap
 
 MVP:Node 实现一个只有 `rag_search` 一个工具的 MCP Server,内核直连向量库做纯向量检索,用 stdio 在本地跑通,验证协议链路和检索效果。
 
