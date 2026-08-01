@@ -1,7 +1,7 @@
 ---
 uuid: b8d70910-c4f4-11f4-21bd-26018b9748b8
 abblink: f77cee451
-title: 2026-07-15-基于 MCP 的 Agentic RAG 系统实践：从知识检索到自主行动
+title: 2026-07-15-Agentic RAG 系统实践：从知识检索到自主行动
 mathjax: true
 published: 2026-07-15 21:06:20
 category: 笔记
