@@ -5,25 +5,25 @@ title: 2026-07-25-[RFC]-Glushkov_OGAS
 mathjax: true
 published: 2026-07-28 23:46:50
 category: 笔记
-description: ADR-0001~0004
+description: OGAS 是一个自托管的 Agent 研发生命周期协作平台。它让整个团队能以受控、可编排、可回滚的方式驱动 Agent，从一个需求的知识检索，一路自动推进到代码交付和线上部署。
 cover: "https://pic4.zhimg.com/v2-c7e8e75221bb2c108789f34db132c601_r.jpg"
 tags:
     - RFC
 ---
 
-# Agent 驱动的研发全链路协作平台
-
-# RFC-0802: Glushkov-OGAS (Operational Generate Agent System)
+# RFC-0802: OGAS (Operational Generate Agent System)
 
 > 项目 Glushkov ── OGAS, Operational Generate Agent System
+
 > 状态 Draft
+
 > 关联材料 项目 specs(monorepo/spec 规范)、ADR-0001~0004
 
 ---
 
 ## 概述
 
-OGAS（Operational Generate Agent System，以下简称 OGAS）是一个自托管的 Agent 研发生命周期协作平台。它让整个团队能以受控、可编排、可回滚的方式驱动编码 Agent，从一个需求的知识检索，一路自动推进到代码交付和线上部署。
+OGAS（Operational Generate Agent System，以下简称 OGAS）是一个自托管的 Agent 研发生命周期协作平台。它让整个团队能以受控、可编排、可回滚的方式驱动 Agent，从一个需求的知识检索，一路自动推进到代码交付和线上部署。
 
 当前研发链路中的痛点集中在三处：单个编码 Agent 虽然好用，但它只是"某个人在自己机器上跑的一个 loop"，团队其他人无法 review 执行链路；多个任务之间有先后依赖，但没有编排机制将它们串联起来自动执行；从代码到部署之间，评审、CI、部署这些可验证环节仍靠人肉衔接，没有形成闭环。OGAS 正是为了打通这三个缺口而设计的。
 
@@ -39,56 +39,9 @@ OGAS 由五个组件构成，分别覆盖入口、编排、控制、执行和能
 | **Liskin_Agent**    | 执行面：编码 Agent 内核                                  | 上游 Liskin_Agent |
 | **OGAS-Arkhiv**     | 知识面：业务知识库 MCP Server                            | 上游 EagleRAG     |
 
-整体架构与数据流：
-
-```mermaid
-flowchart TB
-    classDef entry fill:#eff6ff,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a8a
-    classDef orch fill:#f5f3ff,stroke:#8b5cf6,stroke-width:1.5px,color:#4c1d95
-    classDef control fill:#ecfdf5,stroke:#10b981,stroke-width:1.5px,color:#064e3b
-    classDef exec fill:#fff7ed,stroke:#f97316,stroke-width:1.5px,color:#7c2d12
-    classDef tool fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a
-
-    subgraph L5["入口面"]
-        Feishu["飞书群<br/>团队入口"]:::entry
-        Gate["OGAS-Gate<br/>飞书机器人适配服务"]:::entry
-    end
-
-    subgraph L4["编排面 (自研)"]
-        Flow["OGAS-Flow<br/>跨任务 DAG 依赖调度<br/>节点 = 一个 issue"]:::orch
-    end
-
-    subgraph L3["控制面 (自托管/fork Multica)"]
-        Dispatcher["OGAS-Dispatcher Server<br/>队列 / 状态机 / WebSocket 枢纽"]:::control
-        Daemon["OGAS-Dispatcher Daemon<br/>开发机守护进程 + runtime 注册"]:::control
-    end
-
-    subgraph L2["执行面"]
-        Liskin["liskin agent<br/>编码 Agent 内核 · Harness 长任务"]:::exec
-    end
-
-    subgraph L1["能力面 — MCP via liskin ToolPort"]
-        Cortex["OGAS-Arkhiv<br/>业务知识库<br/>(EagleRAG 改造)"]:::tool
-        GH["GitHub<br/>代码 / PR / CI"]:::tool
-        Vercel["Vercel<br/>部署 / 发布门 / 回滚"]:::tool
-    end
-
-    Feishu <==>|"@机器人"| Gate
-    Gate -->|"建/派 issue、回推状态"| Flow
-    Flow -->|"依赖解锁,派发节点"| Dispatcher
-    Dispatcher -->|"WebSocket 通知派任务"| Daemon
-    Daemon -->|"stdin/stdout"| Liskin
-    Liskin --> Cortex
-    Liskin --> GH
-    Liskin --> Vercel
-    Vercel -.->|"发布门/失败信号回流"| Liskin
-```
-
-数据流向是：团队成员在飞书群里 @机器人 下达指令，OGAS-Gate 接住请求后调 Dispatcher 建立或派发任务；OGAS-Flow 维护一张 DAG，当某个任务的前驱节点完成后，把 ready 的节点派发给 Dispatcher；Dispatcher 通过 WebSocket 通知对应开发机上的 Daemon，Daemon 拉起 liskin agent 进程执行编码任务；liskin 通过 ToolPort 注入的 MCP 工具访问业务知识库、GitHub 和 Vercel，完成知识检索、代码提交和部署。
-
 ---
 
-## 一、背景与问题
+## 背景与问题
 
 研发链路中的痛点可以分三层来看，分别对应 Agent 的能力边界、团队协作方式和链路打通程度。
 
@@ -112,7 +65,7 @@ Agent 擅长写代码，但它只覆盖了生命周期的一段。现有软件�
 
 ---
 
-## 二、设计目标
+## 设计目标
 
 ### 2.1 功能目标
 
@@ -144,7 +97,7 @@ Agent 擅长写代码，但它只覆盖了生命周期的一段。现有软件�
 
 ---
 
-## 三、现状与依赖
+## 现状与依赖
 
 本节逐个梳理 OGAS 所依赖的五个上游组件或平台，统一按"现有能力 → 缺什么 → 对 OGAS 的意义"三段来写。
 
@@ -195,9 +148,68 @@ Agent 擅长写代码，但它只覆盖了生命周期的一段。现有软件�
 
 ---
 
-## 四、设计方案
+## 任务派发流程设计
 
-本 RFC 不锁定具体的接口签名、数据表结构和 prompt 内容，那些属于后续设计文档。
+OGAS 的任务派发流程横跨五个组件，整条链路是**飞书群 → Gate 翻译 → Flow 编排 → Dispatcher 派发 → Daemon 拉起 liskin → MCP 工具执行 → 结果原路回流 → Flow 解锁下游 → Gate 推回群里**
+
+![](https://pic4.zhimg.com/v2-c7e8e75221bb2c108789f34db132c601_r.jpg)
+
+### 第一步：任务发起（飞书群 → OGAS-Gate）
+
+团队成员在飞书群里 @机器人，用自然语言下达指令——比如"让 liskin-frontend 实现登录页"。OGAS-Gate 作为 IM 适配服务，接住飞书的事件回调，把群聊指令翻译成 Dispatcher 的 REST API 调用：创建 issue、指派 Agent、设定任务参数。Gate 不直连 Multica 内部数据表，而是走 Dispatcher 的 API facade 层（见 RFC 4.2 第四层改动），这样上游 schema 变化时只影响适配层。
+
+如果任务属于某个 DAG 的一部分，Gate 还会通知 OGAS-Flow 有新节点需要编排。
+
+### 第二步：DAG 编排（OGAS-Flow → OGAS-Dispatcher）
+
+OGAS-Flow 拿到 DAG 定义后，调用纯函数 `next_ready(dag, completed_set)` 计算当前哪些节点的前驱已全部完成、可以派发。这个函数是确定性的——不调用 LLM、不含随机数，给定相同输入永远输出相同结果。
+
+对于刚启动的 DAG，入口节点没有前驱依赖，立刻进入 ready 状态。Flow 把 ready 节点对应的 issue 派发指令发给 Dispatcher："把这个 issue 派给 liskin-frontend runtime"。Flow 自己不执行任何代码，只做图推进。
+
+### 第三步：任务派发（Dispatcher Server → Daemon）
+
+Dispatcher Server 收到派发指令后，查到 liskin-frontend runtime 注册在哪台开发机上，通过 WebSocket 通知那台机器上的 Daemon。
+
+任务状态机随之流转：**Queued → Dispatched**。Dispatcher 有超时规则——派发后 5 分钟内 Daemon 必须接单（拉起进程），否则判超时；进入 Running 后有指定小时的执行窗口。瞬时失败（比如进程崩溃）由 Dispatcher 自己重试，重试耗尽后才向上层发出一个可区分的"重试已耗尽"终态，而不是普通 Failed。
+
+Dispatcher 全程不碰代码、不碰密钥、不碰 prompt 内容。GitHub token、Vercel token、Arkhiv 的 MCP 端点都配在 Agent 级的 `custom_env` 里，Daemon 在 spawn 进程时原样透传，Dispatcher 只是转发。
+
+### 第四步：Agent 执行（Daemon → liskin）
+
+Daemon 收到 WebSocket 通知后，在隔离工作目录里拉起 `liskin agent exec` 进程。任务描述通过 stdin 写入，结果从 stdout 拿回。Daemon 只管进程生命周期——拉起、喂提示词、收结果，不管 kernel 内部状态。liskin 的 Harness 框架自管内部的任务节点状态（落在 `.liskin/harness/` 目录里），这两层状态刻意解耦。
+
+liskin 在执行过程中通过 `ToolPort` 调用三类 MCP 工具：
+
+- **OGAS-Arkhiv**：查询 PRD、接口契约、UI 规范等业务知识
+- **GitHub MCP**：领 issue、读代码、开 PR、查 CI 结果
+- **Vercel MCP**：触发部署、查询部署状态
+
+这些工具调用对上层完全透明，Dispatcher 不感知 Agent 在用什么工具，Flow 同理。
+
+### 第五步：结果回流与下游解锁
+
+liskin 执行完毕后，结构化结果从 stdout 返回给 Daemon，Daemon 回传给 Server，任务状态流转为 **Completed / Failed / Cancelled**。
+
+这条终态事件同时推给两个消费者：
+
+- **OGAS-Flow**：消费 Completed 事件，把该节点加入已完成集合，重新调用 `next_ready` 计算下游是否有新节点解锁。如果有，立刻把下游节点派发给 Dispatcher——整个链路自动推进，不需要人手动衔接。
+- **OGAS-Gate**：把状态流转翻译成飞书群消息推回给团队。回流粒度可配置（全量模式 / 终态模式 / 混合模式），让团队看得见 Agent 跑到了哪一步。
+
+如果进程崩溃，Dispatcher 重启后，Flow 不需要从 checkpoint 恢复——把 Dispatcher 的终态事件流重放一遍就能重建当前的已完成集合，再调用 `next_ready` 继续推进。这就是事件溯源的基本思路。
+
+### 旁路：高危操作的人工确认通道
+
+当 liskin 的 Sandbox 遇到 ask 档操作（比如生产回滚、promote），原本单向的"派任务—回结果"链路会切换成双向交互子通道：
+
+liskin 抛出 ask 提示 → Daemon 通过 WebSocket 上报 Server → Server 推给 Gate → Gate 在飞书群里高亮告警。但实际的确认动作不在群消息里完成——成员需要跳转到有更强身份校验的界面（比如飞书内嵌 H5 审批页）。确认后，决策沿原路回灌：Gate → Server → Daemon → liskin 的 stdin，Agent 继续执行或终止。
+
+这条 ask 通道复用现有的 WebSocket 连接基础设施，是原生 Multica 没有、OGAS 必须加的一段设计。
+
+---
+
+## 工程方案
+
+本 RFC 不锁定具体的接口签名、数据表结构和 prompt 内容，后续设计文档会详细说明。
 
 整体思路是控制面与执行面彻底分离，再在两端分别接上入口和编排，形成四层各司其职的结构。各组件统一遵循"是什么 → 输入输出 → 设计细节 → 边界约束"的叙述框架，以下逐层展开。
 
