@@ -1,6 +1,6 @@
 ---
 uuid:
-title: 2026-06-19-关于CodeAgent设计 Vol.1
+title: 2026-06-19-[RFC] Liskin_Code_Agent
 mathjax: true
 abbrlink: 29484
 published: 2026-06-19 15:18:20
