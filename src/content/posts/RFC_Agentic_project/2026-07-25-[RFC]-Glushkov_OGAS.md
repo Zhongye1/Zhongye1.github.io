@@ -47,7 +47,7 @@ OGAS 由五个组件构成，分别覆盖入口、编排、控制、执行和能
 
 ### 1.1 执行面：单个编码 Agent 的能力边界
 
-通用编码 Agent 在大型代码库上会暴露出一组相似的问题。模型本身足够聪明，但它拿不到正确的上下文——要么一次读入太多文件导致判断分散，要么模块边界和领域术语只能靠猜测推进，搜索过程中又充满噪音[[1]](https://zhuanlan.zhihu.com/p/2043016346271839700)。Coding Agent 的大多数演示是从零搭建一个简单的 Todo 类应用，而真实代码库往往是"有十五年历史、充满未文档化的隐性契约、蔓延到四十个文件的服务层"[[2]](https://tianpan.co/zh/blog/2026-04-19-ai-coding-agents-brownfield-legacy-code)。Anthropic 提出的方向是让"代码库适配 AI"而不是只靠模型[[3]](https://developer.aliyun.com/article/1737453)，但在长期迭代、历史包袱重的大型仓库中，我们更需要一种让 AI Agent 主动适应现有代码的方案（这一点在作者博客中有过专门论述 https://zhongye1.github.io/p/f77cee45/）。
+通用编码 Agent 在大型代码库上会暴露出一组相似的问题。模型本身足够聪明，但它拿不到正确的上下文——要么一次读入太多文件导致判断分散，要么模块边界和领域术语只能靠猜测推进，搜索过程中又充满噪音[[1]](https://zhuanlan.zhihu.com/p/2043016346271839700)。Coding Agent 的大多数演示是从零搭建一个简单的 Todo 类应用，而真实代码库往往是"有十五年历史、充满未文档化的隐性契约、蔓延到四十个文件的服务层"[[2]](https://tianpan.co/zh/blog/2026-04-19-ai-coding-agents-brownfield-legacy-code)。Anthropic 提出的方向是让"代码库适配 AI"而不是只靠模型[[3]](https://developer.aliyun.com/article/1737453)，但在长期迭代、历史包袱重的大型仓库中，我们更需要一种让 AI Agent 主动适应现有代码的方案（这一点在作者博客中有过专门论述 https://zhongye1.github.io/p/f77cee45/ 
 
 生成代码的质量同样堪忧。AI 可能引用不存在的函数、使用想象出来的 API、或者写出语法正确但逻辑错误的代码[[4]](https://arxiv.org/html/2404.00971v3)。业界常见的做法叫"给 AI 制定 coding guidelines"，把团队规范做成 spec 喂给 Agent[[5]](https://blog.jetbrains.com/idea/2025/05/coding-guidelines-for-your-ai-agents/)。我们要做的是把这套方法论内化到 Agent 内核中，而不是外挂一份规范文档了事。
 
