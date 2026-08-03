@@ -57,6 +57,9 @@ const {
 const isHomePageCheck = isHomePage(Astro.url.pathname);
 const shouldRenderCategoryBar = !!siteConfig.categoryBar;
 const isPostPage = !!postSlug;
+const hideLeftSidebarOnPostPage =
+	sidebarLayoutConfig.hideLeftSidebarOnPostPage ?? false;
+const hideLeftSidebarOnPost = isPostPage && hideLeftSidebarOnPostPage;
 
 const navbarWidthFull = siteConfig.navbar.widthFull ?? false;
 const stickyNavbar = siteConfig.navbar.stickyNavbar ?? false;
@@ -77,7 +80,8 @@ const shouldAddLeftSidebar: boolean =
 	shouldShowBothSidebarsOnPostPage && sidebarLayoutConfig.position === "right";
 
 const effectiveIsBothSidebars: boolean =
-	sidebarConfig.isBothSidebars || shouldShowBothSidebarsOnPostPage;
+	!hideLeftSidebarOnPost &&
+	(sidebarConfig.isBothSidebars || shouldShowBothSidebarsOnPostPage);
 const effectiveHasRightComponents: boolean =
 	sidebarConfig.hasRightComponents ||
 	(shouldAddRightSidebar &&
@@ -94,15 +98,22 @@ const effectiveTabletSidebar = shouldAddLeftSidebar
 const updatedGridConfig: ResponsiveSidebarConfig = {
 	...sidebarConfig,
 	isBothSidebars: effectiveIsBothSidebars,
-	hasLeftComponents: effectiveHasLeftComponents,
+	// 文章页隐藏左侧栏时按“仅右侧栏”计算布局；左侧栏仍会渲染，由 CSS 隐藏
+	hasLeftComponents: hideLeftSidebarOnPost ? false : effectiveHasLeftComponents,
 	hasRightComponents: effectiveHasRightComponents,
 	tabletSidebar: effectiveTabletSidebar,
+	position: hideLeftSidebarOnPost ? "right" : sidebarConfig.position,
 };
 
 const { gridCols } = generateGridClasses(updatedGridConfig);
-const sidebarClass = generateSidebarClasses(updatedGridConfig);
+// 左侧栏仅在非文章页可见，始终使用基础布局类，避免文章页隐藏后残留错误的响应式类
+const sidebarClass = generateSidebarClasses(
+	hideLeftSidebarOnPost ? sidebarConfig : updatedGridConfig,
+);
 const rightSidebarClass =
-	effectiveIsBothSidebars || sidebarLayoutConfig.position === "right"
+	effectiveIsBothSidebars ||
+	sidebarLayoutConfig.position === "right" ||
+	hideLeftSidebarOnPost
 		? generateRightSidebarClasses(updatedGridConfig)
 		: "";
 const mainContentClass = generateMainContentClasses(updatedGridConfig);
@@ -213,10 +224,12 @@ const mobileNonHomeBannerClass = !isHomePageCheck ? "mobile-hide-banner" : "";
 <div class={`absolute w-full z-30 pointer-events-none ${mobileNonHomeBannerClass ? 'mobile-main-no-banner' : ''} no-banner-layout`} style="top: 5.5rem">
     <div class="relative w-full xl:w-[92vw] max-w-(--page-width) mx-auto pointer-events-auto">
         <div id="main-grid"
-          class={`transition duration-700 w-full left-0 right-0 grid ${gridCols} grid-rows-[auto_1fr_auto] lg:grid-rows-[auto] mx-auto gap-4 px-2 md:px-4 ${!sidebarConfig.mobileShowSidebar ? 'mobile-no-sidebar' : ''}`}
+          class={`transition duration-700 w-full left-0 right-0 grid ${gridCols} grid-rows-[auto_1fr_auto] lg:grid-rows-[auto] mx-auto gap-4 px-2 md:px-4 ${!sidebarConfig.mobileShowSidebar ? 'mobile-no-sidebar' : ''} ${hideLeftSidebarOnPostPage ? 'hide-left-sidebar-on-post' : ''}`}
           data-sidebar-position={sidebarLayoutConfig.position}
           data-tablet-sidebar={sidebarLayoutConfig.tabletSidebar ?? "left"}
           data-show-both-sidebars-on-post={sidebarLayoutConfig.showBothSidebarsOnPostPage ? "true" : "false"}
+          data-hide-left-sidebar-on-post={hideLeftSidebarOnPostPage ? "true" : "false"}
+          data-is-post={isPostPage ? "true" : "false"}
         >
 
             {sidebarLayoutConfig.position !== "right" ? (
@@ -240,7 +253,7 @@ const mobileNonHomeBannerClass = !isHomePageCheck ? "mobile-hide-banner" : "";
                 </div>
             )}
                     
-            <div class={staticBarClass}>
+            <div id="main-content-wrapper" class={staticBarClass}>
                 {shouldRenderCategoryBar && <div id="category-bar-wrapper"><CategoryBar currentPostCategory={postCategory} /></div>}
                 <main
                     id="swup-container"
@@ -258,7 +271,7 @@ const mobileNonHomeBannerClass = !isHomePageCheck ? "mobile-hide-banner" : "";
             {(sidebarLayoutConfig.position === "both" || sidebarLayoutConfig.position === "right") ? (
                 <>
                     <div id="right-sidebar-static" class="contents">
-                        {(effectiveIsBothSidebars || sidebarLayoutConfig.position === "right") && effectiveHasRightComponents && (
+                        {(effectiveIsBothSidebars || sidebarLayoutConfig.position === "right" || hideLeftSidebarOnPost) && effectiveHasRightComponents && (
 							<SideBar side="right" class={rightSidebarClass} headings={headings}></SideBar>
                         )}
                     </div>
@@ -266,7 +279,7 @@ const mobileNonHomeBannerClass = !isHomePageCheck ? "mobile-hide-banner" : "";
                 </>
             ) : (
                 <div id="right-sidebar-dynamic" class="contents transition-swup-fade">
-                    {effectiveIsBothSidebars && effectiveHasRightComponents && (
+                    {(effectiveIsBothSidebars || hideLeftSidebarOnPost) && effectiveHasRightComponents && (
 						<SideBar side="right" class={rightSidebarClass} headings={headings}></SideBar>
                     )}
                 </div>
@@ -294,6 +307,11 @@ const mobileNonHomeBannerClass = !isHomePageCheck ? "mobile-hide-banner" : "";
 </Layout>
 
 <style is:global>
+  /* 文章页隐藏左侧栏模式：在文章页隐藏左侧栏容器（含其网格列） */
+  #main-grid.hide-left-sidebar-on-post[data-is-post="true"] #left-sidebar-wrapper {
+    display: none;
+  }
+
   #right-sidebar {
     transition: opacity 0.35s ease-in-out,
                 transform 0.35s ease-in-out;

@@ -24,6 +24,11 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	// 适用在只想用单侧栏，但在文章详情页想用对侧栏的目录等组件的场景
 	showBothSidebarsOnPostPage: true,
 
+	// 是否在文章详情页整体隐藏左侧边栏（含其网格列）
+	// 开启后：进入文章详情页时左侧边栏隐藏，仅保留右侧边栏（若配置了右侧组件）
+	// 首页、列表页等其他页面仍按 position 配置正常显示左右侧边栏
+	hideLeftSidebarOnPostPage: true,
+
 	// 左侧边栏组件配置列表
 	// 组件的渲染顺序完全取决于它们在配置数组中出现的顺序，但top的组件会优先于sticky位置的组件渲染
 	// type 组件类型
