@@ -241,7 +241,7 @@ export function updateMainGridCols() {
 		"grid-cols-1",
 		"md:grid-cols-[17.5rem_1fr]",
 		"md:grid-cols-[1fr_17.5rem]",
-		"lg:grid-cols-[17.5rem_1fr_17.5rem]",
+		"xl:grid-cols-[17.5rem_1fr_17.5rem]",
 	].forEach((cls) => {
 		mainGrid.classList.remove(cls);
 	});
