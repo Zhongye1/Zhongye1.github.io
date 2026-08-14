@@ -4,7 +4,7 @@ import type { SakuraConfig } from "../types/config";
 
 export const sakuraConfig: SakuraConfig = {
 	// 是否启用粒子特效
-	enable: false,
+	enable: true,
 
 	// 是否允许用户在设置中切换
 	switchable: true,
