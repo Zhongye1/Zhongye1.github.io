@@ -336,6 +336,19 @@ answer = llm.invoke(prompt.format(question=question, context=docs_content))
 print(answer)
 ```
 
+当然这个距离上生产环境还有相当远的一段距离，OpenAI/LangChain 是个好工具，但企业场景下要面对的是：
+
+- 大规模文档的增量更新，不可能每次全量重建索引
+- 多租户隔离和权限控制，不同部门看到的知识库不一样
+- 高并发下的检索性能，模型调用的成本控制和容错
+- 请求风控，防止用户套取敏感信息或恶意攻击
+- 模型负载均衡，多供应商切换和降级策略
+- 可观测性，效果监控和用户反馈收集
+
+这些问题 LangChain 的 QuickStart 不会告诉你，但实际业务场景肯定要面对。
+
+所以具体的设计细节将在后面的博客展开。
+
 ## 参考文献
 
 [^1]: [Genesis, J. (2025). _Retrieval-Augmented Text Generation: Methods, Challenges, and Applications_](https://www.researchgate.net/publication/391141346_Retrieval-Augmented_Generation_Methods_Applications_and_Challenges).
