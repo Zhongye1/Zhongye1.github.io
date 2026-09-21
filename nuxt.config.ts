@@ -9,6 +9,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/content.scss'],
   content: {
     build: {
+      // 关闭构建期 Shiki：代码块先产出纯文本，由客户端组件接管高亮，
+      // 这样高亮器读到的是未转义源码，也不受构建时主题限制。
+      markdown: {
+        highlight: false,
+        toc: { depth: 4, searchDepth: 4 },
+      },
       pathMeta: {
         slugifyOptions: { lower: true, remove: slugifyRemove },
       },
