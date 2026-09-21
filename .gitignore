@@ -14,4 +14,5 @@ node_modules
 dist
 .DS_Store
 
-content/
+# 只忽略仓库根目录的 content/，否则 app/components/content/ 也会被一起忽略
+/content/

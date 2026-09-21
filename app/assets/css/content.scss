@@ -81,8 +81,8 @@
     font-size: 0.875em;
   }
 
-  // 块级代码块由 ProsePre 自己排版，这里只兜底没有被组件接管的情况
-  pre {
+  // 块级代码块由 ProsePre 自己的样式排版，这里只兜底没有被组件接管的情况
+  pre:not(.shiki) {
     margin: 1.25rem 0;
     padding: 1rem;
     border-radius: 0.5rem;
