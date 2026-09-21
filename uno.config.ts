@@ -1,5 +1,6 @@
 import { defineConfig, presetAttributify, presetIcons, presetWind3 } from 'unocss'
 import presetChinese from 'unocss-preset-chinese'
+import { codeBlockIconNames } from './shared/utils/icon'
 
 export default defineConfig({
   // ...UnoCSS options
@@ -28,8 +29,17 @@ export default defineConfig({
       collections: {
         'icon-park-outline': () =>
           import('@iconify-json/icon-park-outline/icons.json').then((i) => i.default),
+        catppuccin: () => import('@iconify-json/catppuccin/icons.json').then((i) => i.default),
+        tabler: () => import('@iconify-json/tabler/icons.json').then((i) => i.default),
       },
     }),
+  ],
+  // 代码块的图标名由 getFileIcon/getLangIcon 在运行时拼出，扫描不到，只能显式列出来
+  safelist: [
+    'i-tabler-check',
+    'i-tabler-copy',
+    'i-tabler-chevrons-up',
+    ...codeBlockIconNames.map((name) => `i-${name.replace(':', '-')}`),
   ],
   preflights: [
     {

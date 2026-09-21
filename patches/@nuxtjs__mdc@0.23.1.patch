@@ -1,0 +1,14 @@
+diff --git a/dist/runtime/parser/handlers/inlineCode.js b/dist/runtime/parser/handlers/inlineCode.js
+index a79488ac2d4b997ee1dcc244db1ea6103a223639..381fc2f0dd8b559fa0791c151e741b820ee92ed8 100644
+--- a/dist/runtime/parser/handlers/inlineCode.js
++++ b/dist/runtime/parser/handlers/inlineCode.js
+@@ -5,7 +5,8 @@ export default function inlineCode(state, node) {
+   const result = {
+     type: "element",
+     tagName: "code",
+-    properties: node.attributes || {},
++    // 行内代码把原文一并传给 ProseCode，供复制按钮使用
++    properties: { ...node.attributes, code: text.value },
+     children: [text]
+   };
+   const classes = (result.properties.class || "").split(" ");
