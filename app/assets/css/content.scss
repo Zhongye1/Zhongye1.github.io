@@ -1,22 +1,10 @@
 // Presentation for rendered markdown (`<ContentRenderer>` output).
 // Wrap the rendered tree in `.post-body` and mark page-level headings with
-// `.content-heading`, e.g. `<h1 class="content-heading text-3xl font-bold">`.
-
-$heading-color: #1677ff;
-$heading-color-dark: #60a5fa;
-$link-color: #1677ff;
-
-// Also exposed as a custom property so it can be reused outside this file.
-:root {
-  --heading-color: #{$heading-color};
-}
-
-.dark {
-  --heading-color: #{$heading-color-dark};
-}
+// `.content-heading`, e.g. `<h1 class='content-heading text-3xl font-bold'>`.
+// 颜色一律取自 color.scss 的 --c-* 变量，明暗主题由变量自身切换。
 
 .content-heading {
-  color: var(--heading-color);
+  color: var(--c-primary);
 }
 
 .post-body {
@@ -24,7 +12,7 @@ $link-color: #1677ff;
     margin: 2rem 0 0.75rem;
     font-weight: 600;
     line-height: 1.35;
-    color: var(--heading-color);
+    color: var(--c-primary);
   }
 
   h1 {
@@ -68,7 +56,7 @@ $link-color: #1677ff;
   }
 
   a {
-    color: $link-color;
+    color: var(--c-primary);
     text-decoration: underline;
   }
 
@@ -81,26 +69,19 @@ $link-color: #1677ff;
   blockquote {
     margin: 1.25rem 0;
     padding-left: 1rem;
-    border-left: 3px solid rgb(0 0 0 / 12%);
-    color: rgb(0 0 0 / 55%);
-
-    .dark & {
-      border-left-color: rgb(255 255 255 / 20%);
-      color: rgb(255 255 255 / 60%);
-    }
+    border-left: 3px solid var(--c-border);
+    color: var(--c-text-2);
   }
 
   code {
     padding: 0.15em 0.4em;
     border-radius: 0.25rem;
-    background: rgb(0 0 0 / 6%);
+    background: var(--c-bg-2);
+    font-family: var(--font-monospace);
     font-size: 0.875em;
-
-    .dark & {
-      background: rgb(255 255 255 / 12%);
-    }
   }
 
+  // 块级代码块由 ProsePre 自己排版，这里只兜底没有被组件接管的情况
   pre {
     margin: 1.25rem 0;
     padding: 1rem;
@@ -110,12 +91,6 @@ $link-color: #1677ff;
     code {
       padding: 0;
       background: transparent;
-
-      // Inline-code styling above is more specific than this rule, so it has
-      // to be undone explicitly for dark mode too.
-      .dark & {
-        background: transparent;
-      }
     }
   }
 
@@ -128,10 +103,6 @@ $link-color: #1677ff;
   th,
   td {
     padding: 0.5rem 0.75rem;
-    border: 1px solid rgb(0 0 0 / 10%);
-
-    .dark & {
-      border-color: rgb(255 255 255 / 15%);
-    }
+    border: 1px solid var(--c-border);
   }
 }

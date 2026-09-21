@@ -1,0 +1,50 @@
+// 主题色板：组件只依赖这里的 --c-* 变量，切换明暗只需要换一组取值。
+// --hue-theme 即现有的品牌蓝（#1677ff），改一个色相全站跟着走。
+
+:root {
+  --hue-theme: 215deg;
+
+  --c-text-1: hsl(var(--hue-theme) 10% 20%);
+  --c-text-2: hsl(var(--hue-theme) 10% 40%);
+  --c-text-3: hsl(var(--hue-theme) 10% 60%);
+
+  --c-bg-1: hsl(var(--hue-theme) 20% 98%);
+  --c-bg-2: hsl(var(--hue-theme) 14% 95%);
+  --c-bg-3: hsl(var(--hue-theme) 12% 92%);
+
+  --c-border: hsl(var(--hue-theme) 12% 88%);
+  --c-primary: hsl(var(--hue-theme) 100% 54%);
+  --c-primary-soft: hsl(var(--hue-theme) 100% 54% / 12%);
+
+  --c-success: #338833;
+  --c-success-soft: rgb(51 136 51 / 12%);
+  --c-warning: #bb7733;
+  --c-warning-soft: rgb(221 153 51 / 15%);
+  --c-error: #cc4444;
+  --c-error-soft: rgb(255 51 51 / 13%);
+
+  --ld-bg-active: var(--c-primary-soft);
+}
+
+.dark {
+  --c-text-1: hsl(var(--hue-theme) 10% 90%);
+  --c-text-2: hsl(var(--hue-theme) 10% 70%);
+  --c-text-3: hsl(var(--hue-theme) 10% 52%);
+
+  --c-bg-1: hsl(var(--hue-theme) 10% 10%);
+  --c-bg-2: hsl(var(--hue-theme) 10% 14%);
+  --c-bg-3: hsl(var(--hue-theme) 10% 18%);
+
+  --c-border: hsl(var(--hue-theme) 10% 24%);
+  --c-primary: hsl(var(--hue-theme) 90% 68%);
+  --c-primary-soft: hsl(var(--hue-theme) 90% 68% / 20%);
+
+  --c-success: #55cc55;
+  --c-success-soft: rgb(85 204 85 / 15%);
+  --c-warning: #ddaa55;
+  --c-warning-soft: rgb(221 170 85 / 15%);
+  --c-error: #ee6666;
+  --c-error-soft: rgb(238 102 102 / 15%);
+
+  --ld-bg-active: var(--c-primary-soft);
+}

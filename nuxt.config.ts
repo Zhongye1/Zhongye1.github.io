@@ -19,7 +19,12 @@ const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\uf
 
 export default defineNuxtConfig({
   modules: ['@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
-  css: ['~/assets/css/shiki.scss', '~/assets/css/content.scss'],
+  css: [
+    '~/assets/css/color.scss',
+    '~/assets/css/font.scss',
+    '~/assets/css/shiki.scss',
+    '~/assets/css/content.scss',
+  ],
   content: {
     build: {
       // 关闭构建期 Shiki：代码块先产出纯文本，由客户端组件接管高亮，

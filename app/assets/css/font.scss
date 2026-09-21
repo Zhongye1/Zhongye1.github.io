@@ -1,0 +1,7 @@
+// 字体族占位：这里只声明栈，实际字体文件按需在 nuxt.config 的 head.link 里引入。
+
+:root {
+  --font-basic: Inter, 'Noto Sans SC', system-ui, sans-serif;
+  --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+  --font-monospace: 'JetBrains Mono', 'Cascadia Code', Consolas, 'Noto Sans Mono', monospace;
+}
