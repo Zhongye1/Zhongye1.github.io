@@ -1,0 +1,137 @@
+// Presentation for rendered markdown (`<ContentRenderer>` output).
+// Wrap the rendered tree in `.post-body` and mark page-level headings with
+// `.content-heading`, e.g. `<h1 class="content-heading text-3xl font-bold">`.
+
+$heading-color: #1677ff;
+$heading-color-dark: #60a5fa;
+$link-color: #1677ff;
+
+// Also exposed as a custom property so it can be reused outside this file.
+:root {
+  --heading-color: #{$heading-color};
+}
+
+.dark {
+  --heading-color: #{$heading-color-dark};
+}
+
+.content-heading {
+  color: var(--heading-color);
+}
+
+.post-body {
+  :is(h1, h2, h3, h4, h5, h6) {
+    margin: 2rem 0 0.75rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--heading-color);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 1rem 0;
+    line-height: 1.8;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li {
+    margin: 0.35rem 0;
+    line-height: 1.7;
+  }
+
+  a {
+    color: $link-color;
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+    margin: 1.5rem auto;
+    border-radius: 0.5rem;
+  }
+
+  blockquote {
+    margin: 1.25rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid rgb(0 0 0 / 12%);
+    color: rgb(0 0 0 / 55%);
+
+    .dark & {
+      border-left-color: rgb(255 255 255 / 20%);
+      color: rgb(255 255 255 / 60%);
+    }
+  }
+
+  code {
+    padding: 0.15em 0.4em;
+    border-radius: 0.25rem;
+    background: rgb(0 0 0 / 6%);
+    font-size: 0.875em;
+
+    .dark & {
+      background: rgb(255 255 255 / 12%);
+    }
+  }
+
+  pre {
+    margin: 1.25rem 0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+
+    code {
+      padding: 0;
+      background: transparent;
+
+      // Inline-code styling above is more specific than this rule, so it has
+      // to be undone explicitly for dark mode too.
+      .dark & {
+        background: transparent;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    margin: 1.25rem 0;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgb(0 0 0 / 10%);
+
+    .dark & {
+      border-color: rgb(255 255 255 / 15%);
+    }
+  }
+}

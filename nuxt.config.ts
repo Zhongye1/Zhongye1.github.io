@@ -1,8 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import siteConfig from './app/site.config'
 
+// slugify 默认规则 + CJK 区间，避免中文文件名被清空导致路径重复
+const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+/g
+
 export default defineNuxtConfig({
   modules: ['@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
+  css: ['~/assets/css/content.scss'],
+  content: {
+    build: {
+      pathMeta: {
+        slugifyOptions: { lower: true, remove: slugifyRemove },
+      },
+    },
+  },
   // Nitro generates `.nuxt/tsconfig.server.json` without a `types` array, so TypeScript
   // implicitly includes every installed `@types/*` package. That trips over the deprecated,
   // types-less `@types/parse-path` stub and fails with TS2688, so pin the types explicitly.
