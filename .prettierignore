@@ -1,0 +1,14 @@
+# Nuxt dev/build outputs
+.nuxt
+.output
+.nitro
+.data
+.cache
+dist
+
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Static assets
+public

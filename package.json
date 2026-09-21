@@ -1,0 +1,46 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@iconify-json/icon-park-outline": "^1.2.4",
+    "@unocss/reset": "^66.10.5",
+    "better-sqlite3": "^13.0.3",
+    "consola": "^3.4.2"
+  },
+  "devDependencies": {
+    "@nuxt/content": "^3.16.1",
+    "@types/node": "^22",
+    "@unocss/nuxt": "^66.10.5",
+    "@vueuse/core": "^15.0.0",
+    "@vueuse/nuxt": "^15.0.0",
+    "lint-staged": "^13.2.1",
+    "nuxt": "^4.5.2",
+    "oxlint": "^1.85.0",
+    "prettier": "^3.9.8",
+    "simple-git-hooks": "^2.8.1",
+    "typescript": "^5.9.3",
+    "unocss-preset-chinese": "^0.3.3",
+    "vue-tsc": "^3.3.11"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "oxlint --fix",
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}
