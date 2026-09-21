@@ -1,5 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from 'node:path'
+import { createJiti } from 'jiti'
 import siteConfig from './app/site.config'
+
+const jiti = createJiti(import.meta.url)
+
+/**
+ * remark-plugins/ 是本地 TS 文件，而 @nuxtjs/mdc 是直接 `import()` 插件名的。
+ * 当前 Node 版本默认不做类型剥离，import() 会报 Unknown file extension .ts，
+ * 所以这里用 jiti 在配置阶段同步加载出插件实例，走 mdc 的 `instance` 字段。
+ */
+function localPlugin(name: string, options: Record<string, unknown> = {}) {
+  return { instance: jiti(resolve(`./remark-plugins/${name}.ts`)).default, options }
+}
 
 // slugify 默认规则 + CJK 区间，避免中文文件名被清空导致路径重复
 const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+/g
@@ -13,6 +26,12 @@ export default defineNuxtConfig({
       // 这样高亮器读到的是未转义源码，也不受构建时主题限制。
       markdown: {
         highlight: false,
+        remarkPlugins: {
+          'remark-code-component': localPlugin('remark-code-component'),
+        },
+        rehypePlugins: {
+          'rehype-meta-slots': localPlugin('rehype-meta-slots'),
+        },
         toc: { depth: 4, searchDepth: 4 },
       },
       pathMeta: {
@@ -50,6 +69,12 @@ export default defineNuxtConfig({
     },
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
+  },
+  // remark-plugins/ 不在 node tsconfig 默认 include 范围内，需显式加入才能参与类型检查
+  typescript: {
+    nodeTsConfig: {
+      include: ['../remark-plugins/**/*.ts'],
+    },
   },
   compatibilityDate: '2026-09-22',
 })

@@ -22,6 +22,12 @@ devDependencies:
   '@nuxt/content':
     specifier: ^3.16.1
     version: 3.16.1(better-sqlite3@13.0.3)(oxc-parser@0.150.0)(rolldown@1.2.9)(vite@8.3.0)(webpack@5.80.0)
+  '@types/hast':
+    specifier: 3.0.5
+    version: 3.0.5
+  '@types/mdast':
+    specifier: 4.0.4
+    version: 4.0.4
   '@types/node':
     specifier: ^22
     version: 22.20.4
@@ -37,6 +43,9 @@ devDependencies:
   lint-staged:
     specifier: ^13.2.1
     version: 13.2.1
+  minimark:
+    specifier: 0.2.0
+    version: 0.2.0
   nuxt:
     specifier: ^4.5.2
     version: 4.5.2(@types/node@22.20.4)(better-sqlite3@13.0.3)(oxc-parser@0.150.0)(oxlint@1.85.0)(rolldown@1.2.9)(sass@1.104.1)(typescript@5.9.3)(vite@8.3.0)(vue-tsc@3.3.11)(webpack@5.80.0)
@@ -55,9 +64,15 @@ devDependencies:
   typescript:
     specifier: ^5.9.3
     version: 5.9.3
+  unist-util-visit:
+    specifier: 5.1.0
+    version: 5.1.0
   unocss-preset-chinese:
     specifier: ^0.3.3
     version: 0.3.3(@unocss/nuxt@66.10.5)
+  vfile:
+    specifier: 6.0.3
+    version: 6.0.3
   vue-tsc:
     specifier: ^3.3.11
     version: 3.3.11(typescript@5.9.3)
@@ -2766,7 +2781,7 @@ packages:
   /@types/hast@3.0.5:
     resolution: {integrity: sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g==}
     dependencies:
-      '@types/unist': 2.0.6
+      '@types/unist': 3.0.3
     dev: true
 
   /@types/json-schema@7.0.15:
