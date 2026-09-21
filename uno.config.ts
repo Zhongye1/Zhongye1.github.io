@@ -7,7 +7,8 @@ export default defineConfig({
   shortcuts: {
     'text-primary': 'c-blue-400 dark:c-gray-200',
     hover: 'op-50 hover:op-100',
-    container: 'bg-white dark:bg-#1f1f1f',
+    // 底色统一走 color.scss 的 token，不再各处写死 #fff / #1f1f1f
+    container: 'bg-[var(--c-bg)]',
     'color-fade': 'c-gray-900:50 dark:c-gray-300:50',
   },
   theme: {

@@ -4,6 +4,9 @@
 :root {
   --hue-theme: 215deg;
 
+  // 页面最底层底色：由 html 着色，内容超出首屏也不会露出浏览器默认白底
+  --c-bg: hsl(var(--hue-theme) 0% 100%);
+
   --c-text-1: hsl(var(--hue-theme) 10% 20%);
   --c-text-2: hsl(var(--hue-theme) 10% 40%);
   --c-text-3: hsl(var(--hue-theme) 10% 60%);
@@ -24,9 +27,13 @@
   --c-error-soft: rgb(255 51 51 / 13%);
 
   --ld-bg-active: var(--c-primary-soft);
+
+  color-scheme: only light;
 }
 
 .dark {
+  --c-bg: hsl(var(--hue-theme) 0% 7%);
+
   --c-text-1: hsl(var(--hue-theme) 10% 90%);
   --c-text-2: hsl(var(--hue-theme) 10% 70%);
   --c-text-3: hsl(var(--hue-theme) 10% 52%);
@@ -47,4 +54,6 @@
   --c-error-soft: rgb(238 102 102 / 15%);
 
   --ld-bg-active: var(--c-primary-soft);
+
+  color-scheme: dark;
 }

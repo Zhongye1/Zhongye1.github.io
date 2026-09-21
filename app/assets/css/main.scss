@@ -1,0 +1,11 @@
+// 文档级基础样式：底色、文字色、字体族一律取自 color.scss / font.scss 的 token，
+// 避免出现「组件都暗了、html/body 还是浏览器默认白底」这种漏色。
+
+html {
+  background-color: var(--c-bg);
+}
+
+body {
+  color: var(--c-text-1);
+  font-family: var(--font-basic);
+}
