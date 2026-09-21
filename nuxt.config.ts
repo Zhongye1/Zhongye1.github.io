@@ -32,7 +32,9 @@ export default defineNuxtConfig({
       markdown: {
         highlight: false,
         remarkPlugins: {
-          'remark-code-component': localPlugin('remark-code-component'),
+          'remark-code-component': localPlugin('remark-code-component', {
+            mermaid: { component: 'mermaid', prop: 'code' },
+          }),
         },
         rehypePlugins: {
           'rehype-meta-slots': localPlugin('rehype-meta-slots'),
