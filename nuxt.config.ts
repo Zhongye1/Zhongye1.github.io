@@ -19,7 +19,7 @@ const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\uf
 
 export default defineNuxtConfig({
   modules: ['@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
-  css: ['~/assets/css/content.scss'],
+  css: ['~/assets/css/shiki.scss', '~/assets/css/content.scss'],
   content: {
     build: {
       // 关闭构建期 Shiki：代码块先产出纯文本，由客户端组件接管高亮，
@@ -74,6 +74,20 @@ export default defineNuxtConfig({
   typescript: {
     nodeTsConfig: {
       include: ['../remark-plugins/**/*.ts'],
+    },
+  },
+  // 高亮相关的依赖都是按需 import 的，预打包可以避免 dev 下首次高亮时卡顿
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@shikijs/colorized-brackets',
+        '@shikijs/transformers',
+        'shiki/core',
+        'shiki/engine/javascript',
+        'shiki/langs',
+        'shiki/themes/catppuccin-latte.mjs',
+        'shiki/themes/one-dark-pro.mjs',
+      ],
     },
   },
   compatibilityDate: '2026-09-22',
