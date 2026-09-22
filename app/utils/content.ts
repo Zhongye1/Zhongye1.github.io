@@ -18,3 +18,8 @@ export function postTimestamp(post: DatedContent): number {
 export function formatPostDate(post: DatedContent): string {
   return postDate(post).slice(0, 10)
 }
+
+/** `content/posts/2025/foo.md` 存成 `/posts/2025/foo`，但对外访问路径是 `/blog/2025/foo`。 */
+export function toBlogPath(path: string): string {
+  return path.replace(/^\/posts/, '/blog')
+}

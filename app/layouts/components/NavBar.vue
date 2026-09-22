@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
 import { navLinks } from '@/site.config'
 
-const isDark = useDark({
-  storageKey: 'blog-theme-mode',
-})
-const toogleTheme = useToggle(isDark)
+const route = useRoute()
+
+function isActive(path: string) {
+  return path === '/' ? route.path === '/' : route.path.startsWith(path)
+}
+
+function linkClass(path: string) {
+  return isActive(path) ? 'c-[var(--c-primary)]' : 'hover'
+}
 </script>
 
 <template>
-  <nav class="flex items-center gap-2em">
+  <nav
+    class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm lg:flex-col lg:items-start lg:gap-y-2.5"
+  >
     <NuxtLink
       v-for="link in navLinks"
       :key="link.path"
       :title="link.title"
       :to="link.path"
-      class="hover"
+      class="w-fit"
+      :class="linkClass(link.path)"
     >
       {{ link.title }}
     </NuxtLink>
-    <a class="i-i hover" href="https://github.com/Zhongye1" target="_blank" />
-    <a class="hover" @click="toogleTheme()">
-      <div class="dark:i-icon-park-outline-moon i-icon-park-outline-sun" />
-    </a>
   </nav>
 </template>
-
-<style></style>

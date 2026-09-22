@@ -28,6 +28,10 @@ useSeoMeta({
   title: () => post.value?.title,
   description: () => post.value?.description,
 })
+
+// 右侧栏的目录由 layout 渲染，这里把当前文章的标题树交出去
+const { setPageToc } = usePageToc()
+setPageToc(post.value?.body?.toc?.links)
 </script>
 
 <template>

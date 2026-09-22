@@ -8,10 +8,6 @@ const { data: posts } = await useAsyncData('blog-posts', () =>
 const sortedPosts = computed(() =>
   (posts.value ?? []).toSorted((a, b) => postTimestamp(b) - postTimestamp(a)),
 )
-
-function toBlogPath(path: string) {
-  return path.replace(/^\/posts/, '/blog')
-}
 </script>
 
 <template>

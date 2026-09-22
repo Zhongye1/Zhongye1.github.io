@@ -40,6 +40,8 @@ export default defineNuxtConfig({
         rehypePlugins: {
           'rehype-meta-slots': localPlugin('rehype-meta-slots'),
         },
+        // 目录（TOC）由 modules/toc 生成，@nuxtjs/mdc 自带的生成已被该模块关闭。
+        // 这里仍是唯一的配置入口，改动会参与 @nuxt/content 的构建缓存 hash。
         toc: { depth: 4, searchDepth: 4 },
       },
       pathMeta: {
@@ -81,7 +83,7 @@ export default defineNuxtConfig({
   // remark-plugins/ 不在 node tsconfig 默认 include 范围内，需显式加入才能参与类型检查
   typescript: {
     nodeTsConfig: {
-      include: ['../remark-plugins/**/*.ts'],
+      include: ['../remark-plugins/**/*.ts', '../modules/**/*.ts'],
     },
   },
   // 高亮相关的依赖都是按需 import 的，预打包可以避免 dev 下首次高亮时卡顿

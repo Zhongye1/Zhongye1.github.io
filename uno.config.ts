@@ -1,5 +1,6 @@
 import { defineConfig, presetAttributify, presetIcons, presetWind3 } from 'unocss'
 import presetChinese from 'unocss-preset-chinese'
+import { socials } from './app/site.config'
 import { codeBlockIconNames } from './shared/utils/icon'
 
 export default defineConfig({
@@ -41,6 +42,8 @@ export default defineConfig({
     'i-tabler-copy',
     'i-tabler-chevrons-up',
     ...codeBlockIconNames.map((name) => `i-${name.replace(':', '-')}`),
+    // 侧边栏/页脚的社交图标类名写在 site.config.ts 里，扫描不到，同样显式列出
+    ...socials.map((social) => social.icon),
   ],
   preflights: [
     {
