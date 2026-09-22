@@ -1,125 +1,76 @@
 <script setup lang="ts">
 // 外观对齐 nuxt-content 文档站的目录（@nuxt/ui v4 的 `ContentToc`）：
-// 标题「目录」+ 缩进列表 + 当前项主色，滚动时高亮视口内的所有标题。
-// 结构沿用它的层级：同级是 <ul>，子级递归渲染，缩进由嵌套列表的 margin 决定。
-// 未搬的部分是小屏下的折叠面板和内容超出时的内部滚动条 —— 本站在 lg 以下
-// 直接隐藏侧栏，滚动交给右栏容器。
-import { createReusableTemplate } from '@vueuse/core'
+// 标题「目录」+ 缩进列表 + 当前项主色 + 跟随当前项的指示线（straight / circuit）。
+//
+// 这里只负责「皮肤」，结构与逻辑都在 headless 层：
+//   TocTree             —— 只渲染 ul/li 与 data-* 标记，类名由这里按层级传进去
+//   useTocScrollspy     —— 观察正文标题，产出当前高亮的标题 id
+//   useTocHighlight     —— 把高亮换算成指示线的位移 / 高度 / mask
+//   useActiveLinkScroll —— 当前项变化时把它滚到容器中间
+// 未搬的部分是小屏折叠面板：本站在 lg 以下整列隐藏（见 SideBarRight），不需要第二套 DOM。
 import type { TocLink } from '@nuxt/content'
 import { usePageToc } from '@/composables/usePageToc'
+import { useTocScrollspy } from '@/composables/useTocScrollspy'
+import { useTocHighlight } from '@/composables/useTocHighlight'
+import { useActiveLinkScroll } from '@/composables/useActiveLinkScroll'
 
-const [DefineListTemplate, ReuseListTemplate] = createReusableTemplate({
-  props: {
-    links: { type: Array as PropType<TocLink[]>, required: true },
-    level: { type: Number, default: 0 },
-  },
-})
+const props = withDefaults(
+  defineProps<{
+    /** 是否显示指示线 */
+    highlight?: boolean
+    /** 指示线形态：straight = 跟随当前项的竖线，circuit = 树状电路板 */
+    highlightVariant?: 'straight' | 'circuit'
+  }>(),
+  { highlight: true, highlightVariant: 'straight' },
+)
 
 const { toc } = usePageToc()
 const router = useRouter()
-const nuxtApp = useNuxtApp()
+const route = useRoute()
+const listRef = useTemplateRef<HTMLElement>('listRef')
 
-const flatLinks = computed(() => flattenLinks(toc.value))
-const activeIds = ref<string[]>([])
-const visibleIds = ref<string[]>([])
-let observer: IntersectionObserver | null = null
+const { activeIds } = useTocScrollspy(toc)
+const { activeIndex, indicatorStyle } = useTocHighlight({
+  links: toc,
+  activeIds,
+  containerRef: listRef,
+  // 传 getter 而不是快照，运行时切换形态也能跟着重算 mask
+  variant: () => props.highlightVariant,
+})
+useActiveLinkScroll({ containerRef: listRef, activeIndex })
 
-function flattenLinks(links: TocLink[]): TocLink[] {
-  return links.flatMap((link) => [
-    link,
-    ...(link.children?.length ? flattenLinks(link.children) : []),
-  ])
-}
+const isCircuit = computed(() => props.highlight && props.highlightVariant === 'circuit')
 
-// 与 @nuxt/ui 的 `useScrollspy` 一致：视口内可见的标题都算高亮；
-// 一个都不可见时保留上一次结果，避免滚到两段标题之间时高亮闪没。
-function handleIntersect(entries: IntersectionObserverEntry[]) {
-  const ids = new Set(visibleIds.value)
-  let changed = false
-
-  for (const entry of entries) {
-    const id = entry.target.id
-    if (!id) continue
-
-    if (entry.isIntersecting) {
-      if (!ids.has(id)) {
-        ids.add(id)
-        changed = true
-      }
-    } else if (ids.delete(id)) {
-      changed = true
-    }
-  }
-
-  if (changed) visibleIds.value = [...ids]
-}
-
-function observeHeadings() {
-  if (!import.meta.client) return
-
-  observer ??= new IntersectionObserver(handleIntersect)
-  observer.disconnect()
-  visibleIds.value = []
-
-  // 直接按目录里的 id 找锚点，不再用选择器筛标题等级
-  for (const link of flatLinks.value) {
-    const heading = document.getElementById(link.id)
-    if (heading) observer.observe(heading)
-  }
-}
-
+/** 点在地址栏里已有的锚点上时，router.push 会被判成重复导航而不滚动，这里手动补一次 */
 function scrollToHeading(id: string) {
-  router.push(`#${encodeURIComponent(id)}`)
+  const hash = `#${encodeURIComponent(id)}`
+  if (route.hash === hash) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    return
+  }
+  router.push(hash)
 }
 
 function linkClass(id: string) {
-  if (activeIds.value.includes(id)) return 'c-[var(--c-primary)]'
-  return 'c-[var(--c-text-3)] hover:c-[var(--c-text-1)]'
+  return activeIds.value.includes(id)
+    ? 'c-[var(--c-primary)]'
+    : 'c-[var(--c-text-3)] hover:c-[var(--c-text-1)]'
 }
 
+/** ul 的类名按层级与形态给，TocTree 只负责把它挂到对应的元素上 */
 function listClass(level: number) {
-  if (level > 0) return 'ml-3'
-  return undefined
+  if (level > 0) return 'ms-3 min-w-0'
+  if (!props.highlight) return 'min-w-0'
+  return isCircuit.value
+    ? 'min-w-0 ps-6.5'
+    : 'min-w-0 ms-2.5 border-s border-[var(--c-border)] ps-4'
 }
 
-watch(visibleIds, (ids, previous) => {
-  activeIds.value = ids.length ? ids : previous
-})
-
-// 同时可见多个标题时，取目录顺序里最靠前的那个作为「当前项」：
-// 可见集合只是增删条目时当前项不变，滚动列表也就不会来回抖。
-const activeId = computed(() => {
-  const ids = new Set(activeIds.value)
-  return flatLinks.value.find((link) => ids.has(link.id))?.id ?? ''
-})
-
-function scrollActiveIntoView() {
-  if (!import.meta.client || !activeId.value) return
-
-  const link = document.getElementById(`toc-link-${activeId.value}`)
-  // block: 'nearest' 只在当前项不可见时做最小幅度滚动，避免整个列表跳来跳去
-  // 链接上的 scroll-mt-8 与顶部固定的「目录」等高，滚进来时不会被它盖住
-  link?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+/** 有子级的 li 用 ps-px 顶开缩进，其余用 -ms-px 压住竖线：对齐原实现的 1px 微调 */
+function itemClass(link: TocLink) {
+  if (link.children?.length) return isCircuit.value ? 'min-w-0 ps-px' : 'min-w-0'
+  return props.highlight ? 'min-w-0 -ms-px' : 'min-w-0'
 }
-
-// 等 :id / :class 落到 DOM 上再滚，否则可能量到旧位置
-watch(activeId, () => nextTick(scrollActiveIntoView))
-
-watch(flatLinks, () => nextTick(observeHeadings))
-
-onMounted(() => nextTick(observeHeadings))
-
-// 页面过渡结束后正文才渲染完，这时才找得到锚点
-const offLoadingEnd = nuxtApp.hooks.hook('page:loading:end', () => nextTick(observeHeadings))
-const offTransitionFinish = nuxtApp.hooks.hook('page:transition:finish', () =>
-  nextTick(observeHeadings),
-)
-
-onBeforeUnmount(() => {
-  observer?.disconnect()
-  offLoadingEnd()
-  offTransitionFinish()
-})
 </script>
 
 <template>
@@ -130,30 +81,51 @@ onBeforeUnmount(() => {
       <span class="truncate">目录</span>
     </p>
 
-    <div class="flex flex-col py-2">
-      <DefineListTemplate v-slot="{ links, level }">
-        <ul class="min-w-0" :class="listClass(level)">
-          <li v-for="link in links" :key="link.id" class="min-w-0">
-            <a
-              :id="`toc-link-${link.id}`"
-              :href="`#${link.id}`"
-              class="group relative flex items-center rounded-sm py-1 text-sm transition-colors scroll-mt-8 scroll-mb-1"
-              :class="linkClass(link.id)"
-              @click.prevent="scrollToHeading(link.id)"
-            >
-              <span class="truncate">{{ link.text }}</span>
-            </a>
+    <div ref="listRef" class="relative flex flex-col py-2">
+      <!--
+        指示线：绝对定位且不写 top，靠「绝对定位子元素的静态位置 = 容器内容盒起点」对齐
+        第一条链接（容器有 py-2，写 top-0 会高出 8px）。
+        位移变量与 circuit 的树状 mask 都挂在容器上：滑块是被 mask 裁剪的子元素，
+        于是高亮会顺着电路走，经过拐角时沿斜线穿过去。
+      -->
+      <div
+        v-if="props.highlight"
+        data-toc-indicator
+        class="absolute start-0 ms-2.5"
+        :class="
+          isCircuit
+            ? undefined
+            : 'h-[var(--toc-indicator-size)] w-px translate-y-[var(--toc-indicator-position)] rounded-full transition-[transform,height] duration-200 ease-out motion-reduce:transition-none'
+        "
+        :style="indicatorStyle"
+      >
+        <div
+          v-if="isCircuit"
+          data-toc-indicator-line
+          class="absolute inset-0 bg-[var(--c-border)]"
+        />
+        <div
+          v-if="activeIndex >= 0"
+          data-toc-indicator-active
+          :class="
+            isCircuit
+              ? 'absolute h-[var(--toc-indicator-size)] w-full translate-y-[var(--toc-indicator-position)] bg-[var(--c-primary)] transition-[transform,height] duration-200 ease-out motion-reduce:transition-none'
+              : 'h-full w-full bg-[var(--c-primary)]'
+          "
+        />
+      </div>
 
-            <ReuseListTemplate
-              v-if="link.children?.length"
-              :links="link.children"
-              :level="level + 1"
-            />
-          </li>
-        </ul>
-      </DefineListTemplate>
-
-      <ReuseListTemplate :links="toc" :level="0" />
+      <TocTree v-slot="{ link }" :links="toc" :list-class="listClass" :item-class="itemClass">
+        <a
+          :href="`#${link.id}`"
+          data-toc-link
+          class="group relative flex items-center rounded-sm py-1 text-sm transition-colors"
+          :class="linkClass(link.id)"
+          @click.prevent="scrollToHeading(link.id)"
+        >
+          <span data-toc-text class="truncate">{{ link.text }}</span>
+        </a>
+      </TocTree>
     </div>
   </nav>
 </template>
