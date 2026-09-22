@@ -20,6 +20,7 @@
     "@unocss/reset": "^66.10.5",
     "better-sqlite3": "^13.0.3",
     "consola": "^3.4.2",
+    "jiti": "^2.7.0",
     "mermaid": "^12.0.0",
     "shiki": "^4.4.3"
   },
@@ -54,10 +55,5 @@
       "oxlint --fix",
       "prettier --write --ignore-unknown"
     ]
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@nuxtjs/mdc@0.23.1": "patches/@nuxtjs__mdc@0.23.1.patch"
-    }
   }
 }

@@ -2,7 +2,7 @@
 const props = withDefaults(
   defineProps<{
     language?: string
-    /** 由 @nuxtjs/mdc 补丁从 inlineCode 处理器带出，见 patches/ */
+    /** 代码块处理器会带上源码；行内代码的源码走默认插槽 */
     code?: string
     copy?: boolean
   }>(),
@@ -11,16 +11,16 @@ const props = withDefaults(
   },
 )
 
-const { copy: copyCode, copied } = useCopy(props.code)
 const shiki = useShiki()
 const codeElement = useTemplateRef('code')
+const { copy: copyCode, copied } = useCopy(codeElement)
 const highlighted = ref(false)
 
 onMounted(async () => {
   const el = codeElement.value
   if (!props.language || !el) return
 
-  await shiki.mountInline(el, props.code, {
+  await shiki.mountInline(el, el.textContent ?? props.code, {
     language: props.language,
     transformerOptions: ['ignoreColorizedBrackets'],
   })
@@ -31,7 +31,9 @@ onMounted(async () => {
 
 <template>
   <code ref="code" :class="{ copyable: copy }">
-    <template v-if="!language || !highlighted">{{ code }}</template>
+    <template v-if="!language || !highlighted">
+      <slot>{{ code }}</slot>
+    </template>
     <button v-if="copy" type="button" class="copy-button" aria-label="复制" @click="copyCode()">
       <span :class="copied ? 'i-tabler-check' : 'i-tabler-copy'" />
     </button>
