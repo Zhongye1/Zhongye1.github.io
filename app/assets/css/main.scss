@@ -10,3 +10,14 @@ body {
   color: var(--c-text-1);
   font-family: var(--font-basic);
 }
+
+// 内部滚动容器（右侧目录）只保留滚动能力，不显示滚动条：
+// 目录会自动把当前项滚进来，轨道本身只是噪音，隐藏后宽度也不会随内容跳
+.no-scrollbar {
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // 旧版 Edge
+
+  &::-webkit-scrollbar {
+    display: none; // WebKit / Blink
+  }
+}

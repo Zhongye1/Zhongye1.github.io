@@ -86,6 +86,25 @@ watch(visibleIds, (ids, previous) => {
   activeIds.value = ids.length ? ids : previous
 })
 
+// 同时可见多个标题时，取目录顺序里最靠前的那个作为「当前项」：
+// 可见集合只是增删条目时当前项不变，滚动列表也就不会来回抖。
+const activeId = computed(() => {
+  const ids = new Set(activeIds.value)
+  return flatLinks.value.find((link) => ids.has(link.id))?.id ?? ''
+})
+
+function scrollActiveIntoView() {
+  if (!import.meta.client || !activeId.value) return
+
+  const link = document.getElementById(`toc-link-${activeId.value}`)
+  // block: 'nearest' 只在当前项不可见时做最小幅度滚动，避免整个列表跳来跳去
+  // 链接上的 scroll-mt-8 与顶部固定的「目录」等高，滚进来时不会被它盖住
+  link?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+}
+
+// 等 :id / :class 落到 DOM 上再滚，否则可能量到旧位置
+watch(activeId, () => nextTick(scrollActiveIntoView))
+
 watch(flatLinks, () => nextTick(observeHeadings))
 
 onMounted(() => nextTick(observeHeadings))
@@ -104,18 +123,21 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <nav class="flex flex-col">
-    <div v-if="toc.length" class="flex flex-col py-8">
-      <p class="-mt-1.5 flex flex-1 items-center gap-1.5 py-1.5 text-sm font-semibold">
-        <span class="truncate">目录</span>
-      </p>
+  <nav v-if="toc.length" class="flex flex-col">
+    <p
+      class="sticky top-0 z-1 flex shrink-0 items-center gap-1.5 bg-[var(--c-bg)] py-1.5 text-sm font-semibold"
+    >
+      <span class="truncate">目录</span>
+    </p>
 
+    <div class="flex flex-col py-2">
       <DefineListTemplate v-slot="{ links, level }">
         <ul class="min-w-0" :class="listClass(level)">
           <li v-for="link in links" :key="link.id" class="min-w-0">
             <a
+              :id="`toc-link-${link.id}`"
               :href="`#${link.id}`"
-              class="group relative flex items-center rounded-sm py-1 text-sm transition-colors"
+              class="group relative flex items-center rounded-sm py-1 text-sm transition-colors scroll-mt-8 scroll-mb-1"
               :class="linkClass(link.id)"
               @click.prevent="scrollToHeading(link.id)"
             >
