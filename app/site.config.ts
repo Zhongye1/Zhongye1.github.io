@@ -4,7 +4,7 @@ const siteConfig = {
   subtitle: '个人博客',
   /** 站点主域名。canonical / og:url / RSS / sitemap 一律以它为准，别再出现第二个域名 */
   url: 'https://blog.junce.net',
-  description: 'Zhongye 的个人博客网站，记录技术、折腾与日常。',
+  description: '个人博客网站，记录技术、折腾与日常',
   lang: 'zh-CN',
   /** 站点上线日期 */
   startDate: '2023-09-12',

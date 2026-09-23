@@ -26,6 +26,8 @@ export default defineNuxtConfig({
     '~/assets/css/font.scss',
     '~/assets/css/main.scss',
     '~/assets/css/shiki.scss',
+    // 公式样式。必须与 rehype-katex 渲染时用的 katex 同版本，见 package.json 里的版本约束
+    'katex/dist/katex.min.css',
     '~/assets/css/content.scss',
   ],
   content: {
@@ -35,12 +37,17 @@ export default defineNuxtConfig({
       markdown: {
         highlight: false,
         remarkPlugins: {
+          // 公式：把 $...$ / $$...$$ 解析成数学节点（单美元行内公式是默认开的）
+          'remark-math': {},
           'remark-code-component': localPlugin('remark-code-component', {
             mermaid: { component: 'mermaid', prop: 'code' },
           }),
           'remark-post-stats': localPlugin('remark-post-stats'),
         },
         rehypePlugins: {
+          // 再把数学节点编译成 KaTeX 的 HTML + MathML：公式是内容而不是交互，
+          // 构建期落进 HTML 后无 JS 也能读、爬虫也认（对应上面引入的 katex.min.css）
+          'rehype-katex': {},
           'rehype-meta-slots': localPlugin('rehype-meta-slots'),
         },
         // 目录（TOC）由 modules/toc 生成，@nuxtjs/mdc 自带的生成已被该模块关闭。

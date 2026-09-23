@@ -80,6 +80,14 @@
     border-top: 1px solid var(--c-border);
   }
 
+  // 行间公式（KaTeX 的 .katex-display）不换行，长公式在窄屏上会顶破内容列，
+  // 让它横向滚动即可；上下留一点空间给滚动条
+  .katex-display {
+    padding: 0.25rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
   code {
     padding: 0.15em 0.4em;
     border-radius: 0.25rem;
