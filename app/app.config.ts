@@ -13,4 +13,8 @@ export default defineAppConfig({
       tabSize: 3,
     },
   },
+  pagination: {
+    /** 文章列表每页条数，改它会同时改变 /blog/page/N 的页数 */
+    perPage: 10,
+  },
 })
