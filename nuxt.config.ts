@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from 'node:path'
 import { createJiti } from 'jiti'
-import siteConfig from './app/site.config'
+import siteConfig, { rssFeed } from './app/site.config'
 
 const jiti = createJiti(import.meta.url)
 
@@ -18,7 +18,8 @@ function localPlugin(name: string, options: Record<string, unknown> = {}) {
 const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+/g
 
 export default defineNuxtConfig({
-  modules: ['@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
+  // @nuxtjs/seo 必须在 @nuxt/content 之前加载：sitemap 的 content 数据源靠模块顺序挂载
+  modules: ['@nuxtjs/seo', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
   components: [{ path: '~/components/widget-right' }, '~/components'],
   css: [
     '~/assets/css/color.scss',
@@ -60,6 +61,10 @@ export default defineNuxtConfig({
   // implicitly includes every installed `@types/*` package. That trips over the deprecated,
   // types-less `@types/parse-path` stub and fails with TS2688, so pin the types explicitly.
   nitro: {
+    // 静态站（GitHub Pages）：server route 不在抓取范围内，必须显式预渲染成真的 rss.xml
+    prerender: {
+      routes: [rssFeed.path],
+    },
     typescript: {
       tsConfig: {
         compilerOptions: {
@@ -68,16 +73,55 @@ export default defineNuxtConfig({
       },
     },
   },
+  sitemap: {
+    // Content v3 自带的数据源输出的是集合内部路径 /posts/**，线上实际是 /blog/**，
+    // 直接放进去会得到一片 404，所以关掉它、改用下面的数据源重写路径
+    excludeAppSources: ['@nuxt/content@v3:urls'],
+    sources: ['/api/__sitemap__/urls'],
+    // /blog 只是跳回首页的旧路径壳，不该进 sitemap
+    exclude: ['/blog'],
+  },
+  robots: {
+    // 站点无私有路径，默认放行；Sitemap 行由 site.url 自动补
+    disallow: [],
+  },
+  // nuxt-og-image 本身不带渲染器，必须自备 satori+resvg / takumi / playwright-core 之一。
+  // 一个都没装时它照样注册运行时：dev 下所有路由 500（Cannot find package 'satori'），
+  // 本机有 Chrome 时还会先报 playwright-core 解析失败。本站的 og:image 直接取文章封面
+  // （见 app/pages/blog/[...slug].vue），没用到生成式 OG 卡片，所以先关掉整个模块。
+  // 以后要做标题卡片：装一个渲染器，再把这里换成 { zeroRuntime: true }；若本机/CI 带 Chrome，
+  // 还要顺手加 compatibility: { dev: { browser: false }, prerender: { browser: false } }。
+  ogImage: {
+    enabled: false,
+  },
+  /** nuxt-site-config 的入口：canonical、og:url、sitemap、robots、schema.org 都读这里 */
+  site: {
+    url: siteConfig.url,
+    name: siteConfig.title,
+    description: siteConfig.description,
+    defaultLocale: siteConfig.lang,
+    // GitHub Pages 上目录型 URL 不带斜杠会先吃一个 301，canonical 必须直接指向落点
+    trailingSlash: true,
+  },
   app: {
     head: {
+      // 全局兜底标题：页面没写 title 时用它（真正的模板在 app/plugins/seo-title.ts，
+      // 因为 nuxt-seo-utils 会在运行时用 `%s | %siteName` 覆盖配置里的 titleTemplate）
+      title: siteConfig.title,
       meta: [
-        { name: 'description', content: siteConfig.description },
         { name: 'author', content: siteConfig.author },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0, shrink-to-fit=no' },
-        { name: 'revisit-after', content: '7 days' },
         { name: 'msapplication-TileColor', content: '#ffffff' },
-        { charset: 'UTF-8' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+      ],
+      // 订阅器自动发现：粘站点域名即可认出订阅源
+      link: [
+        {
+          rel: 'alternate',
+          type: 'application/rss+xml',
+          title: siteConfig.title,
+          href: rssFeed.path,
+        },
       ],
       noscript: [{ textContent: 'JavaScript is required' }],
       htmlAttrs: {

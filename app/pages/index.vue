@@ -5,9 +5,10 @@ import { useBlogPosts } from '@/composables/useBlogPosts'
 
 const { posts } = await useBlogPosts()
 
-// 首页不设 title：让 app.global.ts 里 `titleTemplate` 的兜底分支（`{站点名} - site`）生效。
-// 若在这里写 title: siteConfig.title，模板会把它当子标题再拼一次，变成「Zhongye - Zhongye」
+// 首页标题就是站点名：titleTemplate 见到 chunk 与站点同名时不会再拼后缀，
+// 所以这里直接给 siteConfig.title 即可
 useSeoMeta({
+  title: siteConfig.title,
   description: siteConfig.description,
 })
 </script>

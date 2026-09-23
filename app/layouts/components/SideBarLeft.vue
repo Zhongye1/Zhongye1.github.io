@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
-import siteConfig, { socials } from '@/site.config'
+import siteConfig, { rssFeed, socials } from '@/site.config'
 import SearchButton from '@/components/SearchButton.vue'
 
 import NavBar from './NavBar.vue'
@@ -31,6 +31,16 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
         :class="social.icon"
         :href="social.url"
         :title="social.title"
+        rel="noreferrer"
+        target="_blank"
+      />
+      <!-- 订阅入口。type 保留 rss+xml，浏览器扩展（Feedbro、RSSHub Radar 等）认它 -->
+      <a
+        class="hover i-tabler-rss"
+        :href="rssFeed.path"
+        type="application/rss+xml"
+        :title="rssFeed.title"
+        :aria-label="rssFeed.title"
         rel="noreferrer"
         target="_blank"
       />

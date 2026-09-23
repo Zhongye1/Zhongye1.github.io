@@ -1,8 +1,11 @@
 const siteConfig = {
   author: 'Zhongye',
   title: 'Zhongye',
-  description: 'Personal blog site',
-  lang: 'en-GB',
+  subtitle: '个人博客',
+  /** 站点主域名。canonical / og:url / RSS / sitemap 一律以它为准，别再出现第二个域名 */
+  url: 'https://blog.junce.net',
+  description: 'Zhongye 的个人博客网站，记录技术、折腾与日常。',
+  lang: 'zh-CN',
   /** 站点上线日期 */
   startDate: '2023-09-12',
   /** 页脚版权起始年份 */
@@ -46,6 +49,15 @@ export const socials = [
     icon: 'i-tabler-brand-github',
   },
 ]
+
+/**
+ * RSS 订阅源。路径只在这里写一份：nuxt.config 用它做预渲染和 head 的发现链接，
+ * 侧边栏的 RSS 图标用它做 href。
+ */
+export const rssFeed = {
+  title: 'RSS 订阅',
+  path: '/rss.xml',
+}
 
 /**
  * 右侧技术信息

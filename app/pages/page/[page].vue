@@ -22,7 +22,10 @@ if (!Number.isInteger(requested) || requested < 2 || requested > totalPages.valu
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
-useSeoMeta({ title: `文章 · 第 ${page.value} 页` })
+useSeoMeta({
+  title: `文章 · 第 ${page.value} 页`,
+  description: `文章列表第 ${page.value} 页，共 ${totalPages.value} 页。`,
+})
 </script>
 
 <template>
