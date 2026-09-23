@@ -27,6 +27,13 @@
   --c-error-soft: rgb(255 51 51 / 13%);
 
   --ld-bg-active: var(--c-primary-soft);
+  // 卡片与投影
+  --c-bg-soft: hsl(var(--hue-theme) 20% 20% / 10%);
+  --ld-bg-card: var(--c-bg-1);
+  --ld-shadow: var(--c-bg-soft);
+  --box-shadow-1: 0 0.1em 0.2em var(--ld-shadow);
+  --box-shadow-2: 0 0.2em 0.5em var(--ld-shadow);
+  --box-shadow-3: 0 0.5em 1em var(--ld-shadow);
 
   color-scheme: only light;
 }
@@ -54,6 +61,10 @@
   --c-error-soft: rgb(238 102 102 / 15%);
 
   --ld-bg-active: var(--c-primary-soft);
+  // 深色下的卡片要比页面底色（7%）更亮才立得起来；
+  // 投影同理反向 —— 暗色底上暗投影看不见，v3 用的是一圈浅色辉光，这里跟着走
+  --c-bg-soft: hsl(var(--hue-theme) 100% 95% / 12%);
+  --ld-bg-card: var(--c-bg-3);
 
   color-scheme: dark;
 }
