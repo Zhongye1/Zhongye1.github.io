@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // 列表视图：标题行 + 文章卡片 + 分页条。
-// 数据与页码校验留在页面里（`/blog` 与 `/blog/page/N` 各自负责自己的越界处理），
-// 这里只负责渲染。
+// 数据与页码校验留在页面里（`/` 与 `/page/N` 各自负责自己的越界处理），这里只负责渲染。
 
 import Pagination from '@/components/Pagination.vue'
 import SearchButton from '@/components/SearchButton.vue'
@@ -18,19 +17,24 @@ interface BlogPost {
   words?: number | null
 }
 
-const props = defineProps<{
-  posts: BlogPost[]
-  page: number
-  totalPages: number
-  /** 页面标题，第 2 页起会带上页码 */
-  title?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    posts: BlogPost[]
+    page: number
+    totalPages: number
+    /** 页面标题，第 2 页起会带上页码 */
+    title?: string
+    /** 第 1 页路径，透传给 Pagination；首页传 `''` */
+    base?: string
+  }>(),
+  { title: '文章', base: '' },
+)
 </script>
 
 <template>
   <section class="flex flex-col gap-8">
     <div class="flex items-center justify-between gap-4">
-      <h1 class="text-2xl font-bold">{{ props.title ?? 'Blog' }}</h1>
+      <h1 class="text-2xl font-bold">{{ props.title }}</h1>
 
       <SearchButton collapsed label="搜索文章" />
     </div>
@@ -82,7 +86,7 @@ const props = defineProps<{
       </li>
     </ul>
 
-    <Pagination :page="props.page" :total-pages="props.totalPages" sticky />
+    <Pagination :page="props.page" :total-pages="props.totalPages" :base="props.base" sticky />
   </section>
 </template>
 

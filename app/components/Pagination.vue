@@ -3,7 +3,7 @@
 //
 // 按本站的静态站策略改了两处：
 //  1. 页码用 `<NuxtLink>` 而不是按钮 —— 路径分页要靠预渲染时的链接抓取，把
-//     `/blog/page/2..N` 全都生成出来，按钮点击对爬虫不可见；
+//     `/page/2..N` 全都生成出来，按钮点击对爬虫不可见；
 //  2. 去掉上游的 `avoid`（它靠 Pinia store + 元素测量让分页条躲开评论区等悬浮元素，
 //     本站没有这类元素）。
 //
@@ -70,7 +70,7 @@ function pageLink(target: number) {
   <div class="contents">
     <nav
       v-if="totalPages > 1"
-      class="my-4 flex w-full self-center overflow-hidden rounded-lg border border-[var(--c-border)] bg-[var(--c-bg-1)] tabular-nums transition-[max-width] duration-200 ease-out"
+      class="flex w-full self-center overflow-hidden rounded-lg border border-[var(--c-border)] bg-[var(--c-bg-1)] tabular-nums transition-[max-width] duration-200 ease-out"
       :class="props.sticky ? 'sticky bottom-[min(2em,5%)] z-10' : undefined"
       :style="navStyle"
       :aria-label="`第 ${page} 页，共 ${totalPages} 页`"

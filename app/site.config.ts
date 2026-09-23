@@ -7,25 +7,34 @@ const siteConfig = {
   startDate: '2023-09-12',
   /** 页脚版权起始年份 */
   startYear: 2023,
+  /** 出生年份 */
+  birthYear: 2004 as number | null,
 }
 export default siteConfig
 
+/**
+ * 侧边栏导航，icon 为 UnoCSS 的图标类名（用 Tabler，与右侧栏一致）。
+ */
 export const navLinks = [
   {
-    title: 'Home',
+    title: 'Blog',
     path: '/',
+    icon: 'i-tabler-notebook',
   },
   {
-    title: 'Blog',
-    path: '/blog',
+    title: 'Archive',
+    path: '/archive',
+    icon: 'i-tabler-archive',
   },
-  // {
-  //   title: 'Tags',
-  //   path: '/tags',
-  // },
+  {
+    title: 'Friends',
+    path: '/friends',
+    icon: 'i-tabler-friends',
+  },
   {
     title: 'About',
     path: '/about',
+    icon: 'i-tabler-user-circle',
   },
 ]
 

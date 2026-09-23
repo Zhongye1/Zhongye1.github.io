@@ -1,15 +1,11 @@
 <script setup lang="ts">
-// 列表第 1 页。第 2 页起在 `blog/page/[page].vue`，两页共用 `BlogList`。
-import BlogList from '@/components/BlogList.vue'
-import { useBlogPosts } from '@/composables/useBlogPosts'
-import { usePagination } from '@/composables/usePagination'
+// 老路径兜底：文章列表以前在 `/blog`，现在搬到了首页。
 
-const { posts } = await useBlogPosts()
-const { totalPages, listPaged } = usePagination(posts, { page: 1 })
-
-useSeoMeta({ title: 'Blog' })
+definePageMeta({
+  redirect: { path: '/' },
+})
 </script>
 
 <template>
-  <BlogList :posts="listPaged" :page="1" :total-pages="totalPages" />
+  <p>文章列表已迁移到首页，正在跳转…</p>
 </template>
