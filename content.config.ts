@@ -13,6 +13,8 @@ const postSchema = z.object({
   mathjax: z.boolean().optional(),
   sticky: z.number().optional(),
   swiper_index: z.number().optional(),
+  words: z.number().optional(),
+  readingMinutes: z.number().optional(),
 })
 
 export default defineContentConfig({

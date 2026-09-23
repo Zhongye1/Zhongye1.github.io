@@ -19,6 +19,7 @@ const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\uf
 
 export default defineNuxtConfig({
   modules: ['@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
+  components: [{ path: '~/components/widget-right' }, '~/components'],
   css: [
     '~/assets/css/color.scss',
     '~/assets/css/font.scss',
@@ -36,6 +37,7 @@ export default defineNuxtConfig({
           'remark-code-component': localPlugin('remark-code-component', {
             mermaid: { component: 'mermaid', prop: 'code' },
           }),
+          'remark-post-stats': localPlugin('remark-post-stats'),
         },
         rehypePlugins: {
           'rehype-meta-slots': localPlugin('rehype-meta-slots'),
@@ -47,6 +49,11 @@ export default defineNuxtConfig({
       pathMeta: {
         slugifyOptions: { lower: true, remove: slugifyRemove },
       },
+    },
+  },
+  runtimeConfig: {
+    public: {
+      buildTime: new Date().toISOString(),
     },
   },
   // Nitro generates `.nuxt/tsconfig.server.json` without a `types` array, so TypeScript
