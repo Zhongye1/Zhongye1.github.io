@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SearchButton from '@/components/SearchButton.vue'
+
 const { data: posts } = await useAsyncData('blog-posts', () =>
   queryCollection('posts')
     .select('path', 'title', 'description', 'date', 'published', 'category', 'tags')
@@ -12,7 +14,12 @@ const sortedPosts = computed(() =>
 
 <template>
   <section class="flex flex-col gap-8">
-    <h1 class="text-2xl font-bold">Blog</h1>
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="text-2xl font-bold">Blog</h1>
+
+      <!-- 紧凑形态的搜索入口：折叠成图标，靠 tooltip + aria-label 说明用途 -->
+      <SearchButton collapsed label="搜索文章" />
+    </div>
 
     <p v-if="!sortedPosts.length" class="color-fade">No posts yet.</p>
 

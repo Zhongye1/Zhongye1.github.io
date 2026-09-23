@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
 import siteConfig, { socials } from '@/site.config'
-import SiteSearch from './SiteSearch.vue'
+import SearchButton from '@/components/SearchButton.vue'
 
 import NavBar from './NavBar.vue'
 
@@ -19,7 +19,7 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
       <NuxtLink to="/" class="text-lg font-semibold">{{ siteConfig.title }}</NuxtLink>
       <p class="color-fade text-sm leading-relaxed">{{ siteConfig.description }}</p>
     </div>
-    <SiteSearch />
+    <SearchButton />
 
     <NavBar />
 
