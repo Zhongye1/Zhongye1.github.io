@@ -1,13 +1,5 @@
 <script setup lang="ts">
-// 分页条，移植自 blog-v3 的 `partial/Pagination.vue`，含它的 sticky 折叠一手。
-//
-// 按本站的静态站策略改了两处：
-//  1. 页码用 `<NuxtLink>` 而不是按钮 —— 路径分页要靠预渲染时的链接抓取，把
-//     `/page/2..N` 全都生成出来，按钮点击对爬虫不可见；
-//  2. 去掉上游的 `avoid`（它靠 Pinia store + 元素测量让分页条躲开评论区等悬浮元素，
-//     本站没有这类元素）。
-//
-// 两态的宽度（与 blog-v3 一致）：展开态撑满内容列、箭头分列两端；折叠态收成窄条。
+// 分页条
 import { useElementVisibility } from '@vueuse/core'
 import { getPaginationIndicator } from '~~/shared/utils/pagination'
 
@@ -16,14 +8,16 @@ const props = withDefaults(
     /** 当前页码 */
     page: number
     totalPages: number
-    /** 第 1 页的路径，其余页拼成 `${base}/page/N` */
+    /** 第 1 页的路径，其余页拼成 `${base}/page/N`；列表落在 `/` 时传 `''` */
     base?: string
     /** 当前页两侧各展开几个页码 */
     expandPages?: number
     /** 贴底显示：滚到列表中段时收成页码胶囊，滚到列表末尾再展开 */
     sticky?: boolean
   }>(),
-  { base: '/blog', expandPages: 2, sticky: false },
+  // 默认与唯一调用方（PostListPage/BlogList）一致：列表在 `/`，其余页在 `/page/N`。
+  // 原来默认 '/blog' 是重构前的老路径，现在 /blog 只是跳回首页的空壳，/blog/page/N 更是 404
+  { base: '', expandPages: 2, sticky: false },
 )
 
 const pages = computed(() =>
@@ -39,7 +33,7 @@ const collapsed = computed(() => props.sticky && !expanded.value)
 // 数字带 `text-sm`、省略号不带，em 基数不同会让格子宽度对不上。
 const CELL_WIDTH = 2.5
 
-// 两态宽度（与 blog-v3 一致）：
+// 两态宽度：
 // 展开态 = 撑满内容列，两侧箭头被 auto margin 顶到两端、页码居中；
 // 折叠态 = 页码格压到 2rem、箭头保持 2.5rem 的窄条，箭头照常显示，悬浮时也能直接翻页。
 // 折叠宽度写成 rem 长度而不是 fit-content：max-width 只在长度之间可过渡，折叠才平滑。
@@ -56,7 +50,10 @@ const navStyle = computed(() => {
 })
 
 function pageLink(target: number) {
-  return target <= 1 ? props.base : `${props.base}/page/${target}`
+  // 第 1 页的路径就是 base 本身；base 为空串（列表落在首页）时必须显式写 '/'：
+  // 空串交给 NuxtLink 会被 vue-router 当成相对空路径，解析不出 href，
+  // 渲染成一个点不动的死链接（第 2 页的「上一页」同样指向第 1 页，一起中招）。
+  return target <= 1 ? props.base || '/' : `${props.base}/page/${target}`
 }
 </script>
 
