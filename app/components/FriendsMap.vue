@@ -1,33 +1,39 @@
 <script setup lang="ts">
-// 友链页上的点阵地图：把「朋友们的坐标」画成会转的地球 / 平面地图。
+// 友链页上的点阵地图
 //
-// 楼下 `places` 是演示数据（城市）。想换成真实站点，把 latitude/longitude 填成
-// 对应位置即可，`data` 里放什么就能在 slot 里画什么。
+// 数据来自 `worker/` 里那个 Cloudflare Worker 的 `/api/map`，取数与降级逻辑
+// 全在 `useVisitorMap`；标记的权重语义见 `utils/dotted-map/types.ts` 的 `weight`。
+import { visitorApi } from '@/site.config'
 import type { DottedMapMarker, DottedMapViewMode } from '~/utils/dotted-map/types'
 
-const places: DottedMapMarker[] = [
-  { id: 'sf', latitude: 37.77, longitude: -122.42, data: { name: 'San Francisco' } },
-  { id: 'ny', latitude: 40.71, longitude: -74.01, data: { name: 'New York' } },
-  { id: 'sp', latitude: -23.55, longitude: -46.63, data: { name: 'São Paulo' } },
-  { id: 'ld', latitude: 51.51, longitude: -0.13, data: { name: 'London' } },
-  { id: 'pa', latitude: 48.86, longitude: 2.35, data: { name: 'Paris' } },
-  { id: 'ca', latitude: 30.04, longitude: 31.24, data: { name: 'Cairo' } },
-  { id: 'mb', latitude: -1.29, longitude: 36.82, data: { name: 'Nairobi' } },
-  { id: 'sh', latitude: 31.23, longitude: 121.47, data: { name: 'Shanghai' } },
-  { id: 'tk', latitude: 35.68, longitude: 139.69, data: { name: 'Tokyo' } },
-  { id: 'sg', latitude: 1.35, longitude: 103.82, data: { name: 'Singapore' } },
-  { id: 'sy', latitude: -33.87, longitude: 151.21, data: { name: 'Sydney' } },
-]
+const { days, markers, totals, pending, failed } = useVisitorMap()
 
 const mapRef = useTemplateRef('map')
 const viewMode = ref<DottedMapViewMode>('globe')
 const expanded = ref(true)
-/** 被点中的城市，用来在标题栏显示名字并高亮那个点 */
+/** 被点中的气泡，用来在标题栏展开详情并高亮 */
 const active = ref<DottedMapMarker[]>([])
 
-const activeNames = computed(() =>
-  active.value.map((place) => place.data?.name).filter((name): name is string => Boolean(name)),
+/** 点中的可能是聚合气泡（好几个城市），所以标题栏得能列出一串 */
+const activeLabels = computed(() =>
+  active.value
+    .map((place) => {
+      const name = place.data?.name
+      if (typeof name !== 'string') return ''
+      const visits = Number(place.data?.visits ?? 0)
+      return visits > 1 ? `${name} · ${visits}` : name
+    })
+    .filter(Boolean),
 )
+
+/** 没有选中任何点时，标题栏显示的概要 */
+const summary = computed(() => {
+  if (failed.value) return '访客数据暂时不可用'
+  const total = totals.value
+  if (!total) return pending.value ? '加载中…' : '还没有访客记录'
+  if (total.visits === 0) return '还没有访客记录'
+  return `${total.cities} 个城市 · ${total.visits} 次访问`
+})
 
 const modeOptions: { value: DottedMapViewMode; label: string }[] = [
   { value: 'globe', label: '3D' },
@@ -49,12 +55,31 @@ function toggleExpanded() {
 <template>
   <div class="friend-map">
     <div class="map-bar">
-      <span class="map-title">
+      <!-- 卡片自己的标题，收起时也留着；右边紧跟动态概要 -->
+      <h2 class="map-title">
         <span class="i-tabler-map-pin text-[var(--c-primary)]" />
-        <span class="map-title-text">
-          {{ activeNames.length ? activeNames.join(' · ') : `${places.length} 个坐标` }}
-        </span>
+        <span>访客地图</span>
+      </h2>
+
+      <span class="map-summary">
+        {{ activeLabels.length ? activeLabels.join(' · ') : summary }}
       </span>
+
+      <!-- 时间窗。切换会重新拉一次 /api/map，服务端按 UTC+8 切日 -->
+      <div class="map-mode" role="group" aria-label="时间范围">
+        <button
+          v-for="option in visitorApi.ranges"
+          :key="option.value"
+          type="button"
+          class="map-mode-btn"
+          :class="{ 'is-on': days === option.value }"
+          :disabled="!expanded"
+          :aria-pressed="days === option.value"
+          @click="days = option.value"
+        >
+          {{ option.label }}
+        </button>
+      </div>
 
       <!-- 3D / 2D：地球用正交投影假装球体，2D 是等距圆柱投影 -->
       <div class="map-mode" role="group" aria-label="地图投影方式">
@@ -123,20 +148,20 @@ function toggleExpanded() {
     <div class="map-collapse" :class="expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
       <div class="map-slot">
         <div v-if="expanded" class="map-stage">
+          <!--
+            刻意不传 #marker slot：所有城市点都由 canvas 画成气泡、圆里写访问次数
+            （weight 1 也写「1」），这样图上只有一种点的画法。
+            点一下仍然有效——城市名与次数会出现在上面的标题栏里，
+            配色统一在 `utils/dotted-map/theme.ts` 的调色板里（全图一个主色）。
+          -->
           <DottedMap
             ref="map"
             v-model:view-mode="viewMode"
-            :markers="places"
+            :markers="markers"
             :active-marker-ids="active.map((place) => place.id)"
             :auto-rotate="true"
             @marker-click="active = $event.markers"
-          >
-            <template #marker="{ marker, isActive }">
-              <span class="map-dot" :class="{ 'is-active': isActive }">
-                {{ (marker.data?.name as string)?.[0] }}
-              </span>
-            </template>
-          </DottedMap>
+          />
         </div>
       </div>
     </div>
@@ -152,8 +177,10 @@ function toggleExpanded() {
 
 .map-bar {
   display: flex;
+  // 两个分段控件 + 四个图标按钮在窄屏放不下一行，允许换行而不是把标题挤没
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem 0.5rem;
   padding: 0.5rem 0.8rem;
   font-size: 0.8em;
   color: var(--c-text-2);
@@ -161,18 +188,23 @@ function toggleExpanded() {
 
 .map-title {
   display: flex;
+  // 标题是固定文案，窄屏优先压缩右边的概要，而不是把它挤换行
+  flex-shrink: 0;
   align-items: center;
   gap: 0.35em;
-  min-width: 0;
+  color: var(--c-text-1);
+  font-weight: 600;
 }
 
-.map-title-text {
+// 标题旁的动态概要：点中城市时整串换成城市名，所以照样要能截断
+.map-summary {
   overflow: hidden;
+  min-width: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-// 3D / 2D 分段控件：选中态用主色柔光底，避免和右侧的图标按钮混淆
+// 3D / 2D 与时间窗共用的分段控件：选中态用主色柔光底，避免和右侧的图标按钮混淆
 .map-mode {
   display: flex;
   flex-shrink: 0;
@@ -251,25 +283,6 @@ function toggleExpanded() {
 // 高度必须有确定值：canvas 靠容器尺寸撑开，父级若由内容决定高度就会塌成 0
 .map-stage {
   height: clamp(16rem, 42vw, 26rem);
-}
-
-.map-dot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 999px;
-  background-color: var(--c-primary);
-  box-shadow: 0 0 0 2px var(--ld-bg-card);
-  color: #fff;
-  font-size: 0.65rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.map-dot.is-active {
-  background-color: var(--c-success, #22c55e);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -295,6 +295,8 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
     px: number
     py: number
     markers: DottedMapMarker[]
+    /** marker 的 weight 之和，一路带到气泡上的数字 */
+    weight: number
     hasActive: boolean
     activeCount: number
     sourceIndices: number[]
@@ -317,6 +319,8 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
       let totalX = m.px * m.markers.length
       let totalY = m.py * m.markers.length
       let totalCount = m.markers.length
+      // 质心仍按 marker 个数加权，保持地理位置合理；weight 只用来累加显示值。
+      let totalWeight = m.weight
 
       for (let j = i + 1; j < projected.length; j++) {
         if (used[j]) continue
@@ -330,10 +334,12 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
         totalX += other.px * otherCount
         totalY += other.py * otherCount
         totalCount += otherCount
+        totalWeight += other.weight
         m.markers.push(...other.markers)
         m.sourceIndices.push(...other.sourceIndices)
         if (other.hasActive) m.hasActive = true
         m.activeCount += other.activeCount
+        m.weight = totalWeight
         m.px = totalX / totalCount
         m.py = totalY / totalCount
       }
@@ -353,9 +359,15 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
     const maxMatchSq = MATCH_DIST * MATCH_DIST
 
     for (const m of merged) {
-      const count = m.markers.length
+      // 气泡数字与大小都按 weight，而不是 marker 个数：
+      // 访客地图里一个城市就是一个 marker，它的 weight 是访问次数。
+      // 尺寸只跟 weight 走——weight 1 也照样画气泡、写「1」，
+      // 图上因此只有一种点的画法，不再有「小一号的无字圆点」。
+      const count = m.weight
+      // isSolo 现在只表示「这个点可以交给 DOM slot 渲染」，
+      // 与尺寸和数字都无关（消费方不传 #marker slot 时一律走 canvas）。
       const isSolo = count === 1
-      const targetSize = isSolo ? 16 : Math.min(14 + count * 0.4, 28)
+      const targetSize = Math.min(14 + count * 0.4, 28)
 
       let bestIdx = -1
       let bestDistSq = maxMatchSq
@@ -444,6 +456,8 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
     ctx.lineWidth = 1.5
     ctx.stroke()
 
+    // weight 1 也把数字写出来：数字就是「点」唯一的样子。
+    // `> 0` 只留给淡出中的簇——它的 count 会一路趋近 0。
     const displayCount = Math.round(ac.count)
     if (displayCount > 0) {
       ctx.fillStyle = palette.clusterText
@@ -533,6 +547,7 @@ export function createDottedMapEngine(options: DottedMapEngineOptions): DottedMa
         px,
         py,
         markers: gc.markers,
+        weight: gc.weight,
         hasActive: gc.hasActive,
         activeCount: gc.activeCount,
         sourceIndices: [ci],

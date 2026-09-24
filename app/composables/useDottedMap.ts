@@ -237,7 +237,8 @@ export function useDottedMap<T = DottedMapMarker>(options: UseDottedMapOptions) 
     const clusters: DottedMapGeoCluster[] = engine.value?.getGeoClusters() ?? []
     const hostable = slotMarkers.value
     return clusters.map((cluster, index) => {
-      const solo = cluster.markers.length === 1 ? cluster.markers[0] : undefined
+      const solo =
+        cluster.markers.length === 1 && cluster.weight === 1 ? cluster.markers[0] : undefined
       const host = solo && hostable.has(solo.id) ? solo : undefined
       return {
         index,

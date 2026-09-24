@@ -51,6 +51,4 @@
       "custom_domain": true,
     },
   ],
-  // ❌ 不要改用 `blogroll.junce.net`：它已绑在旧的 `blogroll` Worker 上
-  //（给聚合站提供静态页），同一主机名只能属于一个 Worker。
 }

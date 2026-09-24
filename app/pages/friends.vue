@@ -102,7 +102,8 @@ function copyField(value: string) {
       blank
     </p>
 
-    <!-- 朋友们的坐标：点阵地球 / 平面地图，滚动到视口内才跑渲染循环 -->
+    <!-- 访客地图：点阵地球 / 平面地图，数据来自 Cloudflare Worker，滚动到视口内才跑渲染循环 -->
+
     <FriendsMap />
     <!-- 本站信息 + 申请流程 -->
     <div class="grid gap-4 lg:grid-cols-2">

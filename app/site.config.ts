@@ -65,7 +65,20 @@ export const rssFeed = {
 export const services = [
   { label: '部署平台', icon: 'i-tabler-brand-github', text: 'GitHub Pages' },
   { label: '站点域名', icon: 'i-tabler-world-www', text: 'blog.junce.net' },
+  { label: '访客统计', icon: 'i-tabler-map-pin', text: 'Cloudflare Workers + D1' },
 ]
+
+/**
+ * 访客地图的后端
+ */
+export const visitorApi = {
+  base: 'https://api.junce.net',
+  ranges: [
+    { value: 7, label: '7天' },
+    { value: 30, label: '30天' },
+    { value: 0, label: '全部' },
+  ] as const,
+}
 
 /**
  * 右侧栏「社区」分组

@@ -10,6 +10,16 @@ export interface DottedMapMarker {
   id: string
   latitude: number
   longitude: number
+  /**
+   * 这个点代表多少「量」，默认 1。
+   *
+   * 用来给聚合气泡一个加权后的数字：访客地图里一个城市是一个 marker，
+   * 传 `weight: 54` 就能让气泡显示 54，不必真的塞 54 个重合的 marker 进去
+   * （那样在高缩放下会散成 54 个独立 DOM 节点）。
+   *
+   * `weight > 1` 的点不会走 solo slot，而是由 canvas 画成带数字的气泡。
+   */
+  weight?: number
   data?: Record<string, unknown>
 }
 
@@ -52,7 +62,15 @@ export interface DottedMapHitTarget extends DottedMapMarkerCluster {}
 export interface DottedMapGeoCluster {
   avgLng: number
   avgLat: number
+  /**
+   * 网格里的 marker **个数**。
+   *
+   * 只用来算平均坐标（`avgLng /= count`），**不要拿它当显示值**——
+   * 带 weight 的 marker 会让这两个数不相等，显示值看 `weight`。
+   */
   count: number
+  /** 网格里所有 marker 的 weight 之和。气泡上的数字和大小都取自这里。 */
+  weight: number
   markers: DottedMapMarker[]
   hasActive: boolean
   activeCount: number
