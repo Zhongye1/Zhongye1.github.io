@@ -26,7 +26,7 @@ const buildItems: WidgetDlItem[] = [
 </script>
 
 <template>
-  <WidgetCard card title="技术信息">
+  <WidgetCard card title="站点信息">
     <WidgetDl :items="serviceItems" />
     <WidgetExpand v-model="expanded" name="构建信息">
       <WidgetDl :items="buildItems" size="small" />
