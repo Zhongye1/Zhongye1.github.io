@@ -1,6 +1,9 @@
 # blogsite-api
 
-访客地理分布 API。给 `blog.junce.net` 的友链页点阵地图（`app/components/FriendsMap.vue`）供数。
+访客数据 API。给两处供数：
+
+- `blog.junce.net` 友链页的点阵地图（`app/components/FriendsMap.vue` → `/api/map`）
+- 侧边栏「博客统计」卡片里的访客数（`app/components/widget-right/WidgetStats.vue` → `/api/stats`）
 
 设计依据见 [`../docs/visitor-map-design.md`](../docs/visitor-map-design.md)——那份文档里的每个决策（为什么用 D1、为什么显示代理流量、为什么按 UTC+8 切日）都对应到这里的实现。
 
@@ -63,6 +66,35 @@ navigator.sendBeacon('https://<域名>/api/visit')
 
 > `data.weight` 是给地图气泡用的。前端的 `clustering.ts` 需要配合改成
 > `cell.count += weight`，否则 54 次访问只会显示成 `1`——原因见设计文档 4.2。
+
+### `GET /api/stats` — 全站总数
+
+给侧栏「博客统计」卡片的两个数字。无入参（卡片只显示全时段，时间窗是地图那条路的事），
+响应同样缓存 5 分钟、带 `X-Cache`。
+
+```jsonc
+{
+  "updatedAt": "2026-09-24T19:12:26.623Z",
+  "totals": {
+    "visitors": 232, // 访客数：COUNT(DISTINCT ip_hash)
+    "visits": 620, // 访问量：SUM(visits)
+  },
+}
+```
+
+> ⚠️ **`visitors` 和 `/api/map` 的 `totals.uniques` 不是一个东西。**
+> 表的主键是 `(ip_hash, day)`，一行 = 一个访客的一天，所以：
+>
+> | 口径 | 算法 | 含义 |
+> |---|---|---|
+> | `stats.totals.visitors` | `COUNT(DISTINCT ip_hash)` | 独立访客，同一个人来 10 天算 1 |
+> | `map.totals.uniques` | `COUNT(*)` 逐城市求和 | 访客·天，同一个人来 10 天算 10 |
+>
+> 卡片上写「访客数」只能用前者。后者是地图的副产品（它要的是每个城市的点数），
+> 拿来当访客数会虚高。两者都含 proxy / crawler，与地图口径一致。
+
+比 `/api/map` 轻得多：一条聚合 SQL，响应几百字节，所以常驻侧栏的卡片可以放心调它，
+不必为了一个数字把几百个 marker 拉回来。
 
 ---
 
@@ -192,6 +224,7 @@ dig +short api.junce.net
 
 curl -s https://api.junce.net/                       # {"service":"blogsite-api",...}
 curl -s "https://api.junce.net/api/map?days=7" | jq '.totals'
+curl -s https://api.junce.net/api/stats | jq '.totals'   # {"visitors":…,"visits":…}
 curl -s -o /dev/null -w '%{http_code}\n' -X POST https://api.junce.net/api/visit   # 204
 
 # CORS 必须是前端域名
@@ -260,6 +293,8 @@ curl -X POST localhost:8787/api/visit     # 再发一次
 pnpm run db:query "SELECT ip_hash, city, as_org, kind, visits FROM visits"
 # → 只有一行，visits = 2。这就是 (ip_hash, day) 主键去重的效果：
 #   换成老的 KV 实现，这里会多出两个 key。
+
+curl -s localhost:8787/api/stats          # {"totals":{"visitors":1,"visits":2}} —— 只来过一个 IP
 ```
 
 想跳过地理信息测试「无坐标」分支，直接插一行缺经纬度的数据即可。

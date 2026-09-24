@@ -1,14 +1,14 @@
 import { readMap } from './map'
+import { readStats } from './stats'
 import { recordVisit } from './visits'
 import type { Env, MapRange } from './types'
 
-/**
- * 路由层。刻意保持很薄：只做方法/路径分发、来源校验、缓存和拆包，
- * 业务全在 visits.ts / map.ts 里。这一层没有任何 D1 和 request.cf 的知识。
- */
+// 路由层
 
 const ALLOWED_RANGES = new Set<number>([0, 7, 30])
-const MAP_CACHE_SECONDS = 300
+
+// 缓存5分钟
+const CACHE_SECONDS = 300
 const JSON_TYPE = 'application/json; charset=utf-8'
 
 export default {
@@ -30,9 +30,13 @@ export default {
       return handleMap(url, env, ctx, cors)
     }
 
+    if (url.pathname === '/api/stats' && request.method === 'GET') {
+      return handleStats(env, ctx, cors)
+    }
+
     if (url.pathname === '/') {
       return Response.json(
-        { service: 'blogsite-api', endpoints: ['/api/visit', '/api/map'] },
+        { service: 'blogsite-api', endpoints: ['/api/visit', '/api/map', '/api/stats'] },
         { headers: cors },
       )
     }
@@ -96,6 +100,46 @@ async function handleVisit(
   return new Response(null, { status: 204, headers: cors })
 }
 
+/**
+ * 两个读接口共用的「边缘缓存 + JSON」外壳。
+ * 缓存键由调用方给
+ */
+async function cachedJson(
+  key: string,
+  ctx: ExecutionContext,
+  cors: Record<string, string>,
+  load: () => Promise<unknown>,
+): Promise<Response> {
+  const cacheKey = new Request(key)
+  const hit = await caches.default.match(cacheKey)
+
+  if (hit) {
+    return new Response(await hit.text(), {
+      headers: { 'Content-Type': JSON_TYPE, ...cors, 'X-Cache': 'HIT' },
+    })
+  }
+
+  const body = JSON.stringify(await load())
+
+  ctx.waitUntil(
+    caches.default.put(
+      cacheKey,
+      new Response(body, {
+        headers: { 'Content-Type': JSON_TYPE, 'Cache-Control': `max-age=${CACHE_SECONDS}` },
+      }),
+    ),
+  )
+
+  return new Response(body, {
+    headers: {
+      'Content-Type': JSON_TYPE,
+      'Cache-Control': `public, max-age=${CACHE_SECONDS}`,
+      ...cors,
+      'X-Cache': 'MISS',
+    },
+  })
+}
+
 async function handleMap(
   url: URL,
   env: Env,
@@ -109,34 +153,19 @@ async function handleMap(
     return Response.json({ error: 'days 只接受 0 / 7 / 30' }, { status: 400, headers: cors })
   }
 
-  // 缓存键只由 days 决定，故意不带 Origin：CORS 头在返回时才拼上去。
-  // 否则 Vary: Origin 会让同一份数据按来源存很多份，白白占缓存。
-  const cacheKey = new Request(`https://blogsite-api.internal/map?days=${days}`)
-  const hit = await caches.default.match(cacheKey)
-
-  if (hit) {
-    return new Response(await hit.text(), {
-      headers: { 'Content-Type': JSON_TYPE, ...cors, 'X-Cache': 'HIT' },
-    })
-  }
-
-  const body = JSON.stringify(await readMap(env, days as MapRange))
-
-  ctx.waitUntil(
-    caches.default.put(
-      cacheKey,
-      new Response(body, {
-        headers: { 'Content-Type': JSON_TYPE, 'Cache-Control': `max-age=${MAP_CACHE_SECONDS}` },
-      }),
-    ),
+  // 缓存键只由 days 决定，理由见 cachedJson
+  return cachedJson(`https://blogsite-api.internal/map?days=${days}`, ctx, cors, () =>
+    readMap(env, days as MapRange),
   )
+}
 
-  return new Response(body, {
-    headers: {
-      'Content-Type': JSON_TYPE,
-      'Cache-Control': `public, max-age=${MAP_CACHE_SECONDS}`,
-      ...cors,
-      'X-Cache': 'MISS',
-    },
-  })
+/**
+ * 全站访客总数
+ */
+function handleStats(
+  env: Env,
+  ctx: ExecutionContext,
+  cors: Record<string, string>,
+): Promise<Response> {
+  return cachedJson('https://blogsite-api.internal/stats', ctx, cors, () => readStats(env))
 }
