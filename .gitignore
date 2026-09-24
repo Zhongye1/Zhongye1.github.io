@@ -8,6 +8,11 @@
 # Node dependencies
 node_modules
 
+# Cloudflare Worker (worker/)
+worker/.wrangler
+worker/.dev.vars
+worker/worker-configuration.d.ts
+
 # System files
 *.log
 .env
@@ -16,3 +21,4 @@ dist
 
 .obsidian/
 .edge-diag/
+.pnpm-store/

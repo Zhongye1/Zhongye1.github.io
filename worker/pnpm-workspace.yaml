@@ -1,0 +1,22 @@
+# 让 worker/ 成为一个独立的 pnpm 项目。
+#
+# 根目录的 pnpm-workspace.yaml 没有 `packages:` 字段，所以不写这个文件的话，
+# 在 worker/ 里跑 `pnpm install` 会被 pnpm 一路向上当成「在根工作区里安装」——
+# 结果是根依赖被重装一遍、wrangler 反而没装上。
+#
+# 有了它，worker/ 就是自己的 workspace root，依赖互不干扰，也不需要 --ignore-workspace。
+packages:
+  - '.'
+
+# pnpm 10+ 默认拦截依赖的构建脚本。这两个必须放行，否则 wrangler 起不来：
+#   workerd  —— wrangler dev 的运行时本体，二进制靠 postinstall 落地
+#   esbuild  —— 打包 Worker 用
+allowBuilds:
+  esbuild: true
+  workerd: true
+
+# pnpm 的供应链延迟发布策略：wrangler 是刚发布的版本，需要显式放行。
+# 这两行是 pnpm 首次安装时自动补的，别删。
+minimumReleaseAgeExclude:
+  - miniflare@5.20260921.1-alpha
+  - wrangler@4.138.0
