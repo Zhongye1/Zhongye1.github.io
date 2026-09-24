@@ -99,9 +99,11 @@ function copyField(value: string) {
     </ul>
 
     <p v-else class="color-fade rounded-lg bg-[var(--c-bg-1)] px-4 py-6 text-center text-sm">
-      虚位以待 —— 在 <code class="text-[var(--c-text-1)]">app/friends.config.ts</code> 的
-      <code class="text-[var(--c-text-1)]">friends</code> 里加一条即可上墙。
+      blank
     </p>
+
+    <!-- 朋友们的坐标：点阵地球 / 平面地图，滚动到视口内才跑渲染循环 -->
+    <FriendsMap />
     <!-- 本站信息 + 申请流程 -->
     <div class="grid gap-4 lg:grid-cols-2">
       <div class="flex flex-col gap-4 rounded-2xl bg-[var(--c-bg-1)] p-5">
