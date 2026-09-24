@@ -16,6 +16,14 @@
     scroll-margin-top: 2rem;
   }
 
+  // @nuxt/content 的 anchorLinks（默认对 h2–h4 开启）会把标题正文整个包进
+  // `<a href="#id">`，于是下面那条 `a` 规则给标题也画上了下划线。
+  // 标题不该长得像正文里的链接：去掉下划线，颜色随标题本身走。
+  :is(h1, h2, h3, h4, h5, h6) a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   h1 {
     font-size: 1.75rem;
   }

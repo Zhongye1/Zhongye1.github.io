@@ -105,13 +105,20 @@ $cover-narrow: 528px;
   background-color: var(--ld-bg-card);
   // transition: all 0.2s;
 
-  &:hover {
+  // 整卡悬浮（或键盘走到这张卡）时标题变主色 + 下划线从左扫到右，
+  // 作为「这里可以点」的反馈。视觉细节见 .article-title::after
+  &:hover,
+  &:focus-visible {
     // box-shadow: var(--box-shadow-1);
     // transform: translateY(-2px);
 
-    // 整卡悬浮时标题变主色，作为「这里可以点」的反馈
     .article-title {
       color: var(--c-primary);
+
+      &::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
     }
   }
 
@@ -148,10 +155,35 @@ $cover-narrow: 528px;
 }
 
 .article-title {
+  position: relative;
+  // 下划线只跟文字一样长：网格项默认撑满整列，靠 justify-self 收回内容宽度
+  justify-self: start;
   font-size: 1.2em;
   color: var(--c-text-1);
   // 只过渡颜色：卡片那边没给 transition，标题这一下要是也硬切会很突然
   transition: color 0.2s;
+
+  // 下划线本体。用 transform 扫而不是动 width：只走合成层，也才能指定从哪一端长出来。
+  // 默认 origin 在右、悬浮时切到左 —— 进是从左往右长出来，退是继续往右缩回去，
+  // 两端同向，看起来像一条线扫过标题。
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.15em;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--c-primary);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.25s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::after {
+      transition: none;
+    }
+  }
 }
 
 .article-description {
