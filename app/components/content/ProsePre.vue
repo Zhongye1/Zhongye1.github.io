@@ -12,7 +12,6 @@ const props = withDefaults(
   {
     code: '',
     meta: '',
-    // Nuxt Content 已经保证 language 有值
     language: 'text',
   },
 )
@@ -61,14 +60,18 @@ function getIndent() {
 }
 
 onMounted(async () => {
-  rawHtml.value = await shiki.codeToHtml(props.code.trimEnd(), {
-    language: props.language,
-    transformerOptions: [
-      compConf.value.enableIndentGuide ? 'ignoreRenderWhitespace' : 'ignoreRenderIndentGuides',
-    ],
-    shikiOptions: { meta: { indent: getIndent() } },
-    embeddedLanguages: true,
-  })
+  try {
+    rawHtml.value = await shiki.codeToHtml(props.code.trimEnd(), {
+      language: props.language,
+      transformerOptions: [
+        compConf.value.enableIndentGuide ? 'ignoreRenderWhitespace' : 'ignoreRenderIndentGuides',
+      ],
+      shikiOptions: { meta: { indent: getIndent() } },
+      embeddedLanguages: true,
+    })
+  } catch (error) {
+    console.error('[codeblock] 高亮失败，回退纯文本', error)
+  }
 })
 </script>
 

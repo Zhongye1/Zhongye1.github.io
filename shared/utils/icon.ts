@@ -104,7 +104,9 @@ export function getFileIcon(filename?: string) {
 }
 
 export function getLangIcon(language = 'file') {
-  return langIcons[language] ?? fallbackIcon
+  // 表的键都是小写，而正文里存在 `TypeScript` / `JavaScript` / `TS` 这类写法，
+  // 不归一化就一律落到兜底图标
+  return langIcons[language.toLowerCase()] ?? fallbackIcon
 }
 
 /**

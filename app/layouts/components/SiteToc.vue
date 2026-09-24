@@ -75,9 +75,7 @@ function itemClass(link: TocLink) {
 
 <template>
   <nav v-if="toc.length" class="flex flex-col">
-    <p
-      class="sticky top-0 z-1 flex shrink-0 items-center gap-1.5 bg-[var(--c-bg)] py-1.5 text-sm font-semibold"
-    >
+    <p class="sticky top-0 z-1 flex shrink-0 items-center gap-1.5 py-1.5 text-sm font-semibold">
       <span class="truncate">目录</span>
     </p>
 

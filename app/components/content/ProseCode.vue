@@ -20,12 +20,17 @@ onMounted(async () => {
   const el = codeElement.value
   if (!props.language || !el) return
 
-  await shiki.mountInline(el, el.textContent ?? props.code, {
-    language: props.language,
-    transformerOptions: ['ignoreColorizedBrackets'],
-  })
-  // 高亮结果已内联进 DOM，此时再把源码文本撤掉，避免重复显示
-  highlighted.value = true
+  try {
+    await shiki.mountInline(el, el.textContent ?? props.code, {
+      language: props.language,
+      transformerOptions: ['ignoreColorizedBrackets'],
+    })
+    // 高亮结果已内联进 DOM，此时再把源码文本撤掉，避免重复显示
+    highlighted.value = true
+  } catch (error) {
+    // 行内代码高亮失败就保持纯文本，别把整页拖下水
+    console.error('[inline-code] 高亮失败，保留纯文本', error)
+  }
 })
 </script>
 
