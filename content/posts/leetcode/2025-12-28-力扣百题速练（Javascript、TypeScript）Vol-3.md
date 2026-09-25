@@ -4,14 +4,13 @@ title: 2025-12-28-力扣百题速练（Javascript、TypeScript）Vol.3
 mathjax: true
 abbrlink: 42325
 published: 2025-12-29 02:15:44
-category: 力扣
+category: 算法
 tags:
-    - 力扣
-    - 算法
-    - JavaScript
-    - 链表
+  - 力扣
+  - 算法
+  - JavaScript
+  - 链表
 ---
-
 
 依旧刷题中
 
@@ -38,14 +37,14 @@ tags:
 
 **提示：**
 
--   两个链表的节点数目范围是  `[0, 50]`
--   `-100 <= Node.val <= 100`
--   `l1`  和  `l2`  均按  **非递减顺序**  排列
+- 两个链表的节点数目范围是  `[0, 50]`
+- `-100 <= Node.val <= 100`
+- `l1`  和  `l2`  均按  **非递减顺序**  排列
 
 Related Topics
 
--   递归
--   链表
+- 递归
+- 链表
 
 解法很简单，假设输入两个有序链表：
 
@@ -72,28 +71,25 @@ list1: 1 → 2 → 4 list2: 1 → 3 → 4
 该过程通过不断比较两个链表的当前节点，将较小节点直接拼接至新链表尾部（cur 后），并前进对应指针，直至处理完所有节点
 
 ```ts
-function mergeTwoLists(
-    list1: ListNode | null,
-    list2: ListNode | null,
-): ListNode | null {
-    let index = 0;
-    let dum = new ListNode(1);
+function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
+  let index = 0
+  let dum = new ListNode(1)
 
-    let cur = dum;
+  let cur = dum
 
-    while (list1 && list2) {
-        if (list1.val <= list2.val) {
-            cur.next = list1; // 将较小节点接到 cur 后
-            list1 = list1.next; // list1 前进
-        } else {
-            cur.next = list2;
-            list2 = list2.next;
-        }
-        cur = cur.next; // cur 前进
+  while (list1 && list2) {
+    if (list1.val <= list2.val) {
+      cur.next = list1 // 将较小节点接到 cur 后
+      list1 = list1.next // list1 前进
+    } else {
+      cur.next = list2
+      list2 = list2.next
     }
+    cur = cur.next // cur 前进
+  }
 
-    cur.next = list1 || list2;
-    return dum.next;
+  cur.next = list1 || list2
+  return dum.next
 }
 ```
 
@@ -122,8 +118,8 @@ function mergeTwoLists(
 
 因此我们维护两个计数器：
 
--   left：已经使用了多少个左括号
--   right：已经使用了多少个右括号
+- left：已经使用了多少个左括号
+- right：已经使用了多少个右括号
 
 **用 n=2 手推整个过程：**
 初始调用： backtrack("", 0, 0)
@@ -146,21 +142,21 @@ function mergeTwoLists(
 
 ```ts
 function generateParenthesis(n: number): string[] {
-    let res = [];
-    function BT(curr: string, left: number, right: number) {
-        if (curr.length === 2 * n) {
-            res.push(curr);
-            return;
-        }
-        if (left < n) {
-            BT(curr + "(", left + 1, right);
-        }
-        if (left > right) {
-            BT(curr + ")", left, right + 1);
-        }
+  let res = []
+  function BT(curr: string, left: number, right: number) {
+    if (curr.length === 2 * n) {
+      res.push(curr)
+      return
     }
-    BT("", 0, 0);
-    return res;
+    if (left < n) {
+      BT(curr + '(', left + 1, right)
+    }
+    if (left > right) {
+      BT(curr + ')', left, right + 1)
+    }
+  }
+  BT('', 0, 0)
+  return res
 }
 ```
 
@@ -222,37 +218,34 @@ res = merge(res, lists[k-1])
  */
 
 function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
-    if (!lists || lists.length === 0) {
-        return null;
+  if (!lists || lists.length === 0) {
+    return null
+  }
+  let res: ListNode | null = lists[0]
+
+  for (let i = 1; i < lists.length; i++) {
+    res = mergeTwoLists(res, lists[i])
+  }
+
+  return res
+
+  function mergeTwoLists(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+    let dummy: ListNode = new ListNode(-1)
+    let cur: ListNode = dummy
+
+    while (l1 && l2) {
+      if (l1.val < l2.val) {
+        cur.next = l1
+        l1 = l1.next
+      } else {
+        cur.next = l2
+        l2 = l2.next
+      }
+      cur = cur.next
     }
-    let res: ListNode | null = lists[0];
-
-    for (let i = 1; i < lists.length; i++) {
-        res = mergeTwoLists(res, lists[i]);
-    }
-
-    return res;
-
-    function mergeTwoLists(
-        l1: ListNode | null,
-        l2: ListNode | null,
-    ): ListNode | null {
-        let dummy: ListNode = new ListNode(-1);
-        let cur: ListNode = dummy;
-
-        while (l1 && l2) {
-            if (l1.val < l2.val) {
-                cur.next = l1;
-                l1 = l1.next;
-            } else {
-                cur.next = l2;
-                l2 = l2.next;
-            }
-            cur = cur.next;
-        }
-        cur.next = l1 ? l1 : l2;
-        return dummy.next;
-    }
+    cur.next = l1 ? l1 : l2
+    return dummy.next
+  }
 }
 //runtime:159 ms
 //memory:63.4 MB
@@ -262,24 +255,24 @@ function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
 
 ```ts
 function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
-    const nodes: ListNode[] = [];
-    for (let head of lists) {
-        let curr = head;
-        while (curr !== null) {
-            nodes.push(curr);
-            curr = curr.next;
-        }
+  const nodes: ListNode[] = []
+  for (let head of lists) {
+    let curr = head
+    while (curr !== null) {
+      nodes.push(curr)
+      curr = curr.next
     }
-    if (nodes.length === 0) {
-        return null;
-    }
+  }
+  if (nodes.length === 0) {
+    return null
+  }
 
-    nodes.sort((a, b) => a.val - b.val);
+  nodes.sort((a, b) => a.val - b.val)
 
-    for (let i = 0; i < nodes.length - 1; i++) {
-        nodes[i].next = nodes[i + 1];
-    }
-    return nodes[0];
+  for (let i = 0; i < nodes.length - 1; i++) {
+    nodes[i].next = nodes[i + 1]
+  }
+  return nodes[0]
 }
 
 //runtime:10 ms
@@ -313,23 +306,23 @@ function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
  */
 
 function swapPairs(head: ListNode | null): ListNode | null {
-    if (!head) {
-        return null;
-    }
+  if (!head) {
+    return null
+  }
 
-    const dummy = new ListNode(0, head);
-    let pre = dummy;
+  const dummy = new ListNode(0, head)
+  let pre = dummy
 
-    while (pre.next && pre.next.next) {
-        const cur = pre.next;
-        const nx = pre.next.next;
-        pre.next = nx;
-        cur.next = nx.next;
-        nx.next = cur;
-        pre = cur;
-    }
+  while (pre.next && pre.next.next) {
+    const cur = pre.next
+    const nx = pre.next.next
+    pre.next = nx
+    cur.next = nx.next
+    nx.next = cur
+    pre = cur
+  }
 
-    return dummy.next;
+  return dummy.next
 }
 //runtime:0 ms
 //memory:55.7 MB
@@ -361,47 +354,47 @@ function swapPairs(head: ListNode | null): ListNode | null {
 
 ```ts
 function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
-    let curr = head;
-    for (let i = 0; i < k; i++) {
-        if (!curr) return head;
-        curr = curr.next;
-    }
+  let curr = head
+  for (let i = 0; i < k; i++) {
+    if (!curr) return head
+    curr = curr.next
+  }
 
-    let prev: ListNode | null = null;
-    curr = head;
-    for (let i = 0; i < k; i++) {
-        let nx = curr!.next;
-        curr.next = prev;
-        prev = curr;
-        curr = nx;
-    }
-    head!.next = reverseKGroup(curr, k);
+  let prev: ListNode | null = null
+  curr = head
+  for (let i = 0; i < k; i++) {
+    let nx = curr!.next
+    curr.next = prev
+    prev = curr
+    curr = nx
+  }
+  head!.next = reverseKGroup(curr, k)
 
-    return prev;
+  return prev
 }
 ```
 
 主要是递归
 **先检查是否够翻转** 用一个指针 curr 从 head 开始走 k 步 如果中途遇到 null，说明剩余节点不足 k 个 → 直接返回 head，结束递归（符合题目要求：不足 k 个不翻转）
 
--   **翻转当前 k 个节点（经典原地翻转）** 使用三指针翻转法（prev、curr、next）：
-    -   初始：prev = null，curr = head
-    -   每次把 curr 的 next 指向 prev
-    -   然后 prev 前移，curr 前移 翻转 k 次后：
-    -   prev 成为这 k 个节点的新头
-    -   curr 指向第 k+1 个节点（也就是下一组的开始）
-    -   原 head 现在变成了这 k 个节点中的**最后一个节点**
--   **递归处理剩余部分，并连接**
+- **翻转当前 k 个节点（经典原地翻转）** 使用三指针翻转法（prev、curr、next）：
+  - 初始：prev = null，curr = head
+  - 每次把 curr 的 next 指向 prev
+  - 然后 prev 前移，curr 前移 翻转 k 次后：
+  - prev 成为这 k 个节点的新头
+  - curr 指向第 k+1 个节点（也就是下一组的开始）
+  - 原 head 现在变成了这 k 个节点中的**最后一个节点**
+- **递归处理剩余部分，并连接**
 
-    ```ts
-    head!.next = reverseKGroup(curr, k);
-    ```
+  ```ts
+  head!.next = reverseKGroup(curr, k)
+  ```
 
-    -   此时的 head 已经是翻转后小段的**尾节点**
-    -   我们让它指向**递归返回的下一组翻转后的头节点**
-    -   这样就把当前翻转好的小段和后面的结果正确连接起来了
+  - 此时的 head 已经是翻转后小段的**尾节点**
+  - 我们让它指向**递归返回的下一组翻转后的头节点**
+  - 这样就把当前翻转好的小段和后面的结果正确连接起来了
 
--   **返回当前组的新头**return prev prev 正是翻转后这 k 个节点的新头部，是当前层应该返回给上一层的头节点
+- **返回当前组的新头**return prev prev 正是翻转后这 k 个节点的新头部，是当前层应该返回给上一层的头节点
 
 ---
 
@@ -429,23 +422,23 @@ function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
 
 ```ts
 function removeDuplicates(nums: number[]): number {
-    if (nums.length === 0) return 0;
-    let k = 1;
-    for (let i = 1; i < nums.length; i++) {
-        if (nums[i] !== nums[i - 1]) {
-            nums[k] = nums[i];
-            k++;
-        }
+  if (nums.length === 0) return 0
+  let k = 1
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] !== nums[i - 1]) {
+      nums[k] = nums[i]
+      k++
     }
-    return k;
+  }
+  return k
 }
 ```
 
 主要是使用快慢指针在同一个数组上移动：
 
--   k（慢指针）：指向当前**应该放置下一个唯一元素**的位置 同时也代表目前已经处理好的**唯一元素个数**
--   i（快指针）：负责向前扫描数组，寻找下一个**与前一个不同的元素**
-    当发现一个新的不重复元素时，就把它**覆盖**到慢指针 k 的位置，然后 k 前进一步
+- k（慢指针）：指向当前**应该放置下一个唯一元素**的位置 同时也代表目前已经处理好的**唯一元素个数**
+- i（快指针）：负责向前扫描数组，寻找下一个**与前一个不同的元素**
+  当发现一个新的不重复元素时，就把它**覆盖**到慢指针 k 的位置，然后 k 前进一步
 
 ## 27.移除元素
 
@@ -453,8 +446,8 @@ function removeDuplicates(nums: number[]): number {
 
 假设  `nums`  中不等于  `val`  的元素数量为  `k`，要通过此题，您需要执行以下操作：
 
--   更改  `nums`  数组，使  `nums`  的前  `k`  个元素包含不等于  `val`  的元素。`nums`  的其余元素和  `nums`  的大小并不重要。
--   返回  `k`
+- 更改  `nums`  数组，使  `nums`  的前  `k`  个元素包含不等于  `val`  的元素。`nums`  的其余元素和  `nums`  的大小并不重要。
+- 返回  `k`
 
 **示例 1：**
 
@@ -475,14 +468,14 @@ function removeDuplicates(nums: number[]): number {
 
 ```ts
 function removeElement(nums: number[], val: number): number {
-    let k = 0;
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] !== val) {
-            nums[k] = nums[i];
-            k++;
-        }
+  let k = 0
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== val) {
+      nums[k] = nums[i]
+      k++
     }
-    return k;
+  }
+  return k
 }
 //runtime:0 ms
 //memory:55.7 MB
@@ -513,12 +506,12 @@ function removeElement(nums: number[], val: number): number {
 
 ```ts
 function strStr(haystack: string, needle: string): number {
-    for (let i = 0; i <= haystack.length - needle.length; i++) {
-        let end = i + needle.length;
-        let cons = haystack.slice(i, end);
-        if (cons === needle) return i;
-    }
-    return -1;
+  for (let i = 0; i <= haystack.length - needle.length; i++) {
+    let end = i + needle.length
+    let cons = haystack.slice(i, end)
+    if (cons === needle) return i
+  }
+  return -1
 }
 ```
 
@@ -547,21 +540,19 @@ function strStr(haystack: string, needle: string): number {
 
 ```ts
 function divide(dividend: number, divisor: number): number {
-    const result = Math.exp(
-        Math.log(Math.abs(dividend)) - Math.log(Math.abs(divisor)),
-    );
+  const result = Math.exp(Math.log(Math.abs(dividend)) - Math.log(Math.abs(divisor)))
 
-    let ans = Math.floor(result);
-    if ((divisor < 0 && dividend > 0) || (divisor > 0 && dividend < 0)) {
-        ans = -ans;
-    }
-    if (dividend === -2147483648 && divisor === -1) {
-        return 2147483647;
-    }
-    if (dividend === 1000000000 && divisor === 1) {
-        return 1000000000;
-    }
-    return ans;
+  let ans = Math.floor(result)
+  if ((divisor < 0 && dividend > 0) || (divisor > 0 && dividend < 0)) {
+    ans = -ans
+  }
+  if (dividend === -2147483648 && divisor === -1) {
+    return 2147483647
+  }
+  if (dividend === 1000000000 && divisor === 1) {
+    return 1000000000
+  }
+  return ans
 }
 ```
 

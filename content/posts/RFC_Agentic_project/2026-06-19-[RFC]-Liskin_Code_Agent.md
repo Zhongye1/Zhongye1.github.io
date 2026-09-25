@@ -4,7 +4,7 @@ title: 2026-06-19-[RFC] Liskin_Code_Agent
 mathjax: true
 abbrlink: 29484
 published: 2026-06-19 15:18:20
-category: Agent
+category: 项目
 description: 关于CodeAgent设计
 cover: "https://pic1.zhimg.com/80/v2-aad998e4635454432798201472ffd04f_720w.webp?source=d16d100b"
 tags:

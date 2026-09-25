@@ -4,7 +4,7 @@ title: 2025-11-21-Web可视化实践—canvas
 mathjax: true
 abbrlink: 14933
 published: 2025-11-21 14:50:48
-category: 前端
+category: 笔记
 description: 本文主要从本文主要从 Faster、KonvaJS、LeaferJS 三个渲染引擎来介绍 Canvas ，作为对渲染层的入门。个渲染引擎来介绍 Canvas ，作为对渲染层的入门。
 cover: https://picx.zhimg.com/80/v2-029fc3ce7fddbf94c1f63091b6a89cbd_720w.webp
 tags:

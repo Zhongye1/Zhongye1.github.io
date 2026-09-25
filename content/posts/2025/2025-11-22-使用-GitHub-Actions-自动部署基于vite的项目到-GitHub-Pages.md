@@ -4,7 +4,7 @@ title: 2025-11-22-使用 GitHub Actions 自动部署前端项目到 GitHub Pages
 mathjax: true
 abbrlink: 33040
 published: 2025-11-23 01:59:24
-category: 博客
+category: 笔记
 tags:
     - 博客
     - GitHub Actions

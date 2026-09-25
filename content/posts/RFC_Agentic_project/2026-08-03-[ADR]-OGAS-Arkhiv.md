@@ -4,7 +4,7 @@ title: 2026-08-03-[ADR]-OGAS-ArkhivRAG 设计文档
 mathjax: true
 abbrlink: 29089371
 published: 2026-06-19 15:18:20
-category: Agent
+category: 项目
 description: OGAS-ArkhivRAG 业务知识库 MCP Serve 相关设计方案
 tags:
     - Agent

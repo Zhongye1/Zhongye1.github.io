@@ -4,7 +4,7 @@ title: 2025-10-28 关于前端网络请求（XHR、Ajax、Fetch、Axios）
 mathjax: true
 abbrlink: 61262
 published: 2025-10-28 15:48:46
-category: 前端
+category: 笔记
 tags:
     - 前端
     - Axios

@@ -4,12 +4,12 @@ title: 2026-01-17-力扣百题速练（Javascript、TypeScript）Vol-4
 mathjax: true
 abbrlink: 19198
 published: 2026-01-17 22:53:01
-category: 力扣
+category: 算法
 tags:
-    - 力扣
-    - 算法
-    - JavaScript
-    - 滑动窗口
+  - 力扣
+  - 算法
+  - JavaScript
+  - 滑动窗口
 ---
 
 依旧刷题
@@ -54,73 +54,74 @@ s 中没有子串长度为 16 并且等于 words 的任何顺序排列的连接�
 
 ```ts
 function findSubstring(s: string, words: string[]): number[] {
-    const result: number[] = [];
-    if (s.length === 0 || words.length === 0) return result;
+  const result: number[] = []
+  if (s.length === 0 || words.length === 0) return result
 
-    const wordLen = words[0].length; // 每个单词长度
-    const totalLen = wordLen * words.length; // 总共需要匹配的长度
-    const wordCount = new Map<string, number>(); // 目标单词的频率表
+  const wordLen = words[0].length // 每个单词长度
+  const totalLen = wordLen * words.length // 总共需要匹配的长度
+  const wordCount = new Map<string, number>() // 目标单词的频率表
 
-    // 统计目标单词出现次数
-    for (const word of words) {
-        wordCount.set(word, (wordCount.get(word) || 0) + 1);
-    }
+  // 统计目标单词出现次数
+  for (const word of words) {
+    wordCount.set(word, (wordCount.get(word) || 0) + 1)
+  }
 
-    // 对每一种可能的起点偏移量进行滑动窗口
-    for (let i = 0; i < wordLen; i++) {
-        // 当前窗口内已经匹配到的单词数
-        let matchCount = 0;
-        // 当前窗口的单词频率统计（临时）
-        const window = new Map<string, number>();
+  // 对每一种可能的起点偏移量进行滑动窗口
+  for (let i = 0; i < wordLen; i++) {
+    // 当前窗口内已经匹配到的单词数
+    let matchCount = 0
+    // 当前窗口的单词频率统计（临时）
+    const window = new Map<string, number>()
 
-        // 滑动窗口右边界
-        for (let right = i; right + wordLen <= s.length; right += wordLen) {
-            // 取出当前单词
-            const word = s.substring(right, right + wordLen);
+    // 滑动窗口右边界
+    for (let right = i; right + wordLen <= s.length; right += wordLen) {
+      // 取出当前单词
+      const word = s.substring(right, right + wordLen)
 
-            // 如果这个单词根本不在目标集合里，直接跳过整个窗口
-            if (!wordCount.has(word)) {
-                // 重置窗口
-                window.clear();
-                matchCount = 0;
-                continue;
-            }
+      // 如果这个单词根本不在目标集合里，直接跳过整个窗口
+      if (!wordCount.has(word)) {
+        // 重置窗口
+        window.clear()
+        matchCount = 0
+        continue
+      }
 
-            // 记录当前窗口单词出现次数
-            window.set(word, (window.get(word) || 0) + 1);
+      // 记录当前窗口单词出现次数
+      window.set(word, (window.get(word) || 0) + 1)
 
-            // 如果当前单词出现次数 ≤ 需要的次数，匹配数+1
-            if (window.get(word)! <= wordCount.get(word)!) {
-                matchCount++;
-            }
+      // 如果当前单词出现次数 ≤ 需要的次数，匹配数+1
+      if (window.get(word)! <= wordCount.get(word)!) {
+        matchCount++
+      }
 
-            // 窗口大小超过目标长度，需要左移
-            if (right - i + wordLen > totalLen) {
-                const leftWord = s.substring(i, i + wordLen);
-                if (wordCount.has(leftWord)) {
-                    if (window.get(leftWord)! <= wordCount.get(leftWord)!) {
-                        matchCount--;
-                    }
-                    window.set(leftWord, window.get(leftWord)! - 1);
-                    if (window.get(leftWord) === 0) {
-                        window.delete(leftWord);
-                    }
-                }
-                i += wordLen; // 左边界移动
-            }
-
-            // 完美匹配
-            if (matchCount === words.length) {
-                result.push(i);
-            }
+      // 窗口大小超过目标长度，需要左移
+      if (right - i + wordLen > totalLen) {
+        const leftWord = s.substring(i, i + wordLen)
+        if (wordCount.has(leftWord)) {
+          if (window.get(leftWord)! <= wordCount.get(leftWord)!) {
+            matchCount--
+          }
+          window.set(leftWord, window.get(leftWord)! - 1)
+          if (window.get(leftWord) === 0) {
+            window.delete(leftWord)
+          }
         }
-    }
+        i += wordLen // 左边界移动
+      }
 
-    return result;
+      // 完美匹配
+      if (matchCount === words.length) {
+        result.push(i)
+      }
+    }
+  }
+
+  return result
 }
 ```
 
 ---
+
 ---
 
 ## 31.下一个排列
@@ -189,31 +190,30 @@ function findSubstring(s: string, words: string[]): number[] {
 
 ```ts
 function nextPermutation(nums: number[]): void {
-    let index = -1;
+  let index = -1
 
-    for (let i = nums.length - 2; i >= 0; i--) {
-        if (nums[i] < nums[i + 1]) {
-            index = i;
-            break;
-        }
+  for (let i = nums.length - 2; i >= 0; i--) {
+    if (nums[i] < nums[i + 1]) {
+      index = i
+      break
     }
-    for (let j = nums.length - 1; j > index; j--) {
-        if (nums[j] > nums[index]) {
-            [nums[index], nums[j]] = [nums[j], nums[index]];
-            break;
-        }
+  }
+  for (let j = nums.length - 1; j > index; j--) {
+    if (nums[j] > nums[index]) {
+      ;[nums[index], nums[j]] = [nums[j], nums[index]]
+      break
     }
+  }
 
-    let left = index + 1;
-    let right = nums.length - 1;
-    while (left < right) {
-        [nums[left], nums[right]] = [nums[right], nums[left]];
-        left++;
-        right--;
-    }
+  let left = index + 1
+  let right = nums.length - 1
+  while (left < right) {
+    ;[nums[left], nums[right]] = [nums[right], nums[left]]
+    left++
+    right--
+  }
 }
 ```
-
 
 ## 32. 最长有效括号
 
@@ -253,26 +253,27 @@ case     栈操作                 何时更新答案                     长度
 
 ```ts
 function longestValidParentheses(s: string): number {
-    let maxLen = 0;
+  let maxLen = 0
 
-    for (let i = 0; i < s.length; i++) {
-        if (s[i] === "(") {
-            stack.push(i);
-        } else {
-            stack.pop();
-            if (stack.length === 0) {
-                stack.push(i);
-            } else {
-                const length = i - stack[stack.length - 1];
-                maxLen = Math.max(maxLen, length);
-            }
-        }
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === '(') {
+      stack.push(i)
+    } else {
+      stack.pop()
+      if (stack.length === 0) {
+        stack.push(i)
+      } else {
+        const length = i - stack[stack.length - 1]
+        maxLen = Math.max(maxLen, length)
+      }
     }
-    return maxLen;
+  }
+  return maxLen
 }
 ```
 
 ---
+
 ---
 
 ## 33.搜索旋转排序数组
@@ -323,38 +324,37 @@ if nums[mid] == target → 直接返回 mid
 
 ```ts
 function search(nums: number[], target: number): number {
-    let left = 0;
-    let right = nums.length - 1;
+  let left = 0
+  let right = nums.length - 1
 
-    let mid = Math.floor(left + right / 2);
+  let mid = Math.floor(left + right / 2)
 
-    if (nums[mid] === nums[target]) {
-        return nums[target];
-    }
+  if (nums[mid] === nums[target]) {
+    return nums[target]
+  }
 
-    // 判断左半边是否有序
-    if (nums[left] <= nums[mid]) {
-        // 左半边有序
-        if (target >= nums[left] && target < nums[mid]) {
-            // target 在有序的左半边
-            right = mid - 1;
-        } else {
-            // target 在可能无序的右半边
-            left = mid + 1;
-        }
+  // 判断左半边是否有序
+  if (nums[left] <= nums[mid]) {
+    // 左半边有序
+    if (target >= nums[left] && target < nums[mid]) {
+      // target 在有序的左半边
+      right = mid - 1
     } else {
-        // 右半边有序
-        if (target > nums[mid] && target <= nums[right]) {
-            // target 在有序的右半边
-            left = mid + 1;
-        } else {
-            // target 在可能无序的左半边
-            right = mid - 1;
-        }
+      // target 在可能无序的右半边
+      left = mid + 1
     }
+  } else {
+    // 右半边有序
+    if (target > nums[mid] && target <= nums[right]) {
+      // target 在有序的右半边
+      left = mid + 1
+    } else {
+      // target 在可能无序的左半边
+      right = mid - 1
+    }
+  }
 }
 ```
-
 
 ### 34.在排序数组中找出元素的第一个与最后一个位置
 
@@ -390,33 +390,34 @@ function search(nums: number[], target: number): number {
 
 ```ts
 function searchRange(nums: number[], target: number): number[] {
-    let lf = 0;
-    let rg = nums.length - 1;
+  let lf = 0
+  let rg = nums.length - 1
 
-    while (lf <= rg) {
-        let mid = Math.floor((lf + rg) / 2);
-        if (nums[mid] === target) {
-            let lindex = mid;
-            let rindex = mid;
-            while (lindex >= 0 && nums[lindex - 1] === target) {
-                lindex--;
-            }
-            while (rindex < nums.length && nums[rindex + 1] === target) {
-                rindex++;
-            }
-            return [lindex, rindex];
-        }
-        if (target > nums[mid]) {
-            lf = mid + 1;
-        } else if (target < nums[mid]) {
-            rg = mid - 1;
-        }
+  while (lf <= rg) {
+    let mid = Math.floor((lf + rg) / 2)
+    if (nums[mid] === target) {
+      let lindex = mid
+      let rindex = mid
+      while (lindex >= 0 && nums[lindex - 1] === target) {
+        lindex--
+      }
+      while (rindex < nums.length && nums[rindex + 1] === target) {
+        rindex++
+      }
+      return [lindex, rindex]
     }
-    return [-1, -1];
+    if (target > nums[mid]) {
+      lf = mid + 1
+    } else if (target < nums[mid]) {
+      rg = mid - 1
+    }
+  }
+  return [-1, -1]
 }
 ```
 
 ---
+
 ---
 
 ## 35.搜索插入位置
@@ -444,23 +445,22 @@ function searchRange(nums: number[], target: number): number[] {
 
 ```ts
 function searchInsert(nums: number[], target: number): number {
-    let left = 0;
-    let right = nums.length - 1;
-    while (left <= right) {
-        let mid = Math.floor((left + right) / 2);
-        if (nums[mid] === target) {
-            return mid;
-        }
-        if (nums[mid] > target) {
-            right = mid - 1;
-        } else {
-            left = mid + 1;
-        }
+  let left = 0
+  let right = nums.length - 1
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2)
+    if (nums[mid] === target) {
+      return mid
     }
-    return left;
+    if (nums[mid] > target) {
+      right = mid - 1
+    } else {
+      left = mid + 1
+    }
+  }
+  return left
 }
 ```
-
 
 ## 36.有趣的数独
 
@@ -522,73 +522,73 @@ board =
 判断数组有无重复项直接用这个
 
 ```ts
-const hasDuplicate = (nums) => new Set(nums).size !== nums.length;
+const hasDuplicate = (nums) => new Set(nums).size !== nums.length
 ```
 
 ```ts
 function isValidSudoku(board: string[][]): boolean {
-    let vali = true;
-    for (let ine = 0; ine < 9; ine++) {
-        linevali(ine);
-        rowvali(ine);
-        nnvali(0, 0);
-        nnvali(3, 0);
-        nnvali(6, 0);
+  let vali = true
+  for (let ine = 0; ine < 9; ine++) {
+    linevali(ine)
+    rowvali(ine)
+    nnvali(0, 0)
+    nnvali(3, 0)
+    nnvali(6, 0)
 
-        nnvali(0, 3);
-        nnvali(3, 3);
-        nnvali(6, 3);
+    nnvali(0, 3)
+    nnvali(3, 3)
+    nnvali(6, 3)
 
-        nnvali(0, 6);
-        nnvali(3, 6);
-        nnvali(6, 6);
-    }
+    nnvali(0, 6)
+    nnvali(3, 6)
+    nnvali(6, 6)
+  }
 
-    function KT(arr: number[]) {
-        if (new Set(arr).size !== arr.length) {
-            vali = false;
-        }
+  function KT(arr: number[]) {
+    if (new Set(arr).size !== arr.length) {
+      vali = false
     }
-    function linevali(num: number) {
-        let stk = [];
-        for (let i = 0; i < 9; i++) {
-            if (board[num][i] !== ".") {
-                stk.push(board[num][i]);
-            }
-        }
-        KT(stk);
+  }
+  function linevali(num: number) {
+    let stk = []
+    for (let i = 0; i < 9; i++) {
+      if (board[num][i] !== '.') {
+        stk.push(board[num][i])
+      }
     }
-    function rowvali(num: number) {
-        let stk = [];
-        for (let i = 0; i < 9; i++) {
-            if (board[i][num] !== ".") {
-                stk.push(board[i][num]);
-            }
-        }
-        KT(stk);
+    KT(stk)
+  }
+  function rowvali(num: number) {
+    let stk = []
+    for (let i = 0; i < 9; i++) {
+      if (board[i][num] !== '.') {
+        stk.push(board[i][num])
+      }
     }
-    function nnvali(HT: number, ST: number) {
-        let stk = [];
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (board[HT + i][ST + j] !== ".") {
-                    stk.push(board[HT + i][ST + j]);
-                }
-            }
+    KT(stk)
+  }
+  function nnvali(HT: number, ST: number) {
+    let stk = []
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (board[HT + i][ST + j] !== '.') {
+          stk.push(board[HT + i][ST + j])
         }
-        KT(stk);
+      }
     }
-    return vali;
+    KT(stk)
+  }
+  return vali
 }
 ```
 
 ---
+
 ---
 
 ## 37.解数独
 
 （TODO）
-
 
 ## 38.外观数列
 
@@ -622,38 +622,39 @@ countAndSay(4) = "21" 的行程长度编码 = "1211"
 
 1. 从初始字符串 "1" 开始
 2. 每一轮生成新字符串时：
-    - 遍历上一轮字符串
-    - 统计**连续相同字符**的个数
-    - 遇到不同字符就把「计数+前一个字符」拼接到结果中
-    - 最后一组也加上
+   - 遍历上一轮字符串
+   - 统计**连续相同字符**的个数
+   - 遇到不同字符就把「计数+前一个字符」拼接到结果中
+   - 最后一组也加上
 3. 重复 n-1 次
 
 ```ts
 function countAndSay(n: number): string {
-    let current = "1";
-    for (let i = 2; i <= n; i++) {
-        let next = "";
-        let count = 1;
-        for (let j = 1; j < current.length; j++) {
-            if (current[j] === current[j - 1]) {
-                count++;
-            } else {
-                next += count + current[j - 1];
-                count = 1;
-            }
-        }
-
-        next += count + current[current.length - 1];
-        current = next;
+  let current = '1'
+  for (let i = 2; i <= n; i++) {
+    let next = ''
+    let count = 1
+    for (let j = 1; j < current.length; j++) {
+      if (current[j] === current[j - 1]) {
+        count++
+      } else {
+        next += count + current[j - 1]
+        count = 1
+      }
     }
 
-    return current;
+    next += count + current[current.length - 1]
+    current = next
+  }
+
+  return current
 }
 //runtime:5 ms
 //memory:58.6 MB
 ```
 
 ---
+
 ---
 
 ## 39.组合总和
@@ -685,29 +686,29 @@ function countAndSay(n: number): string {
 
 ```ts
 function combinationSum(candidates: number[], target: number): number[][] {
-    const result: number[][] = [];
-    const path: number[] = [];
+  const result: number[][] = []
+  const path: number[] = []
 
-    candidates.sort((a, b) => a - b);
+  candidates.sort((a, b) => a - b)
 
-    function bt(start: number, remain: number) {
-        if (remain === 0) {
-            result.push([...path]);
-            return;
-        }
-        if (remain < 0) {
-            return;
-        }
-        for (let i = start; i < candidates.length; i++) {
-            if (candidates[i] > remain) {
-                break;
-            }
-            path.push(candidates[i]);
-            bt(i, remain - candidates[i]);
-            path.pop();
-        }
+  function bt(start: number, remain: number) {
+    if (remain === 0) {
+      result.push([...path])
+      return
     }
-    bt(0, target);
-    return result;
+    if (remain < 0) {
+      return
+    }
+    for (let i = start; i < candidates.length; i++) {
+      if (candidates[i] > remain) {
+        break
+      }
+      path.push(candidates[i])
+      bt(i, remain - candidates[i])
+      path.pop()
+    }
+  }
+  bt(0, target)
+  return result
 }
 ```

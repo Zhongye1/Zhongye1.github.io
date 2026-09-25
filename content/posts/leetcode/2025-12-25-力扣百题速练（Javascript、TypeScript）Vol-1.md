@@ -4,16 +4,15 @@ title: 2025-12-25-力扣百题速练（Javascript/TypeScript）Vol.1
 mathjax: true
 abbrlink: 39687
 published: 2025-12-25 13:57:08
-category: 力扣
+category: 算法
 tags:
-    - 力扣
-    - 算法
-    - JavaScript
-    - 两数之和
+  - 力扣
+  - 算法
+  - JavaScript
+  - 两数之和
 ---
 
 简单刷个力扣百题，完球了这玩意从大二下开坑以来就没刷完，现在后端转前端也要那前端那一套来过一趟，还有几天字节面试了都
-
 
 ---
 
@@ -41,7 +40,6 @@ function twoSum(nums: number[], target: number): number[] {
     return [];
 }
 ```
-
 
 ## 2.两数相加
 
@@ -152,6 +150,7 @@ function lengthOfLongestSubstring(s: string): number {
 ```
 
 ---
+
 ---
 
 ## 4.寻找两个正序数组的中位数
@@ -209,29 +208,29 @@ function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
 
 ```ts
 function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
-  const merged: number[] = [];
+  const merged: number[] = []
 
   // 外层循环遍历 nums1 的每个元素
   for (let i = 0; i < nums1.length; i++) {
     // 在放入 nums1[i] 之前，先把 nums2 中所有小于等于 nums1[i] 的元素放入
     while (nums2.length > 0 && nums2[0] <= nums1[i]) {
-      merged.push(nums2.shift()!); // 取出 nums2 头部元素
+      merged.push(nums2.shift()!) // 取出 nums2 头部元素
     }
     // 放入当前 nums1[i]
-    merged.push(nums1[i]);
+    merged.push(nums1[i])
   }
   // 处理 nums2 中剩余的所有元素（如果 nums2 还有）
   while (nums2.length > 0) {
-    merged.push(nums2.shift()!);
+    merged.push(nums2.shift()!)
   }
 
-  const total = merged.length;
-  const mid = Math.floor(total / 2);
+  const total = merged.length
+  const mid = Math.floor(total / 2)
 
   if (total % 2 === 1) {
-    return merged[mid];
+    return merged[mid]
   } else {
-    return (merged[mid - 1] + merged[mid]) / 2;
+    return (merged[mid - 1] + merged[mid]) / 2
   }
 }
 ```
@@ -291,7 +290,6 @@ function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
     }
 }
 ```
-
 
 ## 5.最长的回文子串
 
@@ -354,6 +352,7 @@ function longestPalindrome(s: string): string {
 ```
 
 ---
+
 ---
 
 ## 6. Z 字变换
@@ -392,24 +391,23 @@ P I
 
 ```ts
 function convert(s: string, numRows: number): string {
-  if (numRows === 1) return s;
+  if (numRows === 1) return s
 
-  let result = "";
-  const cycle = 2 * numRows - 2;
+  let result = ''
+  const cycle = 2 * numRows - 2
 
   for (let row = 0; row < numRows; row++) {
     for (let i = 0; i + row < s.length; i += cycle) {
-      result += s[i + row];
+      result += s[i + row]
       if (row !== 0 && row !== numRows - 1 && i + cycle - row < s.length) {
-        result += s[i + cycle - row];
+        result += s[i + cycle - row]
       }
     }
   }
 
-  return result;
+  return result
 }
 ```
-
 
 ## 7. 整数反转
 
@@ -430,41 +428,42 @@ function convert(s: string, numRows: number): string {
 反转字符串
 
 ```ts
-const reverseString = (str: string): string => str.split("").reverse().join("");
+const reverseString = (str: string): string => str.split('').reverse().join('')
 ```
 
 ```ts
 function reverse(x: number): number {
   if (x === 0) {
-    return x;
+    return x
   }
-  const MAX = 2 ** 31 - 1;
-  const MIN = -(2 ** 31);
+  const MAX = 2 ** 31 - 1
+  const MIN = -(2 ** 31)
 
-  let mid = x.toString();
-  let LI: boolean = true;
-  if (mid[0] === "-") {
-    LI = false;
+  let mid = x.toString()
+  let LI: boolean = true
+  if (mid[0] === '-') {
+    LI = false
   }
-  const reverseString = mid.split("").reverse().join("");
+  const reverseString = mid.split('').reverse().join('')
   if (LI === true) {
     if (parseInt(reverseString) < MIN || parseInt(reverseString) > MAX) {
-      return 0;
+      return 0
     }
-    return parseInt(reverseString);
+    return parseInt(reverseString)
   }
   if (LI === false) {
-    let fin = reverseString.slice(0, reverseString.length - 1);
-    let fin2 = -parseInt(fin);
+    let fin = reverseString.slice(0, reverseString.length - 1)
+    let fin2 = -parseInt(fin)
     if (fin2 < MIN || fin2 > MAX) {
-      return 0;
+      return 0
     }
-    return fin2;
+    return fin2
   }
 }
 ```
 
 ---
+
 ---
 
 ## 8.字符串转换整数
@@ -480,61 +479,60 @@ function reverse(x: number): number {
 
 ```ts
 function myAtoi(s: string): number {
-  let max = 2 ** 31 - 1;
-  let min = -(2 ** 31);
+  let max = 2 ** 31 - 1
+  let min = -(2 ** 31)
 
-  let i: number = 0;
-  let sign: number = 1;
-  let fin = "";
-  let clac = 0;
+  let i: number = 0
+  let sign: number = 1
+  let fin = ''
+  let clac = 0
 
   if (i <= s.length) {
-    while (s[i] === " ") {
-      i++;
+    while (s[i] === ' ') {
+      i++
     }
 
-    while (s[i] === "-" || s[i] === "+") {
-      if (s[i] === "-") {
-        sign = -1;
+    while (s[i] === '-' || s[i] === '+') {
+      if (s[i] === '-') {
+        sign = -1
       }
-      if (s[i] === "+") {
-        sign = 1;
+      if (s[i] === '+') {
+        sign = 1
       }
       if (clac === 1) {
-        return 0;
+        return 0
       }
-      clac = 1;
-      i++;
+      clac = 1
+      i++
     }
-    while (s[i] <= "9" && s[i] >= "0") {
-      fin = fin + s[i];
-      i++;
+    while (s[i] <= '9' && s[i] >= '0') {
+      fin = fin + s[i]
+      i++
     }
-    if (fin === "") return 0;
+    if (fin === '') return 0
     if (sign === 1) {
       if (parseInt(fin) >= max) {
-        return max;
+        return max
       }
       if (parseInt(fin) <= min) {
-        return min;
+        return min
       }
-      return parseInt(fin);
+      return parseInt(fin)
     }
     if (sign === -1) {
       if (-parseInt(fin) >= max) {
-        return max;
+        return max
       }
       if (-parseInt(fin) <= min) {
-        return min;
+        return min
       }
-      return -fin;
+      return -fin
     }
   }
 }
 ```
 
 没啥好说的，处理一下转换和条件判断的事情
-
 
 ## 9.回文数
 
@@ -546,18 +544,19 @@ function myAtoi(s: string): number {
 
 ```ts
 function isPalindrome(x: number): boolean {
-  let arr = x.toString();
-  let brr = arr.split("").reverse().join("");
+  let arr = x.toString()
+  let brr = arr.split('').reverse().join('')
   if (arr === brr) {
-    return true;
+    return true
   }
   if (arr !== brr) {
-    return false;
+    return false
   }
 }
 ```
 
 ---
+
 ---
 
 ## 10.正则表达式匹配
@@ -592,28 +591,28 @@ function isPalindrome(x: number): boolean {
 ```ts
 function isMatch(s: string, p: string): boolean {
   if (s == p) {
-    return true;
+    return true
   }
-  let sindex = 0;
-  let pindex = 0;
+  let sindex = 0
+  let pindex = 0
 
   while (sindex < s.length && pindex < p.length) {
-    if (s[sindex] === p[pindex] || p[pindex] === ".") {
-      sindex++;
-      pindex++;
+    if (s[sindex] === p[pindex] || p[pindex] === '.') {
+      sindex++
+      pindex++
     }
-    if (p[pindex] === "*") {
+    if (p[pindex] === '*') {
       while (s[sindex] === s[sindex + 1]) {
-        sindex++;
+        sindex++
       }
-      pindex++;
+      pindex++
     }
     if (s[sindex] !== p[pindex]) {
-      if (p[pindex] !== "*" && p[pindex] !== ".") {
-        return false;
+      if (p[pindex] !== '*' && p[pindex] !== '.') {
+        return false
       }
     }
-    return true;
+    return true
   }
 }
 ```
@@ -634,32 +633,29 @@ function isMatch(s: string, p: string): boolean {
 ```ts
 function isMatch(s: string, p: string): boolean {
   const m = s.length,
-    n = p.length;
+    n = p.length
   const dp = Array(m + 1)
     .fill(null)
-    .map(() => Array(n + 1).fill(false));
+    .map(() => Array(n + 1).fill(false))
 
-  dp[0][0] = true;
+  dp[0][0] = true
   for (let j = 2; j <= n; j++) {
-    if (p[j - 1] === "*") {
-      dp[0][j] = dp[0][j - 2];
+    if (p[j - 1] === '*') {
+      dp[0][j] = dp[0][j - 2]
     }
   }
 
   for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
-      if (p[j - 1] === "*") {
-        dp[i][j] =
-          dp[i][j - 2] ||
-          ((s[i - 1] === p[j - 2] || p[j - 2] === ".") && dp[i - 1][j]);
+      if (p[j - 1] === '*') {
+        dp[i][j] = dp[i][j - 2] || ((s[i - 1] === p[j - 2] || p[j - 2] === '.') && dp[i - 1][j])
       } else {
-        dp[i][j] =
-          (s[i - 1] === p[j - 1] || p[j - 1] === ".") && dp[i - 1][j - 1];
+        dp[i][j] = (s[i - 1] === p[j - 1] || p[j - 1] === '.') && dp[i - 1][j - 1]
       }
     }
   }
 
-  return dp[m][n];
+  return dp[m][n]
 }
 ```
 

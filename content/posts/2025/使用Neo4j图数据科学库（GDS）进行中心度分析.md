@@ -5,20 +5,18 @@ mathjax: true
 description: 计算PageRank、度中心性、亲密中心性、介数中心性和各节点的度数
 abbrlink: 19918
 published: 2025-04-02 23:37:24
-category: 数据结构
+category: 笔记
 tags:
-    - Neo4j
-    - 图数据库
-    - 中心度分析
-    - PageRank
+  - Neo4j
+  - 图数据库
+  - 中心度分析
+  - PageRank
 ---
 
+**安装并加载GDS库**
 
-
-**安装并加载GDS库**  
-
-​    确保已安装并启用GDS插件。若未安装，需从Neo4j官网下载对应版本。
-​    
+​ 确保已安装并启用GDS插件。若未安装，需从Neo4j官网下载对应版本。
+​
 
 ### 创建图投影
 
@@ -37,9 +35,10 @@ CALL gds.graph.project(
 ```
 
 ---
+
 ---
 
-**运行度中心性算法并写入属性** 
+**运行度中心性算法并写入属性**
 
 使用`gds.degree.write`方法计算每个节点的度（可指定入度、出度或总度数），并将结果存储为节点属性`degree`：
 
@@ -51,7 +50,6 @@ CALL gds.degree.write('nodeGraph', {
 YIELD nodePropertiesWritten
 
 ```
-
 
 ### 计算中心性指标
 
@@ -66,7 +64,6 @@ CALL gds.pageRank.write('nodeGraph', {
 ```
 
 #### 2. **度中心性 (Degree Centrality)**
-
 
 ```
 CALL gds.degree.write('nodeGraph', {
@@ -84,7 +81,6 @@ CALL gds.closeness.write('nodeGraph', {
 
 #### 4. **介数中心性 (Betweenness Centrality)**
 
-
 ```
 CALL gds.betweenness.write('nodeGraph', {
   writeProperty: 'betweenness_centrality'
@@ -92,13 +88,14 @@ CALL gds.betweenness.write('nodeGraph', {
 ```
 
 ---
+
 ---
 
 ### 查询结果
 
 ```
 MATCH (n:Node)
-RETURN 
+RETURN
   n.address AS Address,
   n.pagerank AS PageRank,
   n.degree_centrality AS DegreeCentrality,
@@ -106,8 +103,6 @@ RETURN
   n.betweenness_centrality AS BetweennessCentrality
 ORDER BY PageRank DESC;
 ```
-
-
 
 ```
 ╒═════════════╤═══════════════════╤════════════════╤═══════════════════╤═════════════════════╕
@@ -175,6 +170,8 @@ ORDER BY PageRank DESC;
 ├─────────────┼───────────────────┼────────────────┼───────────────────┼─────────────────────┤
 │"10.108.0.72"│0.16009703493488484│0.0             │0.6666666666666666 │0.0                  │
 └─────────────┴───────────────────┴────────────────┴───────────────────┴─────────────────────┘
+```
+
 ```
 
 ```

@@ -4,20 +4,18 @@ title: 2025-12-26-力扣百题速练（Javascript、TypeScript）Vol.2
 mathjax: true
 abbrlink: 39620
 published: 2025-12-26 13:57:08
-category: 力扣
+category: 算法
 tags:
-    - 力扣
-    - 算法
-    - JavaScript
-    - 双指针
+  - 力扣
+  - 算法
+  - JavaScript
+  - 双指针
 ---
 
 这里是力扣速刷第二期awa
 说是速刷其实卡了挺久
 
-
 <img src='https://picx.zhimg.com/v2-1e47d2da440013ae7d4262f54c26dd52_720w.webp?source=d16d100b' style='height=100px'>
-
 
 ## 11. 盛最多水的容器
 
@@ -33,19 +31,19 @@ tags:
 
 ```ts
 function maxArea(height: number[]): number {
-  let res = 0;
-  let i = 0;
-  let j = 1;
+  let res = 0
+  let i = 0
+  let j = 1
 
   for (i = 0; i < height.length - 1; i++) {
     for (j = 1; j < height.length; j++) {
-      let xin = (j - i) * Math.min(height[i], height[j]);
+      let xin = (j - i) * Math.min(height[i], height[j])
       if (xin > res) {
-        res = xin;
+        res = xin
       }
     }
   }
-  return res;
+  return res
 }
 ```
 
@@ -53,22 +51,22 @@ function maxArea(height: number[]): number {
 
 ```ts
 function maxArea(height: number[]): number {
-  let res = 0;
-  let i = 0;
-  let j = height.length - 1;
+  let res = 0
+  let i = 0
+  let j = height.length - 1
 
   while (i < j) {
-    let fin = Math.min(height[i], height[j]) * (j - i);
+    let fin = Math.min(height[i], height[j]) * (j - i)
     if (fin > res) {
-      res = fin;
+      res = fin
     }
     if (height[i] < height[j]) {
-      i++;
+      i++
     } else {
-      j--;
+      j--
     }
   }
-  return res;
+  return res
 }
 ```
 
@@ -78,6 +76,7 @@ function maxArea(height: number[]): number {
 经典双指针加贪心的题
 
 ---
+
 ---
 
 ## 12.整数转罗马数字
@@ -159,73 +158,72 @@ function maxArea(height: number[]): number {
 
 ```ts
 function intToRoman(num: number): string {
-  let curr1 = "";
-  let curr2 = "";
-  let curr3 = "";
-  const reverseString = (str: string): string =>
-    str.split("").reverse().join("");
+  let curr1 = ''
+  let curr2 = ''
+  let curr3 = ''
+  const reverseString = (str: string): string => str.split('').reverse().join('')
 
-  let top = reverseString(num.toString());
-  let l = top.length;
+  let top = reverseString(num.toString())
+  let l = top.length
 
-  let finalstr: string[] = [];
-  let i = 0;
+  let finalstr: string[] = []
+  let i = 0
 
   function nums(pos: number) {
-    const di = Number(top[pos]);
-    if (di === 0) return;
+    const di = Number(top[pos])
+    if (di === 0) return
 
     if (di <= 3) {
       for (let j = 0; j < di; j++) {
-        finalstr.unshift(curr1);
+        finalstr.unshift(curr1)
       }
     } else if (di === 4) {
-      finalstr.unshift(curr1 + curr2);
+      finalstr.unshift(curr1 + curr2)
     } else if (di === 5) {
-      finalstr.unshift(curr2);
+      finalstr.unshift(curr2)
     } else if (di <= 8) {
       for (let j = 0; j < di - 5; j++) {
-        finalstr.unshift(curr1);
+        finalstr.unshift(curr1)
       }
-      finalstr.unshift(curr2);
+      finalstr.unshift(curr2)
     } else if (di === 9) {
-      finalstr.unshift(curr1 + curr3);
+      finalstr.unshift(curr1 + curr3)
     }
   }
   while (i < l) {
     if (i === 0) {
-      curr1 = "I";
-      curr2 = "V";
-      curr3 = "X";
-      nums(i);
-      i++;
+      curr1 = 'I'
+      curr2 = 'V'
+      curr3 = 'X'
+      nums(i)
+      i++
     }
 
     if (i === 1) {
-      curr1 = "X";
-      curr2 = "L";
-      curr3 = "C";
-      nums(i);
-      i++;
+      curr1 = 'X'
+      curr2 = 'L'
+      curr3 = 'C'
+      nums(i)
+      i++
     }
 
     if (i === 2) {
-      curr1 = "C";
-      curr2 = "D";
-      curr3 = "M";
-      nums(i);
-      i++;
+      curr1 = 'C'
+      curr2 = 'D'
+      curr3 = 'M'
+      nums(i)
+      i++
     }
 
     if (i === 3) {
-      const vas = Number(top[i]);
+      const vas = Number(top[i])
       for (let j = 0; j < vas; j++) {
-        finalstr.unshift("M");
+        finalstr.unshift('M')
       }
-      i++;
+      i++
     }
   }
-  return finalstr.join("");
+  return finalstr.join('')
 }
 ```
 
@@ -250,7 +248,6 @@ function intToRoman(num: number): string {
     return result;
 }
 ```
-
 
 ## 13. 罗马数字转整数
 
@@ -317,26 +314,27 @@ function romanToInt(s: string): number {
     C: 100,
     D: 500,
     M: 1000,
-  };
+  }
 
-  let res = 0;
+  let res = 0
 
   for (let i = 0; i < s.length; i++) {
-    const current = map[s[i]];
-    const next = map[s[i + 1]];
+    const current = map[s[i]]
+    const next = map[s[i + 1]]
 
     if (next && current < next) {
-      res += next - current;
-      i++;
+      res += next - current
+      i++
     } else {
-      res += current;
+      res += current
     }
   }
-  return res;
+  return res
 }
 ```
 
 ---
+
 ---
 
 ## 14. 最长公共前缀
@@ -360,17 +358,17 @@ function romanToInt(s: string): number {
 
 ```ts
 function longestCommonPrefix(strs: string[]): string {
-  if (strs.length === 0) return "";
+  if (strs.length === 0) return ''
 
   for (let i = 0; i < strs[0].length; i++) {
-    const char = strs[0][i];
+    const char = strs[0][i]
     for (let j = 1; j < strs.length; j++) {
       if (i === strs[j].length || strs[j][i] !== char) {
-        return strs[0].substring(0, i);
+        return strs[0].substring(0, i)
       }
     }
   }
-  return strs[0];
+  return strs[0]
 }
 ```
 
@@ -391,16 +389,15 @@ function longestCommonPrefix(strs: string[]): string {
 ### 等价的写法
 
 ```ts
-const firstStr = strs[0];
-firstStr[i];
+const firstStr = strs[0]
+firstStr[i]
 
 // 使用 charAt 方法
-strs[0].charAt(i);
+strs[0].charAt(i)
 
 // 使用 at 方法 ES2022+
-strs[0].at(i);
+strs[0].at(i)
 ```
-
 
 ## 15. 三数之和
 
@@ -429,26 +426,26 @@ strs[0].at(i);
 
 ```ts
 function threeSum(nums: number[]): number[][] {
-  nums.sort((a, b) => a - b);
-  const result: number[][] = [];
-  const seen = new Set<string>();
+  nums.sort((a, b) => a - b)
+  const result: number[][] = []
+  const seen = new Set<string>()
 
   for (let i = 0; i < nums.length - 2; i++) {
     for (let j = i + 1; j < nums.length - 1; j++) {
       for (let k = j + 1; k < nums.length; k++) {
         if (nums[i] + nums[j] + nums[k] === 0) {
-          const triplet = [nums[i], nums[j], nums[k]];
-          const key = triplet.join(",");
+          const triplet = [nums[i], nums[j], nums[k]]
+          const key = triplet.join(',')
           if (!seen.has(key)) {
-            seen.add(key);
-            result.push(triplet);
+            seen.add(key)
+            result.push(triplet)
           }
         }
       }
     }
   }
 
-  return result;
+  return result
 }
 ```
 
@@ -498,44 +495,44 @@ function threeSum(nums: number[]): number[][] {
 
 ```ts
 function threeSum(nums: number[]): number[][] {
-  nums.sort((a, b) => a - b); // 先排序，关键一步
-  const result: number[][] = [];
+  nums.sort((a, b) => a - b) // 先排序，关键一步
+  const result: number[][] = []
 
   for (let i = 0; i < nums.length - 2; i++) {
     // 跳过重复的 nums[i]
     if (i > 0 && nums[i] === nums[i - 1]) {
-      continue;
+      continue
     }
 
-    let left = i + 1;
-    let right = nums.length - 1;
+    let left = i + 1
+    let right = nums.length - 1
 
     while (left < right) {
-      const sum = nums[i] + nums[left] + nums[right];
+      const sum = nums[i] + nums[left] + nums[right]
 
       if (sum === 0) {
-        result.push([nums[i], nums[left], nums[right]]); //加入结果
+        result.push([nums[i], nums[left], nums[right]]) //加入结果
 
         // 跳过重复的 left
         while (left < right && nums[left] === nums[left + 1]) {
-          left++;
+          left++
         }
         // 跳过重复的 right
         while (left < right && nums[right] === nums[right - 1]) {
-          right--;
+          right--
         }
 
-        left++;
-        right--;
+        left++
+        right--
       } else if (sum < 0) {
-        left++;
+        left++
       } else {
-        right--;
+        right--
       }
     }
   }
 
-  return result;
+  return result
 }
 ```
 
@@ -554,37 +551,38 @@ function threeSum(nums: number[]): number[][] {
 
 ```ts
 function threeSumClosest(nums: number[], target: number): number {
-  nums.sort((a, b) => a - b);
-  let closestSum = nums[0] + nums[1] + nums[2];
-  let minDiff = Math.abs(closestSum - target);
+  nums.sort((a, b) => a - b)
+  let closestSum = nums[0] + nums[1] + nums[2]
+  let minDiff = Math.abs(closestSum - target)
 
   for (let i = 0; i < nums.length - 2; i++) {
-    let left = i + 1;
-    let right = nums.length - 1;
+    let left = i + 1
+    let right = nums.length - 1
 
     while (left < right) {
-      const sum = nums[i] + nums[left] + nums[right];
-      const diff = Math.abs(sum - target);
+      const sum = nums[i] + nums[left] + nums[right]
+      const diff = Math.abs(sum - target)
 
       if (diff < minDiff) {
-        minDiff = diff;
-        closestSum = sum;
+        minDiff = diff
+        closestSum = sum
       }
 
       if (sum < target) {
-        left++;
+        left++
       } else if (sum > target) {
-        right--;
+        right--
       } else {
-        return sum;
+        return sum
       }
     }
   }
-  return closestSum;
+  return closestSum
 }
 ```
 
 ---
+
 ---
 
 ## 17.电话号码的的数字组合
@@ -613,39 +611,38 @@ function threeSumClosest(nums: number[], target: number): number {
 
 ```ts
 function letterCombinations(digits: string): string[] {
-  if (digits.length === 0) return [];
+  if (digits.length === 0) return []
 
   const map: { [key: string]: string } = {
-    "2": "abc",
-    "3": "def",
-    "4": "ghi",
-    "5": "jkl",
-    "6": "mno",
-    "7": "pqrs",
-    "8": "tuv",
-    "9": "wxyz",
-  };
+    '2': 'abc',
+    '3': 'def',
+    '4': 'ghi',
+    '5': 'jkl',
+    '6': 'mno',
+    '7': 'pqrs',
+    '8': 'tuv',
+    '9': 'wxyz',
+  }
 
-  let result: string[] = [""];
+  let result: string[] = ['']
 
   for (const digit of digits) {
-    const letters = map[digit];
-    const temp: string[] = [];
+    const letters = map[digit]
+    const temp: string[] = []
 
     for (const prev of result) {
       for (const letter of letters) {
-        temp.push(prev + letter);
+        temp.push(prev + letter)
       }
     }
-    result = temp;
+    result = temp
   }
 
-  return result;
+  return result
 }
 ```
 
 从“空组合”开始，依次将每个新数字的字母可能性“横向扩展”到所有已有组合上，最终得到所有完整组合
-
 
 ## 18.四数之和
 
@@ -726,6 +723,7 @@ function(nums, target) {
 ```
 
 ---
+
 ---
 
 ## 19. 删除链表的第 n 个节点
@@ -742,32 +740,32 @@ function(nums, target) {
 
 ```ts
 function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
-  let len = 0;
-  let curr = head;
+  let len = 0
+  let curr = head
   while (curr !== null) {
-    len++;
-    curr = curr.next;
+    len++
+    curr = curr.next
   }
 
   if (len === n) {
-    return head?.next ?? null;
+    return head?.next ?? null
   }
 
-  let index = len - n - 1;
-  let delindex = 0;
+  let index = len - n - 1
+  let delindex = 0
 
-  let del = head;
-  let prev = new ListNode(0);
-  prev.next = head;
+  let del = head
+  let prev = new ListNode(0)
+  prev.next = head
   while (del !== null) {
-    prev = prev.next;
-    del = del.next;
+    prev = prev.next
+    del = del.next
     if (delindex === index) {
-      prev.next = del.next;
+      prev.next = del.next
     }
-    delindex++;
+    delindex++
   }
-  return head;
+  return head
 }
 ```
 
@@ -781,34 +779,33 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 ```ts
 function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
   // 边界：空链表或 n 无效直接返回
-  if (head === null) return null;
+  if (head === null) return null
 
-  const dummy = new ListNode(0);
-  dummy.next = head;
+  const dummy = new ListNode(0)
+  dummy.next = head
 
-  let fast: ListNode | null = dummy;
-  let slow: ListNode | null = dummy;
+  let fast: ListNode | null = dummy
+  let slow: ListNode | null = dummy
 
   // fast 先走 n 步
   for (let i = 0; i < n; i++) {
-    fast = fast!.next; // n 合法时不会为 null
+    fast = fast!.next // n 合法时不会为 null
   }
 
   // fast 和 slow 同步移动，直到 fast 到达末尾
   while (fast!.next !== null) {
-    fast = fast!.next;
-    slow = slow!.next;
+    fast = fast!.next
+    slow = slow!.next
   }
 
   // 此时 slow 指向倒数第 n 个节点的前一个节点
   if (slow!.next !== null) {
-    slow!.next = slow!.next.next;
+    slow!.next = slow!.next.next
   }
 
-  return dummy.next;
+  return dummy.next
 }
 ```
-
 
 ## 20.有效的括号
 
@@ -848,30 +845,29 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 思路不难，主要就是栈匹配问题
 
 - 开括号 → 入栈 `stk.push(s[i])`
-- 闭括号 → 元素出栈 `stk.pop()` 进行匹配  
+- 闭括号 → 元素出栈 `stk.pop()` 进行匹配
 - 若栈空或栈顶不匹配 → 立即返回 false；否则弹出栈顶
 - 遍历结束 → 栈空返回 true，否则 false
 
 ```ts
 function isValid(s: string): boolean {
-  let stk: string[] = [];
+  let stk: string[] = []
   for (let i = 0; i < s.length; i++) {
-    if (s[i] === "(" || s[i] === "[" || s[i] === "{") {
-      stk.push(s[i]);
-    } else if (s[i] === ")" || s[i] === "]" || s[i] === "}") {
+    if (s[i] === '(' || s[i] === '[' || s[i] === '{') {
+      stk.push(s[i])
+    } else if (s[i] === ')' || s[i] === ']' || s[i] === '}') {
       if (stk.length === 0) {
-        return false;
+        return false
       }
-      let curr = stk.pop()!;
-      if (curr === "(" && s[i] === ")") {
-      } else if (curr === "[" && s[i] === "]") {
-      } else if (curr === "{" && s[i] === "}") {
+      let curr = stk.pop()!
+      if (curr === '(' && s[i] === ')') {
+      } else if (curr === '[' && s[i] === ']') {
+      } else if (curr === '{' && s[i] === '}') {
       } else {
-        return false;
+        return false
       }
     }
   }
-  return stk.length === 0;
+  return stk.length === 0
 }
 ```
-

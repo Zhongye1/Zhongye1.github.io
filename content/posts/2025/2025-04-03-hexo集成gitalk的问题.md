@@ -3,7 +3,7 @@ uuid: 973537f0-1054-11f0-9870-e9f6383d9f4a
 title: hexo集成gitalk时的Error Validation Failed问题
 abbrlink: 18261
 published: 2025-04-03 14:26:34
-category: 博客
+category: 笔记
 tags:
     - 博客
     - Hexo

@@ -6,7 +6,7 @@ published: 2025-09-22 16:47:52
 description: ""
 mathjax: true
 cover: ""
-category: 博客
+category: 笔记
 tags:
     - 博客
     - Obsidian

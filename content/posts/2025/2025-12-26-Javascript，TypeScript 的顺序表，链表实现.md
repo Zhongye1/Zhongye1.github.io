@@ -4,14 +4,13 @@ title: 2025-12-26-Javascript/TypeScript 的顺序表，链表实现
 mathjax: true
 abbrlink: 46758
 published: 2025-12-26 12:16:12
-category: 数据结构
+category: 算法
 tags:
-    - 数据结构
-    - 顺序表
-    - 链表
-    - TypeScript
+  - 数据结构
+  - 顺序表
+  - 链表
+  - TypeScript
 ---
-
 
 JavaScript 原生提供了 Array 作为高效的动态顺序表实现，但为了理解底层原理，通常需要手动实现。链表则需要完全手动实现，因为 JavaScript 无内置链表结构。
 
@@ -264,7 +263,9 @@ linkedList.print();  // LinkedList: [1 -> 3 -> 2]
 ```
 
 ---
+
 ---
+
 ## LRU 缓存的实现（使用双向链表 + HashMap）
 
 LRU（Least Recently Used）缓存是一种常见的数据结构，用于实现固定容量缓存，当容量满时淘汰最近最少使用的元素。在 JavaScript 中，最高效的实现方式是结合**双向链表**（控制访问顺序）和**Map**（或对象）作为哈希表（实现 O(1) 访问）
@@ -387,11 +388,9 @@ cache.put(4, 4);            // 容量满，淘汰最久未使用的 1
 cache.printCache();         // 4:4 -> 2:2 -> 3:3
 ```
 
-
 ### TS实现
 
 使用双向链表结合 Map（Map 在 TypeScript 中天然支持泛型）实现 O(1) 时间复杂度的 get 和 put 操作
-
 
 ```TypeScript
 // 双向链表节点接口
@@ -495,8 +494,6 @@ console.log(cache.get(2));  // 2
 cache.printCache();         // 2:2 -> 3:3 -> 1:1
 ```
 
-
-
 ## 链表反转的实现
 
 单向链表的反转实现，包括迭代和递归两种方式
@@ -581,86 +578,80 @@ const reversedRecursive = reverseListRecursive(list2);
 printLinkedList(reversedRecursive);  // 8 -> 7 -> 6
 ```
 
-
 ### TS实现
 
 ```ts
 // 单向链表节点类型
 class ListNode {
-    val: number;
-    next: ListNode | null;
-    constructor(val?: number, next?: ListNode) {
-        this.val = val ?? 0;
-        this.next = next ?? null;
-    }
+  val: number
+  next: ListNode | null
+  constructor(val?: number, next?: ListNode) {
+    this.val = val ?? 0
+    this.next = next ?? null
+  }
 }
 
 // 创建链表辅助函数
 function createLinkedList(arr: number[]): ListNode | null {
-    if (arr.length === 0) return null;
-    const head = new ListNode(arr[0]);
-    let current = head;
-    for (let i = 1; i < arr.length; i++) {
-        current.next = new ListNode(arr[i]);
-        current = current.next;
-    }
-    return head;
+  if (arr.length === 0) return null
+  const head = new ListNode(arr[0])
+  let current = head
+  for (let i = 1; i < arr.length; i++) {
+    current.next = new ListNode(arr[i])
+    current = current.next
+  }
+  return head
 }
 
 // 打印链表辅助函数
 function printLinkedList(head: ListNode | null): void {
-    const result: number[] = [];
-    let current = head;
-    while (current) {
-        result.push(current.val);
-        current = current.next;
-    }
-    console.log('LinkedList:', result.join(' -> '));
+  const result: number[] = []
+  let current = head
+  while (current) {
+    result.push(current.val)
+    current = current.next
+  }
+  console.log('LinkedList:', result.join(' -> '))
 }
 
 // 迭代反转（推荐，空间 O(1)）
 function reverseListIterative(head: ListNode | null): ListNode | null {
-    let prev: ListNode | null = null;
-    let current: ListNode | null = head;
+  let prev: ListNode | null = null
+  let current: ListNode | null = head
 
-    while (current !== null) {
-        const next = current.next;  // 保存下一节点
-        current.next = prev;        // 反转指针
-        prev = current;             // 前驱前进
-        current = next;             // 当前前进
-    }
-    return prev;  // 新头节点
+  while (current !== null) {
+    const next = current.next // 保存下一节点
+    current.next = prev // 反转指针
+    prev = current // 前驱前进
+    current = next // 当前前进
+  }
+  return prev // 新头节点
 }
 
 // 递归反转
 function reverseListRecursive(head: ListNode | null): ListNode | null {
-    if (head === null || head.next === null) {
-        return head;
-    }
-    const newHead = reverseListRecursive(head.next);
-    head.next.next = head;
-    head.next = null;
-    return newHead;
+  if (head === null || head.next === null) {
+    return head
+  }
+  const newHead = reverseListRecursive(head.next)
+  head.next.next = head
+  head.next = null
+  return newHead
 }
 
 // 使用示例
-const list = createLinkedList([1, 2, 3, 4, 5]);
-printLinkedList(list);  // 1 -> 2 -> 3 -> 4 -> 5
+const list = createLinkedList([1, 2, 3, 4, 5])
+printLinkedList(list) // 1 -> 2 -> 3 -> 4 -> 5
 
-const reversedIter = reverseListIterative(list);
-printLinkedList(reversedIter);  // 5 -> 4 -> 3 -> 2 -> 1
+const reversedIter = reverseListIterative(list)
+printLinkedList(reversedIter) // 5 -> 4 -> 3 -> 2 -> 1
 
-const list2 = createLinkedList([6, 7, 8]);
-const reversedRec = reverseListRecursive(list2);
-printLinkedList(reversedRec);  // 8 -> 7 -> 6
+const list2 = createLinkedList([6, 7, 8])
+const reversedRec = reverseListRecursive(list2)
+printLinkedList(reversedRec) // 8 -> 7 -> 6
 ```
-
-
-
-
 
 DFA:
 
 - **顺序表**：适合随机访问（O(1)），插入/删除较慢（O(n)），实现简单，内存连续
 - **链表**：适合频繁插入/删除（O(1)），随机访问慢（O(n)），内存分散，支持动态扩展, 链表常用于特定算法（如 LRU 缓存、链表反转等）
-

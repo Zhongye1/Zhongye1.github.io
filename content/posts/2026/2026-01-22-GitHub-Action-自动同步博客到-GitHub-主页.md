@@ -4,7 +4,7 @@ title: 2026-01-22-GitHub Action 自动同步博客到 GitHub 主页
 mathjax: true
 abbrlink: 18209
 published: 2026-01-22 16:31:47
-category: 博客
+category: 笔记
 tags:
     - 博客
     - GitHub Actions

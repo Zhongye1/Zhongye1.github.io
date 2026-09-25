@@ -3,7 +3,7 @@ uuid: 093daeaa-1054-11f0-9848-0b39a1ee406d
 title: ABOUT SITE
 tags:
   - 日志
-category: 日志
+category: 杂谈
 sticky: 1
 abbrlink: 4183
 published: 2025-03-31 16:44:24
@@ -17,9 +17,9 @@ GitHub： https://github.com/Zhongye1 <img src="https://visitor-badge.laobi.icu/
 
 ## Zhongye
 
--   来自湖北，南漂中
--   数据科学与大数据技术专业
--   GZHU 27 届
+- 来自湖北，南漂中
+- 数据科学与大数据技术专业
+- GZHU 27 届
 
 <img align="center" src="https://skillicons.dev/icons?i=py,cpp,java,spring,flask,fastapi,nodejs,js,ts,vue,react,vite,electron,html,less,tailwind,mysql,postgres,redis,mongodb,docker,nginx,git,npm,pnpm,bun,github,githubactions,postman,anaconda,arch,ubuntu,figma,vscode&perline=12&theme=light" />
 

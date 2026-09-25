@@ -5,12 +5,12 @@ mathjax: true
 abbrlink: 57550
 published: 2026-01-19 15:15:12
 description: 这是力扣百题速练的第5期
-category: 力扣
+category: 算法
 tags:
-    - 力扣
-    - 算法
-    - JavaScript
-    - 回溯
+  - 力扣
+  - 算法
+  - JavaScript
+  - 回溯
 ---
 
 ## 40.组合总和II
@@ -25,6 +25,7 @@ tags:
 
 **输入:** candidates = `[10,1,2,7,6,1,5]`, target = `8`,
 **输出:**
+
 ```
 [
 [1,1,6],
@@ -33,10 +34,12 @@ tags:
 [2,6]
 ]
 ```
+
 **示例 2:**
 
 **输入:** candidates = [2,5,2,1,2], target = 5,
 **输出:**
+
 ```
 [
 [1,2,2],
@@ -48,39 +51,38 @@ tags:
 
 ```ts
 function combinationSum2(candidates: number[], target: number): number[][] {
-    candidates.sort((a,b) => a - b);  // 排序
-    
-    const result: number[][] = [];
-    const path: number[] = [];
-    
-    backtrack(0, target);
-    
-    return result;
-    
-    function backtrack(start: number, remain: number) {
-        if (remain === 0) {
-            result.push([...path]);
-            return;
-        }
-        
-        for (let i = start; i < candidates.length; i++) {
-            // 剪枝：当前数已经大于剩余目标值，后面的更大，直接结束
-            if (candidates[i] > remain) break;
-            
-            // 去重核心：同一层使用过相同数字，则跳过
-            if (i > start && candidates[i] === candidates[i-1]) {
-                continue;
-            }
-            
-            path.push(candidates[i]);
-            // 注意：这里是 i+1，而不是 start（因为每个数只能用一次）
-            backtrack(i + 1, remain - candidates[i]);
-            path.pop();
-        }
+  candidates.sort((a, b) => a - b) // 排序
+
+  const result: number[][] = []
+  const path: number[] = []
+
+  backtrack(0, target)
+
+  return result
+
+  function backtrack(start: number, remain: number) {
+    if (remain === 0) {
+      result.push([...path])
+      return
     }
+
+    for (let i = start; i < candidates.length; i++) {
+      // 剪枝：当前数已经大于剩余目标值，后面的更大，直接结束
+      if (candidates[i] > remain) break
+
+      // 去重核心：同一层使用过相同数字，则跳过
+      if (i > start && candidates[i] === candidates[i - 1]) {
+        continue
+      }
+
+      path.push(candidates[i])
+      // 注意：这里是 i+1，而不是 start（因为每个数只能用一次）
+      backtrack(i + 1, remain - candidates[i])
+      path.pop()
+    }
+  }
 }
 ```
-
 
 ## 41.缺失的第一个正数
 
@@ -106,24 +108,25 @@ function combinationSum2(candidates: number[], target: number): number[][] {
 **输出：**`1`
 **解释：**`最小的正数 1 没有出现`
 
-
 用ES6秒了
 
 ```ts
-function firstMissingPositive(nums: number[]): number {  
-    let ass = new Set(nums)  
-    let index = 1  
-    while(true){  
-        if(ass.has(index)){  
-            index++  
-        }  
-        if(!ass.has(index)){  
-            return index  
-        }  
-    }};
+function firstMissingPositive(nums: number[]): number {
+  let ass = new Set(nums)
+  let index = 1
+  while (true) {
+    if (ass.has(index)) {
+      index++
+    }
+    if (!ass.has(index)) {
+      return index
+    }
+  }
+}
 ```
 
 ---
+
 ---
 
 ## 42.接雨水
@@ -142,4 +145,3 @@ function firstMissingPositive(nums: number[]): number {
 
 **输入：**`height = [4,2,0,3,2,5]`
 **输出：**`9`
-
