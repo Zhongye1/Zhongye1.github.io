@@ -19,6 +19,8 @@
   --c-border: hsl(var(--hue-theme) 12% 88%);
   --c-primary: hsl(var(--hue-theme) 100% 54%);
   --c-primary-soft: hsl(var(--hue-theme) 100% 54% / 12%);
+  // 行内代码条的底色：品牌蓝的半透明淡底，压在正文白底上就是一格淡蓝
+  --c-code-bg: hsl(var(--hue-theme) 100% 54% / 14%);
 
   --c-success: #338833;
   --c-success-soft: rgb(51 136 51 / 12%);
@@ -54,6 +56,8 @@
   --c-border: hsl(var(--hue-theme) 10% 24%);
   --c-primary: hsl(var(--hue-theme) 90% 68%);
   --c-primary-soft: hsl(var(--hue-theme) 90% 68% / 20%);
+  // 行内代码条的底色：暗底上要更亮一点，那一格才看得出来
+  --c-code-bg: hsl(var(--hue-theme) 90% 68% / 18%);
 
   --c-success: #55cc55;
   --c-success-soft: rgb(85 204 85 / 15%);

@@ -96,10 +96,11 @@
     overflow-y: hidden;
   }
 
+  // 行内代码条：淡蓝底（--c-code-bg），和 --c-bg-2 的中性灰底区分开
   code {
     padding: 0.15em 0.4em;
     border-radius: 0.25rem;
-    background: var(--c-bg-2);
+    background: var(--c-code-bg);
     font-family: var(--font-monospace);
     font-size: 0.875em;
   }

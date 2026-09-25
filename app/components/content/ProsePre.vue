@@ -90,14 +90,14 @@ onMounted(async () => {
         {{ filename }}
       </span>
       <span v-else />
-      <!-- 语言不做绝对定位，它和文件名互斥占用同一块空间 -->
+
       <span v-if="language" class="language">{{ language }}</span>
       <div class="operations">
         <button type="button" @click="isWrap = !isWrap">
           {{ isWrap ? '横向滚动' : '自动换行' }}
         </button>
         <button type="button" @click="copy()">
-          {{ copied ? '已复制' : '复制' }}
+          {{ copied ? '已复制✅' : '复制' }}
         </button>
       </div>
     </figcaption>
@@ -162,6 +162,14 @@ figcaption {
     opacity: 0.4;
     height: 0;
     transform: translateY(0.2em);
+    transition: opacity 0.2s;
+
+    // 操作按钮悬停时才出现，且落在同一个角上；--c-bg-2 是半透明的，
+    // 盖不住标签，索性同步淡出，避免两行字叠在一起
+    :hover > &,
+    :focus-within > & {
+      opacity: 0;
+    }
   }
 
   > .operations {
