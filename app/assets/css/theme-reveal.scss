@@ -1,0 +1,108 @@
+// 主题切换的圆形揭示动画。JS 见 composables/useTheme.ts，这个文件只管样式。
+// 从 main.scss 拆出来是因为它是一整套自洽的机制（两个关键帧 + 方向修饰类 + 降级），
+// 和 main.scss 里「文档底色 / 滚动条」那些基础样式不是一类东西。
+//
+// 一、动画为什么写在样式表里，而不是等 startViewTransition 的 ready 再用 WAAPI 挂
+//     伪元素从建好到动画挂上之间会先按「没裁切」画一帧。变日间时那一帧就是整屏新快照（白），
+//     看到的是「先全白、再逐渐展开」；变夜间那一帧是旧快照（浅色），和当前页面一样，看不出异常。
+//     写进样式表后，伪元素一建出来就已经是裁到 0 的状态，这一帧不存在。
+//
+// 二、为什么必须显式声明 animation，并配上 mix-blend-mode: normal
+//     UA 给 old/new 的默认动画里有 @keyframes -ua-mix-blend-mode-plus-lighter（见 MDN 的 UA 样式表），
+//     也就是说混合模式是「用动画施加的」，在层叠里压过普通声明 —— 只写 mix-blend-mode: normal 无效。
+//     两张不透明快照相加，浅色下会直接过曝成白。这里声明 animation 会顶掉 UA 的整条动画列表
+//     （交叉淡入 + 那条 plus-lighter），normal 才生效；顺带也省掉了一层全屏混合的开销。
+//
+// 三、方向
+//     变夜间动的是「旧」快照（浅色收拢回圆心、深色从外圈推进来），而默认新快照在上层，
+//     所以要把它抬起来；变日间动新快照，让它保持在上层往外扩散。
+
+// 圆心和半径每次点击才算得出来，由 JS 写成 <html> 的行内自定义属性。
+// 用 @property 注册成带类型的 <length>：取值会被解析校验，同时给了「变量没写进来」时的兜底 ——
+// --reveal-r 初值 100vmax 会让圆形覆盖整屏，最坏情况是看不到揭示动画，而不是整块内容被裁没。
+@property --reveal-x {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 50vw;
+}
+
+@property --reveal-y {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 50vh;
+}
+
+@property --reveal-r {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 100vmax;
+}
+
+$reveal-duration: 400ms;
+
+@keyframes theme-reveal-expand {
+  from {
+    clip-path: circle(0px at var(--reveal-x) var(--reveal-y));
+  }
+
+  to {
+    clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y));
+  }
+}
+
+@keyframes theme-reveal-collapse {
+  from {
+    clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y));
+  }
+
+  to {
+    clip-path: circle(0px at var(--reveal-x) var(--reveal-y));
+  }
+}
+
+html.theme-transitioning {
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+
+  // 变日间：新快照从圆心扩散出去
+  &::view-transition-old(root) {
+    z-index: 0;
+    animation: none; // 这一向不动旧快照，别让它白跑一条 UA 的淡出
+  }
+
+  &::view-transition-new(root) {
+    z-index: 1;
+    // 留在合成器上做裁剪：动画期间只更新裁剪区域，不必把整屏快照重新光栅化。
+    // 它挂在 .theme-transitioning 下，转场一结束类就被摘掉，不会常驻显存。
+    will-change: clip-path;
+    // fill-mode 用 both 而非 forwards：万一伪元素建好到动画起步之间还隔一帧，
+    // backwards 那半会让它先按 from（裁到 0）画，而不是露出整张新快照
+    animation: theme-reveal-expand $reveal-duration ease-out both;
+  }
+
+  // 变夜间：旧快照向圆心收拢
+  &.theme-reveal-to-dark {
+    &::view-transition-old(root) {
+      z-index: 1;
+      will-change: clip-path;
+      animation: theme-reveal-collapse $reveal-duration ease-out both;
+    }
+
+    &::view-transition-new(root) {
+      z-index: 0;
+      animation: none;
+    }
+  }
+}
+
+// JS 那边已经拦了一道；这里再兜一层，保证不管谁加上的类，开了「减少动态效果」都不做揭示
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transitioning {
+    &::view-transition-old(root),
+    &::view-transition-new(root) {
+      animation: none;
+    }
+  }
+}

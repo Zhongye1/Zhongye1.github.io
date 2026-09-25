@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
 import siteConfig, { rssFeed, socials } from '@/site.config'
 import SearchButton from '@/components/SearchButton.vue'
 
 import NavBar from './NavBar.vue'
 
-const isDark = useDark({
-  storageKey: 'blog-theme-mode',
-})
-const toggleTheme = useToggle(isDark)
+// 主题状态与「圆形揭示」切换动画都在这个 composable 里（useDark 的 disableTransition
+// 那处坑也记在那儿）。开关只上报目标状态和触发事件，动画的起点由事件坐标决定。
+const { isDark, setTheme } = useTheme()
 
 const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Switch to dark theme'))
 </script>
@@ -53,15 +51,25 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
         rel="noreferrer"
         target="_blank"
       />
-      <button
-        type="button"
-        class="hover"
-        :aria-label="themeLabel"
-        :title="themeLabel"
-        @click="toggleTheme()"
-      >
-        <span class="dark:i-icon-park-outline-moon i-icon-park-outline-sun block" />
-      </button>
+      <!--
+        昼夜开关换成动画组件。它按内部状态决定球的昼夜位置，而服务端既没有 localStorage
+        也没有 matchMedia，只能渲染成白天 —— 塞进 ClientOnly，让客户端首帧直接就是真实主题：
+        既不会有 hydration 不一致，也不会在加载时自己从白天滑到夜间。
+        fallback 占位块与开关同尺寸（size=20 ⇒ 20×50），挂载时这一行不会跳。
+        开关把触发交互一起报上来（第二个参数），setTheme 靠它的坐标决定揭示动画的圆心。
+      -->
+      <ClientOnly>
+        <WigetDayNightSwitcher
+          :size="20"
+          :status="isDark"
+          :aria-label="themeLabel"
+          :title="themeLabel"
+          @on-status="setTheme"
+        />
+        <template #fallback>
+          <span class="inline-block h-5 w-[50px]" aria-hidden="true" />
+        </template>
+      </ClientOnly>
     </div>
   </aside>
 </template>

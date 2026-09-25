@@ -16,6 +16,13 @@ const siteConfig = {
 export default siteConfig
 
 /**
+ * 明暗主题在 localStorage 里的键。
+ * 两处要用同一个值：composables/useTheme.ts 的 useDark，以及 nuxt.config.ts 里那段
+ * 「首帧之前先把 .dark 类定下来」的内联脚本 —— 两边对不上就会出现先白一帧再变黑。
+ */
+export const themeStorageKey = 'blog-theme-mode'
+
+/**
  * 侧边栏导航，icon 为 UnoCSS 的图标类名（用 Tabler，与右侧栏一致）。
  */
 export const navLinks = [

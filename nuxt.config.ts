@@ -1,9 +1,28 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from 'node:path'
 import { createJiti } from 'jiti'
-import siteConfig, { rssFeed } from './app/site.config'
+import siteConfig, { rssFeed, themeStorageKey } from './app/site.config'
 
 const jiti = createJiti(import.meta.url)
+
+/**
+ * 首帧之前把明暗主题定下来的内联脚本，注入 <head>。
+ *
+ * 页面是静态生成的：SSR 出来的 HTML 里既没有 localStorage 也没有 matchMedia，只能渲染成浅色，
+ * 等客户端 hydration 之后 useDark 才补上 .dark。深色用户因此会先看到一帧白，而昼夜开关
+ * （ClientOnly）恰好也是那一刻才出现，看起来就像「等按钮加载出来才切换成黑夜」。
+ * 这段脚本在 <head> 里同步执行（阻塞解析，早于首帧与首屏绘制），把这一帧补掉。
+ *
+ * 键取自 site.config，和 useTheme 里 useDark 的 storageKey 是同一个常量 —— 两边对不上又会漏白。
+ */
+const themeBootstrap = `(() => {
+  let mode = 'auto'
+  try {
+    mode = localStorage.getItem('${themeStorageKey}') || 'auto'
+  } catch {}
+  const systemDark = matchMedia('(prefers-color-scheme: dark)').matches
+  document.documentElement.classList.toggle('dark', mode === 'dark' || (mode === 'auto' && systemDark))
+})()`
 
 /**
  * remark-plugins/ 是本地 TS 文件，而 @nuxtjs/mdc 是直接 `import()` 插件名的。
@@ -29,6 +48,9 @@ export default defineNuxtConfig({
     '~/assets/css/color.scss',
     '~/assets/css/font.scss',
     '~/assets/css/main.scss',
+    // 主题切换的圆形揭示（View Transitions）。伪元素挂在 :root 上，必须是全局样式，
+    // 放进组件里会被 scoped 掉；样式始终存在，但只在 html.theme-transitioning 期间生效
+    '~/assets/css/theme-reveal.scss',
     '~/assets/css/shiki.scss',
     // 公式样式。必须与 rehype-katex 渲染时用的 katex 同版本，见 package.json 里的版本约束
     'katex/dist/katex.min.css',
@@ -119,6 +141,8 @@ export default defineNuxtConfig({
       // 全局兜底标题：页面没写 title 时用它（真正的模板在 app/plugins/seo-title.ts，
       // 因为 nuxt-seo-utils 会在运行时用 `%s | %siteName` 覆盖配置里的 titleTemplate）
       title: siteConfig.title,
+      // 主题得在首帧之前定下来，否则深色用户会先看到一帧白（原因见文件上方 themeBootstrap）
+      script: [{ innerHTML: themeBootstrap }],
       meta: [
         { name: 'author', content: siteConfig.author },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0, shrink-to-fit=no' },
