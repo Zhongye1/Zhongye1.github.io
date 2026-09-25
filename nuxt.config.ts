@@ -20,7 +20,11 @@ const slugifyRemove = /[^\w\s$*_+~.()'"!\-:@\u3400-\u4dbf\u4e00-\u9fff\uf900-\uf
 export default defineNuxtConfig({
   // @nuxtjs/seo 必须在 @nuxt/content 之前加载：sitemap 的 content 数据源靠模块顺序挂载
   modules: ['@nuxtjs/seo', '@unocss/nuxt', '@vueuse/nuxt', '@nuxt/content'],
-  components: [{ path: '~/components/widget-right' }, '~/components'],
+  components: [
+    { path: '~/components/widget-right' },
+    { path: '~/components/widget-left' },
+    '~/components',
+  ],
   css: [
     '~/assets/css/color.scss',
     '~/assets/css/font.scss',

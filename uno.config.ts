@@ -14,6 +14,9 @@ export default defineConfig({
     // 侧边栏导航项
     'nav-link':
       'w-full flex items-center gap-2 px-3 py-2 rounded-lg c-[var(--c-text-2)] transition duration-200 hover:bg-[var(--c-bg-soft)] hover:c-[var(--c-text-1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--c-primary)]',
+    // 分类 / 标签胶囊：左栏标签云与 /tags 页面共用
+    'tag-chip':
+      'inline-flex items-center gap-[0.3em] rounded-full bg-[var(--c-bg-3)] px-[0.6em] py-[0.1em] text-[0.9em] c-[var(--c-text-2)] transition-colors duration-200 hover:bg-[var(--c-primary-soft)] hover:c-[var(--c-primary)]',
   },
   theme: {
     colors: {

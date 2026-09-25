@@ -14,7 +14,13 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
 </script>
 
 <template>
-  <aside class="flex flex-col gap-5 lg:sticky lg:top-8 lg:self-start">
+  <!--
+    分类 / 标签两张卡片加进来之后，这一列会比视口高。`position: sticky` 的元素一旦超过视口高度，
+    底部就永远滚不到，所以和右栏一样限高 + 自己滚（见 SideBarRight 的同一处处理）。
+  -->
+  <aside
+    class="no-scrollbar flex flex-col gap-5 lg:sticky lg:top-8 lg:max-h-[calc(100vh_-_4rem)] lg:self-start lg:overflow-y-auto"
+  >
     <div class="flex flex-col gap-1.5">
       <NuxtLink to="/" class="text-lg font-semibold">{{ siteConfig.title }}</NuxtLink>
       <p class="color-fade text-sm leading-relaxed">{{ siteConfig.description }}</p>
@@ -54,5 +60,8 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
         <span class="dark:i-icon-park-outline-moon i-icon-park-outline-sun block" />
       </button>
     </div>
+
+    <WidgetCategories />
+    <WidgetTags />
   </aside>
 </template>
