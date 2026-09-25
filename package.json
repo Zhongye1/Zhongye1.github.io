@@ -22,7 +22,8 @@
     "consola": "^3.4.2",
     "jiti": "^2.7.0",
     "mermaid": "^12.0.0",
-    "shiki": "^4.4.3"
+    "shiki": "^4.4.3",
+    "unocss": "^66.10.5"
   },
   "devDependencies": {
     "@iconify-json/catppuccin": "^1.2.17",

@@ -59,6 +59,65 @@ export const rssFeed = {
   path: '/rss.xml',
 }
 
+export interface FooterNavItem {
+  /** 图标：UnoCSS 类名（如 i-tabler-rss），或图片地址（外链 / 站内静态文件） */
+  icon: string
+  text: string
+  /** 站内页面写 `/xxx`；外链写完整地址；留空则渲染成不可点击的纯文本行（如 QQ 群号） */
+  url?: string
+}
+
+/**
+ * 页脚站点地图：分组标题 + 图标链接，版式对齐 blog-v3 的页脚。
+ * 图标类名写在配置里扫不到，uno.config.ts 的 safelist 会补上（图片地址不用）。
+ */
+export const footerNav: { title: string; items: FooterNavItem[] }[] = [
+  {
+    title: '探索',
+    items: [
+      { icon: 'i-tabler-rss', text: 'RSS 订阅', url: rssFeed.path },
+      { icon: 'i-tabler-archive', text: '归档', url: '/archive' },
+      { icon: 'i-tabler-friends', text: '友链', url: '/friends' },
+      { icon: 'i-tabler-train', text: '开往', url: 'https://www.travellings.cn/go.html' },
+    ],
+  },
+  {
+    title: '社交',
+    items: [
+      {
+        icon: 'i-tabler-brand-github',
+        text: 'GitHub: Zhongye1',
+        url: 'https://github.com/Zhongye1',
+      },
+      {
+        icon: 'i-tabler-brand-qq',
+        text: 'QQ: 2760913192',
+        url: 'https://user.qzone.qq.com/2760913192/',
+      },
+    ],
+  },
+  {
+    title: '信息',
+    items: [
+      {
+        icon: 'https://img.icons8.com/color/48/ussr.png',
+        text: '萌ICP备20260272号',
+        url: 'https://icp.gov.moe/?keyword=20260272',
+      },
+      {
+        icon: 'i-tabler-folder-code',
+        text: '本站源码',
+        url: 'https://github.com/Zhongye1/Zhongye1.github.io',
+      },
+      {
+        icon: 'i-tabler-brand-nuxt',
+        text: 'Powered by Nuxt',
+        url: 'https://content.nuxt.com',
+      },
+    ],
+  },
+]
+
 /**
  * 右侧技术信息
  */

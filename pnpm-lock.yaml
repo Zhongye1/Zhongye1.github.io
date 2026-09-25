@@ -35,6 +35,9 @@ importers:
       shiki:
         specifier: ^4.4.3
         version: 4.4.3
+      unocss:
+        specifier: ^66.10.5
+        version: 66.10.5(@unocss/webpack@66.10.5(esbuild@0.28.2)(rolldown@1.2.9)(rollup@4.63.4)(vite@8.3.0(@types/node@22.20.4)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))(webpack@5.111.1(cssnano@8.0.10(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@22.20.4))(svgo@4.1.0)))(rolldown@1.2.9)(rollup@4.63.4)(srvx@0.11.22)(vite@8.3.0(@types/node@22.20.4)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.1)(terser@5.51.2)(yaml@2.9.1))
     devDependencies:
       '@iconify-json/catppuccin':
         specifier: ^1.2.17

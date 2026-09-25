@@ -1,6 +1,6 @@
 import { defineConfig, presetAttributify, presetIcons, presetWind3 } from 'unocss'
 import presetChinese from 'unocss-preset-chinese'
-import { community, navLinks, services, socials } from './app/site.config'
+import { community, footerNav, navLinks, services, socials } from './app/site.config'
 import { codeBlockIconNames } from './shared/utils/icon'
 
 export default defineConfig({
@@ -45,13 +45,17 @@ export default defineConfig({
     'i-tabler-copy',
     'i-tabler-chevrons-up',
     ...codeBlockIconNames.map((name) => `i-${name.replace(':', '-')}`),
-    // 侧边栏/页脚的社交图标类名写在 site.config.ts 里，扫描不到，同样显式列出
+    // 侧边栏的社交图标类名写在 site.config.ts 里，扫描不到，同样显式列出
     ...socials.map((social) => social.icon),
     // 侧边栏导航（Home/Blog/About）的图标同理
     ...navLinks.map((link) => link.icon),
     // 右侧栏「技术信息」「社区」卡片的图标同理
     ...services.map((service) => service.icon),
     ...community.cards.map((card) => card.icon),
+    // 页脚站点地图的图标同样写在 site.config.ts 里，扫描不到（图片地址不用进 safelist）
+    ...footerNav
+      .flatMap((group) => group.items.map((item) => item.icon))
+      .filter((icon) => icon.startsWith('i-')),
   ],
   preflights: [
     {
