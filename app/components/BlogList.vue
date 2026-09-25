@@ -91,11 +91,9 @@ const props = withDefaults(
 </template>
 
 <style lang="scss" scoped>
-// blog-v3 的 $breakpoint-phone：低于它封面换成通栏版式
 $cover-narrow: 528px;
 
 .article-card {
-  // ── blog-v3 `.card` + `.upraise`（reusable.scss）的内联版 ──
   // contain: paint 不只是省事 —— 没有它，绝对定位的封面会方角溢出圆角卡片
   contain: paint;
   display: block;
@@ -122,7 +120,6 @@ $cover-narrow: 528px;
     }
   }
 
-  // ── blog-v3 `post/Article.vue` 的 .article-card ──
   container-type: inline-size;
   position: relative;
   margin: 1em 0;

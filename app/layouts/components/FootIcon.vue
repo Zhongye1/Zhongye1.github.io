@@ -20,7 +20,6 @@ const isImage = computed(
 </template>
 
 <style scoped>
-/* blog-v3 的 .iconify 全局是 1.2em，UnoCSS 的图标默认只有 1em，这里补齐 */
 .icon {
   flex-shrink: 0;
   font-size: 1.2em;

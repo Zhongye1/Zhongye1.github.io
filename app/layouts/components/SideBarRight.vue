@@ -10,10 +10,6 @@ import SiteToc from './SiteToc.vue'
     这样失效的（目录在小屏照常显示）。改用 `max-lg:hidden` 变体：变体层排在基础层之后，必然生效。
     隐藏整列还顺带让空 aside 退出 default.vue 的 `gap-8`，正文底部不会多留一段空白。
   -->
-  <!--
-    id 是给 WidgetCard 的 `dim` 用的：卡片平时压暗，鼠标进入整个侧栏才亮起
-    （上游 blog-v3 用 #blog-aside，这里对应成 #site-aside）。改名要同步改 WidgetCard.
-  -->
   <aside
     id="site-aside"
     class="no-scrollbar flex flex-col gap-6 max-lg:hidden lg:sticky lg:top-8 lg:max-h-[calc(100vh_-_4rem)] lg:self-start lg:overflow-y-auto"

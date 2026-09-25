@@ -71,9 +71,7 @@ const groups = footerNav.map((group) => ({
 }
 
 /*
-  胶囊条目：blog-v3 是 .blog-footer a { padding: .3em .5em; border-radius: .5em; font-size: .9em }
-  配 :hover { background-color: var(--c-bg-soft); color: var(--c-text) }。
-  hover 写在 scoped 选择器里，特异性高于 UnoCSS 的 hover: 变体，不会被别处盖掉。
+  胶囊条目
 */
 .footer-link {
   display: flex;

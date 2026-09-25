@@ -10,11 +10,6 @@ export interface UsePaginationOptions {
 
 /**
  * 把列表切成当前页。
- *
- * 与 blog-v3 的差别：那边页码存在 query 里（`?page=2`），composable 负责读写 URL；
- * 本站走**路径分页**（`/blog/page/2`），页码由路由参数提供，所以这里只管"切哪一段" ——
- * 静态站这样才能每页一份预渲染 HTML，也就不需要客户端抛弃预渲染结果那一手。
- * 越界处理也相应前移：由页面显式 404，而不是悄悄回落成第 1 页。
  */
 export function usePagination<T>(list: MaybeRefOrGetter<T[]>, options: UsePaginationOptions = {}) {
   const appConfig = useAppConfig()

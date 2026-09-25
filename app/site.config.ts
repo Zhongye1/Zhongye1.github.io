@@ -68,7 +68,7 @@ export interface FooterNavItem {
 }
 
 /**
- * 页脚站点地图：分组标题 + 图标链接，版式对齐 blog-v3 的页脚。
+ * 页脚站点地图
  * 图标类名写在配置里扫不到，uno.config.ts 的 safelist 会补上（图片地址不用）。
  */
 export const footerNav: { title: string; items: FooterNavItem[] }[] = [
