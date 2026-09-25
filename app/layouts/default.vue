@@ -30,12 +30,16 @@ useEventListener(
       class="mx-auto flex w-full max-w-90vw flex-1 flex-col gap-8 px-6 py-8 lg:flex-row lg:gap-10 lg:px-8"
     >
       <SideBarLeft class="lg:w-300px lg:shrink-0" />
-      <main class="min-w-0 flex-1">
-        <slot />
-      </main>
+
+      <div class="flex min-w-0 flex-1 flex-col gap-8">
+        <main class="min-w-0 flex-1">
+          <slot />
+        </main>
+        <FootBar />
+      </div>
+
       <SideBarRight class="lg:w-300px lg:shrink-0" />
     </div>
-    <FootBar />
 
     <!--
       首次打开后才挂载：`useSearchCollection` 会在挂载时建 FTS 索引，

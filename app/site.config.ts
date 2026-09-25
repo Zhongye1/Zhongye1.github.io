@@ -20,22 +20,22 @@ export default siteConfig
  */
 export const navLinks = [
   {
-    title: 'Blog',
+    title: '博客',
     path: '/',
     icon: 'i-tabler-notebook',
   },
   {
-    title: 'Archive',
+    title: '归档',
     path: '/archive',
     icon: 'i-tabler-archive',
   },
   {
-    title: 'Friends',
+    title: '友链',
     path: '/friends',
     icon: 'i-tabler-friends',
   },
   {
-    title: 'About',
+    title: '关于',
     path: '/about',
     icon: 'i-tabler-user-circle',
   },
@@ -111,7 +111,7 @@ export const footerNav: { title: string; items: FooterNavItem[] }[] = [
       },
       {
         icon: 'i-tabler-brand-nuxt',
-        text: 'Powered by Nuxt',
+        text: 'Based on Nuxt Framework',
         url: 'https://content.nuxt.com',
       },
     ],

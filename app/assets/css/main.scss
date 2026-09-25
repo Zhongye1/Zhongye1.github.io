@@ -1,6 +1,11 @@
 // 文档级基础样式：底色、文字色、字体族一律取自 color.scss / font.scss 的 token，
 // 避免出现「组件都暗了、html/body 还是浏览器默认白底」这种漏色。
 
+// 整页背景图
+// url('https://pica.zhimg.com/v2-xxx_r.jpg?source=d16d100b')。
+$page-bg-image: url('https://pic1.zhimg.com/v2-0675e223cf09b65afb140989332ca5ba_r.jpg');
+$page-bg-opacity: 0.1;
+
 html {
   background-color: var(--c-bg);
   scroll-behavior: smooth;
@@ -9,6 +14,19 @@ html {
 body {
   color: var(--c-text-1);
   font-family: var(--font-basic);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none; // 纯装饰层，不吃点击
+  background-image: $page-bg-image;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: $page-bg-opacity;
 }
 
 // 内部滚动容器（右侧目录）只保留滚动能力，不显示滚动条：

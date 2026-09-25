@@ -67,7 +67,7 @@ function pageLink(target: number) {
   <div class="contents">
     <nav
       v-if="totalPages > 1"
-      class="flex w-full self-center overflow-hidden rounded-lg border border-[var(--c-border)] bg-[var(--c-bg-1)] tabular-nums transition-[max-width] duration-200 ease-out"
+      class="flex w-full self-center overflow-hidden rounded-lg border border-[var(--c-border)] bg-[var(--c-bg-4)] tabular-nums transition-[max-width] duration-200 ease-out"
       :class="props.sticky ? 'sticky bottom-[min(2em,5%)] z-10' : undefined"
       :style="navStyle"
       :aria-label="`第 ${page} 页，共 ${totalPages} 页`"

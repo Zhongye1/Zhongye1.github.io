@@ -29,6 +29,9 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
 
     <NavBar />
 
+    <WidgetCategories />
+    <WidgetTags />
+
     <div class="flex items-center gap-3 text-lg">
       <a
         v-for="social in socials"
@@ -60,8 +63,5 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
         <span class="dark:i-icon-park-outline-moon i-icon-park-outline-sun block" />
       </button>
     </div>
-
-    <WidgetCategories />
-    <WidgetTags />
   </aside>
 </template>

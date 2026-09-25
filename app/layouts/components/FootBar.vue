@@ -21,34 +21,32 @@ const groups = footerNav.map((group) => ({
 
 <template>
   <footer class="text-[0.9em] text-[var(--c-text-2)]">
-    <div class="ml-25vw w-full max-w-1200px px-6 pb-10 lg:px-8">
-      <nav aria-label="页脚导航" class="footer-nav">
-        <div v-for="group in groups" :key="group.title">
-          <h2 class="footer-nav-title">{{ group.title }}</h2>
-          <menu>
-            <li v-for="item in group.items" :key="item.text">
-              <NuxtLink
-                v-if="item.url"
-                :to="item.url"
-                :external="item.plain"
-                :target="item.plain ? '_blank' : undefined"
-                :rel="item.plain ? 'noreferrer' : undefined"
-                class="footer-link"
-              >
-                <FootIcon :icon="item.icon" />
-                <span>{{ item.text }}</span>
-              </NuxtLink>
-              <!-- 没有可跳转地址的条目（QQ 群号）只展示，不装成链接 -->
-              <span v-else class="footer-link no-link">
-                <FootIcon :icon="item.icon" />
-                <span>{{ item.text }}</span>
-              </span>
-            </li>
-          </menu>
-        </div>
-      </nav>
-      <p class="footer-copyright">© {{ copyright }} {{ siteConfig.author }}</p>
-    </div>
+    <nav aria-label="页脚导航" class="footer-nav">
+      <div v-for="group in groups" :key="group.title">
+        <h2 class="footer-nav-title">{{ group.title }}</h2>
+        <menu>
+          <li v-for="item in group.items" :key="item.text">
+            <NuxtLink
+              v-if="item.url"
+              :to="item.url"
+              :external="item.plain"
+              :target="item.plain ? '_blank' : undefined"
+              :rel="item.plain ? 'noreferrer' : undefined"
+              class="footer-link"
+            >
+              <FootIcon :icon="item.icon" />
+              <span>{{ item.text }}</span>
+            </NuxtLink>
+            <!-- 没有可跳转地址的条目（QQ 群号）只展示，不装成链接 -->
+            <span v-else class="footer-link no-link">
+              <FootIcon :icon="item.icon" />
+              <span>{{ item.text }}</span>
+            </span>
+          </li>
+        </menu>
+      </div>
+    </nav>
+    <p class="footer-copyright">© {{ copyright }} {{ siteConfig.author }}</p>
   </footer>
 </template>
 
