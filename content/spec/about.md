@@ -16,7 +16,7 @@
 ![](https://picx.zhimg.com/v2-9d1eb0ef93647afb21f0c22f16142be3_r.jpg?source=d16d100b)
 [/grid]
 
-GZHU 27 届 数据科学与大数据技术专业
+GZHU 27 届 数科
 
 [grid]
 ![](https://picx.zhimg.com/80/v2-0323b00e97b41d914a545c7ccea6ab0a_720w.webp?source=d16d100b)
@@ -25,7 +25,7 @@ GZHU 27 届 数据科学与大数据技术专业
 ![](https://picx.zhimg.com/80/v2-aad998e4635454432798201472ffd04f_720w.webp)
 [/grid]
 
-主要做前端全栈，目前在字节跳动实习
+主要从事前端开发，转型全栈中
 
 业余时间喜欢研究 blender 建模动画和三渲二之类，写项目/水博客
 
@@ -50,7 +50,7 @@ Open Source Organization from Guangzhou-University
 
 ## 关于本站
 
-目前这个站点翻新了几轮，最后技术栈从hexo换astro，本站历史迭代页：
+目前这个站点翻新了几轮，最后技术栈从hexo换astro（现在又换nuxt了），本站历史迭代页：
 
 [grid]
 ![](https://pic1.zhimg.com/80/v2-9fe27c8996ec8773b72ebad72e97ac62_720w.webp?source=d16d100b)

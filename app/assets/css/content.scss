@@ -75,6 +75,25 @@
     border-radius: 0.5rem;
   }
 
+  // `[grid]` 图片组（见 remark-plugins/remark-grid.ts）：列数 = 组内图片数（写在 --grid-cols 上），
+  // 窄屏退回单列 —— 与旧站那套 `grid-cols-1 md:grid-cols-N gap-4 my-4` 对齐
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols, 2), minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+
+    @media (max-width: 767.9px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    // 格子里的图自己撑满，去掉正文 img 那条 auto 外边距，不然每张图外头又多一圈
+    img {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
   blockquote {
     margin: 1.25rem 0;
     padding-left: 1rem;

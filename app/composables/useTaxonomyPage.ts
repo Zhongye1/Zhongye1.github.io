@@ -19,6 +19,8 @@ export async function useTaxonomyPage(kind: TaxonomyKind) {
   const route = useRoute()
   const { label, base } = KINDS[kind]
 
+  const nuxtApp = useNuxtApp()
+
   const segments = computed(() =>
     (Array.isArray(route.params.slug) ? route.params.slug : [route.params.slug]).map(String),
   )
@@ -46,10 +48,14 @@ export async function useTaxonomyPage(kind: TaxonomyKind) {
 
   // `/tag/x/page/1` 与 `/tag/x` 是同一页，避免重复内容
   if (isPaged.value && requested.value === 1) {
-    await navigateTo(path.value, { replace: true })
+    await nuxtApp.runWithContext(() => navigateTo(path.value, { replace: true }))
   }
 
-  const { page, totalPages } = usePagination(matched, { page: requested })
+  // 服务端（含预渲染）的 runWithContext 走的是 `nuxtAppCtx.callAsync`，返回的是 Promise
+  // 而不是回调的返回值，所以要 await 才拿得到 `{ page, totalPages }`。
+  const { page, totalPages } = await nuxtApp.runWithContext(() =>
+    usePagination(matched, { page: requested }),
+  )
 
   if (!Number.isInteger(requested.value) || requested.value > totalPages.value) {
     throw notFound()

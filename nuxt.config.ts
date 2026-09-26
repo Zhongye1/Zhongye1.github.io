@@ -69,6 +69,8 @@ export default defineNuxtConfig({
             mermaid: { component: 'mermaid', prop: 'code' },
           }),
           'remark-post-stats': localPlugin('remark-post-stats'),
+          // `[grid]` 图片组（about.md 里成组出现的照片）
+          'remark-grid': localPlugin('remark-grid'),
         },
         rehypePlugins: {
           // 再把数学节点编译成 KaTeX 的 HTML + MathML：公式是内容而不是交互，
