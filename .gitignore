@@ -1,39 +1,33 @@
-# build output
-dist/
+# Nuxt dev/build outputs
+.nuxt
+.output
+.nitro
+.data
+.cache
 
-# generated types
-.astro/
+# Node dependencies
+node_modules
 
-# dependencies
-node_modules/
+# Cloudflare Worker (worker/)
+worker/.wrangler
+worker/.dev.vars
+worker/worker-configuration.d.ts
 
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# Cloudflare Worker (worker-twikoo/)
+worker-twikoo/.wrangler
+worker-twikoo/.dev.vars
+worker-twikoo/worker-configuration.d.ts
 
-# environment variables
+# 工具用的家目录（本机沙箱里 ~/.config/.wrangler 只读，把 XDG_CONFIG_HOME 临时指到这里）。
+# 里面有 wrangler 的 OAuth 令牌，绝不能入库。
+.wrangler-home/
+
+# System files
+*.log
 .env
-.env.production
-
-# macOS-specific files
+dist
 .DS_Store
 
-.vercel
-
-package-lock.json
-bun.lockb
-yarn.lock
-
-# ide
-.idea
-*.iml
-.claude
-
-# docs
-Firefly-docs/
-
-cache/
-package/
 .obsidian/
+.edge-diag/
+.pnpm-store/

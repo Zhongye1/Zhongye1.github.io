@@ -1,0 +1,31 @@
+{
+  "name": "blogsite-twikoo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Twikoo 评论后端（Cloudflare Workers + D1）",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:local": "wrangler d1 execute twikoo --local --file=./schema.sql",
+    "db:remote": "wrangler d1 execute twikoo --remote --file=./schema.sql",
+    "db:query": "wrangler d1 execute twikoo --remote --command",
+    "tail": "wrangler tail",
+    "vendor": "node scripts/vendor-adapter.mjs"
+  },
+  "dependencies": {
+    "@twikoojs/common": "2.0.9",
+    "bowser": "^2.14.1",
+    "html-to-text": "^10.0.1",
+    "marked": "^18.0.13",
+    "pushoo": "^2.0.9",
+    "xml2js": "^0.6.2",
+    "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260601.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.138.0"
+  }
+}

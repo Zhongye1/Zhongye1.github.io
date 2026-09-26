@@ -1,0 +1,25 @@
+// Shiki 双主题输出（useShiki 里启用了 defaultColor: false）。
+// 颜色全部落在 CSS 变量上，切换明暗配色时不需要重新高亮。
+
+.shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+// 代码块底色用设计 token：shiki 自带的 --shiki-*-bg 挂在被 transformerUnwrap()
+// 剥掉的 <pre> 上取不到，统一以 --c-bg-2 为准（它本身已随主题切换）。
+pre.shiki {
+  background-color: var(--c-bg-2);
+}
+
+.dark {
+  .shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+  }
+
+}

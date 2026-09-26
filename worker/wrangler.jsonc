@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "blogsite-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-22",
+  // 观测。写入前 IP 就已经被 HMAC 掉了，所以日志里不会出现明文地址。
+  // traces 采样 10%：全量 trace 对「访客统计」这种场景没有额外价值，只会堆存储。
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+      "head_sampling_rate": 1,
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1,
+    },
+  },
+  // CORS 白名单。线上是 Nuxt 静态站，本地 dev :3000。
+  // 生产环境只保留 blog.junce.net
+  "vars": {
+    "ALLOWED_ORIGINS": "https://blog.junce.net,http://localhost:3000",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "blogroll-visits",
+      // 真实 ID。注意库是空的（num_tables=0），首次部署前必须先跑：
+      //   pnpm run db:remote
+      // 否则 /api/map 会报 "no such table: visits"。
+      "database_id": "0df9dadc-95ed-42cf-8b7a-1f1533a7c6ab",
+    },
+  ],
+  // 自定义域。workers.dev 在大陆访问不了，而受众主要在境内，所以必须挂自己的域名。
+  //
+  // custom_domain: true 会让 Cloudflare 在建 DNS 记录、签发边缘证书、绑定 Worker
+  // 证书签发要 1–15 分钟，这段时间访问可能出现 522 / 526，属正常。
+  "routes": [
+    {
+      "pattern": "api.junce.net",
+      "custom_domain": true,
+    },
+  ],
+}

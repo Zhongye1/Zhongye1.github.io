@@ -1,2 +1,3 @@
-*.js linguist-language=astro
+# Normalize line endings to LF on checkout and commit so that
+# `oxfmt --check` produces the same result on every platform.
 * text=auto eol=lf

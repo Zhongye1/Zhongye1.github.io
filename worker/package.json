@@ -1,0 +1,21 @@
+{
+  "name": "blogsite-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "访客地理分布 API，供 blog.junce.net 的友链地图使用",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:local": "wrangler d1 execute blogroll-visits --local --file=./schema.sql",
+    "db:remote": "wrangler d1 execute blogroll-visits --remote --file=./schema.sql",
+    "db:query": "wrangler d1 execute blogroll-visits --remote --command",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260601.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.138.0"
+  }
+}

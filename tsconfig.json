@@ -1,51 +1,18 @@
 {
-  "extends": "./node_modules/astro/tsconfigs/base.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "strictNullChecks": true,
-    "allowJs": false,
-    "declaration": true,
-    "plugins": [
-      {
-        "name": "@astrojs/ts-plugin"
-      }
-    ],
-    "paths": {
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@assets/*": [
-        "./src/assets/*"
-      ],
-      "@constants/*": [
-        "./src/constants/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
-      "@i18n/*": [
-        "./src/i18n/*"
-      ],
-      "@layouts/*": [
-        "./src/layouts/*"
-      ],
-      "@rehype-callouts-theme": [
-        "./node_modules/rehype-callouts/theme/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "files": [],
+  "references": [
+    {
+      "path": "./.nuxt/tsconfig.app.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.server.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.shared.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.node.json"
     }
-  },
-  "include": [
-    ".astro/types.d.ts",
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist"
   ]
 }

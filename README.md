@@ -1,46 +1,62 @@
-<img src = "https://pica.zhimg.com/80/v2-49dcfbfaafe5b6e677c9f50e5d855ccc_720w.webp"/>
+# Nuxt 4 Minimal Starter
 
-<!-- more -->
+Look at the [Nuxt 4 documentation](https://nuxt.com/docs/4.x/getting-started/introduction) to learn more.
 
-GitHub： https://github.com/Zhongye1 <img src="https://visitor-badge.laobi.icu/badge?page_id=zhongye1.zhongye1" alt="Visitors" />
+## Setup
 
-## Zhongye
+Make sure to install the dependencies:
 
-- 来自湖北，南漂中
-- 数据科学与大数据技术专业
-- GZHU 27 届
+```bash
+# yarn
+yarn install
 
-<img align="center" src="./public/assets/images/svg/skillsicon.svg" />
+# npm
+npm install
 
----
+# pnpm
+pnpm install
+```
 
----
+## Development Server
 
-### 加入信工组，参与我们的校园信息化项目与学生技术社区建设！
+Start the development server on `http://localhost:3000`
 
-https://github.com/Guangzhou-University-SITE-193
-/ Open Source Organization from Guangzhou-University
+```bash
+npm run dev
+```
 
-![Image_1767690334193_204](https://github.com/user-attachments/assets/e3a4e90c-b810-47da-ba72-30e7f18b69a8)
+## Production
 
-### 关注站长博客！
+Build the application for production:
 
-本站： https://zhongye1.github.io/
+```bash
+npm run build
+```
 
-本站 RSS 订阅： https://zhongye1.github.io/rss.xml
+Locally preview production build:
 
-工作站： https://github.com/Guangzhou-University-SITE-193
+```bash
+npm run preview
+```
 
-GitHub： https://github.com/Zhongye1
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-B 站： https://space.bilibili.com/446805121
+## Linting & Formatting
 
-Email： zhongye@e.gzhu.edu.cn
+Linting is powered by [oxlint](https://oxc.rs) and formatting by [Prettier](https://prettier.io).
 
-QQ： 2760913192
+```bash
+# lint
+pnpm lint          # report problems
+pnpm lint:fix      # report problems and apply auto-fixes
 
-### 关于本站
+# format
+pnpm format        # format files in place
+pnpm format:check  # check formatting only, no writes (useful for CI)
 
-用于做归档页面整理和知识储备，建设中
+# types
+pnpm typecheck     # run vue-tsc over the app, server, shared and node projects
+```
 
-![arch](https://pic1.zhimg.com/v2-3c72de5f1b0e4cc068e3220f1226299a_r.jpg)
+Configuration lives in `.oxlintrc.json` and `.prettierrc` (with `.prettierignore`).
+Both tools run on staged files before every commit through `lint-staged`.

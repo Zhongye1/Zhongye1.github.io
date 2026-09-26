@@ -1,0 +1,41 @@
+// 文档级基础样式：底色、文字色、字体族一律取自 color.scss / font.scss 的 token，
+// 避免出现「组件都暗了、html/body 还是浏览器默认白底」这种漏色。
+
+// 整页背景图
+// url('https://pica.zhimg.com/v2-xxx_r.jpg?source=d16d100b')。
+$page-bg-image: url('https://picx.zhimg.com/v2-20b3d9f3b83e5403fcbcb56594d258a1_r.jpg');
+$page-bg-opacity: 0.3;
+
+html {
+  background-color: var(--c-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--c-text-1);
+  font-family: var(--font-basic);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none; // 纯装饰层，不吃点击
+  background-image: $page-bg-image;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: $page-bg-opacity;
+}
+
+// 内部滚动容器（右侧目录）只保留滚动能力，不显示滚动条：
+// 目录会自动把当前项滚进来，轨道本身只是噪音，隐藏后宽度也不会随内容跳
+.no-scrollbar {
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // 旧版 Edge
+
+  &::-webkit-scrollbar {
+    display: none; // WebKit / Blink
+  }
+}
