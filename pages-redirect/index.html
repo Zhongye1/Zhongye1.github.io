@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>已迁移至 blog.junce.net</title>
+
+    <!-- 旧域名不再承载内容：把权重指向新站，并让搜索引擎别收录这个空壳 -->
+    <link rel="canonical" href="https://blog.junce.net/" />
+    <meta name="robots" content="noindex, follow" />
+
+    <script>
+      // 保留路径 / 查询串 / 锚点，例如：
+      //   zhongye1.github.io/about/  ->  blog.junce.net/about/
+      //
+      // GitHub Pages 是纯静态托管，没有服务端 301，只能在 HTML 这一层跳。
+      // 用 location.replace 而不是 href：旧地址不进历史记录，用户按返回键
+      // 不会被弹回这里形成死循环。
+      location.replace(
+        'https://blog.junce.net' + location.pathname + location.search + location.hash,
+      )
+    </script>
+
+    <!-- 禁用了 JS 的浏览器走这条兜底；代价是丢掉路径，只能回首页 -->
+    <noscript><meta http-equiv="refresh" content="0; url=https://blog.junce.net/" /></noscript>
+  </head>
+  <body>
+    <p>
+      本站已迁移至 <a href="https://blog.junce.net/">blog.junce.net</a>，正在跳转…
+    </p>
+  </body>
+</html>

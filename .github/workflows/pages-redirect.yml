@@ -1,0 +1,52 @@
+name: Redirect old GitHub Pages site
+
+# zhongye1.github.io 不再提供站点内容，只留一个跳转壳，把访问者送到新站 blog.junce.net。
+# 站点本体已经由 deploy.yml 发布到 Cloudflare Pages，两者互不相干。
+#
+# 只在跳转壳本身变动时跑 —— 每次 push 都重发一遍同样的静态壳没有意义。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pages-redirect/**'
+      - '.github/workflows/pages-redirect.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 与 GitHub Pages 的官方约定保持一致：同一时间只允许一次 Pages 部署。
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 关键：404.html 必须和 index.html 是同一份跳转页。
+      # GitHub Pages 遇到不存在的路径会回 404.html，而旧站的老链接
+      # （/about/、/guide/xxx 之类）在这个壳里都没有对应文件 —— 少了这一步，
+      # 它们只会看到 GitHub 的默认 404，而不是被送到新站。
+      - name: Stage redirect stub
+        run: |
+          mkdir -p .pages-dist
+          cp pages-redirect/index.html .pages-dist/index.html
+          cp pages-redirect/index.html .pages-dist/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .pages-dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
