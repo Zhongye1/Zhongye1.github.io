@@ -190,7 +190,15 @@ export const community = {
       headline: '软件/嵌入式交流群',
       icon: 'i-tabler-brand-qq',
       bgImg: 'https://pica.zhimg.com/v2-74bec7dc73688056bed3106f253ddf0e_1440w.jpg',
-      label: '716265391',
+      label: 'QQ 716265391',
+    },
+    {
+      headline: '现代前端魔法部',
+      icon: 'i-tabler-brand-qq',
+      bgImg:
+        'https://pic1.zhimg.com/80/v2-0675e223cf09b65afb140989332ca5ba_720w.webp?source=d16d100b',
+      url: 'https://t.me/+GcurJuA6tv85YTll',
+      label: '前端技术交流社群',
     },
   ] as CommunityCard[],
 }
