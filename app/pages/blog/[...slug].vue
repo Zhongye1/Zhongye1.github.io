@@ -70,19 +70,26 @@ setPageToc(post.value?.body?.toc?.links)
 </script>
 
 <template>
-  <article v-if="post" class="flex flex-col gap-8">
-    <header class="flex flex-col gap-2">
-      <h1 class="content-heading text-3xl font-bold">{{ post.title }}</h1>
-      <p v-if="post.description" class="color-fade text-sm">{{ post.description }}</p>
-      <div class="color-fade flex flex-wrap items-center gap-x-3 text-xs">
-        <time v-if="formatPostDate(post)">{{ formatPostDate(post) }}</time>
-        <span v-if="post.category">{{ post.category }}</span>
-        <span v-for="tag in post.tags ?? []" :key="tag">#{{ tag }}</span>
-      </div>
-    </header>
+  <div v-if="post" class="flex flex-col gap-8">
+    <article class="flex flex-col gap-8">
+      <header class="flex flex-col gap-2">
+        <h1 class="content-heading text-3xl font-bold">{{ post.title }}</h1>
+        <p v-if="post.description" class="color-fade text-sm">{{ post.description }}</p>
+        <div class="color-fade flex flex-wrap items-center gap-x-3 text-xs">
+          <time v-if="formatPostDate(post)">{{ formatPostDate(post) }}</time>
+          <span v-if="post.category">{{ post.category }}</span>
+          <span v-for="tag in post.tags ?? []" :key="tag">#{{ tag }}</span>
+        </div>
+      </header>
 
-    <div class="post-body">
-      <ContentRenderer :value="post" />
-    </div>
-  </article>
+      <div class="post-body">
+        <ContentRenderer :value="post" />
+      </div>
+    </article>
+
+    <!-- 评论是真·客户端功能（要等脚本 + 请求后端），静态站预渲染时只有占位文案 -->
+    <ClientOnly>
+      <Comment />
+    </ClientOnly>
+  </div>
 </template>

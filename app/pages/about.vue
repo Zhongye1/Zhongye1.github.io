@@ -8,7 +8,14 @@ useSeoMeta({
 </script>
 
 <template>
-  <section>
-    <p>This page will be displayed at the /about route.</p>
-  </section>
+  <div class="flex flex-col gap-8">
+    <section>
+      <p>This page will be displayed at the /about route.</p>
+    </section>
+
+    <!-- 评论是真·客户端功能（要等脚本 + 请求后端），静态站预渲染时只有占位文案 -->
+    <ClientOnly>
+      <Comment />
+    </ClientOnly>
+  </div>
 </template>

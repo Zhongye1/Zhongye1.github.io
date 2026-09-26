@@ -57,114 +57,121 @@ function copyField(value: string) {
 </script>
 
 <template>
-  <section class="flex flex-col gap-8">
-    <header class="flex flex-col gap-1">
-      <h1 class="text-2xl font-bold">友链</h1>
-      <p class="color-fade text-sm">{{ mySite.desc }}</p>
-    </header>
+  <div class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8">
+      <header class="flex flex-col gap-1">
+        <h1 class="text-2xl font-bold">友链</h1>
+        <p class="color-fade text-sm">{{ mySite.desc }}</p>
+      </header>
 
-    <!-- 好友站点 -->
-    <ul v-if="list.length" class="friend-grid">
-      <li v-for="friend in list" :key="friend.siteurl || friend.title">
-        <a
-          class="friend-card"
-          :href="friend.siteurl"
-          :title="friend.desc || friend.title"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <img
-            v-if="hasAvatar(friend)"
-            class="friend-avatar"
-            :src="friend.imgurl"
-            alt=""
-            loading="lazy"
-            referrerpolicy="no-referrer"
-            @error="markBroken(friend)"
-          />
-          <span v-else class="friend-avatar friend-avatar-fallback">
-            {{ friend.title.slice(0, 1) }}
-          </span>
-
-          <span class="friend-text">
-            <span class="friend-name">{{ friend.title }}</span>
-            <span v-if="friend.desc" class="friend-desc">{{ friend.desc }}</span>
-          </span>
-
-          <span v-if="friend.tags.length" class="friend-tags">
-            <span v-for="tag in friend.tags" :key="tag">{{ tag }}</span>
-          </span>
-        </a>
-      </li>
-    </ul>
-
-    <p v-else class="color-fade rounded-lg bg-[var(--c-bg-1)] px-4 py-6 text-center text-sm">
-      blank
-    </p>
-
-    <!-- 访客地图：点阵地球 / 平面地图，数据来自 Cloudflare Worker，滚动到视口内才跑渲染循环 -->
-
-    <FriendsMap />
-    <!-- 本站信息 + 申请流程 -->
-    <div class="grid gap-4 lg:grid-cols-2">
-      <div class="flex flex-col gap-4 rounded-2xl bg-[var(--c-bg-1)] p-5">
-        <div class="flex items-center gap-4">
-          <img
-            class="size-16 shrink-0 rounded-xl object-cover"
-            :src="mySite.avatar"
-            alt=""
-            referrerpolicy="no-referrer"
-          />
-          <div class="min-w-0">
-            <p class="font-bold">{{ mySite.name }}</p>
-            <p class="color-fade text-xs">{{ mySite.desc }}</p>
-          </div>
-        </div>
-
-        <ul class="flex flex-col gap-2">
-          <li
-            v-for="field in siteFields"
-            :key="field.label"
-            class="flex items-center gap-2 rounded-lg bg-[var(--c-bg-2)] px-3 py-2"
+      <!-- 好友站点 -->
+      <ul v-if="list.length" class="friend-grid">
+        <li v-for="friend in list" :key="friend.siteurl || friend.title">
+          <a
+            class="friend-card"
+            :href="friend.siteurl"
+            :title="friend.desc || friend.title"
+            rel="noreferrer"
+            target="_blank"
           >
-            <span class="min-w-0 flex-1">
-              <span class="color-fade block text-[0.65rem]">{{ field.label }}</span>
-              <span class="block truncate text-xs">{{ field.value }}</span>
+            <img
+              v-if="hasAvatar(friend)"
+              class="friend-avatar"
+              :src="friend.imgurl"
+              alt=""
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              @error="markBroken(friend)"
+            />
+            <span v-else class="friend-avatar friend-avatar-fallback">
+              {{ friend.title.slice(0, 1) }}
             </span>
 
-            <button
-              type="button"
-              class="shrink-0 cursor-pointer rounded-md p-1.5 text-[var(--c-text-2)] transition-colors hover:bg-[var(--c-bg-3)] hover:text-[var(--c-text-1)]"
-              :aria-label="`复制${field.label}`"
-              @click="copyField(field.value)"
-            >
-              <span
-                :class="
-                  justCopied === field.value
-                    ? 'i-tabler-check text-[var(--c-success)]'
-                    : 'i-tabler-copy'
-                "
-              />
-            </button>
-          </li>
-        </ul>
-      </div>
+            <span class="friend-text">
+              <span class="friend-name">{{ friend.title }}</span>
+              <span v-if="friend.desc" class="friend-desc">{{ friend.desc }}</span>
+            </span>
 
-      <ol class="flex flex-col gap-4 rounded-2xl bg-[var(--c-bg-1)] p-5">
-        <li v-for="(step, index) in applySteps" :key="step.title" class="flex gap-3">
-          <span
-            class="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--c-primary-soft)] text-xs font-bold text-[var(--c-primary)]"
-          >
-            {{ index + 1 }}
-          </span>
-          <span class="flex flex-col gap-1">
-            <span class="text-sm font-semibold">{{ step.title }}</span>
-            <span class="color-fade text-xs leading-relaxed">{{ step.content }}</span>
-          </span>
+            <span v-if="friend.tags.length" class="friend-tags">
+              <span v-for="tag in friend.tags" :key="tag">{{ tag }}</span>
+            </span>
+          </a>
         </li>
-      </ol>
-    </div>
-  </section>
+      </ul>
+
+      <p v-else class="color-fade rounded-lg bg-[var(--c-bg-1)] px-4 py-6 text-center text-sm">
+        blank
+      </p>
+
+      <!-- 访客地图：点阵地球 / 平面地图，数据来自 Cloudflare Worker，滚动到视口内才跑渲染循环 -->
+      <FriendsMap />
+
+      <!-- 本站信息 + 申请流程 -->
+      <div class="grid gap-4 lg:grid-cols-2">
+        <div class="flex flex-col gap-4 rounded-2xl bg-[var(--c-bg-1)] p-5">
+          <div class="flex items-center gap-4">
+            <img
+              class="size-16 shrink-0 rounded-xl object-cover"
+              :src="mySite.avatar"
+              alt=""
+              referrerpolicy="no-referrer"
+            />
+            <div class="min-w-0">
+              <p class="font-bold">{{ mySite.name }}</p>
+              <p class="color-fade text-xs">{{ mySite.desc }}</p>
+            </div>
+          </div>
+
+          <ul class="flex flex-col gap-2">
+            <li
+              v-for="field in siteFields"
+              :key="field.label"
+              class="flex items-center gap-2 rounded-lg bg-[var(--c-bg-2)] px-3 py-2"
+            >
+              <span class="min-w-0 flex-1">
+                <span class="color-fade block text-[0.65rem]">{{ field.label }}</span>
+                <span class="block truncate text-xs">{{ field.value }}</span>
+              </span>
+
+              <button
+                type="button"
+                class="shrink-0 cursor-pointer rounded-md p-1.5 text-[var(--c-text-2)] transition-colors hover:bg-[var(--c-bg-3)] hover:text-[var(--c-text-1)]"
+                :aria-label="`复制${field.label}`"
+                @click="copyField(field.value)"
+              >
+                <span
+                  :class="
+                    justCopied === field.value
+                      ? 'i-tabler-check text-[var(--c-success)]'
+                      : 'i-tabler-copy'
+                  "
+                />
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <ol class="flex flex-col gap-4 rounded-2xl bg-[var(--c-bg-1)] p-5">
+          <li v-for="(step, index) in applySteps" :key="step.title" class="flex gap-3">
+            <span
+              class="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--c-primary-soft)] text-xs font-bold text-[var(--c-primary)]"
+            >
+              {{ index + 1 }}
+            </span>
+            <span class="flex flex-col gap-1">
+              <span class="text-sm font-semibold">{{ step.title }}</span>
+              <span class="color-fade text-xs leading-relaxed">{{ step.content }}</span>
+            </span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 评论是真·客户端功能（要等脚本 + 请求后端），静态站预渲染时只有占位文案 -->
+    <ClientOnly>
+      <Comment />
+    </ClientOnly>
+  </div>
 </template>
 
 <style lang="scss" scoped>

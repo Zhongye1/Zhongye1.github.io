@@ -147,6 +147,18 @@ export const visitorApi = {
 }
 
 /**
+ * 评论系统（Twikoo）。
+ * 后端是自己部署的 Cloudflare Worker（见 worker-twikoo/）
+ */
+export const twikoo = {
+  envId: 'https://twikoo.junce.net',
+  /**
+   * twikoo CDN
+   */
+  script: 'https://cdn.jsdelivr.net/npm/twikoo@2.0.9/dist/twikoo.min.js',
+}
+
+/**
  * 右侧栏「社区」分组
  */
 export interface CommunityCard {
