@@ -12,3 +12,6 @@ pnpm-lock.yaml
 
 # Static assets
 public
+
+# vendor 进来的适配器产物：由 twikoo 仓库构建生成
+worker-twikoo/src/twikoo

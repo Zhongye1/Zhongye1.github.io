@@ -13,6 +13,15 @@ worker/.wrangler
 worker/.dev.vars
 worker/worker-configuration.d.ts
 
+# Cloudflare Worker (worker-twikoo/)
+worker-twikoo/.wrangler
+worker-twikoo/.dev.vars
+worker-twikoo/worker-configuration.d.ts
+
+# 工具用的家目录（本机沙箱里 ~/.config/.wrangler 只读，把 XDG_CONFIG_HOME 临时指到这里）。
+# 里面有 wrangler 的 OAuth 令牌，绝不能入库。
+.wrangler-home/
+
 # System files
 *.log
 .env

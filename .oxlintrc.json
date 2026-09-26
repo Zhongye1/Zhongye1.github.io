@@ -20,6 +20,7 @@
     ".cache/**",
     "dist/**",
     "node_modules/**",
-    "public/**"
+    "public/**",
+    "worker-twikoo/src/twikoo/**"
   ]
 }

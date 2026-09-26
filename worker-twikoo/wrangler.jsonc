@@ -1,0 +1,51 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "twikoo",
+  "main": "src/index.ts",
+  // 公共层的 node:crypto / Buffer 依赖这个标志，缺了会在运行时炸而不是构建时
+  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2026-09-23",
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+      "head_sampling_rate": 1,
+    },
+  },
+  // 公共层的惰性重依赖表是**字面量** `import("…")`，打包器必须解析得到每一个 specifier，
+  // 哪怕那条分支在 Workers 上永远不执行。下面这些依赖在本平台没有可用形态，
+  // 全部指到「能解析、一碰就炸」的 stub；真会用到的那几个走 package.json 安装。
+  // 逐个包的理由见 src/stubs/unavailable.ts。
+  "alias": {
+    "nodemailer": "./src/stubs/unavailable.ts",
+    "jsdom": "./src/stubs/unavailable.ts",
+    "dompurify": "./src/stubs/unavailable.ts",
+    "@imaegoo/node-ip2region": "./src/stubs/unavailable.ts",
+    "akismet-api": "./src/stubs/unavailable.ts",
+    "tencentcloud-sdk-nodejs-tms": "./src/stubs/unavailable.ts",
+    "form-data": "./src/stubs/unavailable.ts",
+    "@xsai/generate-text": "./src/stubs/unavailable.ts",
+    "mongodb": "./src/stubs/unavailable.ts",
+    "lokijs": "./src/stubs/unavailable.ts",
+    "lokijs/src/loki-fs-structured-adapter.js": "./src/stubs/unavailable.ts",
+  },
+  // 绑定名必须是 DB：适配器源码里读的是 env.DB（见 src/twikoo/index.js 的 getD1Database），
+  // 写成别的名字会在首个请求上抛「未绑定 D1 数据库」，而不是构建报错。
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "twikoo",
+      "database_id": "fe4acc03-ce27-4ca4-baf0-db28c6cbd411",
+    },
+  ],
+  // 自定义域。workers.dev 在大陆访问不了，而评论是给境内读者用的，所以必须挂自己的域名。
+  // custom_domain: true 让 Cloudflare 一并建 DNS、签边缘证书、绑 Worker，证书签发要 1–15 分钟。
+  // 该主机名不能已经被别的 Worker 或 DNS 记录占用。
+  "routes": [
+    {
+      "pattern": "twikoo.junce.net",
+      "custom_domain": true,
+    },
+  ],
+}

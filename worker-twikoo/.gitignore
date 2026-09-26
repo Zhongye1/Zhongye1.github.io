@@ -1,0 +1,6 @@
+# wrangler 的本地状态与本地产物
+.wrangler
+# 本地 dev 的环境变量（可能含 API Key，绝不入库）
+.dev.vars
+# wrangler types 生成的绑定类型
+worker-configuration.d.ts
