@@ -1,67 +1,41 @@
-# 博客（Nuxt 4）
+<img src = "https://pica.zhimg.com/80/v2-49dcfbfaafe5b6e677c9f50e5d855ccc_720w.webp"/>
 
-线上地址：<https://blog.junce.net>
+<!-- more -->
 
-> **部署链路见 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** —— 发布流程、凭据配置、
-> 域名与 DNS、回滚步骤、排查手册，以及搭建时踩过的坑。
+GitHub： https://github.com/Zhongye1 <img src="https://visitor-badge.laobi.icu/badge?page_id=zhongye1.zhongye1" alt="Visitors" />
 
-本项目基于 Nuxt 4，通用用法见 [Nuxt 4 文档](https://nuxt.com/docs/4.x/getting-started/introduction)。
+## Zhongye
 
-## Setup
+- 来自湖北，南漂中
+- 前端码农
 
-Make sure to install the dependencies:
+<img align="center" src="./public/assets/images/svg/skillsicon.svg" />
 
-```bash
-# yarn
-yarn install
+---
 
-# npm
-npm install
+### 加入信工组，参与我们的校园信息化项目与学生技术社区建设！
 
-# pnpm
-pnpm install
-```
+https://github.com/Guangzhou-University-SITE-193
+/ Open Source Organization from Guangzhou-University
 
-## Development Server
+![Image_1767690334193_204](https://github.com/user-attachments/assets/e3a4e90c-b810-47da-ba72-30e7f18b69a8)
 
-Start the development server on `http://localhost:3000`
+### Sites
 
-```bash
-npm run dev
-```
+本站： https://zhongye1.github.io/
 
-## Production
+本站 RSS 订阅： https://zhongye1.github.io/rss.xml
 
-Build the application for production:
+工作站： https://github.com/Guangzhou-University-SITE-193
 
-```bash
-npm run build
-```
+GitHub： https://github.com/Zhongye1
 
-Locally preview production build:
+B 站： https://space.bilibili.com/446805121
 
-```bash
-npm run preview
-```
+Email： zhongye@e.gzhu.edu.cn
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+QQ： 2760913192
 
-## Linting & Formatting
+### 关于本站
 
-Linting is powered by [oxlint](https://oxc.rs) and formatting by [Prettier](https://prettier.io).
-
-```bash
-# lint
-pnpm lint          # report problems
-pnpm lint:fix      # report problems and apply auto-fixes
-
-# format
-pnpm format        # format files in place
-pnpm format:check  # check formatting only, no writes (useful for CI)
-
-# types
-pnpm typecheck     # run vue-tsc over the app, server, shared and node projects
-```
-
-Configuration lives in `.oxlintrc.json` and `.prettierrc` (with `.prettierignore`).
-Both tools run on staged files before every commit through `lint-staged`.
+站长博客
