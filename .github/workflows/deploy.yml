@@ -1,0 +1,57 @@
+name: Deploy to Cloudflare Pages
+
+# 唯一入口：push 到 main 就构建并发布。workflow_dispatch 方便在 Actions 页面手动重跑。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 只需要读代码。部署凭据走 CLOUDFLARE_API_TOKEN，不依赖 GITHUB_TOKEN 的写权限，
+# 所以这里给最小权限，避免默认的宽权限。
+permissions:
+  contents: read
+
+# 同时只允许一个部署在跑：两次 push 挨太近时排队而不是并行，免得后发的先上线。
+# 不取消进行中的那次 —— 上传到一半被打断会留下一次半成品部署。
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 不写 version：从 package.json 的 packageManager 字段读（pnpm@12.5.1），
+      # 保证 CI 和本机是同一个 pnpm 版本。
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      # --frozen-lockfile：锁文件和 package.json 不一致时直接失败，不在 CI 里偷偷改依赖。
+      # 注意 workerd 的构建脚本被 pnpm 的 allowBuilds 策略忽略是预期的（wrangler-action
+      # 自带 wrangler，根项目不需要 workerd），但**不能**把它加进 devDependencies：
+      # 那会让这条命令以 ERR_PNPM_IGNORED_BUILDS 退出 1。
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 产出 .output/public。注意根目录的 dist/ 只是它的一条符号链接（Nuxt 4 的兼容产物），
+      # 传 dist 也行，但这里用真实路径，免得依赖符号链接的行为。
+      - name: Build
+        run: pnpm generate
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          # 钉死版本，避免上游发新版把发布搞挂
+          wranglerVersion: '4.140.0'
+          command: pages deploy .output/public --project-name=blog-junce --branch=main
