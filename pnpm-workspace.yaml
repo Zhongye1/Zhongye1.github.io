@@ -3,6 +3,9 @@ allowBuilds:
   better-sqlite3: true
   esbuild: true
   simple-git-hooks: true
+  # wrangler 的运行时依赖。不放行的话，任何往本仓库装 wrangler 的操作都会以
+  # ERR_PNPM_IGNORED_BUILDS 退出 1 —— CI 里 wrangler-action 装 wrangler 时正是这么挂的。
+  workerd: true
 minimumReleaseAgeExclude:
   - '@nuxt/content@3.16.1'
   - '@oxlint/binding-android-arm-eabi@1.85.0'
