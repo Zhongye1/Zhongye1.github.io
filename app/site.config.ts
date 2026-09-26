@@ -4,7 +4,7 @@ const siteConfig = {
   subtitle: '个人博客',
   /** 站点主域名。canonical / og:url / RSS / sitemap 一律以它为准，别再出现第二个域名 */
   url: 'https://blog.junce.net',
-  description: '个人博客网站，记录技术、折腾与日常',
+  description: '博客站，记录技术与日常',
   lang: 'zh-CN',
   /** 站点上线日期 */
   startDate: '2023-09-12',
@@ -129,9 +129,10 @@ export const footerNav: { title: string; items: FooterNavItem[] }[] = [
  * 右侧技术信息
  */
 export const services = [
-  { label: '部署平台', icon: 'i-tabler-brand-github', text: 'GitHub Pages' },
+  { label: '部署平台', icon: 'i-tabler-brand-github', text: 'Cloudflare Pages' },
   { label: '站点域名', icon: 'i-tabler-world-www', text: 'blog.junce.net' },
-  { label: '访客统计', icon: 'i-tabler-map-pin', text: 'Cloudflare Workers + D1' },
+  { label: '软件协议', icon: 'i-tabler-math-sec', text: 'MIT' },
+  { label: '文章许可', icon: 'i-tabler-badge-cc', text: 'CC BY-SA 4.0' },
 ]
 
 /**

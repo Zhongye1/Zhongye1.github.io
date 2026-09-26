@@ -2,7 +2,7 @@
 import type { WidgetDlItem } from './WidgetDl.vue'
 import { services } from '@/site.config'
 
-const expanded = ref(false)
+const expanded = ref(true)
 
 const serviceItems = computed<WidgetDlItem[]>(() =>
   services.map((service) => ({

@@ -27,8 +27,13 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
 
     <NavBar />
 
-    <WidgetCategories />
-    <WidgetTags />
+    <!--
+      分类 / 标签只在桌面端出现：手机端左栏整列堆在正文之前，这两张卡片会把首屏占满。
+      用 `max-lg:hidden` 跟着 lg 断点（也就是 default.vue 切成两栏的那个断点）一起隐藏，
+      写法与右栏一致。卡片 `display: none` 后不再参与 flex 布局，aside 的 `gap-5` 不会留空档。
+    -->
+    <WidgetCategories class="max-lg:hidden" />
+    <WidgetTags class="max-lg:hidden" />
 
     <div class="flex items-center gap-3 text-lg">
       <a
