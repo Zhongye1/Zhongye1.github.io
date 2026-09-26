@@ -1,6 +1,11 @@
-# Nuxt 4 Minimal Starter
+# 博客（Nuxt 4）
 
-Look at the [Nuxt 4 documentation](https://nuxt.com/docs/4.x/getting-started/introduction) to learn more.
+线上地址：<https://blog.junce.net>
+
+> **部署链路见 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)** —— 发布流程、凭据配置、
+> 域名与 DNS、回滚步骤、排查手册，以及搭建时踩过的坑。
+
+本项目基于 Nuxt 4，通用用法见 [Nuxt 4 文档](https://nuxt.com/docs/4.x/getting-started/introduction)。
 
 ## Setup
 
