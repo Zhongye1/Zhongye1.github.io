@@ -1,6 +1,6 @@
 const siteConfig = {
   author: 'Zhongye',
-  title: 'Zhongye',
+  title: 'Апрель',
   subtitle: '个人博客',
   /** 站点主域名。canonical / og:url / RSS / sitemap 一律以它为准，别再出现第二个域名 */
   url: 'https://blog.junce.net',
