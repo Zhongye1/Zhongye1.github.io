@@ -132,7 +132,7 @@ export const services = [
   { label: '部署平台', icon: 'i-tabler-brand-github', text: 'Cloudflare Pages' },
   { label: '站点域名', icon: 'i-tabler-world-www', text: 'blog.junce.net' },
   { label: '软件协议', icon: 'i-tabler-math-sec', text: 'MIT' },
-  { label: '文章许可', icon: 'i-tabler-badge-cc', text: 'CC BY-SA 4.0' },
+  { label: '文章许可', icon: 'i-tabler-badge-cc', text: 'CC-BY-SA-4.0' },
 ]
 
 /**

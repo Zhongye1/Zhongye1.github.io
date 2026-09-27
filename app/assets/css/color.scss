@@ -53,7 +53,7 @@
   --c-bg-3: hsl(var(--hue-theme) 10% 18% / 20%);
   --c-bg-4: hsl(var(--hue-theme) 10% 10%);
 
-  --c-border: hsl(var(--hue-theme) 10% 24%);
+  --c-border: hsl(215deg 3.36% 42.09%) /* var(--c-border) */;
   --c-primary: hsl(var(--hue-theme) 90% 68%);
   --c-primary-soft: hsl(var(--hue-theme) 90% 68% / 20%);
   // 行内代码条的底色：暗底上要更亮一点，那一格才看得出来
