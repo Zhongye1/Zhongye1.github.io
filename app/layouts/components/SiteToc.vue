@@ -3,13 +3,14 @@
 // 标题「目录」+ 缩进列表 + 当前项主色 + 跟随当前项的指示线（straight / circuit）。
 //
 // 这里只负责「皮肤」，结构与逻辑都在 headless 层：
+//   usePageContent      —— 当前路由对应的正文，目录取自它的 `body.toc`（与页面共用一份数据）
 //   TocTree             —— 只渲染 ul/li 与 data-* 标记，类名由这里按层级传进去
 //   useTocScrollspy     —— 观察正文标题，产出当前高亮的标题 id
 //   useTocHighlight     —— 把高亮换算成指示线的位移 / 高度 / mask
 //   useActiveLinkScroll —— 当前项变化时把它滚到容器中间
 // 未搬的部分是小屏折叠面板：本站在 lg 以下整列隐藏（见 SideBarRight），不需要第二套 DOM。
 import type { TocLink } from '@nuxt/content'
-import { usePageToc } from '@/composables/usePageToc'
+import { usePageContent } from '@/composables/usePageContent'
 import { useTocScrollspy } from '@/composables/useTocScrollspy'
 import { useTocHighlight } from '@/composables/useTocHighlight'
 import { useActiveLinkScroll } from '@/composables/useActiveLinkScroll'
@@ -24,7 +25,9 @@ const props = withDefaults(
   { highlight: true, highlightVariant: 'straight' },
 )
 
-const { toc } = usePageToc()
+// 目录数据要 await：SSR 时右栏先于页面的异步 setup 渲染，只有自己也把数据等出来，
+// 服务端才能把目录渲进 HTML（否则客户端 hydration 时才画出目录 → mismatch）
+const { toc } = await usePageContent()
 const router = useRouter()
 const route = useRoute()
 const listRef = useTemplateRef<HTMLElement>('listRef')

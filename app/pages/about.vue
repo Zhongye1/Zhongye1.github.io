@@ -1,9 +1,7 @@
 <script setup lang="ts">
 // 关于页。正文不在组件里，取自 `content/spec/about.md`（content.config.ts 里的 `pages` 集合，
-// 集合路径是 `/spec/about`）；页面路由仍留在 `/about`，不给同一份内容再开一条 `/spec/about`。
-const { data: page } = await useAsyncData('about-page', () =>
-  queryCollection('pages').path('/spec/about').first(),
-)
+// 集合路径是 `/spec/about`）；页面路由仍留在 `/about`，映射写在 usePageContent 里。
+const { content: page } = await usePageContent<'pages'>()
 
 if (!page.value) {
   throw createError({
@@ -20,10 +18,6 @@ useSeoMeta({
   title: page.value.title || '关于',
   description: page.value.description || '关于本站与作者 Zhongye。',
 })
-
-// 正文的标题树交给 layout 的右栏目录（和文章页同一套）
-const { setPageToc } = usePageToc()
-setPageToc(page.value.body?.toc?.links)
 </script>
 
 <template>

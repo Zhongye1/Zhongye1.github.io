@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { coverList } from '@/site.config'
 
-const route = useRoute()
-
-const slug = computed(() => {
-  const param = route.params.slug
-  return Array.isArray(param) ? param.join('/') : (param ?? '')
-})
-
-// `content/posts/2025/foo.md` is stored as `/posts/2025/foo` and served at `/blog/2025/foo`.
-const contentPath = computed(() => `/posts/${slug.value}`)
-
-const { data: post } = await useAsyncData(
-  () => `post-${slug.value}`,
-  () => queryCollection('posts').path(contentPath.value).first(),
-  { watch: [contentPath] },
-)
+// 正文交给 `usePageContent`：路由 → 内容路径的映射（`/blog/2025/foo` ↔ `/posts/2025/foo`）、以及
+// 与 layout 右栏目录共享的那份 useAsyncData 都在那里 —— 右栏要靠它把目录渲进首屏 HTML。
+// 注意别用 `route.path` 拼内容路径：它是百分号编码的，中文文件名会变成 `%E8%AE%B0…`。
+const { content: post, path: contentPath } = await usePageContent<'posts'>()
 
 if (!post.value) {
   throw createError({
@@ -63,10 +52,6 @@ useSchemaOrg([
     ],
   }),
 ])
-
-// 右侧栏的目录由 layout 渲染，这里把当前文章的标题树交出去
-const { setPageToc } = usePageToc()
-setPageToc(post.value?.body?.toc?.links)
 </script>
 
 <template>
