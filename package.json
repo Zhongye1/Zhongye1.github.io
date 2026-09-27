@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@12.5.1",
   "scripts": {
+    "new": "node scripts/new-post.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
