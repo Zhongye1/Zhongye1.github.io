@@ -193,12 +193,12 @@ export const community = {
       label: 'QQ 716265391',
     },
     {
-      headline: '现代前端魔法部',
+      headline: '现代前端交流部',
       icon: 'i-tabler-brand-qq',
       bgImg:
         'https://pic1.zhimg.com/80/v2-0675e223cf09b65afb140989332ca5ba_720w.webp?source=d16d100b',
       url: 'https://t.me/+GcurJuA6tv85YTll',
-      label: '前端技术交流社群',
+      label: 't.me/+GcurJuA6tv85YTll',
     },
   ] as CommunityCard[],
 }

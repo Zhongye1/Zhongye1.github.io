@@ -12,30 +12,28 @@ const themeLabel = computed(() => (isDark.value ? 'Switch to light theme' : 'Swi
 </script>
 
 <template>
-  <!--
-    分类 / 标签两张卡片加进来之后，这一列会比视口高。`position: sticky` 的元素一旦超过视口高度，
-    底部就永远滚不到，所以和右栏一样限高 + 自己滚（见 SideBarRight 的同一处处理）。
-  -->
   <aside
-    class="no-scrollbar flex flex-col gap-5 lg:sticky lg:top-8 lg:max-h-[calc(100vh_-_4rem)] lg:self-start lg:overflow-y-auto"
+    class="flex flex-col gap-5 lg:sticky lg:top-8 lg:max-h-[calc(100vh_-_4rem)] lg:self-start lg:overflow-hidden"
   >
-    <div class="flex flex-col gap-1.5">
-      <NuxtLink to="/" class="text-lg font-semibold">{{ siteConfig.title }}</NuxtLink>
-      <p class="color-fade text-sm leading-relaxed">{{ siteConfig.description }}</p>
+    <div class="no-scrollbar flex flex-col gap-5 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+      <div class="flex flex-col gap-1.5">
+        <NuxtLink to="/" class="text-lg font-semibold">{{ siteConfig.title }}</NuxtLink>
+        <p class="color-fade text-sm leading-relaxed">{{ siteConfig.description }}</p>
+      </div>
+      <SearchButton />
+
+      <NavBar />
+
+      <!--
+        分类 / 标签只在桌面端出现：手机端左栏整列堆在正文之前，这两张卡片会把首屏占满。
+        用 `max-lg:hidden` 跟着 lg 断点（也就是 default.vue 切成两栏的那个断点）一起隐藏，
+        写法与右栏一致。卡片 `display: none` 后不再参与 flex 布局，这一段的 `gap-5` 不会留空档。
+      -->
+      <WidgetCategories class="max-lg:hidden" />
+      <WidgetTags class="max-lg:hidden" />
     </div>
-    <SearchButton />
 
-    <NavBar />
-
-    <!--
-      分类 / 标签只在桌面端出现：手机端左栏整列堆在正文之前，这两张卡片会把首屏占满。
-      用 `max-lg:hidden` 跟着 lg 断点（也就是 default.vue 切成两栏的那个断点）一起隐藏，
-      写法与右栏一致。卡片 `display: none` 后不再参与 flex 布局，aside 的 `gap-5` 不会留空档。
-    -->
-    <WidgetCategories class="max-lg:hidden" />
-    <WidgetTags class="max-lg:hidden" />
-
-    <div class="flex items-center gap-3 text-lg">
+    <div class="flex shrink-0 items-center gap-3 text-lg">
       <a
         v-for="social in socials"
         :key="social.url"

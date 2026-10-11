@@ -3,7 +3,7 @@ import { useBlogTaxonomies } from '@/composables/useBlogTaxonomies'
 import { tagPath } from '@/utils/taxonomy'
 
 /** 左栏只放最常用的十几个，长尾靠「全部标签」兜住 */
-const TOP_LIMIT = 15
+const TOP_LIMIT = 7
 
 const { tags } = await useBlogTaxonomies()
 const topTags = computed(() => tags.value.slice(0, TOP_LIMIT))

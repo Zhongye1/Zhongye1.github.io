@@ -14,7 +14,7 @@ const serviceItems = computed<WidgetDlItem[]>(() =>
 
 // 构建信息
 const buildItems: WidgetDlItem[] = [
-  { label: 'Site', value: '0913' },
+  { label: 'Site', value: 'OASR' },
   { label: 'Nuxt', value: '4.5.2' },
   { label: 'Vue', value: '3.5.43' },
   { label: 'Content', value: '3.16.1' },
@@ -29,7 +29,7 @@ const buildItems: WidgetDlItem[] = [
   <WidgetCard card title="站点信息">
     <WidgetDl :items="serviceItems" />
     <WidgetExpand v-model="expanded" name="构建信息">
-      <WidgetDl :items="buildItems" size="small" />
+      <WidgetDl :items="buildItems" size="small" :columns="4" />
     </WidgetExpand>
   </WidgetCard>
 </template>

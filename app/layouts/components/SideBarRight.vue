@@ -12,7 +12,7 @@ import SiteToc from './SiteToc.vue'
   -->
   <aside
     id="site-aside"
-    class="no-scrollbar flex flex-col gap-6 max-lg:hidden lg:sticky lg:top-8 lg:max-h-[calc(100vh_-_4rem)] lg:self-start lg:overflow-y-auto"
+    class="no-scrollbar flex flex-col gap-6 max-lg:hidden lg:sticky lg:top-8 lg:max-h-[calc(100vh)] lg:self-start lg:overflow-y-auto"
   >
     <SiteToc highlight-variant="circuit" />
 
