@@ -51,17 +51,46 @@
     padding-left: 1.5rem;
   }
 
+  // 无序列表的标记从 disc 换成蓝色「-」：list-style 关掉，用 ::before 自己画一个，
+  // 负外边距把短横塞进 li 的左侧内边距里，折行时仍然保持悬挂缩进
   ul {
-    list-style: disc;
+    list-style: none;
+    padding-left: 1rem;
+
+    > li {
+      padding-left: 0.75rem;
+
+      // 紧列表把标记挂在 li 上；条目之间空行的「松列表」会被渲染成 li > p，
+      // 这时必须挂到段落上，否则 li 里的行内标记会独占一行、跑到段落上方
+      &:not(:has(> p:first-child))::before,
+      > p:first-child::before {
+        content: '-';
+        display: inline-block;
+        width: 0.75rem;
+        margin-left: -0.75rem;
+        color: var(--c-primary);
+        font-weight: 700;
+      }
+    }
   }
 
   ol {
     list-style: decimal;
+
+    // 有序列表的数字序号同样吃品牌蓝
+    > li::marker {
+      color: var(--c-primary);
+    }
   }
 
   li {
     margin: 0.35rem 0;
     line-height: 1.7;
+  }
+
+  // 加粗在正文里当「关键词」用，直接给品牌蓝；正文段落颜色不变，读起来仍然是一段灰黑
+  strong {
+    color: var(--c-primary);
   }
 
   a {
@@ -94,11 +123,19 @@
     }
   }
 
+  // 引用块：淡蓝底（--c-primary-soft）＋ 左侧品牌蓝竖线，和正文段落一眼可分
   blockquote {
     margin: 1.25rem 0;
-    padding-left: 1rem;
-    border-left: 3px solid var(--c-border);
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--c-primary);
+    border-radius: 0 0.375rem 0.375rem 0;
+    background: var(--c-primary-soft);
     color: var(--c-text-2);
+
+    // 块内段落的上下留白收到 0.35rem，否则 padding 叠上正文的 1rem 会显得很空
+    p {
+      margin: 0.35rem 0;
+    }
   }
 
   hr {
