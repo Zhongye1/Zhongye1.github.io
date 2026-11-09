@@ -1,391 +1,123 @@
 ---
 uuid: 726d3800-dc54-11f1-a70b-d3a1bc617592
-title: 2026-09-12-重学 JavaScript Vol.3 - 标准库与运行时
+title: 2026-09-14-重学 JavaScript Vol.5 - 运行时
 mathjax: true
 abbrlink: 40104
-published: 2026-09-12 10:34:56
+published: 2026-09-14 10:34:56
 category: 前端
-description: JavaScript 标准库与运行时：Date/RegExp/JSON/Math、错误处理、事件循环、Promise/async 与模块
+description: JavaScript 运行时：执行上下文与调用栈、错误处理、事件循环、Promise/async、模块、垃圾回收与内存泄漏
 cover: ''
 tags:
   - 前端
   - JavaScript
 ---
 
-## 标准对象
+## 执行上下文与调用栈
 
-JavaScript 的标准库由一组内置对象组成。日常使用最多的是 `Date`、`RegExp`、`JSON` 和 `Math`。
+JavaScript 是单线程的：单个代理是一个线程，解释器一次只能处理一条语句。每个作业通过调用相关的回调进入，回调中的代码可以创建变量、调用函数或退出。每个函数都需要跟踪自己的变量环境和返回位置，为此引擎需要一个栈来跟踪执行上下文。
 
-### Date
+**执行上下文**（也称为栈帧）是执行的最小单位，它跟踪以下信息：
 
-MDN 目前把 `Date` 标记为历史遗留对象，建议新代码关注现代替代方案（Temporal）。不过现有代码和浏览器 API 仍大量使用 `Date`，理解它的行为仍然必要。
+- 代码求值状态；
+- 包含此代码的模块或脚本、函数，以及当前执行的生成器；
+- 当前的域；
+- 绑定，包括 `var`、`let`、`const`、`function`、`class` 定义的变量，私有标识符，以及 `this` 引用。
 
-JavaScript 没有日期数据类型。但是，可以使用 `Date` 对象及其方法在应用程序里处理日期和时间。`Date` 对象有大量方法用以设置、获取和操作日期。它没有任何属性。
-
-JavaScript 处理日期的方式和 Java 类似。这两种语言有着许多相同的日期方法，并且都将日期存储为自 1970 年 1 月 1 日午夜时分（UTC 时间）以来的毫秒数，而 Unix 时间戳则表示从同一时刻开始至今的秒数。1970 年 1 月 1 日午夜时分（UTC 时间）的这一时刻被称为“纪元”。
-
-`Date` 对象范围从相对于纪元的 -100,000,000 天起到 100,000,000 天为止。
-
-创建 `Date` 对象：
+考虑下面的程序：
 
 ```js
-const dateObjectName = new Date([parameters])
-```
-
-不使用 `new` 关键词调用 `Date` 会返回一个表示当前日期和时间的字符串。
-
-`parameters` 可以是以下几种之一：
-
-- 不传参数：创建当前日期和时间。例如，`today = new Date()`。
-- 一个表示日期的字符串，可以用多种格式表达日期。具体格式因各引擎不同而各异，但始终支持以下格式：`YYYY-MM-DDTHH:mm:ss.sssZ`。若省略小时、分钟或秒的具体数值，则对应值会被设置为 0。
-- 一组表示年、月、日的整数。例如，`xmas95 = new Date(1995, 11, 25)`。
-- 一组表示年、月、日、时、分、秒的整数。
-
-```js
-const today = new Date()
-const xmas95 = new Date('1995-12-25')
-const alsoXmas95 = new Date(1995, 11, 25, 9, 30, 0)
-```
-
-`Date` 对象处理日期和时间的方法分为以下几大类：
-
-- “set”方法，用于设置 `Date` 对象中的日期和时间值。
-- “get”方法，用于获取 `Date` 对象中的日期和时间值。
-- “to”方法，用于返回 `Date` 对象中的字符串值。
-- `parse` 和 `UTC` 方法，用于解析 `Date` 字符串。
-
-可以通过“get”和“set”方法以分别获取和设置秒、分钟、小时、月份第几天、星期几、月份和年份。其中 `getDay` 方法返回星期几，但没有对应的 `setDay` 方法，因为星期几是自动设置的。这些方法使用整数表示自身值，范围如下：
-
-- 秒和分钟：0 到 59
-- 小时：0 到 23
-- 星期：0（星期日）到 6（星期六）
-- 日期：1 到 31（月份第几天）
-- 月份：0（一月）到 11（十二月）
-
-```js
-const xmas95 = new Date('1995-12-25')
-xmas95.getMonth() // 11
-xmas95.getFullYear() // 1995
-```
-
-`getTime` 和 `setTime` 方法在日期对比上非常有用。`getTime` 方法返回 `Date` 对象自纪元以来的毫秒数。例如，以下代码展示了今年的剩余天数：
-
-```js
-const today = new Date()
-const endYear = new Date(1995, 11, 31, 23, 59, 59, 999)
-endYear.setFullYear(today.getFullYear())
-const msPerDay = 24 * 60 * 60 * 1000
-let daysLeft = (endYear.getTime() - today.getTime()) / msPerDay
-daysLeft = Math.round(daysLeft)
-```
-
-`parse` 方法适用于将日期字符串的值赋给现存的 `Date` 对象：
-
-```js
-const ipoDate = new Date()
-ipoDate.setTime(Date.parse('Aug 9, 1995'))
-```
-
-以下示例中，`JSClock()` 函数返回以数字时钟形式表示的时间：
-
-```js
-function JSClock() {
-  const time = new Date()
-  const hour = time.getHours()
-  const minute = time.getMinutes()
-  const second = time.getSeconds()
-  let temp = String(hour % 12)
-  if (temp === '0') {
-    temp = '12'
-  }
-  temp += (minute < 10 ? ':0' : ':') + minute
-  temp += (second < 10 ? ':0' : ':') + second
-  temp += hour >= 12 ? ' P.M.' : ' A.M.'
-  return temp
+function foo(b) {
+  const a = 10
+  return a + b + 11
 }
-```
 
-常用方法可以分为：
-
-- 获取：`getFullYear()`、`getMonth()`、`getDate()`、`getDay()`、`getHours()`、`getMinutes()`、`getSeconds()`、`getMilliseconds()`、`getTime()`、`getTimezoneOffset()`
-- 设置：`setFullYear()`、`setMonth()`、`setDate()`、`setHours()`、`setMinutes()`、`setSeconds()`、`setMilliseconds()`、`setTime()`
-- 转换：`toString()`、`toISOString()`、`toJSON()`、`toLocaleDateString()`、`toLocaleTimeString()`、`toUTCString()`
-- 静态：`Date.now()`、`Date.parse()`、`Date.UTC()`
-
-### RegExp
-
-正则表达式是用于匹配字符串中字符组合的模式。在 JavaScript 中，正则表达式也是对象。这些模式被用于 `RegExp` 的 `exec` 和 `test` 方法，以及 `String` 的 `match`、`matchAll`、`replace`、`search` 和 `split` 方法。
-
-#### 创建正则表达式
-
-可以使用以下两种方法构建一个正则表达式。
-
-使用一个正则表达式字面量，其由包含在斜杠之间的模式组成：
-
-```js
-const re = /ab+c/
-```
-
-脚本加载后，正则表达式字面量就会被编译。当正则表达式保持不变时，使用此方法可获得更好的性能。
-
-或者调用 `RegExp` 对象的构造函数：
-
-```js
-const re = new RegExp('ab+c')
-```
-
-在脚本运行过程中，用构造函数创建的正则表达式会被编译。如果正则表达式将会改变，或者它将会从用户输入等来源中动态地产生，就需要使用构造函数来创建正则表达式。
-
-#### 模式
-
-简单模式是由想直接找到的字符构成。比如，`/abc/` 这个模式就能且仅能匹配 "abc" 字符按照顺序同时出现的情况。在 "Hi, do you know your abc's?" 和 "The latest airplane designs evolved from slabcraft." 中会匹配成功，匹配的子字符串是 "abc"；但在 "Grab crab" 中会匹配失败。
-
-需要匹配一个不确定的字符串时，可以在模式中使用特殊字符。比如 `/ab*c/` 匹配一个单独的 "a" 后面跟了零个或者多个 "b"，同时后面跟着 "c" 的字符串。在字符串 "cbbabbbbcdebc" 中，这个模式匹配了子字符串 "abbbbc"。
-
-常见的特殊字符：
-
-| 字符        | 含义                                               |
-| ----------- | -------------------------------------------------- |
-| `\`         | 转义下一个字符，或表示预定义字符类                 |
-| `^`         | 匹配输入的开始；多行模式下也匹配换行符后紧跟的位置 |
-| `$`         | 匹配输入的结束；多行模式下也匹配换行符前的位置     |
-| `*`         | 前一项出现零次或多次                               |
-| `+`         | 前一项出现一次或多次                               |
-| `?`         | 前一项出现零次或一次                               |
-| `{n}`       | 前一项恰好出现 n 次                                |
-| `{n,}`      | 前一项至少出现 n 次                                |
-| `{n,m}`     | 前一项出现 n 到 m 次                               |
-| `.`         | 匹配除换行符之外的任意单个字符                     |
-| `\d` / `\D` | 数字 / 非数字                                      |
-| `\w` / `\W` | 字母、数字或下划线 / 其补集                        |
-| `\s` / `\S` | 空白字符 / 非空白字符                              |
-| `[abc]`     | 字符集合，匹配其中任意一个字符                     |
-| `[^abc]`    | 反向字符集合，匹配不在集合中的字符                 |
-| `(x)`       | 捕获组，匹配并记住 x                               |
-| `(?:x)`     | 非捕获组，匹配 x 但不记住                          |
-| `x\|y`      | 匹配 x 或 y                                        |
-| `\b` / `\B` | 词边界 / 非词边界                                  |
-
-#### 转义
-
-如果需要使用任何特殊字符的字面值（例如，搜索字符 `*`），必须通过在它前面放一个反斜杠来转义它。例如，要搜索 "a" 后跟 `*` 后跟 "b"，应该使用 `/a\*b/`——反斜杠“转义”字符 `*`，使其成为文字而非特殊符号。
-
-类似地，如果正在编写正则表达式文字并且需要匹配斜杠（`/`），那么需要转义它（否则，斜杠是正则终止符）。要搜索字符串 "/example/" 后跟一个或多个字母字符，需要使用 `/\/example\/[a-z]+/i`。
-
-要匹配文本符号反斜杠，需要转义反斜杠。例如，要匹配字符串 "C:\"，其中 "C" 可以是任何字母，需要使用 `/[A-Z]:\\/`。
-
-如果将 `RegExp` 构造函数与字符串文字一起使用，请记住反斜杠是字符串文字中的转义，因此要在正则表达式中使用它，需要在字符串文字级别转义它。`/a\*b/` 和 `new RegExp("a\\*b")` 创建的表达式是相同的。
-
-将用户输入转义为正则表达式中的一个字面字符串，可以通过简单的替换来实现：
-
-```js
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  // $& 表示整个被匹配的字符串
+function bar(x) {
+  const y = 3
+  return foo(x * y)
 }
+
+const baz = bar(7) // 将 42 赋值给 baz
 ```
 
-#### 分组与反向引用
+执行过程如下：
 
-正则表达式模式使用括号，将导致相应的子匹配被记住。例如，`/a(b)c/` 可以匹配字符串 "abc"，并且记得 "b"。访问这些括号中匹配的子串，使用数组元素 `[1]` 到 `[n]`。
+1. 任务启动时，创建第一个栈帧，其中定义了变量 `foo`、`bar` 和 `baz`。它使用参数 `7` 调用 `bar`。
+2. 为 `bar` 调用创建第二个栈帧，其中包含参数 `x` 和局部变量 `y` 的绑定。它先计算 `x * y`，然后使用结果调用 `foo`。
+3. 为 `foo` 调用创建第三个栈帧，其中包含参数 `b` 和局部变量 `a` 的绑定。它计算 `a + b + 11`，然后返回结果。
+4. 当 `foo` 返回时，最上面的帧从栈中弹出，调用表达式 `foo(x * y)` 解析为返回值，`bar` 继续执行并返回。
+5. 当 `bar` 返回时，最上面的帧从栈中弹出，`bar(7)` 解析为返回值，用来初始化 `baz`。
+6. 到达作业源代码末尾，入口点的栈帧被弹出，栈为空，作业完成。
+
+### 生成器与重入
+
+栈帧弹出后并不一定会永远消失。生成器函数会把挂起的执行上下文保存在生成器对象内部，调用 `next()` 时再把上下文推回栈：
 
 ```js
-const re = /(\w+)\s(\w+)/
-const str = 'John Smith'
-const newstr = str.replace(re, '$2, $1')
-console.log(newstr) // "Smith, John"
+function* gen() {
+  console.log(1)
+  yield
+  console.log(2)
+}
+
+const g = gen()
+g.next() // 输出 1
+g.next() // 输出 2
 ```
 
-括号中的 `?:` 表示非捕获组，这种模式匹配的子字符串将不会被记住。例如，`(?:\d+)` 匹配一次或多次数字字符，但是不能记住匹配的字符。
+调用 `gen()` 只创建一个挂起的执行上下文，不执行函数体。第一次 `next()` 把上下文推入栈，执行到 `yield` 后挂起并移出栈；第二次 `next()` 再推回栈，从上次中断的位置继续。生成器的状态机细节见 Vol.3《函数与闭包》的“生成器”一节。
 
-具名捕获组可以通过 `(?<name>...)` 声明，匹配结果会挂在 `groups` 属性上：
+### 运行至完毕
+
+每个作业都会在处理其他作业之前被完全处理。这提供了一些很好的特性：函数不会被抢占，并且会在任何其他代码运行之前完全运行。例如：
 
 ```js
-const re = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
-const result = re.exec('2026-11-09')
-console.log(result.groups.year) // "2026"
+const promise = Promise.resolve()
+let i = 0
+
+promise.then(() => {
+  i += 1
+  console.log(i)
+})
+promise.then(() => {
+  i += 1
+  console.log(i)
+})
 ```
 
-#### 使用正则表达式
+两个回调看起来像竞态，但输出是可预测的 `1`、`2`：每个作业运行完毕之后才轮到下一个作业，绝不会出现两次 `i += 1` 之后再输出。
 
-| 方法                | 描述                                                                               |
-| ------------------- | ---------------------------------------------------------------------------------- |
-| `RegExp.exec()`     | 在字符串中执行查找匹配，返回一个数组（未匹配到则返回 `null`）。                    |
-| `RegExp.test()`     | 在字符串中测试是否匹配，返回 `true` 或 `false`。                                   |
-| `String.match()`    | 在字符串中执行查找匹配，返回一个数组，在未匹配到时会返回 `null`。                  |
-| `String.matchAll()` | 在字符串中执行查找所有匹配，返回一个迭代器。                                       |
-| `String.search()`   | 在字符串中测试匹配，返回匹配到的位置索引，或者在失败时返回 `-1`。                  |
-| `String.replace()`  | 在字符串中执行查找匹配，并且使用替换字符串替换掉匹配到的子字符串。                 |
-| `String.split()`    | 使用正则表达式或者一个固定字符串分隔一个字符串，并将分隔后的子字符串存储到数组中。 |
+这种模式的缺点是，如果作业运行时间过长，页面就无法处理点击、滚动等交互。浏览器会用“脚本运行时间过长”提示来缓解，正确的做法是把长任务拆成多个短任务。
 
-当想要知道在一个字符串中的一个匹配是否被找到时，可以使用 `test` 或 `search` 方法；想得到更多的信息（但是比较慢）则可以使用 `exec` 或 `match` 方法。如果使用 `exec` 或 `match` 方法并且匹配成功了，那么这些方法将返回一个数组并且更新相关的正则表达式对象的属性。如果匹配失败，那么 `exec` 方法返回 `null`。
+### 闭包与作用域
+
+执行上下文还解释了闭包：每当创建一个函数，它会在内部记住当前执行上下文的变量绑定，这些绑定可以超越执行上下文存活：
 
 ```js
-const myRe = /d(b+)d/g
-const myArray = myRe.exec('cdbbdbsbz')
-// ["dbbd", "bb"]，index 为 1，input 为 "cdbbdbsbz"
+let f
+
+{
+  let x = 10
+  f = () => x
+}
+
+console.log(f()) // 10
 ```
 
-如果不需要访问正则表达式的属性，也可以这样写：
+块执行结束后，`x` 的绑定仍然被 `f` 引用，因此不会被回收。闭包的完整讨论见 Vol.3《函数与闭包》。
+
+### 调用栈溢出
+
+调用栈的深度是有限的。无限递归或过深的递归会抛出 `RangeError: Maximum call stack size exceeded`：
 
 ```js
-const myArray = /d(b+)d/g.exec('cdbbdbsbz')
+function recurse() {
+  recurse()
+}
+
+recurse() // RangeError
 ```
 
-通过字符串构建正则表达式：
-
-```js
-const myRe = new RegExp('d(b+)d', 'g')
-const myArray = myRe.exec('cdbbdbsbz')
-```
-
-匹配成功后，返回的数组包含匹配到的字符串和所有被记住的子字符串，还带有 `index`（匹配到的以 0 开始的索引值）和 `input`（初始字符串）属性。正则表达式对象的 `lastIndex` 属性表示开始下一个匹配的起始索引值，这个属性只有在使用 `g` 参数时可用：
-
-```js
-const myRe = /d(b+)d/g
-const myArray = myRe.exec('cdbbdbsbz')
-console.log(myRe.lastIndex) // 5
-```
-
-如果使用对象字面量创建正则表达式但不分配给变量，那么每一次使用时都会创建一个新的正则表达式实例，之后将不能访问这个实例的属性：
-
-```js
-const myArray = /d(b+)d/g.exec('cdbbdbsbz')
-console.log(/d(b+)d/g.lastIndex) // 0
-```
-
-#### 标志
-
-正则表达式有六个可选参数（`flags`）允许全局和不分大小写搜索等。这些参数既可以单独使用也能以任意顺序一起使用，并且被包含在正则表达式实例中。
-
-| 标志 | 描述                                                       |
-| ---- | ---------------------------------------------------------- |
-| `g`  | 全局搜索。                                                 |
-| `i`  | 不区分大小写搜索。                                         |
-| `m`  | 多行搜索。                                                 |
-| `s`  | 允许 `.` 匹配换行符。                                      |
-| `u`  | 使用 Unicode 码的模式进行匹配。                            |
-| `y`  | 执行“粘性（sticky）”搜索，匹配从目标字符串的当前位置开始。 |
-
-为了在正则表达式中包含标志，请使用以下语法：
-
-```js
-const re = /pattern/flags
-```
-
-或者：
-
-```js
-const re = new RegExp('pattern', 'flags')
-```
-
-标志是一个正则表达式的一部分，它们在接下来的时间将不能添加或删除。
-
-```js
-const re = /\w+\s/g
-const str = 'fee fi fo fum'
-const myArray = str.match(re)
-console.log(myArray) // ["fee ", "fi ", "fo "]
-```
-
-使用 `.exec()` 方法时，与 `g` 标志关联的行为是不同的：`g` 标志与 `.exec()` 方法一起使用可以获得迭代进展。
-
-```js
-let xArray
-while ((xArray = re.exec(str))) console.log(xArray)
-// ["fee ", index: 0, input: "fee fi fo fum"]
-// ["fi ", index: 4, input: "fee fi fo fum"]
-// ["fo ", index: 7, input: "fee fi fo fum"]
-```
-
-`m` 标志用于指定多行输入字符串应该被视为多个行。如果使用 `m` 标志，`^` 和 `$` 匹配的开始或结束输入字符串中的每一行，而不是整个字符串的开始或结束。
-
-### JSON
-
-`JSON` 命名空间对象包含用于解析 JavaScript 对象表示法（JSON）和将值转换为 JSON 字符串的静态方法。
-
-与大多数全局对象不同，`JSON` 不是一个构造函数。不能将它与 `new` 运算符一起使用，也不能将 `JSON` 对象作为函数调用。`JSON` 的所有属性和方法都是静态的（就像 `Math` 对象一样）。
-
-#### JavaScript 与 JSON 的区别
-
-JSON 是一种语法，用来序列化对象、数组、数值、字符串、布尔值和 `null`。它基于 JavaScript 语法，但与之不同：大部分 JavaScript 不是 JSON。例如：
-
-- 对象和数组：属性名称必须是双引号括起来的字符串；禁止出现尾随逗号。
-- 数值：禁止出现前导零。小数点后必须至少有一位数字。不支持 `NaN` 和 `Infinity`。
-- 其他：只允许双引号字符串，不支持 `undefined` 或注释。
-
-#### JSON.parse()
-
-`JSON.parse()` 解析 JSON 字符串并返回对应的值，可以额外传入一个转换函数，用来将生成的值和其属性，在返回之前进行某些修改。
-
-```js
-const jsonText = '{"name":"Firefox","version":1}'
-const obj = JSON.parse(jsonText)
-console.log(obj.name) // "Firefox"
-```
-
-还原日期等特殊值时，可以在 reviver 中处理：
-
-```js
-const data = JSON.parse('{"date":"2026-11-09"}', (key, value) =>
-  key === 'date' ? new Date(value) : value,
-)
-```
-
-#### JSON.stringify()
-
-`JSON.stringify()` 将一个 JavaScript 对象或值转换为 JSON 字符串。如果指定了一个 replacer 函数，则可以选择性地替换值；如果 replacer 是数组，则可选择性地仅包含数组指定的属性。
-
-```js
-JSON.stringify({ x: 5, y: 6 }) // '{"x":5,"y":6}'
-JSON.stringify({ x: [10, undefined, function () {}, Symbol('')] })
-// '{"x":[10,null,null,null]}'
-```
-
-转换规则：
-
-- 转换值如果有 `toJSON()` 方法，该方法定义什么值将被序列化。
-- 非数组对象的属性不能保证以特定的顺序出现在序列化后的字符串中。
-- 布尔值、数字、字符串的包装对象在序列化过程中会自动转换成对应的原始值。
-- `undefined`、任意的函数以及 symbol 值，在序列化过程中会被忽略（出现在非数组对象的属性值中时）或者被转换成 `null`（出现在数组中时）。函数、`undefined` 被单独转换时，会返回 `undefined`。
-- 对包含循环引用的对象执行此方法，会抛出 `TypeError`。
-- 所有以 symbol 为属性键的属性都会被完全忽略掉。
-- `Date` 日期调用了 `toJSON()` 将其转换为了 string 字符串（同 `Date.toISOString()`），因此会被当做字符串处理。
-- `NaN` 和 `Infinity` 格式的数值及 `null` 都会被当做 `null`。
-- 其他类型的对象，包括 `Map`/`Set`/`WeakMap`/`WeakSet`，仅会序列化可枚举的属性。
-- 尝试转换 `BigInt` 类型的值会抛出 `TypeError`。
-
-第三个参数 `space` 控制缩进，用于美化输出：
-
-```js
-console.log(JSON.stringify({ x: 5 }, null, 2))
-// {
-//   "x": 5
-// }
-```
-
-### Math
-
-内置的 `Math` 对象提供了用于数学常量和函数的属性和方法。例如，`Math` 对象的 `PI` 属性值为 π（3.141…）：
-
-```js
-Math.PI
-```
-
-同理，标准数学函数也是 `Math` 的方法。这些包括三角函数、对数、指数和其他函数。例如：
-
-```js
-Math.sin(1.56)
-```
-
-需要注意的是 `Math` 的所有三角函数都以弧度制接收参数。常用方法包括：
-
-- 绝对值与符号：`abs()`、`sign()`
-- 三角函数：`sin()`、`cos()`、`tan()`、`asin()`、`acos()`、`atan()`、`atan2()`
-- 指数与对数：`pow()`、`exp()`、`log()`、`log10()`、`log2()`、`sqrt()`、`cbrt()`
-- 舍入：`floor()`、`ceil()`、`round()`、`trunc()`、`fround()`
-- 最值与随机：`min()`、`max()`、`random()`
-- 其他：`hypot()`
+尾调用优化（PTC）在规范中存在，但只有 Safari（JavaScriptCore）实现，其他引擎仍会为每次调用压栈。需要处理深递归时，应改成循环或显式栈。
 
 ## 错误处理
 
@@ -1353,21 +1085,95 @@ const { name, draw } = require('./square.js')
 
 ES 模块是语言标准，CommonJS 是 Node.js 的约定。新代码通常优先使用 ES 模块；在 Node.js 中可以通过文件扩展名 `.mjs` 或在 `package.json` 中设置 `"type": "module"` 来启用。
 
+## 垃圾回收与内存泄漏
+
+### 内存生命周期
+
+JavaScript 的内存生命周期和其他语言一样：分配、使用、释放。分配发生在创建值的时候，使用发生在读写值的时候，释放由垃圾回收器自动完成。
+
+原始值和对象都会占用内存，但对象的生命周期更复杂，因为对象之间可以互相引用。自动判断一块内存是否“不再需要”在一般情况下是不可判定的，因此垃圾回收器实现的是一个有边界的近似方案。
+
+### 标记清除
+
+现代 JavaScript 引擎使用标记清除算法。算法从一组**根**对象（在 JavaScript 中是全局对象）出发，找到所有从根可达的对象，再找到这些对象可达的对象，依此类推；所有不可达的对象都会被回收。
+
+标记清除解决了引用计数无法处理的循环引用问题：
+
+```js
+function f() {
+  const x = {}
+  const y = {}
+  x.a = y
+  y.a = x
+}
+
+f()
+```
+
+函数返回后，`x` 和 `y` 都不再被全局对象可达，因此可以被回收，尽管它们互相引用。
+
+现代引擎在标记清除的基础上做了分代、增量、并发和并行回收等优化，但算法本身仍然是“从根出发找可达对象”。
+
+### 弱引用
+
+`WeakMap`、`WeakSet`、`WeakRef` 和 `FinalizationRegistry` 提供了观察或利用垃圾回收的间接手段。
+
+`WeakMap` 的键和 `WeakSet` 的值是弱引用：如果对象只被弱引用，垃圾回收器仍然可以回收它；对象被回收后，对应的条目也会消失。这使它们适合把额外数据绑定到对象上，而不阻止对象被回收：
+
+```js
+const cache = new WeakMap()
+
+function process(obj) {
+  if (cache.has(obj)) return cache.get(obj)
+
+  const result = expensive(obj)
+  cache.set(obj, result)
+  return result
+}
+```
+
+`WeakRef` 持有一个对象的弱引用，通过 `deref()` 读取；对象被回收后 `deref()` 返回 `undefined`。`FinalizationRegistry` 可以在对象被回收后执行清理回调，但回调的执行时机不确定，不能用于关键资源释放。
+
+### 常见内存泄漏
+
+1. **意外的全局变量**：未声明的赋值会创建全局变量，永远可达。严格模式可以把这类错误变成异常。
+2. **未清理的定时器和事件监听器**：`setInterval()`、`addEventListener()` 持有的回调如果引用了大对象，组件销毁后仍然可达。应在销毁时调用 `clearInterval()`、`removeEventListener()`。
+3. **闭包持有大对象**：闭包会保留整个作用域链，即使只用到其中一个小变量。长期存活的闭包应避免捕获不必要的大对象。
+4. **游离的 DOM 引用**：从文档中移除的 DOM 节点如果仍被 JavaScript 变量引用，就不会被回收。
+5. **无上限的缓存**：用普通 `Map` 缓存对象会阻止键被回收；缓存对象适合用 `WeakMap`，或者给缓存设置容量上限和淘汰策略。
+6. **未取消的异步请求**：请求返回后回调仍持有组件状态；应在组件销毁时取消请求（例如 `AbortController`）。
+
+### 排查方法
+
+浏览器 DevTools 的 Memory 面板可以做堆快照（Heap Snapshot）、分配时间线（Allocation instrumentation）和分配采样（Allocation sampling）。常用流程是：
+
+1. 执行操作前拍一次堆快照；
+2. 执行疑似泄漏的操作；
+3. 再拍一次快照，比较两次快照之间的对象数量和保留大小；
+4. 在 Retainers 面板查看对象为什么仍然可达。
+
+Node.js 可以用 `--inspect` 连接调试器，或用 `process.memoryUsage()` 观察堆使用量：
+
+```bash
+node --expose-gc --inspect index.js
+```
+
+内存泄漏的根因通常不是“垃圾回收器没工作”，而是某条引用链让对象一直可达。找到那条引用链，比反复调用 `global.gc()` 更有用。
+
 ## 总结
 
-- **标准对象**：`Date` 以毫秒数存储自纪元以来的时间，月份从 0 开始；`RegExp` 用字面量或构造函数创建，`exec`/`test` 与 `String` 的 `match`/`replace`/`split` 配合；`JSON` 只支持双引号、无尾随逗号、无 `undefined`，`stringify` 会忽略函数和 symbol、循环引用抛 `TypeError`；`Math` 的三角函数使用弧度。
-- **错误处理**：`throw` 抛出 `Error` 或任意值；`try...catch...finally` 中 `finally` 总会执行，且其 `return` 会覆盖之前的返回值；用 `instanceof` 分支处理特定错误，未知错误重新抛出；`cause` 保留原始错误链。
-- **异步**：事件循环分任务与微任务，微任务先清空；Promise 的 `then` 总是异步执行，返回新 Promise，链中忘记 `return` 会产生“漂浮”的 Promise；`all`/`allSettled`/`any`/`race` 处理并发；`async`/`await` 用同步写法表达 Promise 链，`await` 只暂停当前函数。
-- **模块**：`export`/`import` 是静态声明并提升；默认导出每个模块只有一个；`import * as` 提供命名空间；模块自动严格模式、自动延迟加载、有独立作用域；`import()` 动态加载返回 Promise；顶层 `await` 让模块在求值时等待异步依赖。
+- **执行上下文**：每个函数调用创建栈帧，保存变量环境、返回位置和 `this`；栈帧按调用顺序压栈和弹出，生成器会保存挂起的上下文。
+- **错误处理**：`throw` 抛出 `Error` 或任意值；`finally` 总会执行且其 `return` 会覆盖之前的返回值；用 `instanceof` 分支处理特定错误，未知错误重新抛出；`cause` 保留原始错误链。
+- **异步**：事件循环分任务与微任务，微任务先清空；Promise 的 `then` 总是异步执行，链中忘记 `return` 会产生“漂浮”的 Promise；`all`/`allSettled`/`any`/`race` 处理并发。
+- **模块**：`export`/`import` 是静态声明并提升；模块自动严格模式、延迟加载、有独立作用域；`import()` 动态加载返回 Promise；顶层 `await` 让模块在求值时等待异步依赖。
+- **垃圾回收**：现代引擎使用标记清除，从根对象出发回收不可达对象；`WeakMap`/`WeakSet`/`WeakRef` 提供弱引用；常见泄漏来自全局变量、未清理的定时器/监听器、游离 DOM 和无上限缓存。
 
 ## 参考
 
-- [表达日期与时间](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Representing_dates_times)
-- [正则表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_expressions)
-- [JSON](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)
+- [执行模型](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Execution_model)
+- [控制流与错误处理](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Control_flow_and_error_handling)
 - [Error](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error)
 - [使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)
 - [async function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/async_function)
 - [JavaScript 模块](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Modules)
-- [执行模型](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Execution_model)
-
+- [内存管理](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Memory_management)

@@ -1,11 +1,11 @@
 ---
 uuid: ccea7c20-dc36-11f1-bb09-6bc5226f813c
-title: 2026-09-10-重学 JavaScript Vol.1 - 语言基础
+title: 2026-09-10-重学 JavaScript Vol.1 - 语法与类型
 mathjax: true
 abbrlink: 24453
 published: 2026-09-10 10:34:56
 category: 前端
-description: JavaScript 语言基础：语法、类型、字符串、数组、对象、控制流、Map/Set 与 iterable
+description: JavaScript 基本语法、操作符、数据类型、变量与作用域、类型转换、字符串、解构、条件与循环
 cover: ''
 tags:
   - 前端
@@ -94,6 +94,196 @@ console.log(x) // 2
 ```
 
 会输出 `2`，因为块中 `var x` 语句和块前面的 `var x` 语句的作用域是一样的。在 C 或 Java 中，等效的代码会输出 `1`。使用 `let` 或 `const` 会消除这个作用域效果。
+
+## 操作符与表达式
+
+JavaScript 拥有如下类型的运算符：赋值、比较、算术、位、逻辑、字符串、条件（三元）、逗号、一元和关系运算符。运算符按操作数个数分为一元、二元和三元，按位置分前缀和后缀。
+
+### 赋值运算符
+
+赋值运算符将它右边操作数的值赋给它左边的操作数。最简单的赋值运算符是等于（`=`）。复合赋值运算符是“先运算再赋值”的简写：
+
+| 简写          | 含义               |
+| ------------- | ------------------ |
+| `x += y`      | `x = x + y`        |
+| `x -= y`      | `x = x - y`        |
+| `x *= y`      | `x = x * y`        |
+| `x /= y`      | `x = x / y`        |
+| `x %= y`      | `x = x % y`        |
+| `x **= y`     | `x = x ** y`       |
+| `x <<= y`     | `x = x << y`       |
+| `x >>= y`     | `x = x >> y`       |
+| `x >>>= y`    | `x = x >>> y`      |
+| `x &= y`      | `x = x & y`        |
+| `x \|= y`     | `x = x \| y`       |
+| `x ^= y`      | `x = x ^ y`        |
+| `x &&= f()`   | `x && (x = f())`   |
+| `x \|\|= f()` | `x \|\| (x = f())` |
+| `x ??= f()`   | `x ?? (x = f())`   |
+
+逻辑赋值运算符带有短路语义：只有左侧满足条件时才会求值右侧。
+
+### 比较运算符
+
+比较运算符比较它的操作数并返回一个基于表达式是否为真的逻辑值。字符串比较基于标准的字典顺序，使用 Unicode 值。多数情况下，如果两个操作数不是相同的类型，JavaScript 会尝试把它们转换为恰当的类型再比较；`===` 和 `!==` 不会转换类型。
+
+```js
+const var1 = 3
+const var2 = 4
+
+3 == var1 // true
+'3' == var1 // true
+3 === var1 // true
+var1 !== '3' // true
+var2 > var1 // true
+'12' > 2 // true
+```
+
+`==` 与 `===` 的区别、`NaN` 和 `-0` 的特殊行为，在“数据类型和变量”的“相等比较”一节已经展开。
+
+### 算术运算符
+
+算术运算符使用数值作为操作数并返回一个数值。标准算术运算符是 `+`、`-`、`*`、`/`；除零会产生 `Infinity`。除此之外还有：
+
+| 运算符      | 描述                                         | 示例                              |
+| ----------- | -------------------------------------------- | --------------------------------- |
+| `%`         | 求余，返回相除之后的余数                     | `12 % 5` 返回 `2`                 |
+| `++`        | 自增。前缀返回加一后的值，后缀返回原值再自增 | `++x`、`x++`                      |
+| `--`        | 自减，前后缀规则同自增                       | `--x`、`x--`                      |
+| `-`（一元） | 返回操作数的负值                             | `-x`                              |
+| `+`（一元） | 如果操作数不是数值，尝试将其转换为数值       | `+'3'` 返回 `3`，`+true` 返回 `1` |
+| `**`        | 指数运算                                     | `2 ** 3` 返回 `8`                 |
+
+```js
+1 / 2 // 0.5
+1 / 2 == 1.0 / 2.0 // true
+```
+
+### 逻辑运算符
+
+逻辑运算符常用于布尔值之间；当操作数都是布尔值时，返回值也是布尔值。不过 `&&` 和 `||` 返回的是一个特定的操作数的值，所以当它们用于非布尔值的时候，返回值可能是非布尔值。
+
+| 运算符 | 范例               | 描述                                                            |
+| ------ | ------------------ | --------------------------------------------------------------- |
+| `&&`   | `expr1 && expr2`   | 如果 `expr1` 能被转换为 `false`，返回 `expr1`；否则返回 `expr2` |
+| `\|\|` | `expr1 \|\| expr2` | 如果 `expr1` 能被转换为 `true`，返回 `expr1`；否则返回 `expr2`  |
+| `!`    | `!expr`            | 如果操作数能转换为 `true` 则返回 `false`；否则返回 `true`       |
+
+能被转换为 `false` 的值有 `null`、`0`、`NaN`、空字符串（`""`）和 `undefined`。
+
+```js
+'Cat' && 'Dog' // "Dog"
+false && 'Cat' // false
+'Cat' || 'Dog' // "Cat"
+false || 'Cat' // "Cat"
+!'' // true
+```
+
+短路求值：`false && anything` 被短路求值为 `false`，`true || anything` 被短路求值为 `true`，`anything` 部分不会被求值，因此不会产生副作用。
+
+`??`（空值合并）只在左侧为 `null` 或 `undefined` 时返回右侧，不会把 `0`、`""`、`false` 当作空值：
+
+```js
+0 ?? 42 // 0
+null ?? 42 // 42
+```
+
+`?.`（可选链）在左侧为 `null` 或 `undefined` 时短路，返回 `undefined`，而不是抛出错误：
+
+```js
+const user = { profile: { name: 'Ada' } }
+user.profile?.name // "Ada"
+user.account?.name // undefined
+```
+
+### 字符串运算符
+
+连接操作符（`+`）连接两个字符串值，返回两个操作数串的结合。`+=` 也可以用来拼接字符串：
+
+```js
+console.log('my ' + 'string') // "my string"
+
+let myString = 'alpha'
+myString += 'bet' // "alphabet"
+```
+
+当 `+` 的一侧是字符串时，另一侧会被转换为字符串；这一点在“数据类型和变量”的类型转换一节已经说明。
+
+### 条件（三元）运算符
+
+条件运算符是 JavaScript 中唯一需要三个操作数的运算符。运算的结果根据给定条件在两个值中取其一：
+
+```js
+condition ? value1 : value2
+```
+
+如果条件为真，结果取值 1；否则取值 2。
+
+```js
+const status = age >= 18 ? 'adult' : 'minor'
+```
+
+### 逗号操作符
+
+逗号操作符（`,`）对两个操作数进行求值并返回最终操作数的值。它常常用在 `for` 循环中，在每次循环时对多个变量进行更新：
+
+```js
+const x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+const a = [x, x, x, x, x]
+
+for (let i = 0, j = 9; i <= j; i++, j--) {
+  console.log(`a[${i}][${j}] = ${a[i][j]}`)
+}
+```
+
+### 一元操作符
+
+一元操作符仅对应一个操作数。
+
+`delete` 删除一个对象的属性或者数组中某一个键值：
+
+```js
+const myObj = { a: 1, b: 2 }
+delete myObj.a
+console.log(myObj) // { b: 2 }
+```
+
+`typeof` 返回操作数类型的字符串：
+
+```js
+typeof 42 // "number"
+typeof 'str' // "string"
+typeof undefined // "undefined"
+typeof null // "object"
+typeof [] // "object"
+typeof function () {} // "function"
+```
+
+`void` 对表达式求值并返回 `undefined`，常用于只需要执行副作用、不需要返回值的场景。
+
+### 关系运算符
+
+`in` 判断属性是否存在于对象（包括原型链）中：
+
+```js
+const car = { make: 'Ford', model: 'Mustang' }
+'make' in car // true
+'toString' in car // true，来自原型链
+```
+
+`instanceof` 判断构造函数的 `prototype` 是否出现在对象的原型链上：
+
+```js
+const date = new Date()
+date instanceof Date // true
+date instanceof Object // true
+```
+
+### 位运算符与优先级
+
+位运算符把操作数视为 32 位二进制串，包括 `&`、`|`、`^`、`~`、`<<`、`>>`、`>>>`。完整的位运算规则和 TypedArray 场景放在“数据结构与值”一卷的“二进制与字符编码”一节展开。
+
+运算符优先级决定表达式的求值顺序。常见顺序从高到低大致是：成员访问/`new`/函数调用 → 一元 → 乘除/求余/指数 → 加减 → 移位 → 关系 → 相等 → 位与/异或/或 → 逻辑与/或/空值合并 → 条件 → 赋值 → 逗号。复杂表达式应使用括号显式分组，而不是依赖优先级记忆。
 
 ## 数据类型和变量
 
@@ -683,811 +873,181 @@ tag`Hello ${'JavaScript'}!`
 tag(['Hello ', '!'], 'JavaScript')
 ```
 
-## 数组
+## 解构赋值
 
-### 数组与索引
-
-**数组**是由名称和索引引用的值构成的有序列表。例如，考虑一个名为 `emp` 的数组，它包含按数字雇员编号索引的雇员姓名。所以 `emp[0]` 是 0 号员工，`emp[1]` 是 1 号员工，以此类推。
-
-JavaScript 中没有明确的数组数据类型。但是，可以使用预定义的 `Array` 对象及其方法来处理应用程序中的数组。`Array` 对象具有以各种方式操作数组的方法，例如连接、反转和排序。它有一个用于确定数组长度的属性和用于正则表达式的其他属性。
-
-### 创建数组
-
-以下语句创建了等效的数组：
+解构语法是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
 
 ```js
-const arr1 = new Array(element0, element1, /* … ,*/ elementN)
-const arr2 = Array(element0, element1, /* … ,*/ elementN)
-const arr3 = [element0, element1, /* … ,*/ elementN]
+let a, b, rest
+;[a, b] = [10, 20]
+// a = 10, b = 20
+
+;[a, b, ...rest] = [10, 20, 30, 40, 50]
+// rest = [30, 40, 50]
 ```
 
-`element0, element1, …, elementN` 是数组元素的值列表。当指定这些值时，数组将用它们作为数组的元素初始化。数组的 `length` 属性被设置为参数的数量。
+### 数组解构
 
-括号语法称为“数组字面量”或“数组初始化式”。它比其他形式的数组创建更短，因此通常是首选。
-
-为了创建一个长度不为 0，但是又没有任何元素的数组，可选以下任何一种方式：
-
-```js
-// 这种方式...
-const arr1 = new Array(arrayLength)
-
-// ...与这种方式会形成相同数组
-const arr2 = Array(arrayLength)
-
-// 这个效果也一样
-const arr3 = []
-arr3.length = arrayLength
-```
-
-以上代码中，`arrayLength` 必须为一个 `Number`。否则，将会创建一个只有单个元素（内含提供的值）的数组。调用 `arr.length` 会返回 `arrayLength`，但数组不包含任何元素。
-
-如果希望用单个元素初始化一个数组，而这个元素恰好又是 `Number`，那么必须使用括号语法。当单个 `Number` 传递给 `Array()` 构造函数时，将会被解释为 `arrayLength`，并非单个元素：
-
-```js
-// 创建一个只有唯一元素的数组：数字 42。
-const arr = [42]
-
-// 创建一个没有元素的数组，且数组的长度被设置成 42。
-const arr = Array(42)
-
-// 上面的代码与下面的代码等价：
-const arr = []
-arr.length = 42
-```
-
-如果 `N` 不是一个整数，调用 `Array(N)` 将会报 `RangeError` 错误：
-
-```js
-const arr = Array(9.3) // RangeError: Invalid array length
-```
-
-如果需要创建任意类型的单元素数组，安全的方式是使用数组字面量。或者在向数组添加单个元素之前先创建一个空的数组。也可以使用 `Array.of()` 静态方法来创建包含单个元素的数组：
-
-```js
-const wisenArray = Array.of(9.3) // wisenArray 只包含一个元素：9.3
-```
-
-### 访问元素与 length
-
-因为元素也是属性，可以使用属性访问器来访问。假设定义了以下数组：
-
-```js
-const myArray = ['Wind', 'Rain', 'Fire']
-```
-
-数组的第一个元素可以引用为 `myArray[0]`，将数组的第二个元素引用为 `myArray[1]`，等等。元素的索引从零开始。
-
-也可以使用属性访问器来访问数组的其他属性，就像对象一样：
-
-```js
-const arr = ['one', 'two', 'three']
-arr[2] // three
-arr['length'] // 3
-```
-
-可以通过给数组元素赋值来填充数组，例如：
-
-```js
-const emp = []
-emp[0] = 'Casey Jones'
-emp[1] = 'Phil Lesh'
-emp[2] = 'August West'
-```
-
-如果给数组运算符的是一个非整型数值，那么它将作为一个表示数组的对象的属性创建，而不是数组的元素：
-
-```js
-const arr = []
-arr[3.4] = 'Oranges'
-console.log(arr.length) // 0
-console.log(Object.hasOwn(arr, 3.4)) // true
-```
-
-在实现层面，JavaScript 实际上是将元素作为标准的对象属性来存储，把数组索引作为属性名。
-
-`length` 属性是特殊的，如果存在最后一个元素，则其值总是大于其索引的正整数。记住，JavaScript 数组索引是基于 0 的：它们从 `0` 开始，而不是 `1`。这意味着 `length` 属性将比最大的索引值大 1：
-
-```js
-const cats = []
-cats[30] = ['Dusty']
-console.log(cats.length) // 31
-```
-
-也可以给 `length` 属性赋值。写一个小于数组元素数量的值将截断数组，写 `0` 会彻底清空数组：
-
-```js
-const cats = ['Dusty', 'Misty', 'Twiggy']
-console.log(cats.length) // 3
-
-cats.length = 2
-console.log(cats) // [ 'Dusty', 'Misty' ] - Twiggy 已经被移除了
-
-cats.length = 0
-console.log(cats) // 输出 []，猫名称的数组现在已经空了
-
-cats.length = 3
-console.log(cats) // 输出 [ <3 empty items> ]
-```
-
-### 遍历数组
-
-一种常见的操作是遍历数组的值，以某种方式处理每个值。最简单的方法如下：
-
-```js
-const colors = ['red', 'green', 'blue']
-for (let i = 0; i < colors.length; i++) {
-  console.log(colors[i])
-}
-```
-
-如果确定数组中没有一个元素求值为 `false`（例如，数组只包含 DOM 节点），可以选择一个更高效的土法子：
-
-```js
-const divs = document.getElementsByTagName('div')
-for (let i = 0, div; (div = divs[i]); i++) {
-  /* 以某种方式处理 div */
-}
-```
-
-这避免了检查数组长度的开销，并确保 `div` 变量在每次循环时都被重新赋值给当前项，从而增加了便利性。
-
-`forEach()` 方法提供了遍历数组元素的其他方法：
-
-```js
-const colors = ['red', 'green', 'blue']
-colors.forEach((color) => console.log(color))
-// red
-// green
-// blue
-```
-
-传递给 `forEach` 的函数对数组中的每个元素执行一次，数组元素作为参数传递给该函数。未赋值的值不会在 `forEach` 循环迭代。
-
-注意，在数组定义时省略的元素不会在 `forEach` 遍历时被列出，但是手动赋值为 `undefined` 的元素是**会**被列出的：
-
-```js
-const sparseArray = ['first', 'second', , 'fourth']
-
-sparseArray.forEach((element) => {
-  console.log(element)
-})
-// first
-// second
-// fourth
-
-if (sparseArray[2] === undefined) {
-  console.log('sparseArray[2] 是 undefined') // true
-}
-
-const nonsparseArray = ['first', 'second', undefined, 'fourth']
-
-nonsparseArray.forEach((element) => {
-  console.log(element)
-})
-// first
-// second
-// undefined
-// fourth
-```
-
-由于 JavaScript 元素被保存为标准对象属性，因此不建议使用 `for...in` 循环遍历 JavaScript 数组，因为普通元素和所有可枚举属性都将被列出。
-
-### 数组方法
-
-`Array` 对象具有下列方法。
-
-`concat()` 方法连接两个或多个数组并返回一个新的数组：
-
-```js
-let myArray = ['1', '2', '3']
-myArray = myArray.concat('a', 'b', 'c')
-// myArray 现在是 ["1", "2", "3", "a", "b", "c"]
-```
-
-`join()` 方法将数组中的所有元素连接成一个字符串：
-
-```js
-const myArray = ['Wind', 'Rain', 'Fire']
-const list = myArray.join(' - ') // list 现在是 "Wind - Rain - Fire"
-```
-
-`push()` 方法在数组末尾添加一个或多个元素，并返回数组操作后的 `length`。`pop()` 方法从数组移出最后一个元素，并返回该元素。`shift()` 方法从数组移出第一个元素，并返回该元素。`unshift()` 方法在数组开头添加一个或多个元素，并返回数组的新长度：
-
-```js
-const myArray = ['1', '2']
-myArray.push('3') // myArray 现在是 ["1", "2", "3"]
-const last = myArray.pop() // myArray 现在是 ["1", "2"]，last 为 "3"
-
-const first = myArray.shift() // myArray 现在是 ["2"]，first 为 "1"
-myArray.unshift('4', '5')
-// myArray 变成了 ["4", "5", "2"]
-```
-
-`slice()` 方法从数组提取一个片段，并作为一个新数组返回：
-
-```js
-let myArray = ['a', 'b', 'c', 'd', 'e']
-myArray = myArray.slice(1, 4) // [ "b", "c", "d"]
-// 从索引 1 开始，提取所有的元素，直到索引 3 为止
-```
-
-`at()` 方法返回数组中指定索引处的元素，如果索引超出范围，则返回 `undefined`。它主要用于从数组末尾访问元素的负下标：
-
-```js
-const myArray = ['a', 'b', 'c', 'd', 'e']
-myArray.at(-2) // "d"，myArray 的倒数第二个元素
-```
-
-`splice()` 方法从数组移除一些元素，并（可选地）替换它们。它返回从数组中删除的元素：
-
-```js
-const myArray = ['1', '2', '3', '4', '5']
-myArray.splice(1, 3, 'a', 'b', 'c', 'd')
-// myArray 现在是 ["1", "a", "b", "c", "d", "5"]
-// 本代码从 1 号索引开始（或元素“2”所在的位置），
-// 移除 3 个元素，然后将后续元素插入到那个位置上。
-```
-
-`reverse()` 方法原地颠倒数组元素的顺序：第一个数组元素变为最后一个数组元素，最后一个数组元素变为第一个数组元素。它返回对数组的引用：
-
-```js
-const myArray = ['1', '2', '3']
-myArray.reverse()
-// 将原数组颠倒，myArray = [ "3", "2", "1" ]
-```
-
-`flat()` 方法返回一个新数组，所有子数组元素递归地连接到其中，直到指定的深度：
-
-```js
-let myArray = [1, 2, [3, 4]]
-myArray = myArray.flat()
-// myArray 现在是 [1, 2, 3, 4]，因为子数组 [3, 4] 已被展平
-```
-
-`sort()` 方法对数组的元素进行适当的排序，并返回对数组的引用：
-
-```js
-const myArray = ['Wind', 'Rain', 'Fire']
-myArray.sort()
-// 对数组排序，myArray = ["Fire", "Rain", "Wind"]
-```
-
-`sort()` 也可以接受回调函数来决定如何比较数组元素。使用两个参数调用回调函数，它们是来自数组的两个值。该函数比较这两个值并返回正数、负数或零，表示这两个值的顺序。例如，以下命令将根据字符串的最后一个字母对数组进行排序：
-
-```js
-const sortFn = (a, b) => {
-  if (a[a.length - 1] < b[b.length - 1]) {
-    return -1 // 负数 => a < b，a 在 b 之前
-  } else if (a[a.length - 1] > b[b.length - 1]) {
-    return 1 // 正数 => a > b，a 在 b 之后
-  }
-  return 0 // 0 => a = b，a 和 b 保持原来的顺序
-}
-myArray.sort(sortFn)
-// 对数组排序，myArray = ["Wind","Fire","Rain"]
-```
-
-- 如果 `a` 小于 `b`，返回 `-1`（或任何负数）
-- 如果 `a` 大于 `b`，返回 `1`（或任何正数）
-- 如果 `a` 和 `b` 相等，返回 `0`。
-
-`indexOf()` 方法在数组中搜索 `searchElement` 并返回第一个匹配的索引：
-
-```js
-const a = ['a', 'b', 'a', 'b', 'a']
-console.log(a.indexOf('b')) // 1
-
-// 再试一次，这次从最后一次匹配之后开始
-console.log(a.indexOf('b', 2)) // 3
-console.log(a.indexOf('z')) // -1, 因为找不到 'z'
-```
-
-`lastIndexOf()` 方法的工作原理类似于 `indexOf`，但这是从末尾开始，反向搜索：
-
-```js
-const a = ['a', 'b', 'c', 'd', 'a', 'b']
-console.log(a.lastIndexOf('b')) // 5
-
-// 再试一次，这次从最后一次匹配之前开始
-console.log(a.lastIndexOf('b', 4)) // 1
-console.log(a.lastIndexOf('z')) // -1
-```
-
-`map()` 方法返回由每个数组元素上执行 `callback` 的返回值所组成的新数组：
-
-```js
-const a1 = ['a', 'b', 'c']
-const a2 = a1.map((item) => item.toUpperCase())
-console.log(a2) // ['A', 'B', 'C']
-```
-
-`flatMap()` 方法先执行 `map()`，再执行深度为 1 的 `flat()`：
-
-```js
-const a1 = ['a', 'b', 'c']
-const a2 = a1.flatMap((item) => [item.toUpperCase(), item.toLowerCase()])
-console.log(a2) // ['A', 'a', 'B', 'b', 'C', 'c']
-```
-
-`filter()` 方法返回一个新数组，其中包含 `callback` 返回 `true` 的元素：
-
-```js
-const a1 = ['a', 10, 'b', 20, 'c', 30]
-const a2 = a1.filter((item) => typeof item === 'number')
-console.log(a2) // [10, 20, 30]
-```
-
-`find()` 方法返回 `callback` 返回 `true` 的第一个元素；`findLast()` 返回最后一个元素；`findIndex()` 返回第一个元素的索引；`findLastIndex()` 返回最后一个元素的索引：
-
-```js
-const a1 = ['a', 10, 'b', 20, 'c', 30]
-console.log(a1.find((item) => typeof item === 'number')) // 10
-console.log(a1.findLast((item) => typeof item === 'number')) // 30
-console.log(a1.findIndex((item) => typeof item === 'number')) // 1
-console.log(a1.findLastIndex((item) => typeof item === 'number')) // 5
-```
-
-如果 `callback` 对数组中的每一个元素都返回 `true`，则 `every()` 方法返回 `true`。如果 `callback` 对数组中至少一个元素返回 `true`，则 `some()` 方法返回 `true`：
-
-```js
-function isNumber(value) {
-  return typeof value === 'number'
-}
-const a1 = [1, 2, 3]
-console.log(a1.every(isNumber)) // true
-const a2 = [1, '2', 3]
-console.log(a2.every(isNumber)) // false
-console.log(a2.some(isNumber)) // true
-```
-
-`reduce()` 方法对数组中的每个值执行 `callback(accumulator, currentValue, currentIndex, Array)`，目的是将列表中的元素减少到单个值。`reduce` 函数返回 `callback` 函数返回的最终值。如果指定了 `initialValue`，则调用 `callback`，并将 `initialValue` 作为第一个参数值，将数组中第一个元素的值作为第二个参数值。如果没有指定 `initialValue`，那么 `callback` 的前两个参数值将是数组的第一个和第二个元素。之后的每一次调用，第一个参数的值将是前一个调用中返回的 `callback`，第二个参数的值将是数组中的下一个值。
-
-```js
-const a = [10, 20, 30]
-const total = a.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-console.log(total) // 60
-```
-
-`reduceRight()` 方法的工作原理类似于 `reduce()`，但从最后一个元素开始。`reduce` 和 `reduceRight` 是迭代数组方法中最不被人熟知的两个函数。它们应该使用在那些需要把数组的元素两两递归处理，并最终计算成一个单一结果的算法。
-
-接受回调的 `forEach`、`map`、`filter` 等方法被称为**迭代方法**，因为它们以某种方式遍历整个数组。每个都接受第二个可选的参数 `thisArg`。如果提供，`thisArg` 将成为回调函数体中 `this` 关键字的值。`sort()` 不是迭代方法，因为它的回调函数只用于比较，不能基于元素顺序以任何特定顺序调用，也不接受 `thisArg` 形参。
-
-### 稀疏数组
-
-数组可以包含“空槽”，这与用值 `undefined` 填充的槽不一样。空槽可以通过以下方式之一创建：
-
-```js
-// Array 构造函数：
-const a = Array(5) // [ <5 empty items> ]
-
-// 数组字面量中的连续逗号：
-const b = [1, 2, , , 5] // [ 1, 2, <2 empty items>, 5 ]
-
-// 直接给大于 array.length 的索引设置值以形成空槽：
-const c = [1, 2]
-c[4] = 5 // [ 1, 2, <2 empty items>, 5 ]
-
-// 通过直接设置 .length 拉长一个数组：
-const d = [1, 2]
-d.length = 5 // [ 1, 2, <3 empty items> ]
-
-// 删除一个元素：
-const e = [1, 2, 3, 4, 5]
-delete e[2] // [ 1, 2, <1 empty item>, 4, 5 ]
-```
-
-在某些操作中，空槽的行为就像它们被填入了 `undefined` 那样：
-
-```js
-const arr = [1, 2, , , 5] // 创建一个稀疏数组
-
-// 通过索引访问
-console.log(arr[2]) // undefined
-
-// For...of
-for (const i of arr) {
-  console.log(i)
-}
-// 输出：1 2 undefined undefined 5
-
-// 展开运算
-const another = [...arr] // "another" 为 [ 1, 2, undefined, undefined, 5 ]
-```
-
-在其他方法，特别是数组迭代方法时，空槽是被跳过的：
-
-```js
-const mapped = arr.map((i) => i + 1) // [ 2, 3, <2 empty items>, 6]
-arr.forEach((i) => console.log(i)) // 1 2 5
-const filtered = arr.filter(() => true) // [ 1, 2, 5]
-const hasFalsy = arr.some((k) => !k) // false
-
-// 属性迭代
-const keys = Object.keys(arr) // [ '0', '1', '4']
-for (const key in arr) {
-  console.log(key)
-}
-// 输出：'0' '1' '4'
-// 在对象中使用展开，使用属性枚举，而不是数组的迭代器
-const objectSpread = { ...arr } // { '0': 1, '1': 2, '4': 5 }
-```
-
-### 多维数组与类数组对象
-
-数组是可以嵌套的，这就意味着一个数组可以作为一个元素被包含在另外一个数组里面。利用 JavaScript 数组的这个特性，可以创建多维数组。以下代码创建了一个二维数组：
-
-```js
-const a = new Array(4)
-for (let i = 0; i < 4; i++) {
-  a[i] = new Array(4)
-  for (let j = 0; j < 4; j++) {
-    a[i][j] = '[' + i + ',' + j + ']'
-  }
-}
-```
-
-这个例子创建的数组拥有以下行数据：
-
-```plain
-Row 0: [0,0] [0,1] [0,2] [0,3]
-Row 1: [1,0] [1,1] [1,2] [1,3]
-Row 2: [2,0] [2,1] [2,2] [2,3]
-Row 3: [3,0] [3,1] [3,2] [3,3]
-```
-
-数组也可以像对象那样使用，以存储相关信息：
+数组解构按位置取值，可以跳过元素、设置默认值、收集剩余元素：
 
 ```js
 const arr = [1, 2, 3]
-arr.property = 'value'
-console.log(arr.property) // "value"
+const [first, second, third] = arr
+// first = 1, second = 2, third = 3
+
+const [x, , z] = arr
+// x = 1, z = 3
+
+const [p = 10, q = 20] = [1]
+// p = 1, q = 20
+
+const [head, ...tail] = arr
+// head = 1, tail = [2, 3]
 ```
 
-一些 DOM 集合（如 `NodeList`）和函数内部的 `arguments` 对象是**类数组对象**：它们有 `length` 属性和数字索引，但没有数组的方法。可以用 `Array.from()` 把它们转换成真正的数组，再使用 `map`、`filter` 等方法。
-
-## 对象
-
-### 对象与属性
-
-JavaScript 的设计是一个简单的基于对象的范式。一个对象就是一系列属性的集合，一个属性包含一个名和一个值。一个属性的值可以是函数，这种情况下属性也被称为**方法**。
-
-一个 JavaScript 对象有很多属性。一个对象的属性可以被解释成一个附加到对象上的变量。对象的属性和普通的 JavaScript 变量基本没什么区别，仅仅是属性属于某个对象。属性定义了对象的特征。可以通过点符号来访问一个对象的属性：
+交换变量不需要中间变量：
 
 ```js
-objectName.propertyName
+let a = 1
+let b = 2
+;[a, b] = [b, a]
+// a = 2, b = 1
 ```
 
-和其他 JavaScript 变量一样，对象的名字（可以是普通的变量）和属性的名字都是大小写敏感的。可以在定义一个属性的时候就给它赋值：
+数组解构不只用于数组，任何可迭代对象都可以：
 
 ```js
-const myCar = new Object()
-myCar.make = 'Ford'
-myCar.model = 'Mustang'
-myCar.year = 1969
+const [firstChar, secondChar] = 'ab'
+// firstChar = "a", secondChar = "b"
+
+const [one, two] = new Set([1, 2])
 ```
 
-对象中未赋值的属性的值为 `undefined`（而不是 `null`）：
+### 对象解构
+
+对象解构按属性名取值，可以与变量名不同，也可以设置默认值：
 
 ```js
-myCar.noProperty // undefined
+const obj = { a: 1, b: 2, c: 3 }
+const { a, b, c } = obj
+// a = 1, b = 2, c = 3
+
+const { a: x, b: y } = obj
+// x = 1, y = 2
+
+const { a: p = 10, d = 20 } = obj
+// p = 1, d = 20
 ```
 
-JavaScript 对象的属性也可以通过方括号访问或者设置。对象有时也被叫作关联数组，因为每个属性都有一个用于访问它的字符串值：
+默认值只在属性不存在或值为 `undefined` 时生效；值为 `null` 时不使用默认值：
 
 ```js
-myCar['make'] = 'Ford'
-myCar['model'] = 'Mustang'
-myCar['year'] = 1969
+const [a = 1] = []
+const { b = 2 } = { b: undefined }
+const { c = 2 } = { c: null }
+// a = 1, b = 2, c = null
 ```
 
-一个对象的属性名可以是任何有效的 JavaScript 字符串，或者可以被转换为字符串的任何类型，包括空字符串。然而，一个属性的名称如果不是一个有效的 JavaScript 标识符（例如，一个由空格或连字符，或者以数字开头的属性名），就只能通过方括号标记访问。这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用。
-
-请注意，方括号中的所有键都将转换为字符串类型，因为 JavaScript 中的对象只能使用 String 类型作为键类型。例如：
+剩余属性收集对象剩余的可枚举自有属性：
 
 ```js
-const myObj = new Object()
-const str = 'myString'
-const rand = Math.random()
-const obj = new Object()
-
-myObj.type = 'Dot syntax'
-myObj['date created'] = 'String with space'
-myObj[str] = 'String value'
-myObj[rand] = 'Random Number'
-myObj[obj] = 'Object'
-myObj[''] = 'Even an empty string'
+const { a, ...others } = { a: 1, b: 2, c: 3 }
+// a = 1, others = { b: 2, c: 3 }
 ```
 
-当将键 `obj` 添加到 `myObj` 时，JavaScript 将调用 `obj.toString()` 方法，并将此结果字符串用作新键。
+剩余属性必须是模式中的最后一个，并且不能有尾随逗号。
 
-### 枚举属性
+### 嵌套解构
 
-有三种原生的方法用于列出或枚举对象的属性：
-
-- `for...in` 循环：该方法依次访问一个对象及其原型链中所有可枚举的属性。
-- `Object.keys(o)`：该方法返回对象 `o` 自身包含（不包括原型中）的所有可枚举属性的名称的数组。
-- `Object.getOwnPropertyNames(o)`：该方法返回对象 `o` 自身包含（不包括原型中）的所有属性（无论是否可枚举）的名称的数组。
-
-在 ECMAScript 5 之前，没有原生的方法枚举一个对象的所有属性。然而，可以通过以下函数完成：
+数组和对象可以任意嵌套：
 
 ```js
-function listAllProperties(o) {
-  let objectToInspect
-  let result = []
+const user = {
+  name: 'Ada',
+  address: { city: 'London', zip: 'N1' },
+  hobbies: ['math', 'code'],
+}
 
-  for (
-    objectToInspect = o;
-    objectToInspect !== null;
-    objectToInspect = Object.getPrototypeOf(objectToInspect)
-  ) {
-    result = result.concat(Object.getOwnPropertyNames(objectToInspect))
-  }
+const {
+  name,
+  address: { city },
+  hobbies: [firstHobby],
+} = user
+// name = "Ada", city = "London", firstHobby = "math"
+```
 
-  return result
+解构对象时会沿着原型链查找属性：
+
+```js
+const base = { inherited: 1 }
+const child = Object.create(base)
+child.own = 2
+
+const { inherited, own } = child
+// inherited = 1, own = 2
+```
+
+### 函数参数解构
+
+解构可以直接用在函数参数上，常用于配置对象：
+
+```js
+function draw({ x = 0, y = 0, size = 10 }) {
+  console.log(x, y, size)
+}
+
+draw({ x: 1, size: 20 })
+// 1 0 20
+```
+
+也可以和默认参数组合：
+
+```js
+function connect({ host = 'localhost', port = 80 } = {}) {
+  return `${host}:${port}`
+}
+
+connect() // "localhost:80"
+```
+
+### 循环中的解构
+
+`for...of` 可以直接解构每个元素，尤其是 `Map` 的 `[key, value]`：
+
+```js
+for (const [key, value] of new Map([
+  ['a', 1],
+  ['b', 2],
+])) {
+  console.log(key, value)
 }
 ```
 
-这在展示“隐藏”（在原型中的不能通过对象访问的属性，因为另一个同名的属性存在于原型链的早期）的属性时很有用。如果只想列出可访问的属性，那么只需要去除数组中的重复元素即可。
+### 绑定模式与赋值模式
 
-### 创建对象
+解构有两种模式：绑定模式和赋值模式。
 
-#### 使用对象初始化器
-
-除了通过构造函数创建对象之外，也可以通过对象初始化器创建对象。使用对象初始化器也被称作通过字面值创建对象。对象初始化器与 C++ 术语相一致。通过对象初始化器创建对象的语法如下：
+绑定模式以声明关键字（`var`、`let` 或 `const`）开始，每个属性必须绑定到一个变量或继续解构：
 
 ```js
-const obj = {
-  property_1: value_1, // property_# 可以是一个标识符...
-  2: value_2, // 或一个数字...
-  ['property' + 3]: value_3, // 或一个可计算的 key 名...
-  // ...,
-  'property n': value_n, // 或一个字符串
-}
+const obj = { a: 1, b: { c: 2 } }
+const {
+  a,
+  b: { c: d },
+} = obj
+// 变量 a 和 d 被绑定
 ```
 
-这里 `obj` 是新对象的名称，每一个 `property_i` 是一个标识符（可以是一个名称、数字或字符串字面量），并且每个 `value_i` 是一个其值将被赋予 `property_i` 的表达式。`obj` 与赋值是可选的；如果不需要在其他地方引用对象，就不需要将它赋给一个变量。注意在接受一条语句的地方，可能需要将对象字面量括在括号里，从而避免将字面量与块语句相混淆。
-
-如果一个对象是通过在顶级脚本的对象初始化器创建的，则 JavaScript 在每次遇到包含该对象字面量的表达式时都会创建对象。同样的，在函数中的初始化器在每次函数调用时也会被创建。
-
-以下创建了有三个属性的 `myHonda` 对象。注意它的 `engine` 属性也是一个拥有自己属性的对象：
+赋值模式不以关键字开头，每个解构属性被赋值给一个已存在的目标：
 
 ```js
-const myHonda = { color: 'red', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
+const numbers = []
+const obj = { a: 1, b: 2 }
+;({ a: numbers[0], b: numbers[1] } = obj)
+// numbers = [1, 2]
 ```
 
-#### 使用构造函数
-
-作为另一种方式，可以通过两步来创建对象：
-
-1. 通过创建一个构造函数来定义对象的类型。首字母大写是非常普遍而且很恰当的惯用法。
-2. 通过 `new` 创建对象实例。
-
-为了定义对象类型，为对象类型创建一个函数以声明类型的名称、属性和方法。例如，要为汽车创建一个类型，并且将这类对象称为 `car`，并且拥有属性 `make`、`model` 和 `year`，可以创建如下的函数：
-
-```js
-function Car(make, model, year) {
-  this.make = make
-  this.model = model
-  this.year = year
-}
-```
-
-注意通过使用 `this` 将传入函数的值赋给对象的属性。现在可以像这样创建一个 `mycar` 对象：
-
-```js
-const mycar = new Car('Eagle', 'Talon TSi', 1993)
-```
-
-该语句创建了 `mycar` 并且将指定的值赋给它的属性。因而 `mycar.make` 的值是字符串 `"Eagle"`，`mycar.year` 的值是整数 `1993`，依此类推。
-
-一个对象的属性值可以是另一个对象。例如，假设按如下方式定义了 `person` 对象：
-
-```js
-function Person(name, age, sex) {
-  this.name = name
-  this.age = age
-  this.sex = sex
-}
-```
-
-然后按如下方式创建了两个 `person` 实例：
-
-```js
-const rand = new Person('Rand McKinnon', 33, 'M')
-const ken = new Person('Ken Jones', 39, 'M')
-```
-
-那么，可以重写 `car` 的定义以包含一个拥有它的 `owner` 属性：
-
-```js
-function Car(make, model, year, owner) {
-  this.make = make
-  this.model = model
-  this.year = year
-  this.owner = owner
-}
-
-const car1 = new Car('Eagle', 'Talon TSi', 1993, rand)
-const car2 = new Car('Nissan', '300ZX', 1992, ken)
-```
-
-注意在创建新对象时，上面的语句将 `rand` 和 `ken` 作为 `owner` 的参数值，而不是传入字符串字面量或整数值。接下来如果想找出 `car2` 的拥有者的姓名，可以访问 `car2.owner.name`。
-
-注意总是可以为之前定义的对象增加新的属性。例如，语句 `car1.color = "black"` 为 `car1` 增加了 `color` 属性，并将其值设为 `"black"`。然而，这并不影响其他的对象。想要为某个类型的所有对象增加新属性，必须将属性加入到 `car` 对象类型的定义中。
-
-#### 使用 Object.create 方法
-
-对象也可以用 `Object.create()` 方法创建。该方法非常有用，因为它允许为创建的对象选择一个原型对象，而不用定义构造函数：
-
-```js
-// Animal properties and method encapsulation
-const Animal = {
-  type: 'Invertebrates', // 属性默认值
-  displayType() {
-    // 用于显示 type 属性的方法
-    console.log(this.type)
-  },
-}
-
-// 创建一种新的动物——animal1
-const animal1 = Object.create(Animal)
-animal1.displayType() // Output: Invertebrates
-
-// 创建一种新的动物——Fishes
-const fish = Object.create(Animal)
-fish.type = 'Fishes'
-fish.displayType() // Output: Fishes
-```
-
-### 增强的对象字面量
-
-对象字面量支持一组简写语法，包括在创建时设置原型、`foo: foo` 赋值的简写、定义方法、支持 `super` 调用以及使用表达式计算属性名。总之，这些也使对象字面量和类声明更加紧密地联系起来，让基于对象的设计从这些便利中更加受益：
-
-```js
-const obj = {
-  // __proto__
-  __proto__: theProtoObj,
-  // “handler: handler”的简写
-  handler,
-  // 方法
-  toString() {
-    // Super 调用
-    return 'd ' + super.toString()
-  },
-  // 计算（动态的）属性名
-  ['prop_' + (() => 42)()]: 42,
-}
-```
-
-### 方法、this 与访问器
-
-一个**方法**是关联到某个对象的函数，或者简单地说，一个方法是一个值为某个函数的对象属性。定义方法就像定义普通的函数，除了它们必须被赋给对象的某个属性：
-
-```js
-objectName.methodname = function_name
-
-const myObj = {
-  myMethod(params) {
-    // ...do something
-  },
-  // 或者这样写也可以
-  myOtherMethod(params) {
-    // ...do something else
-  },
-}
-```
-
-可以在对象的上下文中像这样调用方法：
-
-```js
-object.methodname(params)
-```
-
-JavaScript 有一个特殊的关键字 `this`，它可以在方法中使用以指代当前对象。例如，假设有一个名为 `validate` 的函数，它根据给出的最大与最小值检查某个对象的 `value` 属性：
-
-```js
-function validate(obj, lowval, hival) {
-  if (obj.value < lowval || obj.value > hival) {
-    alert('Invalid Value!')
-  }
-}
-```
-
-然后，可以在每个元素的 `onchange` 事件处理器中调用 `validate`，并通过 `this` 传入相应元素，代码如下：
-
-```html
-<input type="text" name="age" size="3" onChange="validate(this, 18, 99)" />
-```
-
-总的说来，`this` 在一个方法中指调用的对象。当与 `form` 属性一起使用时，`this` 可以指代当前对象的父窗体。在下面的例子中，窗体 `myForm` 包含一个 `Text` 对象和一个按钮，当用户点击按键，`Text` 对象的值被设为窗体的名称。按钮的 `onclick` 事件处理器使用 `this.form` 以指代其父窗体，即 `myForm`：
-
-```html
-<form name="myForm">
-  <p>
-    <label>Form name:<input type="text" name="text1" value="Beluga" /></label>
-  </p>
-  <p>
-    <input
-      name="button1"
-      type="button"
-      value="Show Form Name"
-      onclick="this.form.text1.value = this.form.name"
-    />
-  </p>
-</form>
-```
-
-一个 getter 是一个获取某个特定属性的值的方法。一个 setter 是一个设定某个属性的值的方法。可以为预定义的或用户定义的对象定义 getter 和 setter 以支持新增的属性。定义 getter 和 setter 的语法采用对象字面量语法。下面例子描述了 getter 和 setter 是如何为用户定义的对象 `o` 工作的：
-
-```js
-const o = {
-  a: 7,
-  get b() {
-    return this.a + 1
-  },
-  set c(x) {
-    this.a = x / 2
-  },
-}
-
-console.log(o.a) // 7
-console.log(o.b) // 8
-o.c = 50
-console.log(o.a) // 25
-```
-
-`o` 对象的属性如下：
-
-- `o.a` — 数字
-- `o.b` — 返回 `o.a` + 1 的 getter
-- `o.c` — 由 `o.c` 的值所设置 `o.a` 值的 setter
-
-请注意在一个对象字面量语法中定义 getter 和 setter 使用 `[gs]et property()` 的方式，而不是误以为在获取和设置某个属性自身。定义一个已经声明的函数作为 getter 和 setter 方法，使用 `Object.defineProperty()`（或者 `Object.prototype.__defineGetter__` 旧语法回退）。
-
-### 删除属性与比较对象
-
-可以用 `delete` 操作符删除一个**不是继承而来**的属性。下面的例子说明如何删除一个属性：
-
-```js
-// 创建一个新对象 myobj，它有两个属性 a 和 b。
-const myobj = new Object()
-myobj.a = 5
-myobj.b = 12
-
-// 移除 a 属性，只留下 b 属性。
-delete myobj.a
-```
-
-如果一个全局变量不是用 `var` 关键字声明的话，也可以用 `delete` 删除它：
-
-```js
-g = 17
-delete g
-```
-
-在 JavaScript 中，对象是一种引用类型。两个独立声明的对象永远也不会相等，即使他们有相同的属性，只有在比较一个对象和这个对象的引用时，才会返回 `true`：
-
-```js
-// 两个变量，两个具有同样的属性、但不相同的对象
-const fruit = { name: 'apple' }
-const fruitbear = { name: 'apple' }
-
-fruit == fruitbear // return false
-fruit === fruitbear // return false
-```
-
-```js
-// 两个变量，同一个对象
-const fruit = { name: 'apple' }
-const fruitbear = fruit // 将 fruit 的对象引用（reference）赋值给 fruitbear
-// fruit 与 fruitbear 都指向同样的对象
-fruit == fruitbear // return true
-fruit === fruitbear // return true
-```
-
-### 原型链
-
-所有的 JavaScript 对象至少继承于一个对象。被继承的对象被称作原型，并且继承的属性可通过构造函数的 `prototype` 对象找到。对象的原型指向另一个对象或者 `null`——从概念上讲，它是对象的隐藏属性，通常表示为 `[[Prototype]]`。对象的 `[[Prototype]]` 的属性也可以在对象自身上访问。更完整的讨论放在第二篇《函数与对象模型》展开。
+使用对象字面量解构而不带声明时，赋值语句周围必须添加括号 `( ... )`，否则左侧的 `{ a, b }` 会被当成块语句。在无分号风格中，括号表达式前面需要补一个分号。
 
 ## 条件判断
 
@@ -1641,7 +1201,7 @@ switch (fruitType) {
 console.log('还有其他喜欢的吗？')
 ```
 
-`throw`、`try...catch` 和 `Error` 对象属于错误处理的内容，不在本篇展开。
+`throw`、`try...catch` 和 `Error` 对象属于错误处理的内容，见第五篇《运行时》。
 
 ## 循环
 
@@ -1968,366 +1528,23 @@ for (const i of arr) {
 // 注意 for...of 的输出没有出现 "hello"
 ```
 
-## Map 和 Set
-
-### Map
-
-本章将介绍由键索引的数据集合；`Map` 和 `Set` 对象包含可按插入顺序迭代的元素。
-
-`Map` 对象就是一个简单的键/值对映射集合，可以按照数据插入时的顺序遍历所有的元素。
-
-下面的代码演示了使用 `Map` 进行的一些基本操作。可以使用 `for...of` 循环来在每一次迭代中得到 `[key, value]` 数组：
-
-```js
-const sayings = new Map()
-sayings.set('dog', 'woof')
-sayings.set('cat', 'meow')
-sayings.set('elephant', 'toot')
-sayings.size // 3
-sayings.get('dog') // woof
-sayings.get('fox') // undefined
-sayings.has('bird') // false
-sayings.delete('dog')
-sayings.has('dog') // false
-
-for (const [key, value] of sayings) {
-  console.log(`${key} goes ${value}`)
-}
-// "cat goes meow"
-// "elephant goes toot"
-
-sayings.clear()
-sayings.size // 0
-```
-
-### Object 和 Map 的比较
-
-一般地，`Object` 会被用于将字符串类型映射到值。`Object` 允许设置键值对、根据键获取值、删除键、检测某个键是否存在。不过，`Map` 对象还有一些优点，可以更好地应用于映射关系表示中：
-
-- `Object` 的键均为字符串或 Symbol 类型，在 `Map` 里键可以是任意类型。
-- 必须手动计算 `Object` 的大小，但是可以很容易地获取 `Map` 的大小（`size`）。
-- `Map` 的遍历遵循元素的插入顺序。
-- `Object` 有原型，所以映射中有一些缺省的键（可以用 `map = Object.create(null)` 回避）。
-
-这三条提示可以帮助决定用 `Map` 还是 `Object`：
-
-- 如果键在运行时才能知道，或者所有的键类型相同，所有的值类型相同，那就使用 `Map`。
-- 如果需要将原始值存储为键，则使用 `Map`，因为 `Object` 将每个键视为字符串，不管它是一个数字值、布尔值还是任何其他原始值。
-- 如果存在需要对个别元素进行操作的逻辑，使用 `Object`。
-
-### WeakMap
-
-`WeakMap` 是键/值对的集合，其键必须是对象或非注册符号，其值为任意 JavaScript 类型，并且不会对其键创建强引用。也就是说，一个对象作为键出现在 `WeakMap` 中并不会阻止该对象被垃圾回收。一旦作为键的对象被收集，其在任何 `WeakMap` 中的相应值也会被垃圾收集，只要它们没有在其他地方被强引用。唯一可用作 `WeakMap` 键的原始类型是 symbol，更具体地说，是非注册 symbol，因为非注册 symbol 保证是唯一的，并且不能被重新创建。
-
-`WeakMap` API 与 `Map` API 基本相同。不过，`WeakMap` 不允许观察其键的有效性，这也是它不允许枚举的原因。因此，没有任何方法可以获取 `WeakMap` 中的键的列表。如果有的话，该列表将取决于垃圾回收的状态，从而引入非确定性。
-
-`WeakMap` 对象的一个用例是存储一个对象的私有数据或隐藏实现细节。对象内部的私有数据和方法被存储在 `WeakMap` 类型的 `privates` 变量中。所有暴露出的原型和实例都是公开的，而其他内容都是外界不可访问的，因为模块并未导出 `privates` 对象：
-
-```js
-const privates = new WeakMap()
-
-function Public() {
-  const me = {
-    // 这里是私有数据
-  }
-  privates.set(this, me)
-}
-
-Public.prototype.method = function () {
-  const me = privates.get(this)
-  // 处理 `me` 中的私有数据
-  // …
-}
-
-module.exports = Public
-```
-
-### Set
-
-`Set` 对象是一组唯一值的集合，可以按照添加顺序来遍历。`Set` 中的值只能出现一次；它在集合 `Set` 中是唯一的。以下代码演示了 `Set` 的基本操作：
-
-```js
-const mySet = new Set()
-mySet.add(1)
-mySet.add('some text')
-mySet.add('foo')
-
-mySet.has(1) // true
-mySet.delete('foo')
-mySet.size // 2
-
-for (const item of mySet) {
-  console.log(item)
-}
-// 1
-// "some text"
-```
-
-### 数组和 Set 之间的转换
-
-可以使用 `Array.from()` 或展开语法来完成集合到数组的转换。同样，`Set` 的构造函数接受数组作为参数，可以完成从 `Array` 到 `Set` 的转换。`Set` 对象存储**唯一值**，所以数组转换为 `Set` 时，任何重复值将会被删除：
-
-```js
-Array.from(mySet)
-;[...mySet2]
-
-mySet2 = new Set([1, 2, 3, 4])
-```
-
-一般情况下，在 JavaScript 中使用数组来存储一组元素，而新的 `Set` 对象有这些优势：
-
-- 根据值（`arr.splice(arr.indexOf(val), 1)`）删除数组元素效率低下。
-- `Set` 对象允许根据值删除元素，而数组中必须使用基于元素下标的 `splice` 方法。
-- 数组的 `indexOf` 方法无法找到 `NaN` 值。
-- `Set` 对象存储唯一值，所以不需要手动处理包含重复值的情况。
-
-### WeakSet
-
-`WeakSet` 对象是可收集垃圾值的集合，包括对象和非注册 symbol。`WeakSet` 中的值只能出现一次。它在 `WeakSet` 的集合中是唯一的。与 `Set` 对象的主要区别有：
-
-- 与 `Set` 相反，`WeakSet` 是**对象或 symbol 的集合**，而不是任何类型的任意值的集合。
-- `WeakSet` 的**弱**是指集合中的对象是弱引用的。如果 `WeakSet` 中存储的一个对象不存在其他的引用，那么它就会被垃圾回收。这也意味着集合中不再存储当前对象。
-- `WeakSet` 不可枚举。
-
-`WeakSet` 对象的用例有限。它们不会泄露内存，因此可以安全地使用 DOM 元素作为键，并将其标记用于跟踪等目的。
-
-### Map 和 Set 的键值相等
-
-`Map` 对象和 `Set` 对象的键和值的等值判断都基于 SameValueZero 算法：
-
-- 等价的作用类似于严格相等运算符 `===`。
-- `-0` 和 `+0` 相等。
-- `NaN` 与自身相等（与 `===` 有所不同）。
-
-## iterable
-
-### 迭代器
-
-迭代器和生成器将迭代的概念直接带入核心语言，并提供了一种机制来自定义 `for...of` 循环的行为。
-
-在 JavaScript 中，**迭代器**是一个对象，它定义一个序列，并在终止时可能附带一个返回值。更具体地说，迭代器是通过使用 `next()` 方法实现了迭代器协议的任何一个对象，该方法返回具有两个属性的对象：
-
-- `value`：迭代序列的下一个值。
-- `done`：如果已经迭代到序列中的最后一个值，则它为 `true`。如果 `value` 和 `done` 一起出现，则它就是迭代器的返回值。
-
-一旦创建，迭代器对象可以通过重复调用 `next()` 显式地迭代。迭代一个迭代器被称为消耗了这个迭代器，因为它通常只能执行一次：在产生终值后，对 `next()` 的额外调用应该继续返回 `{done: true}`。
-
-JavaScript 中最常见的迭代器是数组迭代器，它按顺序返回关联数组中的每个值。
-
-虽然很容易想象所有迭代器都可以表示为数组，但事实并非如此。数组必须完整分配，而迭代器则是按需分配。因此，迭代器可以表示无限大小的序列，例如 0 和 `Infinity` 之间的整数范围。
-
-下面的例子展示了具体做法。它允许创建一个简单的范围迭代器，以定义一个从 `start`（闭）到 `end`（开），以 `step` 为步长的整数序列。它的最终返回值是它创建的序列的大小，由变量 `iterationCount` 跟踪：
-
-```js
-function makeRangeIterator(start = 0, end = Infinity, step = 1) {
-  let nextIndex = start
-  let iterationCount = 0
-
-  const rangeIterator = {
-    next() {
-      let result
-      if (nextIndex < end) {
-        result = { value: nextIndex, done: false }
-        nextIndex += step
-        iterationCount++
-        return result
-      }
-      return { value: iterationCount, done: true }
-    },
-  }
-  return rangeIterator
-}
-```
-
-使用这个迭代器看起来像这样：
-
-```js
-let it = makeRangeIterator(1, 10, 2)
-
-let result = it.next()
-while (!result.done) {
-  console.log(result.value) // 1 3 5 7 9
-  result = it.next()
-}
-
-console.log(`已迭代序列的大小：${result.value}`) // 5
-```
-
-反射性地知道特定对象是否是迭代器是不可能的。如果需要这样做，请使用**可迭代对象**。
-
-### 生成器函数
-
-虽然自定义迭代器是一个有用的工具，但由于需要显式地维护其内部状态，因此创建时要格外谨慎。**生成器函数**（Generator 函数）提供了一个强大的替代选择：它允许定义一个非连续执行的函数作为迭代算法。生成器函数使用 `function*` 语法编写。
-
-最初调用时，生成器函数不执行任何代码，而是返回一种称为**生成器**的特殊迭代器。通过调用 `next()` 方法消耗该生成器时，生成器函数将执行，直至遇到 `yield` 关键字。
-
-可以根据需要多次调用该函数，并且每次都返回一个新的生成器，但每个生成器只能迭代一次。
-
-现在可以调整上面的例子了。此代码的行为并没有改变，但更容易编写和阅读：
-
-```js
-function* makeRangeIterator(start = 0, end = Infinity, step = 1) {
-  let iterationCount = 0
-  for (let i = start; i < end; i += step) {
-    iterationCount++
-    yield i
-  }
-  return iterationCount
-}
-```
-
-### 可迭代对象
-
-若一个对象拥有迭代行为，比如在 `for...of` 中会循环一些值，那么那个对象便是一个可迭代对象。一些内置类型，如 `Array` 或 `Map` 拥有默认的迭代行为，而其他类型（比如 `Object`）则没有。
-
-为了实现**可迭代**，对象必须实现 `[Symbol.iterator]()` 方法，这意味着这个对象（或其原型链中的任意一个对象）必须具有一个键值为 `Symbol.iterator` 的属性。
-
-程序员应知道一个可迭代对象可以多次迭代，还是只能迭代一次。只能迭代一次的可迭代对象（例如生成器）通常从它们的 `[Symbol.iterator]()` 方法中返回 `this`，而那些可以多次迭代的方法必须在每次调用 `[Symbol.iterator]()` 时返回一个新的迭代器：
-
-```js
-function* makeIterator() {
-  yield 1
-  yield 2
-}
-
-const it = makeIterator()
-
-for (const itItem of it) {
-  console.log(itItem)
-}
-
-console.log(it[Symbol.iterator]() === it) // true
-
-// 这个例子展示了生成器（迭代器）是可迭代对象，
-// 它有一个 [Symbol.iterator]() 方法返回 it（它自己），
-// 因此，it 对象只能迭代*一次*。
-
-// 如果将它的 [Symbol.iterator]() 方法改为一个返回新的迭代器/生成器对象的函数/生成器，
-// 它（it）就可以迭代多次了。
-
-it[Symbol.iterator] = function* () {
-  yield 2
-  yield 1
-}
-```
-
-#### 自定义的可迭代对象
-
-可以像这样实现自己的可迭代对象：
-
-```js
-const myIterable = {
-  *[Symbol.iterator]() {
-    yield 1
-    yield 2
-    yield 3
-  },
-}
-
-for (const value of myIterable) {
-  console.log(value)
-}
-// 1
-// 2
-// 3
-
-;[...myIterable] // [1, 2, 3]
-```
-
-#### 内置可迭代对象
-
-`String`、`Array`、`TypedArray`、`Map` 和 `Set` 都是内置可迭代对象，因为它们的原型对象都拥有一个 `Symbol.iterator` 方法。
-
-#### 用于可迭代对象的语法
-
-一些语句和表达式专用于可迭代对象，例如 `for...of` 循环、展开语法、`yield*` 和解构语法：
-
-```js
-for (const value of ['a', 'b', 'c']) {
-  console.log(value)
-}
-// "a"
-// "b"
-// "c"
-
-;[...'abc'] // ["a", "b", "c"]
-
-function* gen() {
-  yield* ['a', 'b', 'c']
-}
-
-gen().next() // { value: "a", done: false }
-
-;[a, b, c] = new Set(['a', 'b', 'c'])
-a // "a"
-```
-
-### 高级生成器
-
-生成器会**按需**计算它们 `yield` 的值，这使得它们能够高效地表示一个计算成本很高的序列，甚至是前文所示的一个无限序列。
-
-`next()` 方法也接受一个参数用于修改生成器内部状态。传递给 `next()` 的参数值会被 `yield` 接收。注意，传给**第一个** `next()` 的值会被忽略。
-
-下面的是斐波那契数列生成器，它使用了 `next(x)` 来重启序列：
-
-```js
-function* fibonacci() {
-  let current = 0
-  let next = 1
-  while (true) {
-    const reset = yield current
-    ;[current, next] = [next, next + current]
-    if (reset) {
-      current = 0
-      next = 1
-    }
-  }
-}
-
-const sequence = fibonacci()
-console.log(sequence.next().value) // 0
-console.log(sequence.next().value) // 1
-console.log(sequence.next().value) // 1
-console.log(sequence.next().value) // 2
-console.log(sequence.next().value) // 3
-console.log(sequence.next().value) // 5
-console.log(sequence.next().value) // 8
-console.log(sequence.next(true).value) // 0
-console.log(sequence.next().value) // 1
-console.log(sequence.next().value) // 1
-console.log(sequence.next().value) // 2
-```
-
-可以通过调用其 `throw()` 方法强制生成器抛出异常，并传递应该抛出的异常值。这个异常将从当前挂起的生成器的上下文中抛出，就好像当前挂起的 `yield` 是一个 `throw value` 语句。
-
-如果该异常没有在生成器内部被捕获，则它将通过 `throw()` 的调用向上传播，对 `next()` 的后续调用将导致 `done` 属性为 `true`。
-
-生成器的 `return()` 方法可返回给定的值并终结这个生成器。
-
 ## 总结
 
 - **基本语法**：语句用分号分隔，可以省略但建议保留；注释与 C++ 一致，不能嵌套块注释；块语句组合多条语句，`var` 不受块作用域限制。
-- **数据类型和变量**：8 种类型（7 种原始类型加 Object）；`typeof null === "object"`；动态类型会在运行时自动转换，`+` 遇到字符串就拼接，其余算术运算符倾向转数字；比较优先用 `===`。
-- **变量声明**：`var` 只有函数作用域并存在提升，`let`/`const` 是块级作用域并有暂时性死区；`const` 只禁止重新赋值，不禁止修改对象内容；严格模式把静默错误变成异常。
-- **字符串**：底层是 UTF-16 码元序列，长度是码元数而不一定是字符数；字符串不可变，所有方法都返回新字符串；模板字面量解决多行与插值。
-- **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`；空槽与 `undefined` 在迭代方法中的行为不同。
-- **对象**：属性名最终都会转成字符串或 Symbol；点号访问合法标识符，方括号访问动态键；`this` 在方法中指向调用对象；对象比较的是引用。
-- **条件判断**：`false`、`undefined`、`null`、`0`、`NaN`、`""` 是假值，其余包括对象都为真；`switch` 忘记 `break` 会继续执行下一个 `case`。
-- **循环**：`for`、`while`、`do...while` 决定循环的起止，`label` 配合 `break`/`continue` 控制多层嵌套；`for...in` 枚举键，`for...of` 迭代值。
-- **Map 和 Set**：按插入顺序迭代，`Map` 的键可以是任意类型，`Set` 天然去重；`WeakMap`/`WeakSet` 持有弱引用、不可枚举；键值相等使用 SameValueZero。
-- **iterable**：可迭代对象必须实现 `Symbol.iterator`，迭代器的 `next()` 返回 `{ value, done }`；生成器用 `function*` 与 `yield` 把状态维护交给引擎，并且可以表示无限序列。
+- **操作符**：赋值、比较、算术、逻辑、三元、逗号、一元和关系运算符；`&&`/`||` 返回操作数本身并短路，`??` 只处理 `null`/`undefined`，`?.` 在空值处短路。
+- **数据类型**：8 种类型（7 种原始类型加 Object）；`typeof null === "object"`；动态类型会在运行时自动转换。
+- **变量与作用域**：`var` 只有函数作用域并存在提升，`let`/`const` 是块级作用域并有暂时性死区；严格模式把静默错误变成异常。
+- **类型转换与相等**：`+` 遇到字符串就拼接，其余算术运算符倾向转数字；比较优先用 `===`，`Object.is()` 处理 `NaN` 和 `-0`。
+- **字符串**：底层是 UTF-16 码元序列，字符串不可变；模板字面量解决多行与插值。
+- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
+- **控制流**：`false`、`undefined`、`null`、`0`、`NaN`、`""` 是假值；`switch` 忘记 `break` 会继续执行；循环用 `label` 配合 `break`/`continue` 控制嵌套。
 
 ## 参考
 
 - [语法与类型](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Grammar_and_types)
+- [表达式与运算符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Expressions_and_operators)
 - [JavaScript 数据结构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Data_structures)
 - [相等比较和相同](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness)
 - [严格模式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode)
 - [数字与字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Numbers_and_strings)
-- [索引集合](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections)
-- [使用对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Working_with_objects)
-- [控制流与错误处理](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Control_flow_and_error_handling)
-- [循环与迭代](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Loops_and_iteration)
-- [带键的集合](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections)
-- [迭代器和生成器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_generators)
-- [迭代协议](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)

@@ -46,7 +46,7 @@ const items = computed<WidgetDlItem[]>(() => [
   },
   {
     label: '访客数',
-    value: 61 + exact(visitors.value),
+    value: 6 + exact(visitors.value),
   },
   {
     label: '访问量',
