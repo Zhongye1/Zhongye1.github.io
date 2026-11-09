@@ -1,11 +1,11 @@
 ---
 uuid: ea4836f0-dc58-11f1-b979-f5869f5b7987
-title: 2026-09-13-重学 JavaScript Vol.4 - 对象模型与标准库
+title: 2026-09-13-重学 JavaScript Vol.4 - 对象模型
 mathjax: true
 abbrlink: 50284
 published: 2026-09-13 10:34:56
 category: 前端
-description: JavaScript 对象模型与标准库：原型链、构造函数、class、继承、属性描述符、Proxy/Reflect、Date/RegExp/Math
+description: JavaScript 对象模型：原型链、构造函数、class、继承、属性描述符、Proxy/Reflect、Date/RegExp/Math
 cover: ''
 tags:
   - 前端

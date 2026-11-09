@@ -6,10 +6,10 @@ abbrlink: 33040
 published: 2025-11-23 01:59:24
 category: 笔记
 tags:
-    - 博客
-    - GitHub Actions
-    - Vite
-    - 部署
+  - 博客
+  - GitHub Actions
+  - Vite
+  - 部署
 ---
 
 主要是新创建前端项目后，如何通过 GitHub-Actions 实现每次 push 到 main 分支后，GitHub 自动构建 → 自动发布页面的操作
@@ -65,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

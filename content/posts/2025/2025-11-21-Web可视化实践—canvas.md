@@ -8,8 +8,8 @@ category: 笔记
 description: 本文主要从本文主要从 Faster、KonvaJS、LeaferJS 三个渲染引擎来介绍 Canvas ，作为对渲染层的入门。个渲染引擎来介绍 Canvas ，作为对渲染层的入门。
 cover: https://picx.zhimg.com/80/v2-029fc3ce7fddbf94c1f63091b6a89cbd_720w.webp
 tags:
-    - Canvas
-    - 前端
+  - Canvas
+  - 前端
 ---
 
 # 关于Canvas

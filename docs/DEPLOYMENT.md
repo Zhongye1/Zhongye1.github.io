@@ -7,20 +7,20 @@
 
 ## 1. 总览：什么部署在哪里
 
-| 组件 | 平台 | 线上地址 | 部署方式 |
-| --- | --- | --- | --- |
-| 博客前端（Nuxt 4 静态站） | Cloudflare Pages `blog-junce` | `blog.junce.net` | **自动**（push 到 main） |
-| 访客地图 API | Cloudflare Worker `blogsite-api` | `api.junce.net` | 手工 `wrangler deploy` |
-| 评论后端（Twikoo） | Cloudflare Worker `twikoo` | `twikoo.junce.net` | 手工 `wrangler deploy` |
-| 旧域名跳转壳 | GitHub Pages | `zhongye1.github.io` | **自动**（push 到 main） |
-| DNS | Cloudflare zone `junce.net` | — | 控制台 / API |
+| 组件                      | 平台                             | 线上地址             | 部署方式                 |
+| ------------------------- | -------------------------------- | -------------------- | ------------------------ |
+| 博客前端（Nuxt 4 静态站） | Cloudflare Pages `blog-junce`    | `blog.junce.net`     | **自动**（push 到 main） |
+| 访客地图 API              | Cloudflare Worker `blogsite-api` | `api.junce.net`      | 手工 `wrangler deploy`   |
+| 评论后端（Twikoo）        | Cloudflare Worker `twikoo`       | `twikoo.junce.net`   | 手工 `wrangler deploy`   |
+| 旧域名跳转壳              | GitHub Pages                     | `zhongye1.github.io` | **自动**（push 到 main） |
+| DNS                       | Cloudflare zone `junce.net`      | —                    | 控制台 / API             |
 
 数据层是两个 D1 库：
 
-| 库名 | 绑定的 Worker | database_id |
-| --- | --- | --- |
+| 库名              | 绑定的 Worker  | database_id                            |
+| ----------------- | -------------- | -------------------------------------- |
 | `blogroll-visits` | `blogsite-api` | `0df9dadc-95ed-42cf-8b7a-1f1533a7c6ab` |
-| `twikoo` | `twikoo` | `fe4acc03-ce27-4ca4-baf0-db28c6cbd411` |
+| `twikoo`          | `twikoo`       | `fe4acc03-ce27-4ca4-baf0-db28c6cbd411` |
 
 **只有前端有 CI。** 两个 Worker 至今是手工部署的 —— 改完 `worker/` 或 `worker-twikoo/`
 要在对应目录里自己跑 `pnpm deploy`。这是目前最大的自动化缺口。
@@ -91,9 +91,9 @@ pnpm lint         # oxlint
 
 ### 需要什么
 
-| 名称 | 存放位置 | 用途 |
-| --- | --- | --- |
-| `CLOUDFLARE_API_TOKEN` | 仓库 Secret | wrangler 认证 |
+| 名称                    | 存放位置      | 用途                                        |
+| ----------------------- | ------------- | ------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | 仓库 Secret   | wrangler 认证                               |
 | `CLOUDFLARE_ACCOUNT_ID` | 仓库 Variable | 指定账号 `e566905d03f0f6cb11b2f6c6fdb43ea9` |
 
 ```bash
@@ -105,11 +105,11 @@ gh variable set CLOUDFLARE_ACCOUNT_ID --body "<account_id>"
 
 Cloudflare 的凭据有前缀，**类型不同则认证方式完全不同**（[官方文档](https://developers.cloudflare.com/fundamentals/api/get-started/token-formats/)）：
 
-| 前缀 | 类型 | 能当 `CLOUDFLARE_API_TOKEN` 用吗 |
-| --- | --- | --- |
-| `cfk_` | Global API Key（账号**全权**） | ❌ 它走 `X-Auth-Key` + `X-Auth-Email`，不认 Bearer |
-| `cfut_` | User API Token | ✅ 正确选择 |
-| `cfat_` | Account API Token | ✅ 也可 |
+| 前缀    | 类型                           | 能当 `CLOUDFLARE_API_TOKEN` 用吗                   |
+| ------- | ------------------------------ | -------------------------------------------------- |
+| `cfk_`  | Global API Key（账号**全权**） | ❌ 它走 `X-Auth-Key` + `X-Auth-Email`，不认 Bearer |
+| `cfut_` | User API Token                 | ✅ 正确选择                                        |
+| `cfat_` | Account API Token              | ✅ 也可                                            |
 
 **这是本项目实际踩过的坑**：一开始拿了一把 `cfk_` 全局密钥，Bearer 请求全部返回
 `Invalid API Token`。而且就算它能用也不该用 —— 那是能删掉整个 Cloudflare 账号的凭据，
@@ -217,11 +217,11 @@ RSS 频道名、以及 `<link rel="alternate">` 的 title。**不要在别处硬
 
 `junce.net` 托管在 Cloudflare（zone id `f053a937d07cbd78031b133a8b4efa30`）。
 
-| 记录 | 指向 | 代理 |
-| --- | --- | --- |
-| `blog.junce.net` | `blog-junce.pages.dev` | 🟠 已代理 |
-| `api.junce.net` | Worker `blogsite-api` 的 custom domain | 🟠 已代理 |
-| `twikoo.junce.net` | Worker `twikoo` 的 custom domain | 🟠 已代理 |
+| 记录               | 指向                                   | 代理      |
+| ------------------ | -------------------------------------- | --------- |
+| `blog.junce.net`   | `blog-junce.pages.dev`                 | 🟠 已代理 |
+| `api.junce.net`    | Worker `blogsite-api` 的 custom domain | 🟠 已代理 |
+| `twikoo.junce.net` | Worker `twikoo` 的 custom domain       | 🟠 已代理 |
 
 `blog.junce.net` 是 CF Pages 项目的**自定义域**。切换托管方时要注意顺序：
 
@@ -264,16 +264,16 @@ git revert <bad_commit> && git push origin main   # CI 自动重新部署
 
 ## 9. 排查手册
 
-| 症状 | 先看哪 |
-| --- | --- |
-| CI 红在 **Install dependencies** | `workerd` 是否在 `allowBuilds` 里；`pnpm install --frozen-lockfile` 本地能否通过 |
-| CI 红在 **Deploy**，报 `pnpm exit code 1` | action 是否在试图装 wrangler（`✅ Using Wrangler` 才是走了已有依赖） |
+| 症状                                            | 先看哪                                                                                                          |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| CI 红在 **Install dependencies**                | `workerd` 是否在 `allowBuilds` 里；`pnpm install --frozen-lockfile` 本地能否通过                                |
+| CI 红在 **Deploy**，报 `pnpm exit code 1`       | action 是否在试图装 wrangler（`✅ Using Wrangler` 才是走了已有依赖）                                            |
 | CI 报 `necessary to set a CLOUDFLARE_API_TOKEN` | `gh secret list` 确认 secret 存在；注意 **Environment secret 不算数**，workflow 没声明对应 environment 就读不到 |
-| CI 报 `Authentication error` | token 是不是 `cfk_` 开头的全局密钥（不能用 Bearer） |
-| 页面 404 / 内容陈旧 | 确认部署的是哪个 Pages 项目（`wrangler pages deployment list --project-name blog-junce`） |
-| 本地 `find dist` 找不到文件 | `dist` 是符号链接，用 `find -L` 或直接看 `.output/public` |
-| `pnpm typecheck` 非零退出 | **已知既有问题**：`modules/toc/` 下 4 个报错（`Cannot find module '@nuxt/kit'` 等），与业务代码无关，尚未修 |
-| 构建输出上万条 Link Checker 警告 | 正常噪声，0 error，忽略 |
+| CI 报 `Authentication error`                    | token 是不是 `cfk_` 开头的全局密钥（不能用 Bearer）                                                             |
+| 页面 404 / 内容陈旧                             | 确认部署的是哪个 Pages 项目（`wrangler pages deployment list --project-name blog-junce`）                       |
+| 本地 `find dist` 找不到文件                     | `dist` 是符号链接，用 `find -L` 或直接看 `.output/public`                                                       |
+| `pnpm typecheck` 非零退出                       | **已知既有问题**：`modules/toc/` 下 4 个报错（`Cannot find module '@nuxt/kit'` 等），与业务代码无关，尚未修     |
+| 构建输出上万条 Link Checker 警告                | 正常噪声，0 error，忽略                                                                                         |
 
 诊断命令速查：
 

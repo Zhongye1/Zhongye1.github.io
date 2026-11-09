@@ -5,10 +5,10 @@ abbrlink: 18261
 published: 2025-04-03 14:26:34
 category: 笔记
 tags:
-    - 博客
-    - Hexo
-    - Gitalk
-    - 评论系统
+  - 博客
+  - Hexo
+  - Gitalk
+  - 评论系统
 ---
 
 ## hexo 集成 gitalk 时 Error: Validation Failed 问题

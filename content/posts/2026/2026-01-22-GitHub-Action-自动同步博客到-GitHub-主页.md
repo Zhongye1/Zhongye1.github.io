@@ -6,10 +6,10 @@ abbrlink: 18209
 published: 2026-01-22 16:31:47
 category: 笔记
 tags:
-    - 博客
-    - GitHub Actions
-    - RSS
-    - 自动化
+  - 博客
+  - GitHub Actions
+  - RSS
+  - 自动化
 ---
 
 只要博客支持 RSS 输出（通常为 rss.xml 或 atom.xml），通过使用 **blog-post-workflow** 这个 GitHub Action，即可实现每当博客更新时，GitHub 主页会自动抓取并生成文章列表，来展示开发者的活跃度与技术积累。
@@ -126,32 +126,32 @@ jobs:
 name: Latest blog posts
 
 on:
-    workflow_dispatch:
-    schedule:
-        - cron: "0 0 * * *"
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
-    update-readme-with-blog:
-        name: Update README with latest blog articles
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  update-readme-with-blog:
+    name: Update README with latest blog articles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Pull latest articles
-              uses: gautamkrishnar/blog-post-workflow@v1
-              with:
-                  feed_list: "https://zhongye1.github.io/Arknight-notes/rss.xml"
-                  max_post_count: 5
-                  # 日期格式（yyyy为年，MM为月，dd为日）
-                  date_format: "yyyy-mm-dd"
-                  # 显式指定变量，并加上 $newline 确保换行
-                  # 使用单引号包裹整个模板，防止 HTML 标签与 YAML 冲突
-                  template: '<tr><td>$title</td><td align="center">$date</td><td align="center"><a href="$url">点击阅读</a></td></tr>$newline'
-                  commit_message: "chore: update latest blog articles"
+      - name: Pull latest articles
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          feed_list: 'https://zhongye1.github.io/Arknight-notes/rss.xml'
+          max_post_count: 5
+          # 日期格式（yyyy为年，MM为月，dd为日）
+          date_format: 'yyyy-mm-dd'
+          # 显式指定变量，并加上 $newline 确保换行
+          # 使用单引号包裹整个模板，防止 HTML 标签与 YAML 冲突
+          template: '<tr><td>$title</td><td align="center">$date</td><td align="center"><a href="$url">点击阅读</a></td></tr>$newline'
+          commit_message: 'chore: update latest blog articles'
 ```
 
 主页README.md配置

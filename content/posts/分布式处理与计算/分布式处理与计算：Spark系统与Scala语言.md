@@ -8,10 +8,10 @@ category: 笔记
 description: Spark 核心组件、Scala 编程基础与 Word Count 实例
 cover: https://pic1.zhimg.com/70/v2-bf9881cd32c068bc1da7626ca8294e1c_1440w.avis?source=172ae18b&biz_tag=Post
 tags:
-    - 分布式处理与计算
-    - Spark
-    - Scala
-    - RDD
+  - 分布式处理与计算
+  - Spark
+  - Scala
+  - RDD
 ---
 
 # Spark系统与Scala语言
@@ -231,9 +231,9 @@ val f = (x: Double) => x * x                    // 匿名函数，f(2) = 4.0
 
 - 算术：`+ - * / %`；关系：`< > == != >= <=`；逻辑：`&& || !`；赋值：`= += -= *= /= %=`。
 - 特殊符号：
-    - `:::` 两个 List 之间连接
-    - `::` 元素与 List 之间连接
-    - `_` 在集合中代指每一个元素（通配符）
+  - `:::` 两个 List 之间连接
+  - `::` 元素与 List 之间连接
+  - `_` 在集合中代指每一个元素（通配符）
 
 ---
 
@@ -243,11 +243,11 @@ val f = (x: Double) => x * x                    // 匿名函数，f(2) = 4.0
 
 - RDD（Resilient Distributed Datasets，弹性分布式数据集）：一个提供了许多操作接口的数据集合，和一般数据集不同的是其**实际数据分布存储于一批机器**（内存或磁盘）中
 - RDD 上的两类操作：
-    - **转化 Transformation**：由原有 RDD 创建一个新的 RDD
-    - **行动 Action**：将计算结果返回给驱动器程序，或写入外部存储
+  - **转化 Transformation**：由原有 RDD 创建一个新的 RDD
+  - **行动 Action**：将计算结果返回给驱动器程序，或写入外部存储
 
-    map 函数：将数据集元素进行传递并产生新的RDD数据集的变换（转化）
-    reduce 函数：将汇总返回结果的一种行动（行动）
+  map 函数：将数据集元素进行传递并产生新的RDD数据集的变换（转化）
+  reduce 函数：将汇总返回结果的一种行动（行动）
 
 > **转化返回的是 RDD，行动返回的是其他数据类型**
 

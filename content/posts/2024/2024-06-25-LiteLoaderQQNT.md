@@ -3,17 +3,16 @@ uuid: 093d8792-1054-11f0-9848-0b39a1ee406d
 title: LiteLoaderQQNT
 mathjax: true
 abbrlink: 12035
-cover: "https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp"
+cover: 'https://pic2.zhimg.com/v2-f9301711f5a93d812954b0c703e0386d_b.webp'
 description: 为你的QQ添加各种插件，并实现动态背景、美化主题、增加功能等功能
 published: 2024-06-25 11:03:08
 category: 笔记
 tags:
-    - QQ
-    - 插件
-    - LiteLoader
-    - 美化
+  - QQ
+  - 插件
+  - LiteLoader
+  - 美化
 ---
-
 
 # LiteLoaderQQNT
 
@@ -44,21 +43,21 @@ link LiteLoaderQQNT 快速安装, https://github.com/Mzdyl/LiteLoaderQQNT_Instal
 
 你需要先下载 LiteLoaderQQNT 到任意位置，以下有两种方式
 
--   **通过 Release**
+- **通过 Release**
 
-    前往 LiteLoaderQQNT 仓库，在 Release 中 Latest 内，下载 `LiteLoaderQQNT.zip` 文件，将压缩包内 LiteLoaderQQNT 目录解压到任意位置
+  前往 LiteLoaderQQNT 仓库，在 Release 中 Latest 内，下载 `LiteLoaderQQNT.zip` 文件，将压缩包内 LiteLoaderQQNT 目录解压到任意位置
 
-    LiteLoaderQQNT：https://github.com/LiteLoaderQQNT/LiteLoaderQQNT
+  LiteLoaderQQNT：https://github.com/LiteLoaderQQNT/LiteLoaderQQNT
 
--   **通过 Clone**
+- **通过 Clone**
 
-    使用 Git 工具将 LiteLoaderQQNT 仓库 Clone 到本地任意位置
+  使用 Git 工具将 LiteLoaderQQNT 仓库 Clone 到本地任意位置
 
-    shell
+  shell
 
-    ```
-    git clone --depth 1 https://github.com/LiteLoaderQQNT/LiteLoaderQQNT.git
-    ```
+  ```
+  git clone --depth 1 https://github.com/LiteLoaderQQNT/LiteLoaderQQNT.git
+  ```
 
 找到 QQNT 安装目录，编辑 `resources\app\app_launcher\index.js` 文件，在最前端插入一行`require(String.raw`此处为你 LiteLoaderQQNT 目录路径`);`
 
@@ -71,8 +70,8 @@ require('./launcher.node').load('external_index', module);
 
 请确保拥有 QQNT 安装目录的读写权限！如果不想给予 QQNT 安装目录读写权限
 
--   按照下文 `存储位置` 一节进行设置
--   将 `LiteLoaderQQNT/src/preload.js` 复制到 `QQNT/resources/app/versions/此处为版本号/application/preload.js`
+- 按照下文 `存储位置` 一节进行设置
+- 将 `LiteLoaderQQNT/src/preload.js` 复制到 `QQNT/resources/app/versions/此处为版本号/application/preload.js`
 
 LiteLoaderQQNT 会在第二步骤的文件不一致或没有文件时自动复制，也就是说在更新本体后需再进行一次这步骤
 
@@ -100,15 +99,15 @@ LiteLoaderQQNT 会在第二步骤的文件不一致或没有文件时自动复�
 
 ## 功能
 
--   插件列表查看
--   插件检查更新
--   插件安装（支持镜像）
--   插件卸载
--   插件查找
+- 插件列表查看
+- 插件检查更新
+- 插件安装（支持镜像）
+- 插件卸载
+- 插件查找
 
 [![img](https://github.com/ltxhhz/LL-plugin-list-viewer/raw/main/imgs/1.png)](https://github.com/ltxhhz/LL-plugin-list-viewer/blob/main/imgs/1.png)
 
--   依赖查找
+- 依赖查找
 
 [![gif](https://github.com/ltxhhz/LL-plugin-list-viewer/raw/main/imgs/2.gif)](https://github.com/ltxhhz/LL-plugin-list-viewer/blob/main/imgs/2.gif)
 
@@ -176,32 +175,32 @@ LiteLoaderQQNt 官网下面已列出全部已收录插件，点击卡片即可�
 
 由于 Windows 系统平台 QQNT 被添加文件完整性验证，你需要额外步骤来解除限制,有下列四种方式：
 
--   **DLLHijackMethod**
+- **DLLHijackMethod**
 
-    在 Release 下载 dll 文件，重命名为 dbghelp.dll 放入 QQ.exe 同级目录下即可
-    https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/tree/DLLHijackMethod
+  在 Release 下载 dll 文件，重命名为 dbghelp.dll 放入 QQ.exe 同级目录下即可
+  https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch/tree/DLLHijackMethod
 
--   **QQNTFileVerifyPatch**
+- **QQNTFileVerifyPatch**
 
-    在 Release 下载 exe 文件，运行将弹出文件选择框，进入 QQNT 安装目录选择 QQ.exe 开始修补，每次更新都需要重新修补
-    https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch
+  在 Release 下载 exe 文件，运行将弹出文件选择框，进入 QQNT 安装目录选择 QQ.exe 开始修补，每次更新都需要重新修补
+  https://github.com/LiteLoaderQQNT/QQNTFileVerifyPatch
 
--   **PatcherNFixer**
+- **PatcherNFixer**
 
-    在 Release 下载 zip 文件，解压后运行 exe 将弹出图形化界面，根据软件界面提示选择相应选项与修补方式，每次更新都需要重新修补
-    https://github.com/xh321/LiteLoaderQQNT-PatcherNFixer
+  在 Release 下载 zip 文件，解压后运行 exe 将弹出图形化界面，根据软件界面提示选择相应选项与修补方式，每次更新都需要重新修补
+  https://github.com/xh321/LiteLoaderQQNT-PatcherNFixer
 
--   **V8Killer**
+- **V8Killer**
 
-    此方式目前过于麻烦，且需要自行寻找对应的 RVA 偏移量，只说明此方式的可行性，需自行探索使用方式
-    https://github.com/ShellWen/v8_killer
+  此方式目前过于麻烦，且需要自行寻找对应的 RVA 偏移量，只说明此方式的可行性，需自行探索使用方式
+  https://github.com/ShellWen/v8_killer
 
 ## 检查[](https://liteloaderqqnt.github.io/guide/install.html#检查)
 
 **按照上述教程完成安装后，有两种方法检查 LiteLoaderQQNT 是否成功安装**
 
--   运行 QQNT 并打开设置，查看左侧列表是否出现 `LiteLoaderQQNT` 选项
--   使用终端运行 QQNT 查看是否有 LiteLoaderQQNT 相关内容输出显示
+- 运行 QQNT 并打开设置，查看左侧列表是否出现 `LiteLoaderQQNT` 选项
+- 使用终端运行 QQNT 查看是否有 LiteLoaderQQNT 相关内容输出显示
 
 如果有显示，即安装成功，玩的开心！
 

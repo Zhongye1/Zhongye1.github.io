@@ -13,10 +13,10 @@
 
 `wrangler.jsonc` 里的 `name` 决定这次部署会不会覆盖线上跑着的东西：
 
-| 名字 | 后果 |
-|---|---|
-| `blogsite-api`（当前） | 全新 Worker，现有的 `blogroll` 静态站不受影响 |
-| `blogroll` | **直接覆盖**现有 Worker，`blogroll.junce.net` 会立刻变成这个 API，聚合站首页 404 |
+| 名字                   | 后果                                                                             |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `blogsite-api`（当前） | 全新 Worker，现有的 `blogroll` 静态站不受影响                                    |
+| `blogroll`             | **直接覆盖**现有 Worker，`blogroll.junce.net` 会立刻变成这个 API，聚合站首页 404 |
 
 要合二为一（一个 Worker 既托管静态站又提供 API），得先在 `wrangler.jsonc` 里加 `assets` 绑定指向聚合站的构建产物，再把 `name` 改成 `blogroll`。没做这步之前别改名字。
 
@@ -43,8 +43,11 @@ navigator.sendBeacon('https://<域名>/api/visit')
   "updatedAt": "2026-09-24T13:40:00Z",
   "days": 7,
   "totals": {
-    "visits": 398, "uniques": 210, "cities": 41, "countries": 9,
-    "byKind": { "human": 310, "proxy": 71, "crawler": 17 }
+    "visits": 398,
+    "uniques": 210,
+    "cities": 41,
+    "countries": 9,
+    "byKind": { "human": 310, "proxy": 71, "crawler": 17 },
   },
   "markers": [
     {
@@ -52,13 +55,17 @@ navigator.sendBeacon('https://<域名>/api/visit')
       "latitude": 32.06167,
       "longitude": 118.77778,
       "data": {
-        "kind": "visitor", "name": "Nanjing", "country": "CN",
-        "visits": 54, "uniques": 12, "weight": 54,
+        "kind": "visitor",
+        "name": "Nanjing",
+        "country": "CN",
+        "visits": 54,
+        "uniques": 12,
+        "weight": 54,
         "breakdown": { "human": 40, "proxy": 12, "crawler": 2 },
-        "dominantKind": "human"
-      }
-    }
-  ]
+        "dominantKind": "human",
+      },
+    },
+  ],
 }
 ```
 
@@ -85,10 +92,10 @@ navigator.sendBeacon('https://<域名>/api/visit')
 > ⚠️ **`visitors` 和 `/api/map` 的 `totals.uniques` 不是一个东西。**
 > 表的主键是 `(ip_hash, day)`，一行 = 一个访客的一天，所以：
 >
-> | 口径 | 算法 | 含义 |
-> |---|---|---|
+> | 口径                    | 算法                      | 含义                           |
+> | ----------------------- | ------------------------- | ------------------------------ |
 > | `stats.totals.visitors` | `COUNT(DISTINCT ip_hash)` | 独立访客，同一个人来 10 天算 1 |
-> | `map.totals.uniques` | `COUNT(*)` 逐城市求和 | 访客·天，同一个人来 10 天算 10 |
+> | `map.totals.uniques`    | `COUNT(*)` 逐城市求和     | 访客·天，同一个人来 10 天算 10 |
 >
 > 卡片上写「访客数」只能用前者。后者是地图的副产品（它要的是每个城市的点数），
 > 拿来当访客数会虚高。两者都含 proxy / crawler，与地图口径一致。
@@ -207,11 +214,11 @@ printf '%s' "$HASH" | npx wrangler secret put SELF_HASHES
 
 挂载前提（都已确认满足）：
 
-| 前提 | 现状 |
-|---|---|
-| 域名所在 zone 在同一账号下 | ✅ `junce.net` 就是 |
+| 前提                              | 现状                                      |
+| --------------------------------- | ----------------------------------------- |
+| 域名所在 zone 在同一账号下        | ✅ `junce.net` 就是                       |
 | 该主机名**没有**已存在的 DNS 记录 | ✅ `api.junce.net` 当前 A/AAAA/CNAME 全空 |
-| zone 状态正常 | ✅ active |
+| zone 状态正常                     | ✅ active                                 |
 
 > ❌ **不要用 `blogroll.junce.net`**：它现在绑在旧的 `blogroll` Worker 上（给聚合站提供静态页）。
 > 同一个主机名只能属于一个 Worker，硬改会让聚合站下线。
@@ -243,7 +250,11 @@ CORS 正确回 `blog.junce.net`，`POST /api/visit` 返回 **204**。
 // app/site.config.ts
 export const visitorApi = {
   base: 'https://api.junce.net',
-  ranges: [ { value: 7, label: '7天' }, { value: 30, label: '30天' }, { value: 0, label: '全部' } ],
+  ranges: [
+    { value: 7, label: '7天' },
+    { value: 30, label: '30天' },
+    { value: 0, label: '全部' },
+  ],
 }
 ```
 

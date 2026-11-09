@@ -4,12 +4,11 @@ abbrlink: 39fce9a0
 date: 2023-10-21 11:27:06
 category: 工具
 tags:
-    - Quadim
-    - 图像处理
-    - 四叉树
-    - Rust
+  - Quadim
+  - 图像处理
+  - 四叉树
+  - Rust
 ---
-
 
 # Quadim
 
@@ -99,7 +98,7 @@ quadim E:\TESTRANGE\pic\121\out --ratio 24:25 --depth 6 --shape circle --bg-colo
 原图
 <!-- 图片已丢失: 1.jpg -->
 
-都已经包装好了。不过需要注意的是，**目前并不提供稳定性保证**。*（因为我不知道该怎么保证 (○｀ 3′○)）*
+都已经包装好了。不过需要注意的是，**目前并不提供稳定性保证**。_（因为我不知道该怎么保证 (○｀ 3′○)）_
 
 [文档](https://docs.rs/quadim)……凑合着看看吧。注意`analyze()`和`render()`这俩函数，它们即是一切。
 
@@ -109,7 +108,7 @@ quadim E:\TESTRANGE\pic\121\out --ratio 24:25 --depth 6 --shape circle --bg-colo
 - 以 RGBA-8 格式处理图像。
 - 合并测试在 YCbCr 而非 RGB 空间。
 - 由于没有抗锯齿，因此在提供`--shape rect --border-width N`，`(N > 0)`渲染参数时，实际上只会绘制左侧和上侧的边框。在指定较大的`border_width`以及突兀的`border_color`时会更加明显。
-- 对于颜色参数：你可以传入`DarkSlateGray`、`hsla(168, 100%, 50%, 1)`，等等所有CSS里能写的颜色。*（感谢 [csscolorparser](https://github.com/mazznoer/csscolorparser-rs)）*
+- 对于颜色参数：你可以传入`DarkSlateGray`、`hsla(168, 100%, 50%, 1)`，等等所有CSS里能写的颜色。_（感谢 [csscolorparser](https://github.com/mazznoer/csscolorparser-rs)）_
 
 ## 画饼
 
@@ -122,36 +121,36 @@ quadim E:\TESTRANGE\pic\121\out --ratio 24:25 --depth 6 --shape circle --bg-colo
 0. 使用 [clap](https://github.com/clap-rs/clap) 解析命令行输入；使用 [src-dst-clarifier](https:github.com/eternal-io/src-dst-clarifier) 来处理源到目标文件的映射；使用 [threadpool](https://github.com/rust-threadpool/rust-threadpool) 进行并行处理。
 
 1. Analyze 阶段
-   
+
    1. 根据`GenericParams::slicing_ratio`将图像划分成一个个子块。通常需要选择正确的比例来让子块保持正方形，比如`-r 16:9`。
-   
+
    2. 对每个子块，根据`GenericParams::max_depth`深度优先地遍历四叉树。（存在一行代码限制了真正的最大深度，以保证子图像的边长始终大于零像素）
-   
+
    3. 尝试合并所有子块。
-      
-       能合并的情况有两种：
-      
+
+      能合并的情况有两种：
+
       1. 抵达了最大深度，则这块区域的所有像素始终被合并，计算平均值并缓存。
-      
+
       2. 检查自身的四个子块**左上角**的四个像素，计算它们的标准差或是极差（根据`AnalyzeParams::merge_method`）并与`AnalyzeParams::thres_`进行比较，若认为波动程度小则允许合并。然后再计算平均值并缓存。
-         
+
          不能合并的情况有两种：
-      
+
       3. 情况二的反相。
-      
+
       4. 子块的子块的子块……不能合并。
-   
+
    4. 额外的数据结构`[CanvasPixel]`缓存“颜色平均值”和“该不该合并”。
-      
-       （像素颜色平均值储存在相当于子块**左上角**的位置，通过右移可以很容易地寻址。`[CanvasPixel]`本身是一维的，但被抽象成与图像相同的大小，这就是为什么图像的像素数不能大于缓存的长度。）
-   
+
+      （像素颜色平均值储存在相当于子块**左上角**的位置，通过右移可以很容易地寻址。`[CanvasPixel]`本身是一维的，但被抽象成与图像相同的大小，这就是为什么图像的像素数不能大于缓存的长度。）
+
    5. 遍历完成后，四叉树信息已经被完整记录在缓存中了。由于没有任何数据被重复计算，因此 Quadim 十分高效。
 
 2. Render 阶段
-   
-    这回是广度优先遍历四叉树了。简单来说就是把“颜色”从四叉树中取出并用“画笔”（trait `Brush`）画到原图上。
-   
-    由于新图的大小保证与原图相同，因此可以在原始图像缓冲区上就地操作，不需要额外的内存分配，这是 Quadim 保持高效的另一个要素。
+
+   这回是广度优先遍历四叉树了。简单来说就是把“颜色”从四叉树中取出并用“画笔”（trait `Brush`）画到原图上。
+
+   由于新图的大小保证与原图相同，因此可以在原始图像缓冲区上就地操作，不需要额外的内存分配，这是 Quadim 保持高效的另一个要素。
 
 ## 已知问题
 

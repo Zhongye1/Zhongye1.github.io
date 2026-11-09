@@ -6,11 +6,11 @@ mathjax: true
 published: 2026-06-13 21:06:20
 category: 笔记
 description: 随着llm的发展，程序员的角色正在发生转变：不再是逐行敲代码的执行者，而是负责给出方向、保障代码质量、指挥模型干活的 "Builder"
-cover: "https://picx.zhimg.com/80/v2-d775deb465a9936f4e7b3f0098982c3b_720w.webp?source=d16d100b"
+cover: 'https://picx.zhimg.com/80/v2-d775deb465a9936f4e7b3f0098982c3b_720w.webp?source=d16d100b'
 tags:
-    - 上下文工程
-    - Agent
-    - RAG
+  - 上下文工程
+  - Agent
+  - RAG
 ---
 
 # 从上下文工程到 Agent Harness Engineering
@@ -280,13 +280,13 @@ Agent "请把我们关于支付模块迁移的讨论，总结成 snapshot，写�
 
 ```json
 {
-    "ok": false,
-    "error_type": "SyntaxError",
-    "file": "src/components/Button.tsx",
-    "line": 42,
-    "column": 13,
-    "message": "Unexpected token '}'",
-    "suggestion": "Check for missing semicolon on line 41"
+  "ok": false,
+  "error_type": "SyntaxError",
+  "file": "src/components/Button.tsx",
+  "line": 42,
+  "column": 13,
+  "message": "Unexpected token '}'",
+  "suggestion": "Check for missing semicolon on line 41"
 }
 ```
 
@@ -428,77 +428,77 @@ Skill 不是一个缩小版的 MCP 工具，而是一整个可以执行的文件
 
 ```yaml
 # 项目基本信息
-name: "Snake Game"
-version: "1.0.0"
-author: "auto-generated via Agent + Human review"
+name: 'Snake Game'
+version: '1.0.0'
+author: 'auto-generated via Agent + Human review'
 
 # 技术选型（消除 Agent 猜测空间）
-project_type: "web"
-language: "TypeScript"
-framework: "React"
-rendering: "Canvas 2D"
-build_tool: "Vite"
-package_manager: "pnpm"
+project_type: 'web'
+language: 'TypeScript'
+framework: 'React'
+rendering: 'Canvas 2D'
+build_tool: 'Vite'
+package_manager: 'pnpm'
 
 # 游戏配置
 grid:
-    rows: 20
-    cols: 20
-    cell_size_px: 25
+  rows: 20
+  cols: 20
+  cell_size_px: 25
 
 # 操控方式
-control_scheme: "WASD" # 备选: "arrow_keys" | "swipe" (mobile)
+control_scheme: 'WASD' # 备选: "arrow_keys" | "swipe" (mobile)
 touch_support: false
 
 # 游戏机制
 speed:
-    initial: "medium" # 初始速度
-    acceleration: true # 是否随分数加速
-    max_speed_multiplier: 2.5 # 最大加速倍率
+  initial: 'medium' # 初始速度
+  acceleration: true # 是否随分数加速
+  max_speed_multiplier: 2.5 # 最大加速倍率
 
 # 功能清单（每一项都是明确的 Yes/No）
 features:
-    - id: "score-board"
-      description: "右上角实时显示当前分数和历史最高分"
-      priority: "P0"
-    - id: "pause"
-      description: "按 Space 暂停/恢复，暂停时显示半透明遮罩"
-      priority: "P0"
-    - id: "auto-restart"
-      description: "死亡后 3 秒自动重新开始，显示最终分数"
-      priority: "P0"
-    - id: "food-types"
-      description: "普通食物 +1 分，金色食物 +5 分（10% 概率刷新）"
-      priority: "P1"
-    - id: "wall-mode"
-      description: "碰墙死亡（非穿越模式）"
-      priority: "P0"
+  - id: 'score-board'
+    description: '右上角实时显示当前分数和历史最高分'
+    priority: 'P0'
+  - id: 'pause'
+    description: '按 Space 暂停/恢复，暂停时显示半透明遮罩'
+    priority: 'P0'
+  - id: 'auto-restart'
+    description: '死亡后 3 秒自动重新开始，显示最终分数'
+    priority: 'P0'
+  - id: 'food-types'
+    description: '普通食物 +1 分，金色食物 +5 分（10% 概率刷新）'
+    priority: 'P1'
+  - id: 'wall-mode'
+    description: '碰墙死亡（非穿越模式）'
+    priority: 'P0'
 
 # 验证标准（Agent 自动化测试的依据）
 success_criteria:
-    - "蛇能正常移动，方向切换无延迟"
-    - "吃到食物后蛇身增长 1 格"
-    - "碰墙或咬到自己时游戏结束"
-    - "分数正确累加并持久化到 localStorage"
-    - "暂停/恢复功能正常"
-    - "Canvas 在 60fps 下无明显卡顿"
+  - '蛇能正常移动，方向切换无延迟'
+  - '吃到食物后蛇身增长 1 格'
+  - '碰墙或咬到自己时游戏结束'
+  - '分数正确累加并持久化到 localStorage'
+  - '暂停/恢复功能正常'
+  - 'Canvas 在 60fps 下无明显卡顿'
 
 # 不做的事情（明确边界，防止 Agent 过度发挥）
 out_of_scope:
-    - "多人模式"
-    - "关卡系统"
-    - "皮肤商店"
-    - "移动端适配"
-    - "音效"
+  - '多人模式'
+  - '关卡系统'
+  - '皮肤商店'
+  - '移动端适配'
+  - '音效'
 
 # 目录结构约定
 directory_structure:
-    src/: "源代码"
-    src/components/: "React 组件"
-    src/game/: "游戏核心逻辑（纯函数，不依赖 React）"
-    src/hooks/: "自定义 Hooks"
-    src/types/: "TypeScript 类型定义"
-    tests/: "Vitest 单元测试"
+  src/: '源代码'
+  src/components/: 'React 组件'
+  src/game/: '游戏核心逻辑（纯函数，不依赖 React）'
+  src/hooks/: '自定义 Hooks'
+  src/types/: 'TypeScript 类型定义'
+  tests/: 'Vitest 单元测试'
 ```
 
 有了这份 Spec，后续所有任务都指向它。每次构造 Prompt 时，Agent 都会把 Spec 读进来当作约束：

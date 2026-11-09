@@ -6,13 +6,14 @@ abbrlink: 7505
 published: 2026-03-01 20:55:31
 category: 工具
 tags:
-    - Docker
-    - WSL
-    - Windows
-    - 安装
+  - Docker
+  - WSL
+  - Windows
+  - 安装
 ---
 
 Docker是一个开源的容器平台，它允许开发者将应用程序及其依赖项打包到一个轻量级、可移植的容器中。
+
 ### 第一步：系统准备
 
 ### 1.1 检查系统环境

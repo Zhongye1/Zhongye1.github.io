@@ -1,11 +1,11 @@
 ---
 uuid: 7262d7c0-dc54-11f1-af3c-7b4438dbe452
-title: 2026-09-12-重学 JavaScript Vol.3 - 函数与闭包
+title: 2026-09-12-重学 JavaScript Vol.3 - 函数
 mathjax: true
 abbrlink: 47930
 published: 2026-09-12 10:34:56
 category: 前端
-description: JavaScript 函数与闭包：函数定义与参数、作用域链、闭包、this 绑定规则、高阶函数与生成器
+description: JavaScript 函数、作用域链、闭包、this 绑定规则、高阶函数与生成器
 cover: ''
 tags:
   - 前端

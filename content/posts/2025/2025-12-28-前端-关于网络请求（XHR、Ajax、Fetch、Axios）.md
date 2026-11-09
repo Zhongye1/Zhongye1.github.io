@@ -6,8 +6,8 @@ abbrlink: 61262
 published: 2025-10-28 15:48:46
 category: 笔记
 tags:
-    - 前端
-    - Axios
+  - 前端
+  - Axios
 ---
 
 # XHR、Ajax、Fetch、Axios
@@ -53,62 +53,62 @@ XMLHttpRequest 存在一些缺点：
 1. 创建`XMLHttpRequest`对象：
 
 ```javascript
-let xhr = new XMLHttpRequest();
+let xhr = new XMLHttpRequest()
 ```
 
 2. 设置请求参数：
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true);
+xhr.open('GET', 'https://example.com/api/data', true)
 ```
 
 3. 设置请求头（可选）：
 
 ```javascript
-xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader('Content-Type', 'application/json')
 ```
 
 4. 监听状态变化：
 
 ```javascript
 xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            // 请求成功，处理响应
-            console.log(xhr.responseText);
-        } else {
-            // 请求失败
-            console.error("请求失败");
-        }
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      // 请求成功，处理响应
+      console.log(xhr.responseText)
+    } else {
+      // 请求失败
+      console.error('请求失败')
     }
-};
+  }
+}
 ```
 
 5. 发送请求：
 
 ```javascript
-xhr.send();
+xhr.send()
 ```
 
 完整代码如下：
 
 ```javascript
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "https://api.example.com/data", true);
+var xhr = new XMLHttpRequest()
+xhr.open('GET', 'https://api.example.com/data', true)
 
 xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            // 请求成功，处理响应
-            console.log(xhr.responseText);
-        } else {
-            // 请求失败
-            console.error("请求失败");
-        }
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      // 请求成功，处理响应
+      console.log(xhr.responseText)
+    } else {
+      // 请求失败
+      console.error('请求失败')
     }
-};
+  }
+}
 
-xhr.send();
+xhr.send()
 ```
 
 这里创建了一个`XMLHttpRequest`对象，并使用`open()`方法设置了一个GET请求类型和URL。然后，通过监听`onreadystatechange`事件来判断请求的状态并处理响应。当`readyState`为4时，表示请求已完成，此时可以通过`status`属性判断请求是否成功（200表示成功）。如果成功，可以通过`responseText`属性获取服务器返回的数据进行处理。如果失败，将到控制台输出错误信息。
@@ -120,37 +120,37 @@ XMLHttpRequest 的 `open()` 方法用于初始化一个请求。`open()` 方法�
 1. **method**: 表示请求的 HTTP 方法，例如 GET、POST、PUT 等。
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true);
+xhr.open('GET', 'https://example.com/api/data', true)
 ```
 
 2. **url**: 表示请求的 URL 地址。
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true);
+xhr.open('GET', 'https://example.com/api/data', true)
 ```
 
 3. **async**: 表示请求是否异步执行，即是否使用异步模式。默认为 `true`，表示异步执行；f`alse` 表示同步执行。
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true);
+xhr.open('GET', 'https://example.com/api/data', true)
 ```
 
 4. **username** (可选): 表示用于进行 HTTP 认证的用户名。
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true, "username");
+xhr.open('GET', 'https://example.com/api/data', true, 'username')
 ```
 
 5. **password** (可选): 表示用于进行 HTTP 认证的密码。
 
 ```javascript
-xhr.open("GET", "https://example.com/api/data", true, "username", "password");
+xhr.open('GET', 'https://example.com/api/data', true, 'username', 'password')
 ```
 
 综合起来，`open()` 方法的完整语法如下：
 
 ```javascript
-xhr.open(method, url, async, username, password);
+xhr.open(method, url, async, username, password)
 ```
 
 ### 请求头和响应头
@@ -158,8 +158,8 @@ xhr.open(method, url, async, username, password);
 可以使用 `setRequestHeader()` 方法设置 XMLHttpRequest 的请求头。这个方法接受两个参数：头字段的名称和值。
 
 ```javascript
-xhr.setRequestHeader("Content-Type", "application/json");
-xhr.setRequestHeader("Authorization", "Bearer token123");
+xhr.setRequestHeader('Content-Type', 'application/json')
+xhr.setRequestHeader('Authorization', 'Bearer token123')
 ```
 
 这里使用 `setRequestHeader()` 方法设置了两个请求头：`Content-Type` 和 `Authorization`。第一个参数是头字段的名称，第二个参数是头字段的值。
@@ -169,7 +169,7 @@ xhr.setRequestHeader("Authorization", "Bearer token123");
 - `getResponseHeader()`：通过指定头字段的名称，可以获取指定的响应头字段的值。
 
 ```javascript
-const contentType = xhr.getResponseHeader("Content-Type");
+const contentType = xhr.getResponseHeader('Content-Type')
 ```
 
 这里使用 `getResponseHeader()` 方法获取了名为 `Content-Type`的响应头字段的值。
@@ -177,7 +177,7 @@ const contentType = xhr.getResponseHeader("Content-Type");
 - `getAllResponseHeaders()`：该方法返回一个包含所有响应头信息的字符串。
 
 ```javascript
-const headers = xhr.getAllResponseHeaders();
+const headers = xhr.getAllResponseHeaders()
 ```
 
 这里使用 `getAllResponseHeaders()` 方法获取了所有响应头信息，并将其存储在名为 `headers` 的变量中。
@@ -238,51 +238,51 @@ XMLHttpRequest (XHR) 对象具有以下常用的事件属性：
 
 ```javascript
 xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-        // 请求已完成
-        if (xhr.status === 200) {
-            // 请求成功
-        } else {
-            // 请求失败
-        }
+  if (xhr.readyState === 4) {
+    // 请求已完成
+    if (xhr.status === 200) {
+      // 请求成功
     } else {
-        // 请求进行中
+      // 请求失败
     }
-};
+  } else {
+    // 请求进行中
+  }
+}
 ```
 
 2. `onload:` 当请求成功完成并且响应数据完全加载时触发该事件。可以使用 `xhr.onload` 属性来指定处理成功加载的回调函数。通常在这个事件中获取和处理响应数据。
 
 ```javascript
 xhr.onload = () => {
-    // 获取和处理响应数据
-    const responseData = JSON.parse(xhr.responseText);
-    // 其他操作...
-};
+  // 获取和处理响应数据
+  const responseData = JSON.parse(xhr.responseText)
+  // 其他操作...
+}
 ```
 
 3. `onerror`: 当请求发生错误时触发该事件。可以使用 `xhr.onerror` 属性来指定处理错误的回调函数。常见的错误包括网络错误、无法完成请求等。
 
 ```javascript
 xhr.onerror = () => {
-    // 处理错误逻辑
-};
+  // 处理错误逻辑
+}
 ```
 
 4. `onprogress`: 在数据传输过程中持续触发，用于追踪请求的进度。可以使用 `xhr.onprogress` 属性来指定处理进度的回调函数。
 
 ```javascript
 xhr.onprogress = (event) => {
-    // 处理进度逻辑
-};
+  // 处理进度逻辑
+}
 ```
 
 5. `ontimeout`： 当请求超时时触发该事件。可以使用 `xhr.ontimeout` 属性来指定处理超时的回调函数。
 
 ```javascript
 xhr.ontimeout = () => {
-    // 处理超时逻辑
-};
+  // 处理超时逻辑
+}
 ```
 
 ### responseType
@@ -294,37 +294,37 @@ responseType 是 XMLHttpRequest 对象的属性，用于指定响应的数据类
 1. **"" (默认值)**: 表示响应的数据类型是字符串。
 
 ```javascript
-xhr.responseType = "";
+xhr.responseType = ''
 ```
 
 2. **"text"**: 表示响应的数据类型是字符串。
 
 ```javascript
-xhr.responseType = "text";
+xhr.responseType = 'text'
 ```
 
 3. **"json"**: 表示响应的数据类型是 JSON 对象，会自动将响应数据解析为 JavaScript 对象。
 
 ```javascript
-xhr.responseType = "json";
+xhr.responseType = 'json'
 ```
 
 4. **"document"**: 表示响应的数据类型是 XML 文档对象，会自动将响应数据解析为 XML 文档对象。
 
 ```javascript
-xhr.responseType = "document";
+xhr.responseType = 'document'
 ```
 
 5. **"arraybuffer"**: 表示响应的数据类型是 `ArrayBuffer` 对象，适用于二进制数据的传输和处理。
 
 ```javascript
-xhr.responseType = "arraybuffer";
+xhr.responseType = 'arraybuffer'
 ```
 
 6. **"blob"**: 表示响应的数据类型是 Blob 对象，适用于文件下载等场景。
 
 ```javascript
-xhr.responseType = "blob";
+xhr.responseType = 'blob'
 ```
 
 通过设置不同的 `responseType` 值，可以根据需要获取不同类型的响应数据。注意，在设置 `responseType` 之前，最好在调用 `open` 方法之后、发送请求之前设置，以确保设置生效。
@@ -341,25 +341,25 @@ Ajax 是一种使用浏览器提供的 XMLHttpRequest 对象实现的技术，�
 
 ```javascript
 // 创建 XMLHttpRequest 对象
-const xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest()
 
 // 指定请求的方法和 URL
-xhr.open("GET", "api_url", true); // 第三个参数 true 表示异步请求
+xhr.open('GET', 'api_url', true) // 第三个参数 true 表示异步请求
 
 // 设置请求头（如果需要）
-xhr.setRequestHeader("Content-Type", "application/json"); // 根据实际需求设置请求头
+xhr.setRequestHeader('Content-Type', 'application/json') // 根据实际需求设置请求头
 
 // 注册一个回调函数来处理响应
 xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText); // 处理响应数据
-        // 在这里执行相应的操作
-        console.log(response);
-    }
-};
+  if (xhr.readyState === 4 && xhr.status === 200) {
+    const response = JSON.parse(xhr.responseText) // 处理响应数据
+    // 在这里执行相应的操作
+    console.log(response)
+  }
+}
 
 // 发送请求
-xhr.send();
+xhr.send()
 ```
 
 虽然 AJAX 是一种强大的技术，但相对于 Axios 和 Fetch API，它有以下一些缺点：
@@ -399,12 +399,12 @@ Fetch API 提供了一个全局的 `fetch()` 方法，该方法提供了一种�
 
 ```javascript
 fetch(url, options)
-    .then((response) => {
-        // 在这里处理响应
-    })
-    .catch((error) => {
-        // 在这里处理错误
-    });
+  .then((response) => {
+    // 在这里处理响应
+  })
+  .catch((error) => {
+    // 在这里处理错误
+  })
 ```
 
 这里有两个参数：
@@ -464,35 +464,35 @@ fetch(url, options)
 
 ```javascript
 fetch(url)
-    .then((response) => {
-        // 检查响应状态码
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        // 定义一个响应类型与解析方法的映射关系
-        const responseTypes = new Map([
-            ["json", () => response.json()],
-            ["text", () => response.text()],
-            ["formData", () => response.formData()],
-            ["blob", () => response.blob()],
-            ["arrayBuffer", () => response.arrayBuffer()],
-        ]);
-        // 根据响应类型选择相应的解析方法
-        const parser = responseTypes.get(response.type);
-        if (parser) {
-            return parser();
-        } else {
-            throw new Error("Unsupported response type");
-        }
-    })
-    .then((data) => {
-        // 处理数据
-        console.log(data);
-    })
-    .catch((error) => {
-        // 处理错误情况
-        console.error("Error:", error);
-    });
+  .then((response) => {
+    // 检查响应状态码
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    // 定义一个响应类型与解析方法的映射关系
+    const responseTypes = new Map([
+      ['json', () => response.json()],
+      ['text', () => response.text()],
+      ['formData', () => response.formData()],
+      ['blob', () => response.blob()],
+      ['arrayBuffer', () => response.arrayBuffer()],
+    ])
+    // 根据响应类型选择相应的解析方法
+    const parser = responseTypes.get(response.type)
+    if (parser) {
+      return parser()
+    } else {
+      throw new Error('Unsupported response type')
+    }
+  })
+  .then((data) => {
+    // 处理数据
+    console.log(data)
+  })
+  .catch((error) => {
+    // 处理错误情况
+    console.error('Error:', error)
+  })
 ```
 
 `Response` 对象提供了 5 个方法，用于从 HTTP 响应中获取不同类型的数据：
@@ -518,18 +518,18 @@ fetch 函数的请求头包含在发起 HTTP 请求时发送给服务器的信�
 
 ```javascript
 fetch(url, {
-    method: "GET",
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer token123",
-    },
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer token123',
+  },
 })
-    .then((response) => {
-        // 处理响应
-    })
-    .catch((error) => {
-        // 处理错误
-    });
+  .then((response) => {
+    // 处理响应
+  })
+  .catch((error) => {
+    // 处理错误
+  })
 ```
 
 响应头是服务器在响应 HTTP 请求时发送给客户端的头部信息。可以通过 `Response` 对象的 `headers` 属性访问响应头。常见的响应头字段包括：
@@ -543,13 +543,13 @@ fetch(url, {
 
 ```javascript
 fetch(url)
-    .then((response) => {
-        const contentType = response.headers.get("Content-Type");
-        // 其他处理逻辑
-    })
-    .catch((error) => {
-        // 处理错误
-    });
+  .then((response) => {
+    const contentType = response.headers.get('Content-Type')
+    // 其他处理逻辑
+  })
+  .catch((error) => {
+    // 处理错误
+  })
 ```
 
 ### 错误处理
@@ -558,20 +558,20 @@ fetch(url)
 
 ```javascript
 async function fetchData() {
-    try {
-        const response = await fetch("https://api.example.com/data");
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data); // 处理解析后的数据
-        } else {
-            throw new Error("请求失败");
-        }
-    } catch (error) {
-        console.log(error); // 处理错误
+  try {
+    const response = await fetch('https://api.example.com/data')
+    if (response.ok) {
+      const data = await response.json()
+      console.log(data) // 处理解析后的数据
+    } else {
+      throw new Error('请求失败')
     }
+  } catch (error) {
+    console.log(error) // 处理错误
+  }
 }
 
-fetchData();
+fetchData()
 ```
 
 ### 取消请求
@@ -582,24 +582,24 @@ fetchData();
 
 ```javascript
 // 创建 AbortController 和关联的 signal
-const abortController = new AbortController();
-const signal = abortController.signal;
+const abortController = new AbortController()
+const signal = abortController.signal
 
 // 发起 Fetch 请求，并将 signal 传递给 fetch 函数
 fetch(url, { signal })
-    .then((response) => {
-        // 处理响应
-    })
-    .catch((error) => {
-        if (error.name === "AbortError") {
-            // 请求已被取消
-        } else {
-            // 处理其他错误
-        }
-    });
+  .then((response) => {
+    // 处理响应
+  })
+  .catch((error) => {
+    if (error.name === 'AbortError') {
+      // 请求已被取消
+    } else {
+      // 处理其他错误
+    }
+  })
 
 // 当需要取消请求时，调用 abort() 方法
-abortController.abort();
+abortController.abort()
 ```
 
 ## Axios
@@ -631,15 +631,15 @@ yarn add axios
 
 ```javascript
 axios
-    .get("https://api.example.com/data")
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理错误
-        console.error(error);
-    });
+  .get('https://api.example.com/data')
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理错误
+    console.error(error)
+  })
 ```
 
 这里使用 `axios.get` 方法发起了一个 GET 请求，并将请求的 URL 作为参数传递给该方法。然后使用 Promise 的 `.then` 方法处理成功响应，并通过 `response.data` 获取响应数据。如果请求失败，可以通过 Promise 的 `.catch` 方法捕获错误。
@@ -661,19 +661,19 @@ axios 支持通过简写方式来执行不同类型的请求：
 
 ```javascript
 const options = {
-    headers: { "X-Custom-Header": "value" },
-};
+  headers: { 'X-Custom-Header': 'value' },
+}
 
 axios
-    .post("/save", { a: 10 }, options)
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理错误
-        console.error(error);
-    });
+  .post('/save', { a: 10 }, options)
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理错误
+    console.error(error)
+  })
 ```
 
 当作为第二个参数传递给 `axios.post` 函数时，Axios 会自动将 JavaScript 对象序列化为 JSON。 这样就无需将 POST 正文序列化为 JSON。Axios 还会自动将 `Content-Type` 请求头设置为 `application/json`
@@ -683,26 +683,26 @@ axios
 在 Axios 中，可以使用 `axios.all` 和 `axios.spread` 来处理多个并发的请求：
 
 ```javascript
-const axios = require("axios");
+const axios = require('axios')
 
 // 创建多个请求
-const request1 = axios.get("https://api.example.com/data1");
-const request2 = axios.get("https://api.example.com/data2");
+const request1 = axios.get('https://api.example.com/data1')
+const request2 = axios.get('https://api.example.com/data2')
 
 // 并发发送多个请求
 axios
-    .all([request1, request2])
-    .then(
-        axios.spread((response1, response2) => {
-            // 处理各个请求的响应
-            console.log(response1.data);
-            console.log(response2.data);
-        }),
-    )
-    .catch((error) => {
-        // 处理错误
-        console.error(error);
-    });
+  .all([request1, request2])
+  .then(
+    axios.spread((response1, response2) => {
+      // 处理各个请求的响应
+      console.log(response1.data)
+      console.log(response2.data)
+    }),
+  )
+  .catch((error) => {
+    // 处理错误
+    console.error(error)
+  })
 ```
 
 可以看到，在 `.then` 方法中使用了 `axios.spread` 函数将多个请求的响应结果进行解构，通过多个参数分别接收各个请求的响应。可以根据实际情况命名这些参数，并通过 `response1.data`、r`esponse2.data` 等方式获取各个请求的响应数据。
@@ -715,33 +715,33 @@ tran`sformRequest` 函数接收两个参数：`requestData` 和 `requestHeaders`
 
 ```javascript
 axios({
-    url: "https://api.example.com/data",
-    method: "post",
-    data: {
-        id: 12345,
-        name: "John Doe",
-    },
-    transformRequest: (data, headers) => {
-        // 对请求数据进行转换和处理
-        const modifiedData = { ...data }; // 复制原始数据
+  url: 'https://api.example.com/data',
+  method: 'post',
+  data: {
+    id: 12345,
+    name: 'John Doe',
+  },
+  transformRequest: (data, headers) => {
+    // 对请求数据进行转换和处理
+    const modifiedData = { ...data } // 复制原始数据
 
-        // 修改数据或添加额外字段
-        modifiedData.extraField = "Extra Value";
+    // 修改数据或添加额外字段
+    modifiedData.extraField = 'Extra Value'
 
-        // 修改请求头信息
-        headers["Content-Type"] = "application/json";
+    // 修改请求头信息
+    headers['Content-Type'] = 'application/json'
 
-        return JSON.stringify(modifiedData); // 返回处理后的数据
-    },
+    return JSON.stringify(modifiedData) // 返回处理后的数据
+  },
 })
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理错误
-        console.error(error);
-    });
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理错误
+    console.error(error)
+  })
 ```
 
 这里使用 Axios 发起了一个 POST 请求。通过传递包含 `transformRequest` 函数的配置对象来定义请求。在 `transformRequest` 函数内部，复制了原始的请求数据 `data`，并进行了一些修改和处理，如添加了额外的字段和修改了请求头信息。最终，将修改后的数据以 JSON 字符串的形式返回。Axios 将使用 `transformRequest` 函数返回的结果作为实际发送请求的数据。
@@ -750,25 +750,25 @@ axios({
 
 ```javascript
 axios
-    .get("https://api.example.com/data", {
-        transformResponse: (data) => {
-            // 对响应数据进行转换和处理
-            const parsedData = JSON.parse(data); // 解析 JSON 字符串
+  .get('https://api.example.com/data', {
+    transformResponse: (data) => {
+      // 对响应数据进行转换和处理
+      const parsedData = JSON.parse(data) // 解析 JSON 字符串
 
-            // 修改数据或添加额外字段
-            parsedData.extraField = "Extra Value";
+      // 修改数据或添加额外字段
+      parsedData.extraField = 'Extra Value'
 
-            return parsedData; // 返回处理后的数据
-        },
-    })
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理错误
-        console.error(error);
-    });
+      return parsedData // 返回处理后的数据
+    },
+  })
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理错误
+    console.error(error)
+  })
 ```
 
 这里使用 Axios 发起了一个 GET 请求，并通过传递包含 `transformResponse` 函数的配置对象来定义请求。在 `transformResponse` 函数内部，对从服务器接收到的响应数据 `data` 进行了一些修改和处理，如解析 JSON 字符串，添加了额外的字段。最终将修改后的数据返回。
@@ -780,49 +780,49 @@ Axios 中，可以使用拦截器来拦截请求和响应，并在其被发送�
 ```javascript
 // 添加请求拦截器
 axios.interceptors.request.use(
-    (config) => {
-        // 在发送请求之前做一些处理
-        console.log("请求拦截器");
+  (config) => {
+    // 在发送请求之前做一些处理
+    console.log('请求拦截器')
 
-        // 修改请求配置
-        config.headers["Authorization"] = "Bearer token";
+    // 修改请求配置
+    config.headers['Authorization'] = 'Bearer token'
 
-        return config;
-    },
-    (error) => {
-        // 处理请求错误
-        console.error("请求出错：", error);
-    },
-);
+    return config
+  },
+  (error) => {
+    // 处理请求错误
+    console.error('请求出错：', error)
+  },
+)
 
 // 添加响应拦截器
 axios.interceptors.response.use(
-    (response) => {
-        // 在接收到响应数据之前做一些处理
-        console.log("响应拦截器");
+  (response) => {
+    // 在接收到响应数据之前做一些处理
+    console.log('响应拦截器')
 
-        // 修改响应数据
-        response.data = { ...response.data, extraField: "Extra Value" };
+    // 修改响应数据
+    response.data = { ...response.data, extraField: 'Extra Value' }
 
-        return response;
-    },
-    (error) => {
-        // 处理响应错误
-        console.error("响应出错：", error);
-    },
-);
+    return response
+  },
+  (error) => {
+    // 处理响应错误
+    console.error('响应出错：', error)
+  },
+)
 
 // 发送请求
 axios
-    .get("https://api.example.com/data")
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理请求或响应错误
-        console.error(error);
-    });
+  .get('https://api.example.com/data')
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理请求或响应错误
+    console.error(error)
+  })
 ```
 
 这里首先使用 `axios.interceptors.request.use` 方法添加了一个请求拦截器。该拦截器在发送请求之前被调用，并接收请求配置对象 `config` 作为参数。可以对请求配置进行修改，如添加请求头信息。最后，要确保返回修改后的配置对象。
@@ -837,21 +837,21 @@ axios
 
 ```javascript
 const options = {
-    method: "post",
-    url: "/login",
-    xsrfCookieName: "XSRF-TOKEN",
-    xsrfHeaderName: "X-XSRF-TOKEN",
-};
+  method: 'post',
+  url: '/login',
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+}
 
 axios(options)
-    .then((response) => {
-        // 处理成功响应
-        console.log(response.data);
-    })
-    .catch((error) => {
-        // 处理请求错误
-        console.error(error);
-    });
+  .then((response) => {
+    // 处理成功响应
+    console.log(response.data)
+  })
+  .catch((error) => {
+    // 处理请求错误
+    console.error(error)
+  })
 ```
 
 这里有两个 xsrf 相关的属性：
@@ -868,20 +868,18 @@ Axios 的另一个有趣的功能是能够监控请求的进度，这在下载�
 
 ```javascript
 axios
-    .post("/upload", data, {
-        onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total,
-            );
-            console.log(`上传进度：${percentCompleted}%`);
-        },
-    })
-    .then((response) => {
-        console.log(response.data);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+  .post('/upload', data, {
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      console.log(`上传进度：${percentCompleted}%`)
+    },
+  })
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 ```
 
 这里发送了一个 POST 请求，在配置选项中使用了 `onUploadProgress`。当数据上传过程中触发进度事件时，回调函数会被执行。在回调函数中，我们计算出了已上传数据的百分比，并将其打印出来。
@@ -890,20 +888,18 @@ axios
 
 ```javascript
 axios
-    .get("/download", {
-        onDownloadProgress: (progressEvent) => {
-            const percentCompleted = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total,
-            );
-            console.log(`下载进度：${percentCompleted}%`);
-        },
-    })
-    .then((response) => {
-        console.log(response.data);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+  .get('/download', {
+    onDownloadProgress: (progressEvent) => {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      console.log(`下载进度：${percentCompleted}%`)
+    },
+  })
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 ```
 
 这里发送了一个 GET 请求，在配置选项中使用了 `onDownloadProgress`。当数据下载过程中触发进度事件时，回调函数会被执行。在回调函数中，我们计算出了已下载数据的百分比，并将其打印出来。
@@ -914,27 +910,27 @@ axios
 
 ```javascript
 // 创建一个取消令牌源
-const CancelToken = axios.CancelToken;
-const source = CancelToken.source();
+const CancelToken = axios.CancelToken
+const source = CancelToken.source()
 
 // 发送请求
 axios
-    .get("/api/data", {
-        cancelToken: source.token,
-    })
-    .then((response) => {
-        console.log(response.data);
-    })
-    .catch((error) => {
-        if (axios.isCancel(error)) {
-            console.log("请求已被取消：", error.message);
-        } else {
-            console.error(error);
-        }
-    });
+  .get('/api/data', {
+    cancelToken: source.token,
+  })
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    if (axios.isCancel(error)) {
+      console.log('请求已被取消：', error.message)
+    } else {
+      console.error(error)
+    }
+  })
 
 // 取消请求
-source.cancel("取消请求的原因");
+source.cancel('取消请求的原因')
 ```
 
 这里，先创建了一个取消令牌源 `source`。然后，发送 GET 请求时将 `cancelToken` 配置选项设置为 `source.token`，即将取消令牌与该请求关联起来。当需要取消请求时，调用 `source.cancel()` 方法，并传入取消请求的原因作为参数。
@@ -947,15 +943,15 @@ source.cancel("取消请求的原因");
 
 ```javascript
 axios
-    .get("/api/data", {
-        timeout: 5000, // 设置超时时间为5秒
-    })
-    .then((response) => {
-        console.log(response.data);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+  .get('/api/data', {
+    timeout: 5000, // 设置超时时间为5秒
+  })
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 ```
 
 发送了一个 GET 请求，并在配置选项中设置了 `timeout` 为 5000 毫秒（即 5 秒）。如果请求在 5 秒内没有得到响应，就会触发超时错误。在超时错误的情况下，请求会被自动取消，并且进入 `.catch()` 分支。您可以根据需要进行错误处理。

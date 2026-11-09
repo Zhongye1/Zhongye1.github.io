@@ -6,9 +6,9 @@ mathjax: true
 abbrlink: 47427
 published: 2025-12-26 11:20:25
 tags:
-    - 算法
-    - JavaScript
-    - 数据类型转换
+  - 算法
+  - JavaScript
+  - 数据类型转换
 ---
 
 ## 字符串，数组，数字的转换
@@ -29,13 +29,13 @@ tags:
 数组转数字本质是拼接字符串
 
 ```ts
-const arr = ["2", "1", "22", "23"];
+const arr = ['2', '1', '22', '23']
 
 // 步骤1: 使用 join('') 无分隔符拼接成字符串 const str = arr.join(''); // "212223"
 
 // 步骤2: 转换为数字 const num = Number(str); // 212223 // 或等价简写：const num = +arr.join('');
 
-console.log(num); // 212223（number 类型）
+console.log(num) // 212223（number 类型）
 ```
 
 数组转连续字符串本质也是拼接字符串
@@ -55,10 +55,10 @@ const str2: string = arr.join(); // 注意：默认会得到 "X,W,W"，必须传
 **ES6:**
 
 ```ts
-const reverseString = (str: string): string => str.split("").reverse().join("");
+const reverseString = (str: string): string => str.split('').reverse().join('')
 
 // 使用示例
-console.log(reverseString("hello")); // 'olleh'
+console.log(reverseString('hello')) // 'olleh'
 ```
 
 **手动循环**（不依赖内置方法）：
@@ -78,8 +78,8 @@ function reverseString(str) {
 **原地反转**：
 
 ```ts
-const arr = [1, 2, 3, 4];
-arr.reverse(); // arr 变为 [4, 3, 2, 1]
+const arr = [1, 2, 3, 4]
+arr.reverse() // arr 变为 [4, 3, 2, 1]
 ```
 
 **手动实现**：
@@ -100,11 +100,9 @@ function reverseArray(arr) {
 
 ```ts
 function reverseInt(x) {
-    const sign = x < 0 ? -1 : 1;
-    const reversed =
-        sign *
-        parseInt(Math.abs(x).toString().split("").reverse().join(""), 10);
-    return reversed;
+  const sign = x < 0 ? -1 : 1
+  const reversed = sign * parseInt(Math.abs(x).toString().split('').reverse().join(''), 10)
+  return reversed
 }
 ```
 
@@ -113,5 +111,5 @@ function reverseInt(x) {
 数组排序
 
 ```ts
-nums.sort((a, b) => a - b);
+nums.sort((a, b) => a - b)
 ```

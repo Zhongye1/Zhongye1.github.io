@@ -6,9 +6,9 @@ abbrlink: 11830
 published: 2025-11-17 09:59:59
 category: 工具
 tags:
-    - Arch Linux
-    - AppImage
-    - Linux
+  - Arch Linux
+  - AppImage
+  - Linux
 ---
 
 > [AppImage](https://link.zhihu.com/?target=https%3A//appimage.org/)是一种可执行文件格式，类似于 Windows 的 exe 文件，macOS 的 app 文件，不过 AppImage 是运行在 Linux 上的可执行文件，而且是可以运行在不同发行版本的 Linux，如 Ubuntu, Debian, openSUSE, RHEL, CentOS, Fedora, Arch Linux ...
@@ -41,8 +41,6 @@ sudo pacman -S fuse2
 
 在 Arch Linux 中创建 Desktop Entry（桌面条目）可以让你在应用启动器（如 GNOME、KDE 等）中显示应用图标。以下是创建步骤：
 
-
-
 #### **创建 `.desktop`文件**
 
 在以下目录之一创建 `.desktop`文件：
@@ -58,6 +56,7 @@ nano ~/.local/share/applications/myapp.desktop
 ```
 
 ---
+
 ---
 
 模板参考（以 VSCode 为例）：

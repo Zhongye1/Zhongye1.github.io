@@ -1,11 +1,11 @@
 ---
 uuid: 726d3800-dc54-11f1-a70b-d3a1bc617592
-title: 2026-09-14-重学 JavaScript Vol.5 - 运行时
+title: 2026-09-14-重学 JavaScript Vol.5 - 运行机制
 mathjax: true
 abbrlink: 40104
 published: 2026-09-14 10:34:56
 category: 前端
-description: JavaScript 运行时：执行上下文与调用栈、错误处理、事件循环、Promise/async、模块、垃圾回收与内存泄漏
+description: JavaScript 运行机制：执行上下文与调用栈、错误处理、事件循环、Promise/async、模块、垃圾回收与内存泄漏
 cover: ''
 tags:
   - 前端

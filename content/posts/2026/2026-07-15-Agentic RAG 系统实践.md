@@ -6,9 +6,9 @@ mathjax: true
 published: 2026-07-15 21:06:20
 category: 笔记
 description: 记录一些将 RAG 检索能力封装为 MCP 服务的工程方案，构建一个能理解私域知识和调用外部工具的 Agentic RAG 系统，在生产环境中支撑多轮复杂问答与自动化任务，实现从“被动回答”到“自主行动”的跨越。
-cover: "https://pic3.zhimg.com/80/v2-8de8add37668cb28db59a368848a2992_720w.webp"
+cover: 'https://pic3.zhimg.com/80/v2-8de8add37668cb28db59a368848a2992_720w.webp'
 tags:
-    - RAG
+  - RAG
 ---
 
 # 一、综述

@@ -8,10 +8,10 @@ abbrlink: 33014
 published: 2025-03-01 13:54:15
 category: 工具
 tags:
-    - Docker
-    - WSL
-    - Windows
-    - 磁盘清理
+  - Docker
+  - WSL
+  - Windows
+  - 磁盘清理
 ---
 
 ## Windows下释放Docker所占用的WSL磁盘空间
@@ -56,4 +56,5 @@ exit
 - [WSL2 Docker释放磁盘空间](https://link.zhihu.com/?target=https%3A//gist.github.com/banyudu/af131c7bb681e8a80b5cbe2047e62d4c)
 - [wsl2 下清理 docker 占用空间](https://link.zhihu.com/?target=https%3A//www.jianshu.com/p/f7cb8d952427)
 - [WSL 2 should automatically release disk space back to the host OS](https://link.zhihu.com/?target=https%3A//github.com/microsoft/WSL/issues/4699%23issuecomment-627133168)
-168)
+
+168.

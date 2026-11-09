@@ -182,7 +182,8 @@ async function ask(options) {
     if (!title) fail('标题不能为空')
     options.title = title
 
-    options.category = (await rl.question(`分类 [${options.category}]：`)).trim() || options.category
+    options.category =
+      (await rl.question(`分类 [${options.category}]：`)).trim() || options.category
 
     const tags = (await rl.question('标签（逗号分隔，可空）：')).trim()
     if (tags) options.tags = splitTags(tags)
@@ -307,7 +308,17 @@ function uniqueAbbrlink(title, taken) {
   return fail('abbrlink 已经被占满了，建议手动用 --abbrlink 指定')
 }
 
-function buildFrontmatter({ uuid, title, mathjax, abbrlink, published, category, description, cover, tags }) {
+function buildFrontmatter({
+  uuid,
+  title,
+  mathjax,
+  abbrlink,
+  published,
+  category,
+  description,
+  cover,
+  tags,
+}) {
   const lines = [
     '---',
     `uuid: ${uuid}`,
