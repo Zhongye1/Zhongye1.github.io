@@ -5,7 +5,7 @@ mathjax: true
 abbrlink: 24453
 published: 2026-09-10 10:34:56
 category: 前端
-description: JavaScript 基本语法、操作符、数据类型、变量与作用域、类型转换、字符串、解构、条件与循环
+description: JavaScript 基本语法、数据类型、变量与作用域、类型转换、字符串、操作符、条件与循环
 cover: ''
 tags:
   - 前端
@@ -94,196 +94,6 @@ console.log(x) // 2
 ```
 
 会输出 `2`，因为块中 `var x` 语句和块前面的 `var x` 语句的作用域是一样的。在 C 或 Java 中，等效的代码会输出 `1`。使用 `let` 或 `const` 会消除这个作用域效果。
-
-## 操作符与表达式
-
-JavaScript 拥有如下类型的运算符：赋值、比较、算术、位、逻辑、字符串、条件（三元）、逗号、一元和关系运算符。运算符按操作数个数分为一元、二元和三元，按位置分前缀和后缀。
-
-### 赋值运算符
-
-赋值运算符将它右边操作数的值赋给它左边的操作数。最简单的赋值运算符是等于（`=`）。复合赋值运算符是“先运算再赋值”的简写：
-
-| 简写          | 含义               |
-| ------------- | ------------------ |
-| `x += y`      | `x = x + y`        |
-| `x -= y`      | `x = x - y`        |
-| `x *= y`      | `x = x * y`        |
-| `x /= y`      | `x = x / y`        |
-| `x %= y`      | `x = x % y`        |
-| `x **= y`     | `x = x ** y`       |
-| `x <<= y`     | `x = x << y`       |
-| `x >>= y`     | `x = x >> y`       |
-| `x >>>= y`    | `x = x >>> y`      |
-| `x &= y`      | `x = x & y`        |
-| `x \|= y`     | `x = x \| y`       |
-| `x ^= y`      | `x = x ^ y`        |
-| `x &&= f()`   | `x && (x = f())`   |
-| `x \|\|= f()` | `x \|\| (x = f())` |
-| `x ??= f()`   | `x ?? (x = f())`   |
-
-逻辑赋值运算符带有短路语义：只有左侧满足条件时才会求值右侧。
-
-### 比较运算符
-
-比较运算符比较它的操作数并返回一个基于表达式是否为真的逻辑值。字符串比较基于标准的字典顺序，使用 Unicode 值。多数情况下，如果两个操作数不是相同的类型，JavaScript 会尝试把它们转换为恰当的类型再比较；`===` 和 `!==` 不会转换类型。
-
-```js
-const var1 = 3
-const var2 = 4
-
-3 == var1 // true
-'3' == var1 // true
-3 === var1 // true
-var1 !== '3' // true
-var2 > var1 // true
-'12' > 2 // true
-```
-
-`==` 与 `===` 的区别、`NaN` 和 `-0` 的特殊行为，在“数据类型和变量”的“相等比较”一节已经展开。
-
-### 算术运算符
-
-算术运算符使用数值作为操作数并返回一个数值。标准算术运算符是 `+`、`-`、`*`、`/`；除零会产生 `Infinity`。除此之外还有：
-
-| 运算符      | 描述                                         | 示例                              |
-| ----------- | -------------------------------------------- | --------------------------------- |
-| `%`         | 求余，返回相除之后的余数                     | `12 % 5` 返回 `2`                 |
-| `++`        | 自增。前缀返回加一后的值，后缀返回原值再自增 | `++x`、`x++`                      |
-| `--`        | 自减，前后缀规则同自增                       | `--x`、`x--`                      |
-| `-`（一元） | 返回操作数的负值                             | `-x`                              |
-| `+`（一元） | 如果操作数不是数值，尝试将其转换为数值       | `+'3'` 返回 `3`，`+true` 返回 `1` |
-| `**`        | 指数运算                                     | `2 ** 3` 返回 `8`                 |
-
-```js
-1 / 2 // 0.5
-1 / 2 == 1.0 / 2.0 // true
-```
-
-### 逻辑运算符
-
-逻辑运算符常用于布尔值之间；当操作数都是布尔值时，返回值也是布尔值。不过 `&&` 和 `||` 返回的是一个特定的操作数的值，所以当它们用于非布尔值的时候，返回值可能是非布尔值。
-
-| 运算符 | 范例               | 描述                                                            |
-| ------ | ------------------ | --------------------------------------------------------------- |
-| `&&`   | `expr1 && expr2`   | 如果 `expr1` 能被转换为 `false`，返回 `expr1`；否则返回 `expr2` |
-| `\|\|` | `expr1 \|\| expr2` | 如果 `expr1` 能被转换为 `true`，返回 `expr1`；否则返回 `expr2`  |
-| `!`    | `!expr`            | 如果操作数能转换为 `true` 则返回 `false`；否则返回 `true`       |
-
-能被转换为 `false` 的值有 `null`、`0`、`NaN`、空字符串（`""`）和 `undefined`。
-
-```js
-'Cat' && 'Dog' // "Dog"
-false && 'Cat' // false
-'Cat' || 'Dog' // "Cat"
-false || 'Cat' // "Cat"
-!'' // true
-```
-
-短路求值：`false && anything` 被短路求值为 `false`，`true || anything` 被短路求值为 `true`，`anything` 部分不会被求值，因此不会产生副作用。
-
-`??`（空值合并）只在左侧为 `null` 或 `undefined` 时返回右侧，不会把 `0`、`""`、`false` 当作空值：
-
-```js
-0 ?? 42 // 0
-null ?? 42 // 42
-```
-
-`?.`（可选链）在左侧为 `null` 或 `undefined` 时短路，返回 `undefined`，而不是抛出错误：
-
-```js
-const user = { profile: { name: 'Ada' } }
-user.profile?.name // "Ada"
-user.account?.name // undefined
-```
-
-### 字符串运算符
-
-连接操作符（`+`）连接两个字符串值，返回两个操作数串的结合。`+=` 也可以用来拼接字符串：
-
-```js
-console.log('my ' + 'string') // "my string"
-
-let myString = 'alpha'
-myString += 'bet' // "alphabet"
-```
-
-当 `+` 的一侧是字符串时，另一侧会被转换为字符串；这一点在“数据类型和变量”的类型转换一节已经说明。
-
-### 条件（三元）运算符
-
-条件运算符是 JavaScript 中唯一需要三个操作数的运算符。运算的结果根据给定条件在两个值中取其一：
-
-```js
-condition ? value1 : value2
-```
-
-如果条件为真，结果取值 1；否则取值 2。
-
-```js
-const status = age >= 18 ? 'adult' : 'minor'
-```
-
-### 逗号操作符
-
-逗号操作符（`,`）对两个操作数进行求值并返回最终操作数的值。它常常用在 `for` 循环中，在每次循环时对多个变量进行更新：
-
-```js
-const x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const a = [x, x, x, x, x]
-
-for (let i = 0, j = 9; i <= j; i++, j--) {
-  console.log(`a[${i}][${j}] = ${a[i][j]}`)
-}
-```
-
-### 一元操作符
-
-一元操作符仅对应一个操作数。
-
-`delete` 删除一个对象的属性或者数组中某一个键值：
-
-```js
-const myObj = { a: 1, b: 2 }
-delete myObj.a
-console.log(myObj) // { b: 2 }
-```
-
-`typeof` 返回操作数类型的字符串：
-
-```js
-typeof 42 // "number"
-typeof 'str' // "string"
-typeof undefined // "undefined"
-typeof null // "object"
-typeof [] // "object"
-typeof function () {} // "function"
-```
-
-`void` 对表达式求值并返回 `undefined`，常用于只需要执行副作用、不需要返回值的场景。
-
-### 关系运算符
-
-`in` 判断属性是否存在于对象（包括原型链）中：
-
-```js
-const car = { make: 'Ford', model: 'Mustang' }
-'make' in car // true
-'toString' in car // true，来自原型链
-```
-
-`instanceof` 判断构造函数的 `prototype` 是否出现在对象的原型链上：
-
-```js
-const date = new Date()
-date instanceof Date // true
-date instanceof Object // true
-```
-
-### 位运算符与优先级
-
-位运算符把操作数视为 32 位二进制串，包括 `&`、`|`、`^`、`~`、`<<`、`>>`、`>>>`。完整的位运算规则和 TypedArray 场景放在“数据结构与值”一卷的“二进制与字符编码”一节展开。
-
-运算符优先级决定表达式的求值顺序。常见顺序从高到低大致是：成员访问/`new`/函数调用 → 一元 → 乘除/求余/指数 → 加减 → 移位 → 关系 → 相等 → 位与/异或/或 → 逻辑与/或/空值合并 → 条件 → 赋值 → 逗号。复杂表达式应使用括号显式分组，而不是依赖优先级记忆。
 
 ## 数据类型和变量
 
@@ -407,92 +217,6 @@ JavaScript 字符串是不可变的。这意味着一旦字符串被创建，就
 #### Symbol
 
 Symbol 是一种**唯一**并且**不可变**的原始值，并且可以用作对象属性的键。在某些程序语言中，Symbol 也被称作“原子”。symbol 的目的是创建唯一的属性键，保证不会与其他代码中的键产生冲突。
-
-### 动态类型与类型转换
-
-JavaScript 是一门**动态类型**语言。这意味着声明变量时不必指定变量的数据类型。这也意味着在脚本执行期间会根据需要自动转换数据类型。
-
-```js
-let answer = 42
-answer = '不客气，感谢所有的鱼！'
-```
-
-因为 JavaScript 是动态类型的，这种赋值方式并不会提示出错。
-
-在使用 `+` 运算符的表达式中涉及数字和字符串，JavaScript 会把数字转换成字符串。例如：
-
-```js
-x = '答案是 ' + 42 // "答案是 42"
-y = 42 + ' 是答案' // "42 是答案"
-z = '37' + 7 // "377"
-```
-
-在使用其他运算符时，JavaScript **不**会把数字转换成字符串。例如：
-
-```js
-'37' - 7 // 30
-'37' * 7 // 259
-```
-
-将字符串转换为数字可以使用 `parseInt()` 和 `parseFloat()`。`parseInt` 只返回整数，因此它在处理小数时用途有限。另外，`parseInt` 的最佳实践是总是带上**进制**参数，这个参数用于指定使用哪一种进制：
-
-```js
-parseInt('101', 2) // 5
-```
-
-将字符串转换为数字的另一种方法是使用 `+`（一元加）运算符：
-
-```js
-;+'1.1' + +'1.1' // 2.2
-```
-
-JavaScript 是一门弱类型语言。这意味着可以经常使用与预期类型不同的值，JavaScript 语言会把它转换为正确的类型。**原始值强制转换**用于得到期望的原始值，但对实际的类型应该是什么并没有强烈的偏好。如果值已经是原始值，则此操作不会进行任何转换。对象将依次调用它的 `[Symbol.toPrimitive]()`（将 `"default"` 作为 hint 值）、`valueOf()` 和 `toString()` 方法，将其转换为原始值。
-
-```js
-console.log({} + []) // "[object Object]"
-```
-
-把对象转换为原始值有三条路径，区别主要在于调用方法的顺序：
-
-- 原始值强制转换：`[Symbol.toPrimitive]("default")` → `valueOf()` → `toString()`
-- 数字类型强制转换：`[Symbol.toPrimitive]("number")` → `valueOf()` → `toString()`
-- 字符串强制转换：`[Symbol.toPrimitive]("string")` → `toString()` → `valueOf()`
-
-### 相等比较
-
-JavaScript 提供三种不同的值比较运算：`===` 严格相等、`==` 宽松相等、`Object.is()`。
-
-- 双等号（`==`）将执行类型转换，并且会按照 IEEE 754 标准对 `NaN`、`-0` 和 `+0` 进行特殊处理（故 `NaN != NaN`，且 `-0 == +0`）。
-- 三等号（`===`）做的比较与双等号相同（包括对 `NaN`、`-0` 和 `+0` 的特殊处理）但不进行类型转换；如果类型不同，则返回 `false`。
-- `Object.is()` 既不进行类型转换，也不对 `NaN`、`-0` 和 `+0` 进行特殊处理（这使它和 `===` 在除了那些特殊数字值之外的情况具有相同的表现）。
-
-严格相等比较两个值是否相等。两个被比较的值在比较前都不进行隐式转换。如果两个被比较的值具有不同的类型，则认为这两个值不相等。对于数字，严格相等使用稍微不同的语义处理两个特殊情况：`+0` 和 `-0` 被认为是相等的；`NaN` 与其他任何值都不相等，包括它自己。等式 `(x !== x)` 成立的唯一情况是 `x` 的值为 `NaN`。
-
-除了 `===` 之外，数组索引查找方法也使用严格相等，包括 `Array.prototype.indexOf()`、`Array.prototype.lastIndexOf()` 和 `case` 匹配。这意味着不能使用 `indexOf(NaN)` 查找数组中 `NaN` 值的索引，也不能将 `NaN` 用作 `case` 值在 `switch` 语句中匹配任何内容：
-
-```js
-console.log([NaN].indexOf(NaN)) // -1
-switch (NaN) {
-  case NaN:
-    console.log('Surprise') // 没有任何输出
-}
-```
-
-在大多数情况下，不建议使用宽松相等。使用严格相等进行比较的结果更容易预测，并且由于缺少类型强制转换可以更快地执行。
-
-```js
-const num = 0
-const big = 0n
-const str = '0'
-const obj = new String('0')
-
-console.log(num == str) // true
-console.log(big == num) // true
-console.log(str == big) // true
-console.log(num == obj) // true
-```
-
-同值相等由 `Object.is` 方法提供。语言内部期望一个值等于另一个时，几乎所有地方都使用同值相等。零值相等类似于同值相等，但 `+0` 和 `-0` 被视为相等。`Map` 和 `Set` 的键值相等判断基于 SameValueZero 算法。
 
 ### 变量声明
 
@@ -641,7 +365,93 @@ MY_ARRAY.push('JAVASCRIPT')
 console.log(MY_ARRAY) // ['HTML', 'CSS', 'JAVASCRIPT']
 ```
 
-#### 严格模式
+### 动态类型与类型转换
+
+JavaScript 是一门**动态类型**语言。这意味着声明变量时不必指定变量的数据类型。这也意味着在脚本执行期间会根据需要自动转换数据类型。
+
+```js
+let answer = 42
+answer = '不客气，感谢所有的鱼！'
+```
+
+因为 JavaScript 是动态类型的，这种赋值方式并不会提示出错。
+
+在使用 `+` 运算符的表达式中涉及数字和字符串，JavaScript 会把数字转换成字符串。例如：
+
+```js
+x = '答案是 ' + 42 // "答案是 42"
+y = 42 + ' 是答案' // "42 是答案"
+z = '37' + 7 // "377"
+```
+
+在使用其他运算符时，JavaScript **不**会把数字转换成字符串。例如：
+
+```js
+'37' - 7 // 30
+'37' * 7 // 259
+```
+
+将字符串转换为数字可以使用 `parseInt()` 和 `parseFloat()`。`parseInt` 只返回整数，因此它在处理小数时用途有限。另外，`parseInt` 的最佳实践是总是带上**进制**参数，这个参数用于指定使用哪一种进制：
+
+```js
+parseInt('101', 2) // 5
+```
+
+将字符串转换为数字的另一种方法是使用 `+`（一元加）运算符：
+
+```js
+;+'1.1' + +'1.1' // 2.2
+```
+
+JavaScript 是一门弱类型语言。这意味着可以经常使用与预期类型不同的值，JavaScript 语言会把它转换为正确的类型。**原始值强制转换**用于得到期望的原始值，但对实际的类型应该是什么并没有强烈的偏好。如果值已经是原始值，则此操作不会进行任何转换。对象将依次调用它的 `[Symbol.toPrimitive]()`（将 `"default"` 作为 hint 值）、`valueOf()` 和 `toString()` 方法，将其转换为原始值。
+
+```js
+console.log({} + []) // "[object Object]"
+```
+
+把对象转换为原始值有三条路径，区别主要在于调用方法的顺序：
+
+- 原始值强制转换：`[Symbol.toPrimitive]("default")` → `valueOf()` → `toString()`
+- 数字类型强制转换：`[Symbol.toPrimitive]("number")` → `valueOf()` → `toString()`
+- 字符串强制转换：`[Symbol.toPrimitive]("string")` → `toString()` → `valueOf()`
+
+### 相等比较
+
+JavaScript 提供三种不同的值比较运算：`===` 严格相等、`==` 宽松相等、`Object.is()`。
+
+- 双等号（`==`）将执行类型转换，并且会按照 IEEE 754 标准对 `NaN`、`-0` 和 `+0` 进行特殊处理（故 `NaN != NaN`，且 `-0 == +0`）。
+- 三等号（`===`）做的比较与双等号相同（包括对 `NaN`、`-0` 和 `+0` 的特殊处理）但不进行类型转换；如果类型不同，则返回 `false`。
+- `Object.is()` 既不进行类型转换，也不对 `NaN`、`-0` 和 `+0` 进行特殊处理（这使它和 `===` 在除了那些特殊数字值之外的情况具有相同的表现）。
+
+严格相等比较两个值是否相等。两个被比较的值在比较前都不进行隐式转换。如果两个被比较的值具有不同的类型，则认为这两个值不相等。对于数字，严格相等使用稍微不同的语义处理两个特殊情况：`+0` 和 `-0` 被认为是相等的；`NaN` 与其他任何值都不相等，包括它自己。等式 `(x !== x)` 成立的唯一情况是 `x` 的值为 `NaN`。
+
+除了 `===` 之外，数组索引查找方法也使用严格相等，包括 `Array.prototype.indexOf()`、`Array.prototype.lastIndexOf()` 和 `case` 匹配。这意味着不能使用 `indexOf(NaN)` 查找数组中 `NaN` 值的索引，也不能将 `NaN` 用作 `case` 值在 `switch` 语句中匹配任何内容：
+
+```js
+console.log([NaN].indexOf(NaN)) // -1
+switch (NaN) {
+  case NaN:
+    console.log('Surprise') // 没有任何输出
+}
+```
+
+在大多数情况下，不建议使用宽松相等。使用严格相等进行比较的结果更容易预测，并且由于缺少类型强制转换可以更快地执行。
+
+```js
+const num = 0
+const big = 0n
+const str = '0'
+const obj = new String('0')
+
+console.log(num == str) // true
+console.log(big == num) // true
+console.log(str == big) // true
+console.log(num == obj) // true
+```
+
+同值相等由 `Object.is` 方法提供。语言内部期望一个值等于另一个时，几乎所有地方都使用同值相等。零值相等类似于同值相等，但 `+0` 和 `-0` 被视为相等。`Map` 和 `Set` 的键值相等判断基于 SameValueZero 算法。
+
+### 严格模式
 
 ECMAScript 5 的**严格模式**是采用具有限制性 JavaScript 变体的一种方式，从而使代码隐式地脱离“马虎模式/稀松模式/懒散模式”（sloppy）模式。严格模式不仅仅是一个子集：它的产生是为了形成与正常代码不同的语义。严格模式对正常的 JavaScript 语义做了一些更改：
 
@@ -790,27 +600,11 @@ console.log(str) // this string is broken across multiple lines.
 '\uD87E\uDC04'
 ```
 
-### String 对象
-
-可以直接在字符串值上调用方法：
-
-```js
-console.log('hello'.toUpperCase()) // HELLO
-```
-
-`String` 值上有这些方法：
-
-- 查询：获取特定字符串索引处的字符或字符编码。方法包括 `at()`、`charAt()`、`charCodeAt()` 和 `codePointAt()`。
-- 搜索：获取符合特定模式的子字符串信息，或检测特定子字符串是否存在。方法包括 `indexOf()`、`lastIndexOf()`、`startsWith()`、`endsWith()`、`includes()`、`match()`、`matchAll()` 和 `search()`。
-- 组合：将字符串组合成一个更长的字符串。方法包括 `padStart()`、`padEnd()`、`concat()` 和 `repeat()`。
-- 分解：将字符串拆分为较短的字符串。方法包括 `split()`、`slice()`、`substring()`、`substr()`、`trim()`、`trimStart()` 和 `trimEnd()`。
-- 转换：根据当前字符串的内容返回一个新字符串。方法包括 `toLowerCase()`、`toUpperCase()`、`toLocaleLowerCase()`、`toLocaleUpperCase()`、`normalize()` 和 `toWellFormed()`。
-
-在处理字符串时，还有另外两个对象提供了重要的字符串操作功能：`RegExp` 和 `Intl`。它们分别在正则表达式和国际化中进行了介绍。
-
 ### 模板字面量
 
-模板字面量是一种允许嵌入表达式的字符串字面量。可以使用多行字符串和字符串插值功能。模板字面量使用反引号（`` ` ``）代替双引号或单引号进行包围。模板字面量可以包含占位符。这些占位符由美元符号和花括号（`${表达式}`）表示。
+字面量是脚本中按字面意思直接给出的固定值（不是变量）。JavaScript 的字面量包括数组、布尔、数字、对象、RegExp 和字符串。
+
+模板字面量使用反引号（`` ` ``）代替双引号或单引号进行包围，允许嵌入表达式，支持多行字符串和字符串插值。模板字面量可以包含占位符，占位符由美元符号和花括号（`${表达式}`）表示。
 
 #### 多行文本
 
@@ -873,181 +667,211 @@ tag`Hello ${'JavaScript'}!`
 tag(['Hello ', '!'], 'JavaScript')
 ```
 
-## 解构赋值
+### String 对象
 
-解构语法是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
+可以直接在字符串值上调用方法：
 
 ```js
-let a, b, rest
-;[a, b] = [10, 20]
-// a = 10, b = 20
-
-;[a, b, ...rest] = [10, 20, 30, 40, 50]
-// rest = [30, 40, 50]
+console.log('hello'.toUpperCase()) // HELLO
 ```
 
-### 数组解构
+`String` 值上有这些方法：
 
-数组解构按位置取值，可以跳过元素、设置默认值、收集剩余元素：
+- 查询：获取特定字符串索引处的字符或字符编码。方法包括 `at()`、`charAt()`、`charCodeAt()` 和 `codePointAt()`。
+- 搜索：获取符合特定模式的子字符串信息，或检测特定子字符串是否存在。方法包括 `indexOf()`、`lastIndexOf()`、`startsWith()`、`endsWith()`、`includes()`、`match()`、`matchAll()` 和 `search()`。
+- 组合：将字符串组合成一个更长的字符串。方法包括 `padStart()`、`padEnd()`、`concat()` 和 `repeat()`。
+- 分解：将字符串拆分为较短的字符串。方法包括 `split()`、`slice()`、`substring()`、`substr()`、`trim()`、`trimStart()` 和 `trimEnd()`。
+- 转换：根据当前字符串的内容返回一个新字符串。方法包括 `toLowerCase()`、`toUpperCase()`、`toLocaleLowerCase()`、`toLocaleUpperCase()`、`normalize()` 和 `toWellFormed()`。
+
+在处理字符串时，还有另外两个对象提供了重要的字符串操作功能：`RegExp` 和 `Intl`。它们分别在正则表达式和国际化中进行了介绍。
+
+## 操作符与表达式
+
+### 算术运算符
+
+算术运算符使用数值作为操作数并返回一个数值。标准算术运算符是 `+`、`-`、`*`、`/`；除零会产生 `Infinity`。除此之外还有：
+
+| 运算符      | 描述                                         | 示例                              |
+| ----------- | -------------------------------------------- | --------------------------------- |
+| `%`         | 求余，返回相除之后的余数                     | `12 % 5` 返回 `2`                 |
+| `++`        | 自增。前缀返回加一后的值，后缀返回原值再自增 | `++x`、`x++`                      |
+| `--`        | 自减，前后缀规则同自增                       | `--x`、`x--`                      |
+| `-`（一元） | 返回操作数的负值                             | `-x`                              |
+| `+`（一元） | 如果操作数不是数值，尝试将其转换为数值       | `+'3'` 返回 `3`，`+true` 返回 `1` |
+| `**`        | 指数运算                                     | `2 ** 3` 返回 `8`                 |
 
 ```js
-const arr = [1, 2, 3]
-const [first, second, third] = arr
-// first = 1, second = 2, third = 3
-
-const [x, , z] = arr
-// x = 1, z = 3
-
-const [p = 10, q = 20] = [1]
-// p = 1, q = 20
-
-const [head, ...tail] = arr
-// head = 1, tail = [2, 3]
+1 / 2 // 0.5
+1 / 2 == 1.0 / 2.0 // true
 ```
 
-交换变量不需要中间变量：
+### 比较运算符
+
+比较运算符比较它的操作数并返回一个基于表达式是否为真的逻辑值。字符串比较基于标准的字典顺序，使用 Unicode 值。多数情况下，如果两个操作数不是相同的类型，JavaScript 会尝试把它们转换为恰当的类型再比较；`===` 和 `!==` 不会转换类型。
 
 ```js
-let a = 1
-let b = 2
-;[a, b] = [b, a]
-// a = 2, b = 1
+const var1 = 3
+const var2 = 4
+
+3 == var1 // true
+'3' == var1 // true
+3 === var1 // true
+var1 !== '3' // true
+var2 > var1 // true
+'12' > 2 // true
 ```
 
-数组解构不只用于数组，任何可迭代对象都可以：
+`==` 与 `===` 的区别、`NaN` 和 `-0` 的特殊行为，在“数据类型和变量”的“相等比较”一节已经展开。
+
+### 逻辑运算符
+
+逻辑运算符常用于布尔值之间；当操作数都是布尔值时，返回值也是布尔值。不过 `&&` 和 `||` 返回的是一个特定的操作数的值，所以当它们用于非布尔值的时候，返回值可能是非布尔值。
+
+| 运算符 | 范例               | 描述                                                            |
+| ------ | ------------------ | --------------------------------------------------------------- |
+| `&&`   | `expr1 && expr2`   | 如果 `expr1` 能被转换为 `false`，返回 `expr1`；否则返回 `expr2` |
+| `\|\|` | `expr1 \|\| expr2` | 如果 `expr1` 能被转换为 `true`，返回 `expr1`；否则返回 `expr2`  |
+| `!`    | `!expr`            | 如果操作数能转换为 `true` 则返回 `false`；否则返回 `true`       |
+
+能被转换为 `false` 的值有 `null`、`0`、`NaN`、空字符串（`""`）和 `undefined`。
 
 ```js
-const [firstChar, secondChar] = 'ab'
-// firstChar = "a", secondChar = "b"
-
-const [one, two] = new Set([1, 2])
+'Cat' && 'Dog' // "Dog"
+false && 'Cat' // false
+'Cat' || 'Dog' // "Cat"
+false || 'Cat' // "Cat"
+!'' // true
 ```
 
-### 对象解构
+短路求值：`false && anything` 被短路求值为 `false`，`true || anything` 被短路求值为 `true`，`anything` 部分不会被求值，因此不会产生副作用。
 
-对象解构按属性名取值，可以与变量名不同，也可以设置默认值：
+`??`（空值合并）只在左侧为 `null` 或 `undefined` 时返回右侧，不会把 `0`、`""`、`false` 当作空值：
 
 ```js
-const obj = { a: 1, b: 2, c: 3 }
-const { a, b, c } = obj
-// a = 1, b = 2, c = 3
-
-const { a: x, b: y } = obj
-// x = 1, y = 2
-
-const { a: p = 10, d = 20 } = obj
-// p = 1, d = 20
+0 ?? 42 // 0
+null ?? 42 // 42
 ```
 
-默认值只在属性不存在或值为 `undefined` 时生效；值为 `null` 时不使用默认值：
+`?.`（可选链）在左侧为 `null` 或 `undefined` 时短路，返回 `undefined`，而不是抛出错误：
 
 ```js
-const [a = 1] = []
-const { b = 2 } = { b: undefined }
-const { c = 2 } = { c: null }
-// a = 1, b = 2, c = null
+const user = { profile: { name: 'Ada' } }
+user.profile?.name // "Ada"
+user.account?.name // undefined
 ```
 
-剩余属性收集对象剩余的可枚举自有属性：
+### 赋值运算符
+
+赋值运算符将它右边操作数的值赋给它左边的操作数。最简单的赋值运算符是等于（`=`）。复合赋值运算符是“先运算再赋值”的简写：
+
+| 简写          | 含义               |
+| ------------- | ------------------ |
+| `x += y`      | `x = x + y`        |
+| `x -= y`      | `x = x - y`        |
+| `x *= y`      | `x = x * y`        |
+| `x /= y`      | `x = x / y`        |
+| `x %= y`      | `x = x % y`        |
+| `x **= y`     | `x = x ** y`       |
+| `x <<= y`     | `x = x << y`       |
+| `x >>= y`     | `x = x >> y`       |
+| `x >>>= y`    | `x = x >>> y`      |
+| `x &= y`      | `x = x & y`        |
+| `x \|= y`     | `x = x \| y`       |
+| `x ^= y`      | `x = x ^ y`        |
+| `x &&= f()`   | `x && (x = f())`   |
+| `x \|\|= f()` | `x \|\| (x = f())` |
+| `x ??= f()`   | `x ?? (x = f())`   |
+
+逻辑赋值运算符带有短路语义：只有左侧满足条件时才会求值右侧。
+
+### 字符串运算符
+
+连接操作符（`+`）连接两个字符串值，返回两个操作数串的结合。`+=` 也可以用来拼接字符串：
 
 ```js
-const { a, ...others } = { a: 1, b: 2, c: 3 }
-// a = 1, others = { b: 2, c: 3 }
+console.log('my ' + 'string') // "my string"
+
+let myString = 'alpha'
+myString += 'bet' // "alphabet"
 ```
 
-剩余属性必须是模式中的最后一个，并且不能有尾随逗号。
+当 `+` 的一侧是字符串时，另一侧会被转换为字符串；这一点在“数据类型和变量”的类型转换一节已经说明。
 
-### 嵌套解构
+### 条件（三元）运算符
 
-数组和对象可以任意嵌套：
+条件运算符是 JavaScript 中唯一需要三个操作数的运算符。运算的结果根据给定条件在两个值中取其一：
 
 ```js
-const user = {
-  name: 'Ada',
-  address: { city: 'London', zip: 'N1' },
-  hobbies: ['math', 'code'],
+condition ? value1 : value2
+```
+
+如果条件为真，结果取值 1；否则取值 2。
+
+```js
+const status = age >= 18 ? 'adult' : 'minor'
+```
+
+### 逗号操作符
+
+逗号操作符（`,`）对两个操作数进行求值并返回最终操作数的值。它常常用在 `for` 循环中，在每次循环时对多个变量进行更新：
+
+```js
+const x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+const a = [x, x, x, x, x]
+
+for (let i = 0, j = 9; i <= j; i++, j--) {
+  console.log(`a[${i}][${j}] = ${a[i][j]}`)
 }
-
-const {
-  name,
-  address: { city },
-  hobbies: [firstHobby],
-} = user
-// name = "Ada", city = "London", firstHobby = "math"
 ```
 
-解构对象时会沿着原型链查找属性：
+### 一元操作符
+
+一元操作符仅对应一个操作数。
+
+`delete` 删除一个对象的属性或者数组中某一个键值：
 
 ```js
-const base = { inherited: 1 }
-const child = Object.create(base)
-child.own = 2
-
-const { inherited, own } = child
-// inherited = 1, own = 2
+const myObj = { a: 1, b: 2 }
+delete myObj.a
+console.log(myObj) // { b: 2 }
 ```
 
-### 函数参数解构
-
-解构可以直接用在函数参数上，常用于配置对象：
+`typeof` 返回操作数类型的字符串：
 
 ```js
-function draw({ x = 0, y = 0, size = 10 }) {
-  console.log(x, y, size)
-}
-
-draw({ x: 1, size: 20 })
-// 1 0 20
+typeof 42 // "number"
+typeof 'str' // "string"
+typeof undefined // "undefined"
+typeof null // "object"
+typeof [] // "object"
+typeof function () {} // "function"
 ```
 
-也可以和默认参数组合：
+`void` 对表达式求值并返回 `undefined`，常用于只需要执行副作用、不需要返回值的场景。
+
+### 关系运算符
+
+`in` 判断属性是否存在于对象（包括原型链）中：
 
 ```js
-function connect({ host = 'localhost', port = 80 } = {}) {
-  return `${host}:${port}`
-}
-
-connect() // "localhost:80"
+const car = { make: 'Ford', model: 'Mustang' }
+'make' in car // true
+'toString' in car // true，来自原型链
 ```
 
-### 循环中的解构
-
-`for...of` 可以直接解构每个元素，尤其是 `Map` 的 `[key, value]`：
+`instanceof` 判断构造函数的 `prototype` 是否出现在对象的原型链上：
 
 ```js
-for (const [key, value] of new Map([
-  ['a', 1],
-  ['b', 2],
-])) {
-  console.log(key, value)
-}
+const date = new Date()
+date instanceof Date // true
+date instanceof Object // true
 ```
 
-### 绑定模式与赋值模式
+### 位运算符与优先级
 
-解构有两种模式：绑定模式和赋值模式。
+位运算符把操作数视为 32 位二进制串，包括 `&`、`|`、`^`、`~`、`<<`、`>>`、`>>>`。完整的位运算规则和 TypedArray 场景放在“数据结构与值”一卷的“二进制与字符编码”一节展开。
 
-绑定模式以声明关键字（`var`、`let` 或 `const`）开始，每个属性必须绑定到一个变量或继续解构：
-
-```js
-const obj = { a: 1, b: { c: 2 } }
-const {
-  a,
-  b: { c: d },
-} = obj
-// 变量 a 和 d 被绑定
-```
-
-赋值模式不以关键字开头，每个解构属性被赋值给一个已存在的目标：
-
-```js
-const numbers = []
-const obj = { a: 1, b: 2 }
-;({ a: numbers[0], b: numbers[1] } = obj)
-// numbers = [1, 2]
-```
-
-使用对象字面量解构而不带声明时，赋值语句周围必须添加括号 `( ... )`，否则左侧的 `{ a, b }` 会被当成块语句。在无分号风格中，括号表达式前面需要补一个分号。
+运算符优先级决定表达式的求值顺序。常见顺序从高到低大致是：成员访问/`new`/函数调用 → 一元 → 乘除/求余/指数 → 加减 → 移位 → 关系 → 相等 → 位与/异或/或 → 逻辑与/或/空值合并 → 条件 → 赋值 → 逗号。复杂表达式应使用括号显式分组，而不是依赖优先级记忆。
 
 ## 条件判断
 
@@ -1130,7 +954,7 @@ if (b == true) {
 }
 ```
 
-### 示例
+### if...else 示例
 
 在下列示例中，如果 `Text` 对象中的字符数为 3，函数 `checkData` 将返回 `true`；否则，显示警告并返回 `false`：
 
@@ -1531,12 +1355,11 @@ for (const i of arr) {
 ## 总结
 
 - **基本语法**：语句用分号分隔，可以省略但建议保留；注释与 C++ 一致，不能嵌套块注释；块语句组合多条语句，`var` 不受块作用域限制。
-- **操作符**：赋值、比较、算术、逻辑、三元、逗号、一元和关系运算符；`&&`/`||` 返回操作数本身并短路，`??` 只处理 `null`/`undefined`，`?.` 在空值处短路。
 - **数据类型**：8 种类型（7 种原始类型加 Object）；`typeof null === "object"`；动态类型会在运行时自动转换。
 - **变量与作用域**：`var` 只有函数作用域并存在提升，`let`/`const` 是块级作用域并有暂时性死区；严格模式把静默错误变成异常。
 - **类型转换与相等**：`+` 遇到字符串就拼接，其余算术运算符倾向转数字；比较优先用 `===`，`Object.is()` 处理 `NaN` 和 `-0`。
 - **字符串**：底层是 UTF-16 码元序列，字符串不可变；模板字面量解决多行与插值。
-- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
+- **操作符**：算术、比较、逻辑、赋值、字符串、三元、逗号、一元和关系运算符；`&&`/`||` 返回操作数本身并短路，`??` 只处理 `null`/`undefined`，`?.` 在空值处短路。
 - **控制流**：`false`、`undefined`、`null`、`0`、`NaN`、`""` 是假值；`switch` 忘记 `break` 会继续执行；循环用 `label` 配合 `break`/`continue` 控制嵌套。
 
 ## 参考
@@ -1547,4 +1370,3 @@ for (const i of arr) {
 - [相等比较和相同](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Equality_comparisons_and_sameness)
 - [严格模式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode)
 - [数字与字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Numbers_and_strings)
-- [解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)

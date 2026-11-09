@@ -5,7 +5,7 @@ mathjax: true
 abbrlink: 25474
 published: 2026-09-11 10:34:56
 category: 前端
-description: JavaScript 数据结构与值：数组、对象、Map/Set、JSON、iterable、拷贝与不变性、二进制与字符编码
+description: JavaScript 数据结构与值：数组、对象、解构、Map/Set、JSON、iterable、拷贝与不变性、二进制与字符编码
 cover: ''
 tags:
   - 前端
@@ -818,6 +818,184 @@ fruit === fruitbear // return true
 
 所有的 JavaScript 对象至少继承于一个对象。被继承的对象被称作原型，并且继承的属性可通过构造函数的 `prototype` 对象找到。对象的原型指向另一个对象或者 `null`——从概念上讲，它是对象的隐藏属性，通常表示为 `[[Prototype]]`。对象的 `[[Prototype]]` 的属性也可以在对象自身上访问。更完整的讨论放在第三篇《函数与闭包》展开。
 
+## 解构赋值
+
+> 解构的语法在前面的类型与字符串部分已经出现；这里在数组和对象之后系统展开。函数参数解构涉及第三篇的函数，`for...of` 解构涉及本篇后面的 iterable。
+
+解构语法是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
+
+```js
+let a, b, rest
+;[a, b] = [10, 20]
+// a = 10, b = 20
+
+;[a, b, ...rest] = [10, 20, 30, 40, 50]
+// rest = [30, 40, 50]
+```
+
+### 数组解构
+
+数组解构按位置取值，可以跳过元素、设置默认值、收集剩余元素：
+
+```js
+const arr = [1, 2, 3]
+const [first, second, third] = arr
+// first = 1, second = 2, third = 3
+
+const [x, , z] = arr
+// x = 1, z = 3
+
+const [p = 10, q = 20] = [1]
+// p = 1, q = 20
+
+const [head, ...tail] = arr
+// head = 1, tail = [2, 3]
+```
+
+交换变量不需要中间变量：
+
+```js
+let a = 1
+let b = 2
+;[a, b] = [b, a]
+// a = 2, b = 1
+```
+
+数组解构不只用于数组，任何可迭代对象都可以：
+
+```js
+const [firstChar, secondChar] = 'ab'
+// firstChar = "a", secondChar = "b"
+
+const [one, two] = new Set([1, 2])
+```
+
+### 对象解构
+
+对象解构按属性名取值，可以与变量名不同，也可以设置默认值：
+
+```js
+const obj = { a: 1, b: 2, c: 3 }
+const { a, b, c } = obj
+// a = 1, b = 2, c = 3
+
+const { a: x, b: y } = obj
+// x = 1, y = 2
+
+const { a: p = 10, d = 20 } = obj
+// p = 1, d = 20
+```
+
+默认值只在属性不存在或值为 `undefined` 时生效；值为 `null` 时不使用默认值：
+
+```js
+const [a = 1] = []
+const { b = 2 } = { b: undefined }
+const { c = 2 } = { c: null }
+// a = 1, b = 2, c = null
+```
+
+剩余属性收集对象剩余的可枚举自有属性：
+
+```js
+const { a, ...others } = { a: 1, b: 2, c: 3 }
+// a = 1, others = { b: 2, c: 3 }
+```
+
+剩余属性必须是模式中的最后一个，并且不能有尾随逗号。
+
+### 嵌套解构
+
+数组和对象可以任意嵌套：
+
+```js
+const user = {
+  name: 'Ada',
+  address: { city: 'London', zip: 'N1' },
+  hobbies: ['math', 'code'],
+}
+
+const {
+  name,
+  address: { city },
+  hobbies: [firstHobby],
+} = user
+// name = "Ada", city = "London", firstHobby = "math"
+```
+
+解构对象时会沿着原型链查找属性：
+
+```js
+const base = { inherited: 1 }
+const child = Object.create(base)
+child.own = 2
+
+const { inherited, own } = child
+// inherited = 1, own = 2
+```
+
+### 函数参数解构
+
+解构可以直接用在函数参数上，常用于配置对象：
+
+```js
+function draw({ x = 0, y = 0, size = 10 }) {
+  console.log(x, y, size)
+}
+
+draw({ x: 1, size: 20 })
+// 1 0 20
+```
+
+也可以和默认参数组合：
+
+```js
+function connect({ host = 'localhost', port = 80 } = {}) {
+  return `${host}:${port}`
+}
+
+connect() // "localhost:80"
+```
+
+### 循环中的解构
+
+`for...of` 可以直接解构每个元素，尤其是 `Map` 的 `[key, value]`：
+
+```js
+for (const [key, value] of new Map([
+  ['a', 1],
+  ['b', 2],
+])) {
+  console.log(key, value)
+}
+```
+
+### 绑定模式与赋值模式
+
+解构有两种模式：绑定模式和赋值模式。
+
+绑定模式以声明关键字（`var`、`let` 或 `const`）开始，每个属性必须绑定到一个变量或继续解构：
+
+```js
+const obj = { a: 1, b: { c: 2 } }
+const {
+  a,
+  b: { c: d },
+} = obj
+// 变量 a 和 d 被绑定
+```
+
+赋值模式不以关键字开头，每个解构属性被赋值给一个已存在的目标：
+
+```js
+const numbers = []
+const obj = { a: 1, b: 2 }
+;({ a: numbers[0], b: numbers[1] } = obj)
+// numbers = [1, 2]
+```
+
+使用对象字面量解构而不带声明时，赋值语句周围必须添加括号 `( ... )`，否则左侧的 `{ a, b }` 会被当成块语句。在无分号风格中，括号表达式前面需要补一个分号。
+
 ## Map 和 Set
 
 ### Map
@@ -1416,6 +1594,7 @@ console.log(btoa(binary)) // 5paH5pys
 - **JSON**：只支持双引号、无尾随逗号、无 `undefined`；`stringify` 会忽略函数和 symbol，循环引用抛 `TypeError`。
 - **拷贝与不变性**：展开和 `Object.assign()` 是浅拷贝；深拷贝可用 `structuredClone()`，它有明确的支持范围；`freeze()`/`seal()`/`preventExtensions()` 提供逐级增强的保护。
 - **二进制与编码**：位运算按 32 位整数处理；`ArrayBuffer` 配合 TypedArray/DataView 读写二进制；字符串以 UTF-16 存储，`TextEncoder`/`TextDecoder` 负责 UTF-8 转换。
+- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
 
 ## 参考
 
@@ -1427,3 +1606,4 @@ console.log(btoa(binary)) // 5paH5pys
 - [类型化数组](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Typed_arrays)
 - [Object.freeze()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
 - [内存管理](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Memory_management)
+- [解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
