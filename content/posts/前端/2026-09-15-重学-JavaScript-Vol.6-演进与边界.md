@@ -6,7 +6,7 @@ abbrlink: 45679
 published: 2026-09-15 10:34:56
 category: 前端
 description: JavaScript 演进与边界：ES6–ES13 版本地图、TC39 提案流程、语言中的奇怪设计、Intl 与元编程应用
-cover: ''
+cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript

@@ -6,7 +6,7 @@ abbrlink: 40104
 published: 2026-09-14 10:34:56
 category: 前端
 description: JavaScript 运行机制：执行上下文与调用栈、错误处理、事件循环、Promise/async、模块、垃圾回收与内存泄漏
-cover: ''
+cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript

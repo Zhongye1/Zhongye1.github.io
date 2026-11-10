@@ -123,6 +123,8 @@ onMounted(async () => {
 
   contain: paint;
   margin: 0.5em 0;
+  // --c-bg-2 只有 20% 透明度，代码块和页面背景几乎同色；补一圈描边把边界画出来
+  border: 1px solid var(--c-border);
   border-radius: 0.5em;
   background-color: var(--c-bg-2);
   font-family: var(--font-monospace);

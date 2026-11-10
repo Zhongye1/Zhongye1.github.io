@@ -6,7 +6,7 @@ abbrlink: 47930
 published: 2026-09-12 10:34:56
 category: 前端
 description: JavaScript 函数、作用域链、闭包、this 绑定规则、高阶函数与生成器
-cover: ''
+cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript

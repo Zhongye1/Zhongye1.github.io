@@ -6,7 +6,7 @@ abbrlink: 24453
 published: 2026-09-10 10:34:56
 category: 前端
 description: JavaScript 基本语法、数据类型、变量与作用域、类型转换、字符串、操作符、条件与循环
-cover: ''
+cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript
@@ -255,6 +255,8 @@ const x // SyntaxError: Missing initializer in const declaration
 
 #### 变量作用域
 
+变量作用域（Variable Scope）指的是某个具体变量有效的访问范围
+
 一个变量可能属于下列作用域之一：
 
 - 全局作用域：在脚本模式中运行的所有代码的默认作用域。
@@ -273,7 +275,7 @@ if (Math.random() > 0.5) {
 console.log(y) // ReferenceError: y is not defined
 ```
 
-然而，用 `var` 创建的变量不是块级作用域的，而只是块所在的**函数（或全局作用域）**的：
+然而，用 `var` 创建的变量不是块级作用域的，而只是块所在的 **函数（或全局作用域）** 的：
 
 ```js
 if (true) {
@@ -283,6 +285,10 @@ console.log(x) // x 是 5
 ```
 
 #### 变量提升
+
+变量提升是指在 JavaScript 代码执行过程中，JavaScript 引擎把变量的声明部分和函数的声明部分提升到代码开头的行为。变量被提升后，会给变量设置默认值为 undefined。正是由于 JavaScript 存在变量提升这种特性，导致了很多与直觉不太相符的代码，这也是 JavaScript 的一个设计缺陷。虽然 ECMAScript6 已经通过引入块级作用域并配合使用 let、const 关键字，避开了这种设计缺陷，但是由于 JavaScript 需要向下兼容，所以变量提升在很长时间内还会继续存在。
+
+通俗来讲就是在代码执行前，引擎先扫一遍当前作用域，把所有声明登记好——于是“声明”看起来被搬到了作用域顶部
 
 用 `var` 声明的变量会被**提升**，意味着可以在该变量所在的作用域的任意地方引用该变量，即使还没有到达变量声明的地方。`var` 声明看起来好像被提升到该变量的函数或全局作用域的顶部。然而，如果在声明变量之前访问该变量，其值总是 `undefined`，因为只有该变量的**声明**和**默认初始化（为 `undefined`）**被提升，而不是它的**值赋值**。
 
@@ -312,7 +318,7 @@ x = 3
 
 由于存在变量提升，一个函数中所有的 `var` 语句应尽可能地放在接近函数顶部的地方。这个最佳实践会提升代码的清晰度。
 
-`let` 和 `const` 是否被提升是个定义争论。在变量声明之前引用块中的变量，将总是抛出 `ReferenceError`，因为该变量位于从块的开始到声明所在的“暂时性死区”中：
+`let` 和 `const` 是否被提升是个定义争论。在变量声明之前引用块中的变量，将总是抛出 `ReferenceError`，因为该变量位于从块的开始到声明所在的**暂时性死区**中（从作用域开头到声明语句之间这段区域叫暂时性死区）：
 
 ```js
 console.log(x) // ReferenceError
@@ -366,6 +372,8 @@ console.log(MY_ARRAY) // ['HTML', 'CSS', 'JAVASCRIPT']
 ```
 
 ### 动态类型与类型转换
+
+> 关于 JavaScript 类型转换更详细的说明我觉得可以参考 https://www.yuque.com/cuggz/feplus/ny9beh
 
 JavaScript 是一门**动态类型**语言。这意味着声明变量时不必指定变量的数据类型。这也意味着在脚本执行期间会根据需要自动转换数据类型。
 

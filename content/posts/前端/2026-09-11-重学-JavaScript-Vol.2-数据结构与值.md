@@ -6,7 +6,7 @@ abbrlink: 25474
 published: 2026-09-11 10:34:56
 category: 前端
 description: JavaScript 数据结构与值：数组、对象、解构、Map/Set、JSON、iterable、拷贝与不变性、二进制与字符编码
-cover: ''
+cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript
@@ -14,11 +14,32 @@ tags:
 
 ## 数组
 
+> 关于数组更详细的说明推荐看这篇：https://www.yuque.com/cuggz/feplus/cp4k8o
+
+![JS数组](https://pica.zhimg.com/v2-91cae2b7e99306e982b26d4c6bc38098_r.jpg)
+
 ### 数组与索引
 
-**数组**是由名称和索引引用的值构成的有序列表。例如，考虑一个名为 `emp` 的数组，它包含按数字雇员编号索引的雇员姓名。所以 `emp[0]` 是 0 号员工，`emp[1]` 是 1 号员工，以此类推。
+数组是 JavaScript 中最常用的数据结构之一：它由一组有序的值构成，每个值都通过一个从 0 开始的整数索引来访问。例如，emp 数组以雇员编号为索引存放姓名：emp[0] 是 0 号员工的姓名，emp[1] 是 1 号员工的姓名，依此类推。
 
-JavaScript 中没有明确的数组数据类型。但是，可以使用预定义的 `Array` 对象及其方法来处理应用程序中的数组。`Array` 对象具有以各种方式操作数组的方法，例如连接、反转和排序。它有一个用于确定数组长度的属性和用于正则表达式的其他属性。
+JavaScript 并没有独立的数组原始类型,数组是内置 Array 构造函数的实例，本质上是“以整数索引为属性名”的对象，只是在此之上额外提供了 length 属性和一组操作元素的方法（连接、反转、排序、遍历等）。
+
+与许多静态类型语言不同，数组的每个位置都可以存放任意类型的值，长度也会随元素的增删而变化。因为数组本质上是对象，`typeof []` 返回的是 "object"，要可靠地判断一个值是否为数组，应使用 `Array.isArray(value)`。
+
+```js
+const a = [1, 'two', { three: 3 }, [4]]
+a.length // 4
+
+Array.isArray(a) // true
+typeof a // "object"
+```
+
+ES2015 起，可以使用展开语法（spread syntax，`...`）把数组元素展开到新的数组字面量或其他可迭代上下文中：
+
+```js
+const a = [1, 2, 3]
+const b = [0, ...a, 4] // [0, 1, 2, 3, 4]
+```
 
 ### 创建数组
 
@@ -101,6 +122,8 @@ const emp = []
 emp[0] = 'Casey Jones'
 emp[1] = 'Phil Lesh'
 emp[2] = 'August West'
+
+console.log(emp) // [ 'Casey Jones', 'Phil Lesh', 'August West' ]
 ```
 
 如果给数组运算符的是一个非整型数值，那么它将作为一个表示数组的对象的属性创建，而不是数组的元素：
@@ -108,6 +131,8 @@ emp[2] = 'August West'
 ```js
 const arr = []
 arr[3.4] = 'Oranges'
+
+console.log(arr) // [ '3.4': 'Oranges' ]
 console.log(arr.length) // 0
 console.log(Object.hasOwn(arr, 3.4)) // true
 ```
@@ -203,22 +228,9 @@ nonsparseArray.forEach((element) => {
 
 ### 数组方法
 
-`Array` 对象具有下列方法。
+`Array` 的方法按用途可以分为以下几类。
 
-`concat()` 方法连接两个或多个数组并返回一个新的数组：
-
-```js
-let myArray = ['1', '2', '3']
-myArray = myArray.concat('a', 'b', 'c')
-// myArray 现在是 ["1", "2", "3", "a", "b", "c"]
-```
-
-`join()` 方法将数组中的所有元素连接成一个字符串：
-
-```js
-const myArray = ['Wind', 'Rain', 'Fire']
-const list = myArray.join(' - ') // list 现在是 "Wind - Rain - Fire"
-```
+#### 原地修改（增删、排序与反转）
 
 `push()` 方法在数组末尾添加一个或多个元素，并返回数组操作后的 `length`。`pop()` 方法从数组移出最后一个元素，并返回该元素。`shift()` 方法从数组移出第一个元素，并返回该元素。`unshift()` 方法在数组开头添加一个或多个元素，并返回数组的新长度：
 
@@ -230,21 +242,6 @@ const last = myArray.pop() // myArray 现在是 ["1", "2"]，last 为 "3"
 const first = myArray.shift() // myArray 现在是 ["2"]，first 为 "1"
 myArray.unshift('4', '5')
 // myArray 变成了 ["4", "5", "2"]
-```
-
-`slice()` 方法从数组提取一个片段，并作为一个新数组返回：
-
-```js
-let myArray = ['a', 'b', 'c', 'd', 'e']
-myArray = myArray.slice(1, 4) // [ "b", "c", "d"]
-// 从索引 1 开始，提取所有的元素，直到索引 3 为止
-```
-
-`at()` 方法返回数组中指定索引处的元素，如果索引超出范围，则返回 `undefined`。它主要用于从数组末尾访问元素的负下标：
-
-```js
-const myArray = ['a', 'b', 'c', 'd', 'e']
-myArray.at(-2) // "d"，myArray 的倒数第二个元素
 ```
 
 `splice()` 方法从数组移除一些元素，并（可选地）替换它们。它返回从数组中删除的元素：
@@ -263,14 +260,6 @@ myArray.splice(1, 3, 'a', 'b', 'c', 'd')
 const myArray = ['1', '2', '3']
 myArray.reverse()
 // 将原数组颠倒，myArray = [ "3", "2", "1" ]
-```
-
-`flat()` 方法返回一个新数组，所有子数组元素递归地连接到其中，直到指定的深度：
-
-```js
-let myArray = [1, 2, [3, 4]]
-myArray = myArray.flat()
-// myArray 现在是 [1, 2, 3, 4]，因为子数组 [3, 4] 已被展平
 ```
 
 `sort()` 方法对数组的元素进行适当的排序，并返回对数组的引用：
@@ -300,6 +289,17 @@ myArray.sort(sortFn)
 - 如果 `a` 大于 `b`，返回 `1`（或任何正数）
 - 如果 `a` 和 `b` 相等，返回 `0`。
 
+> (另外这个排序算法是稳定的（ECMAScript 规范），因引擎而异，如V8是 Timsort 算法)
+
+#### 访问与查找
+
+`at()` 方法返回数组中指定索引处的元素，如果索引超出范围，则返回 `undefined`。它主要用于从数组末尾访问元素的负下标：
+
+```js
+const myArray = ['a', 'b', 'c', 'd', 'e']
+myArray.at(-2) // "d"，myArray 的倒数第二个元素
+```
+
 `indexOf()` 方法在数组中搜索 `searchElement` 并返回第一个匹配的索引：
 
 ```js
@@ -322,64 +322,142 @@ console.log(a.lastIndexOf('b', 4)) // 1
 console.log(a.lastIndexOf('z')) // -1
 ```
 
-`map()` 方法返回由每个数组元素上执行 `callback` 的返回值所组成的新数组：
+#### 截取、拼接与展平（返回新数组）
+
+`slice()` 方法从数组提取一个片段，并作为一个新数组返回。第二个参数是结束索引，但不包含该索引处的元素：
 
 ```js
-const a1 = ['a', 'b', 'c']
-const a2 = a1.map((item) => item.toUpperCase())
-console.log(a2) // ['A', 'B', 'C']
+let myArray = ['a', 'b', 'c', 'd', 'e']
+myArray = myArray.slice(1, 4) // [ "b", "c", "d"]
+// 起始索引 1，结束索引 4（不含），所以取索引 1、2、3
+```
+
+`concat()` 方法连接两个或多个数组并返回一个新的数组：
+
+```js
+let myArray = ['1', '2', '3']
+myArray = myArray.concat('a', 'b', 'c')
+// myArray 现在是 ["1", "2", "3", "a", "b", "c"]
+```
+
+`flat()` 方法返回一个新数组，所有子数组元素递归地连接到其中，直到指定的深度：
+
+```js
+let myArray = [1, 2, [3, 4]]
+myArray = myArray.flat()
+// myArray 现在是 [1, 2, 3, 4]，因为子数组 [3, 4] 已被展平
 ```
 
 `flatMap()` 方法先执行 `map()`，再执行深度为 1 的 `flat()`：
 
 ```js
 const a1 = ['a', 'b', 'c']
-const a2 = a1.flatMap((item) => [item.toUpperCase(), item.toLowerCase()])
-console.log(a2) // ['A', 'a', 'B', 'b', 'C', 'c']
+const a2 = a1.map((item) => [item.toUpperCase(), item.toLowerCase()])
+const a3 = a1.flatMap((item) => [item.toUpperCase(), item.toLowerCase()])
+
+console.log(a2) // [ [ 'A', 'a' ], [ 'B', 'b' ], [ 'C', 'c' ] ]
+console.log(a3) // ['A', 'a', 'B', 'b', 'C', 'c']
 ```
 
-`filter()` 方法返回一个新数组，其中包含 `callback` 返回 `true` 的元素：
-
-```js
-const a1 = ['a', 10, 'b', 20, 'c', 30]
-const a2 = a1.filter((item) => typeof item === 'number')
-console.log(a2) // [10, 20, 30]
-```
+#### 迭代方法
 
 `find()` 方法返回 `callback` 返回 `true` 的第一个元素；`findLast()` 返回最后一个元素；`findIndex()` 返回第一个元素的索引；`findLastIndex()` 返回最后一个元素的索引：
 
 ```js
+function callback(item) {
+  return typeof item === 'number'
+}
+
 const a1 = ['a', 10, 'b', 20, 'c', 30]
-console.log(a1.find((item) => typeof item === 'number')) // 10
-console.log(a1.findLast((item) => typeof item === 'number')) // 30
-console.log(a1.findIndex((item) => typeof item === 'number')) // 1
-console.log(a1.findLastIndex((item) => typeof item === 'number')) // 5
+console.log(a1.find(callback)) // 10
+console.log(a1.findLast(callback)) // 30
+console.log(a1.findIndex(callback)) // 1
+console.log(a1.findLastIndex(callback)) // 5
 ```
 
 如果 `callback` 对数组中的每一个元素都返回 `true`，则 `every()` 方法返回 `true`。如果 `callback` 对数组中至少一个元素返回 `true`，则 `some()` 方法返回 `true`：
 
 ```js
-function isNumber(value) {
+function callback(value) {
   return typeof value === 'number'
 }
 const a1 = [1, 2, 3]
-console.log(a1.every(isNumber)) // true
+console.log(a1.every(callback)) // true
 const a2 = [1, '2', 3]
-console.log(a2.every(isNumber)) // false
-console.log(a2.some(isNumber)) // true
+console.log(a2.every(callback)) // false
+console.log(a2.some(callback)) // true
 ```
 
-`reduce()` 方法对数组中的每个值执行 `callback(accumulator, currentValue, currentIndex, Array)`，目的是将列表中的元素减少到单个值。`reduce` 函数返回 `callback` 函数返回的最终值。如果指定了 `initialValue`，则调用 `callback`，并将 `initialValue` 作为第一个参数值，将数组中第一个元素的值作为第二个参数值。如果没有指定 `initialValue`，那么 `callback` 的前两个参数值将是数组的第一个和第二个元素。之后的每一次调用，第一个参数的值将是前一个调用中返回的 `callback`，第二个参数的值将是数组中的下一个值。
+`filter()` 方法返回一个新数组，其中包含 `callback` 返回 `true` 的元素：
 
 ```js
-const a = [10, 20, 30]
-const total = a.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-console.log(total) // 60
+function callback(item) {
+  return typeof item === 'number'
+}
+
+const a1 = ['a', 10, 'b', 20, 'c', 30]
+const a2 = a1.filter(callback)
+console.log(a2) // [10, 20, 30]
 ```
+
+> map/reduce 的概念可以参考 Google 的知名论文 [MapReduce: Simplified Data Processing on Large Clusters](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
+>
+> 简单说就是 map 把每个元素变成新的值​，输出等长新数组；reduce 把所有元素聚合成一个结果​，输出一个值
+
+`map()` 方法返回由每个数组元素上执行 `callback` 的返回值所组成的新数组：
+
+举例说明，比如我们有一个函数f(x)=x * x，要把这个函数作用在一个数组[1, 2, 3, 4, 5, 6, 7, 8, 9]上，就可以用map实现如下：
+
+<img src='https://pic4.zhimg.com/80/v2-0a9e037a6dd6bede5e958e6d40fefae7_1440w.webp' style='width:300px ; margin-left: 0;'>
+
+```js
+function callback(x) {
+  return x * x
+}
+
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+let results = arr.map(callback) // [1, 4, 9, 16, 25, 36, 49, 64, 81]
+console.log(results)
+```
+
+`reduce()` 方法对数组中的每个值执行 `callback(accumulator, currentValue, currentIndex, Array)`，把整个数组归约成一个值，并返回最后一次 `callback` 调用的结果。
+
+我个人理解是`reduce()`把结果继续和序列的下一个元素做累积计算，其效果就是：
+
+```js
+[x1, x2, x3, x4].reduce(f) = f(f(f(x1, x2), x3), x4)
+```
+
+最常见的用法是求和：
+
+```js
+function callback(accumulator, currentValue) {
+  return accumulator + currentValue
+}
+
+const arr = [1, 3, 5, 7, 9]
+console.log(arr.reduce(callback, 0)) // 25
+```
+
+第二个参数`0`是初始值（`initialValue`），它决定第一次调用回调时 `accumulator` 从什么开始：
+
+- **传了初始值**：相当于在数组最前面插入这个值。第一次调用是 `callback(initialValue, arr[0])`，之后每次用上一次的返回值作为 `accumulator`，回调共执行 `arr.length` 次。
+- **没传初始值**：把 `arr[0]` 直接当作 `accumulator`。第一次调用是 `callback(arr[0], arr[1])`，之后同理，回调共执行 `arr.length - 1` 次。
+
+如果数组为空且没有初始值，`reduce()` 会抛出 `TypeError`；传入初始值则直接返回它。
 
 `reduceRight()` 方法的工作原理类似于 `reduce()`，但从最后一个元素开始。`reduce` 和 `reduceRight` 是迭代数组方法中最不被人熟知的两个函数。它们应该使用在那些需要把数组的元素两两递归处理，并最终计算成一个单一结果的算法。
 
 接受回调的 `forEach`、`map`、`filter` 等方法被称为**迭代方法**，因为它们以某种方式遍历整个数组。每个都接受第二个可选的参数 `thisArg`。如果提供，`thisArg` 将成为回调函数体中 `this` 关键字的值。`sort()` 不是迭代方法，因为它的回调函数只用于比较，不能基于元素顺序以任何特定顺序调用，也不接受 `thisArg` 形参。
+
+#### 转换为字符串
+
+`join()` 方法将数组中的所有元素连接成一个字符串：
+
+```js
+const myArray = ['Wind', 'Rain', 'Fire']
+const list = myArray.join(' - ') // list 现在是 "Wind - Rain - Fire"
+```
 
 ### 稀疏数组
 
