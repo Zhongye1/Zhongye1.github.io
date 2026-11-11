@@ -5,12 +5,536 @@ mathjax: true
 abbrlink: 25474
 published: 2026-09-11 10:34:56
 category: 前端
-description: JavaScript 数据结构与值：数组、对象、解构、Map/Set、JSON、iterable、拷贝与不变性、二进制与字符编码
+description: JavaScript 数据结构与值：对象、数组、iterable、解构、Map/Set、JSON、拷贝与不变性、二进制与字符编码
 cover: 'https://pica.zhimg.com/80/v2-86e48ab9a79eb6d9833074d99268ce2a_1440w.webp'
 tags:
   - 前端
   - JavaScript
 ---
+
+## 对象
+
+### 对象与属性
+
+JavaScript 中的对象是**键值对的集合**：每个属性有一个名字（键）和一个值。值可以是任意类型；当值是函数时，这个属性通常称为**方法**。
+
+对象常用来描述现实世界中的实体。例如，用对象描述小明：
+
+```js
+const xiaoming = {
+  name: '小明',
+  birth: 1990,
+  school: 'No.1 Middle School',
+  height: 1.7,
+  weight: 65,
+  score: null,
+}
+```
+
+对象字面量用 `{ ... }` 表示，键值对写成 `key: value`，多个键值对之间用逗号分隔。
+
+属性可以看作挂在对象上的变量。访问属性有两种写法：
+
+```js
+objectName.propertyName // 点号：属性名必须是合法标识符
+objectName['propertyName'] // 方括号：属性名可以是任意字符串或 Symbol
+```
+
+点号写法更简洁，日常使用最多；属性名包含空格、连字符、以数字开头或者需要运行时才能确定时，只能用方括号：
+
+```js
+const myCar = {}
+
+myCar.make = 'Ford' // 点号
+myCar.model = 'Mustang'
+
+const key = 'year'
+myCar[key] = 1969 // 键来自变量，只能用方括号
+```
+
+属性名是大小写敏感的，`myCar.make` 和 `myCar.Make` 是两个不同的属性。访问不存在的属性会得到 `undefined`，而不是 `null`；属性存在但值恰好是 `undefined` 时，读取结果一样，但它仍然是一个存在的属性：
+
+```js
+myCar.noProperty // undefined
+```
+
+对象有时也被称为**关联数组**，因为属性可以像数组下标一样用方括号访问。属性键只有两种类型：字符串和 `Symbol`；用方括号写其他类型的键时，会先转换成字符串：
+
+```js
+const myObj = {}
+const str = 'myString'
+const obj = {}
+
+myObj.type = 'Dot syntax'
+myObj['date created'] = 'String with space'
+myObj[str] = 'String value' // 等价于 myObj['myString']
+myObj[123] = 'Number key' // 等价于 myObj['123']
+myObj[obj] = 'Object key' // 等价于 myObj['[object Object]']
+myObj[''] = 'Empty string key'
+```
+
+把对象当作键时，JavaScript 会先把它转换成字符串（通常调用 `toString()`），再用结果作为键；上面的 `obj` 因此变成了 `'[object Object]'`。这也是普通对象不适合当字典的原因——不同的对象很容易转换成同一个字符串。
+
+ES6 起，`Symbol` 也可以作为属性键。它不会被转换成字符串，只能用方括号访问：
+
+```js
+const id = Symbol('id')
+myObj[id] = 123
+myObj[id] // 123
+```
+
+### 创建对象
+
+#### 使用对象初始化器
+
+除了通过构造函数创建对象之外，也可以通过对象初始化器创建对象。使用对象初始化器也被称作通过字面值创建对象。对象初始化器与 C++ 术语相一致。通过对象初始化器创建对象的语法如下：
+
+```js
+const obj = {
+  property_1: value_1, // property_# 可以是一个标识符...
+  2: value_2, // 或一个数字...
+  ['property' + 3]: value_3, // 或一个可计算的 key 名...
+  // ...,
+  'property n': value_n, // 或一个字符串
+}
+```
+
+这里 `obj` 是新对象的名称，每一个 `property_i` 是一个标识符（可以是一个名称、数字或字符串字面量），并且每个 `value_i` 是一个其值将被赋予 `property_i` 的表达式。`obj` 与赋值是可选的；如果不需要在其他地方引用对象，就不需要将它赋给一个变量。注意在接受一条语句的地方，可能需要将对象字面量括在括号里，从而避免将字面量与块语句相混淆。
+
+如果一个对象是通过在顶级脚本的对象初始化器创建的，则 JavaScript 在每次遇到包含该对象字面量的表达式时都会创建对象。同样的，在函数中的初始化器在每次函数调用时也会被创建。
+
+以下创建了有三个属性的 `myHonda` 对象。注意它的 `engine` 属性也是一个拥有自己属性的对象：
+
+```js
+const myHonda = { color: 'red', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
+```
+
+#### 使用构造函数
+
+作为另一种方式，可以通过两步来创建对象：
+
+1. 通过创建一个构造函数来定义对象的类型。首字母大写是非常普遍而且很恰当的惯用法。
+2. 通过 `new` 创建对象实例。
+
+为了定义对象类型，为对象类型创建一个函数以声明类型的名称、属性和方法。例如，要为汽车创建一个类型，并且将这类对象称为 `car`，并且拥有属性 `make`、`model` 和 `year`，可以创建如下的函数：
+
+```js
+function Car(make, model, year) {
+  this.make = make
+  this.model = model
+  this.year = year
+}
+```
+
+注意通过使用 `this` 将传入函数的值赋给对象的属性。现在可以像这样创建一个 `mycar` 对象：
+
+```js
+const mycar = new Car('Eagle', 'Talon TSi', 1993)
+```
+
+该语句创建了 `mycar` 并且将指定的值赋给它的属性。因而 `mycar.make` 的值是字符串 `"Eagle"`，`mycar.year` 的值是整数 `1993`，依此类推。
+
+一个对象的属性值可以是另一个对象。例如，假设按如下方式定义了 `person` 对象：
+
+```js
+function Person(name, age, sex) {
+  this.name = name
+  this.age = age
+  this.sex = sex
+}
+```
+
+然后按如下方式创建了两个 `person` 实例：
+
+```js
+const rand = new Person('Rand McKinnon', 33, 'M')
+const ken = new Person('Ken Jones', 39, 'M')
+```
+
+> JS 的 new 到底是干什么的？ https://zhuanlan.zhihu.com/p/23987456
+
+```
+new的过程：
+① 创建一个全新的空对象：{}
+② 把该对象的原型指向构造函数的 prototype
+③ 把 this 绑定到这个新对象，执行构造函数体
+④ 返回这个新对象（如果构造函数没显式 return 对象的话）
+```
+
+那么，可以重写 `car` 的定义以包含一个拥有它的 `owner` 属性：
+
+```js
+function Car(make, model, year, owner) {
+  this.make = make
+  this.model = model
+  this.year = year
+  this.owner = owner
+}
+
+const car1 = new Car('Eagle', 'Talon TSi', 1993, rand)
+const car2 = new Car('Nissan', '300ZX', 1992, ken)
+```
+
+注意在创建新对象时，上面的语句将 `rand` 和 `ken` 作为 `owner` 的参数值，而不是传入字符串字面量或整数值。接下来如果想找出 `car2` 的拥有者的姓名，可以访问 `car2.owner.name`。
+
+注意总是可以为之前定义的对象增加新的属性。例如，语句 `car1.color = "black"` 为 `car1` 增加了 `color` 属性，并将其值设为 `"black"`。然而，这并不影响其他的对象。想要为某个类型的所有对象增加新属性，必须将属性加入到 `car` 对象类型的定义中。
+
+#### 使用 Object.create 方法
+
+对象也可以用 `Object.create()` 方法创建。该方法非常有用，因为它允许为创建的对象选择一个原型对象，而不用定义构造函数：
+
+```js
+// Animal properties and method encapsulation
+const Animal = {
+  type: 'Invertebrates', // 属性默认值
+  displayType() {
+    // 用于显示 type 属性的方法
+    console.log(this.type)
+  },
+}
+
+// 创建一种新的动物——animal1
+const animal1 = Object.create(Animal)
+animal1.displayType() // Output: Invertebrates
+
+// 创建一种新的动物——Fishes
+const fish = Object.create(Animal)
+fish.type = 'Fishes'
+fish.displayType() // Output: Fishes
+```
+
+### 增强的对象字面量
+
+对象字面量支持一组简写语法，包括在创建时设置原型、`foo: foo` 赋值的简写、定义方法、支持 `super` 调用以及使用表达式计算属性名。总之，这些也使对象字面量和类声明更加紧密地联系起来，让基于对象的设计从这些便利中更加受益：
+
+```js
+const obj = {
+  // __proto__
+  __proto__: theProtoObj,
+  // “handler: handler”的简写
+  handler,
+  // 方法
+  toString() {
+    // Super 调用
+    return 'd ' + super.toString()
+  },
+  // 计算（动态的）属性名
+  ['prop_' + (() => 42)()]: 42,
+}
+```
+
+### 枚举属性
+
+有三种原生的方法用于列出或枚举对象的属性：
+
+- `for...in` 循环：该方法依次访问一个对象及其原型链中所有可枚举的属性。
+- `Object.keys(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有可枚举属性的名称的数组。
+- `Object.getOwnPropertyNames(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有属性（无论是否可枚举）的名称的数组。
+
+在 ECMAScript 5 之前，没有原生的方法枚举一个对象的所有属性。然而，可以通过以下函数完成：
+
+```js
+function listAllProperties(o) {
+  let objectToInspect
+  let result = []
+
+  for (
+    objectToInspect = o;
+    objectToInspect !== null;
+    objectToInspect = Object.getPrototypeOf(objectToInspect)
+  ) {
+    result = result.concat(Object.getOwnPropertyNames(objectToInspect))
+  }
+
+  return result
+}
+```
+
+### 方法、this 与访问器
+
+一个**方法**是关联到某个对象的函数，或者简单地说，一个方法是一个值为某个函数的对象属性。定义方法就像定义普通的函数，除了它们必须被赋给对象的某个属性：
+
+```js
+objectName.methodname = function_name
+
+const myObj = {
+  myMethod(params) {
+    // ...do something
+  },
+  // 或者这样写也可以
+  myOtherMethod(params) {
+    // ...do something else
+  },
+}
+```
+
+可以在对象的上下文中像这样调用方法：
+
+```js
+object.methodname(params)
+```
+
+JavaScript 有一个特殊的关键字 `this`，它可以在方法中使用以指代当前对象。例如，假设有一个名为 `validate` 的函数，它根据给出的最大与最小值检查某个对象的 `value` 属性：
+
+```js
+function validate(obj, lowval, hival) {
+  if (obj.value < lowval || obj.value > hival) {
+    alert('Invalid Value!')
+  }
+}
+```
+
+然后，可以在每个元素的 `onchange` 事件处理器中调用 `validate`，并通过 `this` 传入相应元素，代码如下：
+
+```html
+<input type="text" name="age" size="3" onChange="validate(this, 18, 99)" />
+```
+
+`this` 在一个方法中指调用的对象。当与 `form` 属性一起使用时，`this` 可以指代当前对象的父窗体。在下面的例子中，窗体 `myForm` 包含一个 `Text` 对象和一个按钮，当用户点击按键，`Text` 对象的值被设为窗体的名称。按钮的 `onclick` 事件处理器使用 `this.form` 以指代其父窗体，即 `myForm`：
+
+```html
+<form name="myForm">
+  <p>
+    <label>Form name:<input type="text" name="text1" value="Beluga" /></label>
+  </p>
+  <p>
+    <input
+      name="button1"
+      type="button"
+      value="Show Form Name"
+      onclick="this.form.text1.value = this.form.name"
+    />
+  </p>
+</form>
+```
+
+一个 **getter** 是一个获取某个特定属性的值的方法。一个 **setter** 是一个设定某个属性的值的方法。可以为预定义的或用户定义的对象定义 getter 和 setter 以支持新增的属性。定义 getter 和 setter 的语法采用对象字面量语法。下面例子描述了 getter 和 setter 是如何为用户定义的对象 `o` 工作的：
+
+```js
+const o = {
+  a: 7,
+  get b() {
+    return this.a + 1
+  },
+  set c(x) {
+    this.a = x / 2
+  },
+}
+
+console.log(o.a) // 7
+console.log(o.b) // 8
+o.c = 50
+console.log(o.a) // 25
+```
+
+`o` 对象的属性如下：
+
+- `o.a` — 数字
+- `o.b` — 返回 `o.a` + 1 的 getter
+- `o.c` — 由 `o.c` 的值所设置 `o.a` 值的 setter
+
+请注意在一个对象字面量语法中定义 getter 和 setter 使用 `[gs]et property()` 的方式，而不是误以为在获取和设置某个属性自身。定义一个已经声明的函数作为 getter 和 setter 方法，使用 `Object.defineProperty()`（或者 `Object.prototype.__defineGetter__` 旧语法回退）。
+
+### 删除属性与比较对象
+
+可以用 `delete` 操作符删除一个**不是继承而来**的属性。下面的例子说明如何删除一个属性：
+
+```js
+// 创建一个新对象 myobj，它有两个属性 a 和 b。
+const myobj = new Object()
+myobj.a = 5
+myobj.b = 12
+
+// 移除 a 属性，只留下 b 属性。
+delete myobj.a
+```
+
+如果一个全局变量不是用 `var` 关键字声明的话，也可以用 `delete` 删除它：
+
+```js
+g = 17
+delete g
+```
+
+在 JavaScript 中，对象是一种引用类型。两个独立声明的对象永远也不会相等，即使他们有相同的属性，只有在比较一个对象和这个对象的引用时，才会返回 `true`：
+
+```js
+// 两个变量，两个具有同样的属性、但不相同的对象
+const fruit = { name: 'apple' }
+const fruitbear = { name: 'apple' }
+
+fruit == fruitbear // return false
+fruit === fruitbear // return false
+```
+
+```js
+// 两个变量，同一个对象
+const fruit = { name: 'apple' }
+const fruitbear = fruit // 将 fruit 的对象引用（reference）赋值给 fruitbear
+// fruit 与 fruitbear 都指向同样的对象
+fruit == fruitbear // return true
+fruit === fruitbear // return true
+```
+
+### 原型与原型链
+
+> 在编程中，继承是指将特性从父代传递给子代，以便新代码可以重用并基于现有代码的特性进行构建。JavaScript 使用对象实现继承。每个对象都有一条链接到另一个称作原型的对象的内部链。该原型对象有自己的原型，依此类推，直到原型是 null 的对象。根据定义，null 没有原型，并作为这条原型链中最后的一环。在运行时修改原型链的任何成员、甚至是换掉原型都是可能的，所以像静态分派这样的概念在 JavaScript 中不存在。
+> 对于有基于类的语言（如 Java 或 C++）经验的开发者来说，JavaScript 有些令人困惑——因为它是动态的并且没有静态类型。尽管这个困惑通常被认为是 JavaScript 的弱点之一，但是原型继承模型实际上比类式模型更强大。例如，在原型模型的基础上构建类式模型（即类的实现方式）相当简单。
+> 尽管类现在被广泛使用并成为 JavaScript 中新的范式，但是类并没有引入新的继承模式。尽管类抽象掉了大部分的原型机制，但是理解原型的底层工作机制仍然十分有用。
+>
+> https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain
+
+在 JavaScript 中，原型（prototype）是一个非常重要的概念，它为对象提供了继承和共享属性的机制。每个 JavaScript 对象都有一个与之关联的原型对象，通过原型对象，可以实现属性和方法的共享，从而减少内存占用。
+
+所有的 JavaScript 对象都会从一个 prototype（原型对象）中继承属性和方法。
+
+#### 原型（prototype）
+
+原型是一个对象，它是其他对象的模板或蓝图。
+当一个对象试图访问一个属性或方法时，如果在该对象自身没有找到，JavaScript 会沿着原型链向上查找，直到找到对应的属性或方法，或者达到原型链的顶端 null 为止。
+
+每个 JavaScript 对象（除了 null）都自动拥有一个隐藏的属性 `__proto__`，它指向该对象的原型对象。这个 `__proto__` 是实现继承的关键：
+
+```js
+let obj = {}
+console.log(obj.__proto__) // 输出: [object Object], 即 obj 的原型是 Object.prototype
+```
+
+`__proto__` 是浏览器先行实现、后来收进 ES 的历史访问器，不属于推荐写法。
+
+现代代码应改用标准的 `Object.getPrototypeOf()` / `Object.setPrototypeOf()`。
+
+#### 构造函数与原型
+
+构造函数负责批量创建对象，并写入每个实例独有的数据：
+
+```js
+// 这里 Person 是构造函数
+function Person(first, last, age, eyeColor) {
+  this.firstName = first
+  this.lastName = last
+  this.age = age
+  this.eyeColor = eyeColor
+}
+
+// new Person(...) 在这里创建了两个独立对象 myFather 和 myMother
+const myFather = new Person('John', 'Doe', 50, 'blue')
+const myMother = new Person('Sally', 'Rally', 48, 'green')
+```
+
+现在这里的每个实例都自带一份完整的属性。
+
+现在要为 `Person` 创建一个方法，名为 `sayHello`，假设把它放进构造函数：
+
+```js
+function Person(name) {
+  this.name = name
+  this.sayHello = function () {
+    console.log(`Hello, my name is ${this.name}`)
+  }
+}
+
+const a = new Person('Alice')
+const b = new Person('Bob')
+
+a.sayHello === b.sayHello // 这里会为 false，说明两个实例拿到的是两个独立函数
+```
+
+每个实例都会创建一份新的 `sayHello` 函数，1000 个实例就有 1000 份相同代码，浪费内存。
+
+原型机制解决的正是这种重复，实现让所有实例共享方法。`sayHello` 只存在 Person.prototype 上一份，所有实例通过原型链共享它。
+
+```js
+function Person(name) {
+  this.name = name // 实例自有属性
+}
+
+Person.prototype.sayHello = function () {
+  console.log(`Hello, my name is ${this.name}`)
+}
+
+const alice = new Person('Alice')
+const bob = new Person('Bob')
+
+// 这里查找 alice.sayHello 的过程：
+// ① alice 自身有没有 sayHello？→ 没有
+// ② 去 alice 的原型 Person.prototype 找，并且找到了 sayHello
+// ③ 调用它，this 指向 alice
+alice.sayHello() // Hello, my name is Alice
+bob.sayHello() // Hello, my name is Bob
+
+console.log(alice.sayHello === bob.sayHello) // true -> 所有实例共享了这个 sayHello 方法
+console.log(alice.hasOwnProperty('sayHello')) // false -> alice 自身有没有 sayHello 方法
+console.log(Object.getPrototypeOf(alice) === Person.prototype)
+// true -> 去 alice 的原型 Person.prototype 找，并且找到了 sayHello
+console.log(Person.prototype.constructor === Person)
+// true -> 构造函数创建时，JS 引擎自动给 Person.prototype 加了一个 constructor 属性，指回构造函数本身
+```
+
+换言之，原型机制把「每个实例各存一份公共行为」改成「所有实例沿原型链指向同一份」。比如数组的 `map`、对象的 `toString` 都挂在各自的 `Array.prototype`、`Object.prototype` 上。
+
+现代前端中一般会用 class 语法糖或函数组件，很少手写构造函数 + 原型（Person.prototype.sayHello），不过了解后者有助于理解原型机制。
+
+#### 原型链（prototype chain）
+
+在 JavaScript 中，对象通过**原型链**来实现继承。当一个对象尝试访问一个属性或方法时，JavaScript 会首先检查该对象自身是否有这个属性或方法。如果没有，它会沿着原型链向上查找，直到找到同名属性或抵达 `null`：
+
+```js
+const obj = {}
+console.log(obj.toString()) // [object Object]
+```
+
+`obj` 自身没有 `toString`，最终在 `Object.prototype` 上找到。内置对象同样挂在这条链上：
+
+- `Date` 实例 → `Date.prototype` → `Object.prototype` → `null`
+- `Array` 实例 → `Array.prototype` → `Object.prototype` → `null`
+- `Person` 实例 → `Person.prototype` → `Object.prototype` → `null`
+
+属性查找就沿这些箭头逐级深入，任意一层找到同名属性就停止；整条链都没有，才返回 `undefined`。
+
+#### 修改原型
+
+原型是普通对象，可以随时增删属性，所有已存在的实例都会立即看到变化：
+
+下面给 Person.prototype 新增了一个 sayGoodbye 方法，而 bob 通过原型链访问到了它
+
+```js
+function Person(name) {
+  this.name = name
+}
+
+Person.prototype.sayHello = function () {
+  console.log('Hello, my name is ' + this.name)
+}
+
+let bob = new Person('Bob')
+bob.sayHello() // 输出: Hello, my name is Bob
+
+// 修改原型，新增了一个 sayGoodbye 方法
+Person.prototype.sayGoodbye = function () {
+  console.log('Goodbye from ' + this.name)
+}
+
+bob.sayGoodbye() // 输出: Goodbye from Bob
+```
+
+#### Object.create
+
+Object.create 方法允许开发者创建一个新对象，并将其原型设置为指定的对象。
+
+```js
+let personPrototype = {
+  sayHello: function () {
+    console.log('Hello, my name is ' + this.name)
+  },
+}
+
+let alice = Object.create(personPrototype)
+alice.name = 'Alice'
+alice.sayHello() // 输出: Hello, my name is Alice
+```
+
+这里 alice 的原型是 personPrototype，因此 alice 对象可以访问 sayHello 方法。
 
 ## 数组
 
@@ -552,538 +1076,149 @@ console.log(arr.property) // "value"
 
 一些 DOM 集合（如 `NodeList`）和函数内部的 `arguments` 对象是**类数组对象**：它们有 `length` 属性和数字索引，但没有数组的方法。可以用 `Array.from()` 把它们转换成真正的数组，再使用 `map`、`filter` 等方法。
 
-## 对象
+## iterable
 
-### 对象与属性
+### 迭代器
 
-JavaScript 中的对象是**键值对的集合**：每个属性有一个名字（键）和一个值。值可以是任意类型；当值是函数时，这个属性通常称为**方法**。
+迭代器和生成器将迭代的概念直接带入核心语言，并提供了一种机制来自定义 `for...of` 循环的行为。
 
-对象常用来描述现实世界中的实体。例如，用对象描述小明：
+在 JavaScript 中，**迭代器**是一个对象，它定义一个序列，并在终止时可能附带一个返回值。更具体地说，迭代器是通过使用 `next()` 方法实现了迭代器协议的任何一个对象，该方法返回具有两个属性的对象：
 
-```js
-const xiaoming = {
-  name: '小明',
-  birth: 1990,
-  school: 'No.1 Middle School',
-  height: 1.7,
-  weight: 65,
-  score: null,
-}
-```
+- `value`：迭代序列的下一个值。
+- `done`：如果已经迭代到序列中的最后一个值，则它为 `true`。如果 `value` 和 `done` 一起出现，则它就是迭代器的返回值。
 
-对象字面量用 `{ ... }` 表示，键值对写成 `key: value`，多个键值对之间用逗号分隔。
+一旦创建，迭代器对象可以通过重复调用 `next()` 显式地迭代。迭代一个迭代器被称为消耗了这个迭代器，因为它通常只能执行一次：在产生终值后，对 `next()` 的额外调用应该继续返回 `{done: true}`。
 
-属性可以看作挂在对象上的变量。访问属性有两种写法：
+JavaScript 中最常见的迭代器是数组迭代器，它按顺序返回关联数组中的每个值。
+
+虽然很容易想象所有迭代器都可以表示为数组，但事实并非如此。数组必须完整分配，而迭代器则是按需分配。因此，迭代器可以表示无限大小的序列，例如 0 和 `Infinity` 之间的整数范围。
+
+下面的例子展示了具体做法。它允许创建一个简单的范围迭代器，以定义一个从 `start`（闭）到 `end`（开），以 `step` 为步长的整数序列。它的最终返回值是它创建的序列的大小，由变量 `iterationCount` 跟踪：
 
 ```js
-objectName.propertyName // 点号：属性名必须是合法标识符
-objectName['propertyName'] // 方括号：属性名可以是任意字符串或 Symbol
-```
+function makeRangeIterator(start = 0, end = Infinity, step = 1) {
+  let nextIndex = start
+  let iterationCount = 0
 
-点号写法更简洁，日常使用最多；属性名包含空格、连字符、以数字开头或者需要运行时才能确定时，只能用方括号：
-
-```js
-const myCar = {}
-
-myCar.make = 'Ford' // 点号
-myCar.model = 'Mustang'
-
-const key = 'year'
-myCar[key] = 1969 // 键来自变量，只能用方括号
-```
-
-属性名是大小写敏感的，`myCar.make` 和 `myCar.Make` 是两个不同的属性。访问不存在的属性会得到 `undefined`，而不是 `null`；属性存在但值恰好是 `undefined` 时，读取结果一样，但它仍然是一个存在的属性：
-
-```js
-myCar.noProperty // undefined
-```
-
-对象有时也被称为**关联数组**，因为属性可以像数组下标一样用方括号访问。属性键只有两种类型：字符串和 `Symbol`；用方括号写其他类型的键时，会先转换成字符串：
-
-```js
-const myObj = {}
-const str = 'myString'
-const obj = {}
-
-myObj.type = 'Dot syntax'
-myObj['date created'] = 'String with space'
-myObj[str] = 'String value' // 等价于 myObj['myString']
-myObj[123] = 'Number key' // 等价于 myObj['123']
-myObj[obj] = 'Object key' // 等价于 myObj['[object Object]']
-myObj[''] = 'Empty string key'
-```
-
-把对象当作键时，JavaScript 会先把它转换成字符串（通常调用 `toString()`），再用结果作为键；上面的 `obj` 因此变成了 `'[object Object]'`。这也是普通对象不适合当字典的原因——不同的对象很容易转换成同一个字符串。
-
-ES6 起，`Symbol` 也可以作为属性键。它不会被转换成字符串，只能用方括号访问：
-
-```js
-const id = Symbol('id')
-myObj[id] = 123
-myObj[id] // 123
-```
-
-### 创建对象
-
-#### 使用对象初始化器
-
-除了通过构造函数创建对象之外，也可以通过对象初始化器创建对象。使用对象初始化器也被称作通过字面值创建对象。对象初始化器与 C++ 术语相一致。通过对象初始化器创建对象的语法如下：
-
-```js
-const obj = {
-  property_1: value_1, // property_# 可以是一个标识符...
-  2: value_2, // 或一个数字...
-  ['property' + 3]: value_3, // 或一个可计算的 key 名...
-  // ...,
-  'property n': value_n, // 或一个字符串
-}
-```
-
-这里 `obj` 是新对象的名称，每一个 `property_i` 是一个标识符（可以是一个名称、数字或字符串字面量），并且每个 `value_i` 是一个其值将被赋予 `property_i` 的表达式。`obj` 与赋值是可选的；如果不需要在其他地方引用对象，就不需要将它赋给一个变量。注意在接受一条语句的地方，可能需要将对象字面量括在括号里，从而避免将字面量与块语句相混淆。
-
-如果一个对象是通过在顶级脚本的对象初始化器创建的，则 JavaScript 在每次遇到包含该对象字面量的表达式时都会创建对象。同样的，在函数中的初始化器在每次函数调用时也会被创建。
-
-以下创建了有三个属性的 `myHonda` 对象。注意它的 `engine` 属性也是一个拥有自己属性的对象：
-
-```js
-const myHonda = { color: 'red', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
-```
-
-#### 使用构造函数
-
-作为另一种方式，可以通过两步来创建对象：
-
-1. 通过创建一个构造函数来定义对象的类型。首字母大写是非常普遍而且很恰当的惯用法。
-2. 通过 `new` 创建对象实例。
-
-为了定义对象类型，为对象类型创建一个函数以声明类型的名称、属性和方法。例如，要为汽车创建一个类型，并且将这类对象称为 `car`，并且拥有属性 `make`、`model` 和 `year`，可以创建如下的函数：
-
-```js
-function Car(make, model, year) {
-  this.make = make
-  this.model = model
-  this.year = year
-}
-```
-
-注意通过使用 `this` 将传入函数的值赋给对象的属性。现在可以像这样创建一个 `mycar` 对象：
-
-```js
-const mycar = new Car('Eagle', 'Talon TSi', 1993)
-```
-
-该语句创建了 `mycar` 并且将指定的值赋给它的属性。因而 `mycar.make` 的值是字符串 `"Eagle"`，`mycar.year` 的值是整数 `1993`，依此类推。
-
-一个对象的属性值可以是另一个对象。例如，假设按如下方式定义了 `person` 对象：
-
-```js
-function Person(name, age, sex) {
-  this.name = name
-  this.age = age
-  this.sex = sex
-}
-```
-
-然后按如下方式创建了两个 `person` 实例：
-
-```js
-const rand = new Person('Rand McKinnon', 33, 'M')
-const ken = new Person('Ken Jones', 39, 'M')
-```
-
-> JS 的 new 到底是干什么的？ https://zhuanlan.zhihu.com/p/23987456
-
-```
-new的过程：
-① 创建一个全新的空对象：{}
-② 把该对象的原型指向构造函数的 prototype
-③ 把 this 绑定到这个新对象，执行构造函数体
-④ 返回这个新对象（如果构造函数没显式 return 对象的话）
-```
-
-那么，可以重写 `car` 的定义以包含一个拥有它的 `owner` 属性：
-
-```js
-function Car(make, model, year, owner) {
-  this.make = make
-  this.model = model
-  this.year = year
-  this.owner = owner
-}
-
-const car1 = new Car('Eagle', 'Talon TSi', 1993, rand)
-const car2 = new Car('Nissan', '300ZX', 1992, ken)
-```
-
-注意在创建新对象时，上面的语句将 `rand` 和 `ken` 作为 `owner` 的参数值，而不是传入字符串字面量或整数值。接下来如果想找出 `car2` 的拥有者的姓名，可以访问 `car2.owner.name`。
-
-注意总是可以为之前定义的对象增加新的属性。例如，语句 `car1.color = "black"` 为 `car1` 增加了 `color` 属性，并将其值设为 `"black"`。然而，这并不影响其他的对象。想要为某个类型的所有对象增加新属性，必须将属性加入到 `car` 对象类型的定义中。
-
-#### 使用 Object.create 方法
-
-对象也可以用 `Object.create()` 方法创建。该方法非常有用，因为它允许为创建的对象选择一个原型对象，而不用定义构造函数：
-
-```js
-// Animal properties and method encapsulation
-const Animal = {
-  type: 'Invertebrates', // 属性默认值
-  displayType() {
-    // 用于显示 type 属性的方法
-    console.log(this.type)
-  },
-}
-
-// 创建一种新的动物——animal1
-const animal1 = Object.create(Animal)
-animal1.displayType() // Output: Invertebrates
-
-// 创建一种新的动物——Fishes
-const fish = Object.create(Animal)
-fish.type = 'Fishes'
-fish.displayType() // Output: Fishes
-```
-
-### 增强的对象字面量
-
-对象字面量支持一组简写语法，包括在创建时设置原型、`foo: foo` 赋值的简写、定义方法、支持 `super` 调用以及使用表达式计算属性名。总之，这些也使对象字面量和类声明更加紧密地联系起来，让基于对象的设计从这些便利中更加受益：
-
-```js
-const obj = {
-  // __proto__
-  __proto__: theProtoObj,
-  // “handler: handler”的简写
-  handler,
-  // 方法
-  toString() {
-    // Super 调用
-    return 'd ' + super.toString()
-  },
-  // 计算（动态的）属性名
-  ['prop_' + (() => 42)()]: 42,
-}
-```
-
-### 枚举属性
-
-有三种原生的方法用于列出或枚举对象的属性：
-
-- `for...in` 循环：该方法依次访问一个对象及其原型链中所有可枚举的属性。
-- `Object.keys(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有可枚举属性的名称的数组。
-- `Object.getOwnPropertyNames(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有属性（无论是否可枚举）的名称的数组。
-
-在 ECMAScript 5 之前，没有原生的方法枚举一个对象的所有属性。然而，可以通过以下函数完成：
-
-```js
-function listAllProperties(o) {
-  let objectToInspect
-  let result = []
-
-  for (
-    objectToInspect = o;
-    objectToInspect !== null;
-    objectToInspect = Object.getPrototypeOf(objectToInspect)
-  ) {
-    result = result.concat(Object.getOwnPropertyNames(objectToInspect))
+  const rangeIterator = {
+    next() {
+      let result
+      if (nextIndex < end) {
+        result = { value: nextIndex, done: false }
+        nextIndex += step
+        iterationCount++
+        return result
+      }
+      return { value: iterationCount, done: true }
+    },
   }
-
-  return result
+  return rangeIterator
 }
 ```
 
-### 方法、this 与访问器
-
-一个**方法**是关联到某个对象的函数，或者简单地说，一个方法是一个值为某个函数的对象属性。定义方法就像定义普通的函数，除了它们必须被赋给对象的某个属性：
+使用这个迭代器看起来像这样：
 
 ```js
-objectName.methodname = function_name
+let it = makeRangeIterator(1, 10, 2)
 
-const myObj = {
-  myMethod(params) {
-    // ...do something
-  },
-  // 或者这样写也可以
-  myOtherMethod(params) {
-    // ...do something else
-  },
+let result = it.next()
+while (!result.done) {
+  console.log(result.value) // 1 3 5 7 9
+  result = it.next()
+}
+
+console.log(`已迭代序列的大小：${result.value}`) // 5
+```
+
+反射性地知道特定对象是否是迭代器是不可能的。如果需要这样做，请使用**可迭代对象**。
+
+### 可迭代对象
+
+若一个对象拥有迭代行为，比如在 `for...of` 中会循环一些值，那么那个对象便是一个可迭代对象。一些内置类型，如 `Array` 或 `Map` 拥有默认的迭代行为，而其他类型（比如 `Object`）则没有。
+
+为了实现**可迭代**，对象必须实现 `[Symbol.iterator]()` 方法，这意味着这个对象（或其原型链中的任意一个对象）必须具有一个键值为 `Symbol.iterator` 的属性。
+
+程序员应知道一个可迭代对象可以多次迭代，还是只能迭代一次。只能迭代一次的可迭代对象（例如生成器）通常从它们的 `[Symbol.iterator]()` 方法中返回 `this`，而那些可以多次迭代的方法必须在每次调用 `[Symbol.iterator]()` 时返回一个新的迭代器：
+
+```js
+function* makeIterator() {
+  yield 1
+  yield 2
+}
+
+const it = makeIterator()
+
+for (const itItem of it) {
+  console.log(itItem)
+}
+
+console.log(it[Symbol.iterator]() === it) // true
+
+// 这个例子展示了生成器（迭代器）是可迭代对象，
+// 它有一个 [Symbol.iterator]() 方法返回 it（它自己），
+// 因此，it 对象只能迭代*一次*。
+
+// 如果将它的 [Symbol.iterator]() 方法改为一个返回新的迭代器/生成器对象的函数/生成器，
+// 它（it）就可以迭代多次了。
+
+it[Symbol.iterator] = function* () {
+  yield 2
+  yield 1
 }
 ```
 
-可以在对象的上下文中像这样调用方法：
+#### 自定义的可迭代对象
+
+可以像这样实现自己的可迭代对象：
 
 ```js
-object.methodname(params)
-```
-
-JavaScript 有一个特殊的关键字 `this`，它可以在方法中使用以指代当前对象。例如，假设有一个名为 `validate` 的函数，它根据给出的最大与最小值检查某个对象的 `value` 属性：
-
-```js
-function validate(obj, lowval, hival) {
-  if (obj.value < lowval || obj.value > hival) {
-    alert('Invalid Value!')
-  }
-}
-```
-
-然后，可以在每个元素的 `onchange` 事件处理器中调用 `validate`，并通过 `this` 传入相应元素，代码如下：
-
-```html
-<input type="text" name="age" size="3" onChange="validate(this, 18, 99)" />
-```
-
-`this` 在一个方法中指调用的对象。当与 `form` 属性一起使用时，`this` 可以指代当前对象的父窗体。在下面的例子中，窗体 `myForm` 包含一个 `Text` 对象和一个按钮，当用户点击按键，`Text` 对象的值被设为窗体的名称。按钮的 `onclick` 事件处理器使用 `this.form` 以指代其父窗体，即 `myForm`：
-
-```html
-<form name="myForm">
-  <p>
-    <label>Form name:<input type="text" name="text1" value="Beluga" /></label>
-  </p>
-  <p>
-    <input
-      name="button1"
-      type="button"
-      value="Show Form Name"
-      onclick="this.form.text1.value = this.form.name"
-    />
-  </p>
-</form>
-```
-
-一个 **getter** 是一个获取某个特定属性的值的方法。一个 **setter** 是一个设定某个属性的值的方法。可以为预定义的或用户定义的对象定义 getter 和 setter 以支持新增的属性。定义 getter 和 setter 的语法采用对象字面量语法。下面例子描述了 getter 和 setter 是如何为用户定义的对象 `o` 工作的：
-
-```js
-const o = {
-  a: 7,
-  get b() {
-    return this.a + 1
-  },
-  set c(x) {
-    this.a = x / 2
+const myIterable = {
+  *[Symbol.iterator]() {
+    yield 1
+    yield 2
+    yield 3
   },
 }
 
-console.log(o.a) // 7
-console.log(o.b) // 8
-o.c = 50
-console.log(o.a) // 25
-```
-
-`o` 对象的属性如下：
-
-- `o.a` — 数字
-- `o.b` — 返回 `o.a` + 1 的 getter
-- `o.c` — 由 `o.c` 的值所设置 `o.a` 值的 setter
-
-请注意在一个对象字面量语法中定义 getter 和 setter 使用 `[gs]et property()` 的方式，而不是误以为在获取和设置某个属性自身。定义一个已经声明的函数作为 getter 和 setter 方法，使用 `Object.defineProperty()`（或者 `Object.prototype.__defineGetter__` 旧语法回退）。
-
-### 删除属性与比较对象
-
-可以用 `delete` 操作符删除一个**不是继承而来**的属性。下面的例子说明如何删除一个属性：
-
-```js
-// 创建一个新对象 myobj，它有两个属性 a 和 b。
-const myobj = new Object()
-myobj.a = 5
-myobj.b = 12
-
-// 移除 a 属性，只留下 b 属性。
-delete myobj.a
-```
-
-如果一个全局变量不是用 `var` 关键字声明的话，也可以用 `delete` 删除它：
-
-```js
-g = 17
-delete g
-```
-
-在 JavaScript 中，对象是一种引用类型。两个独立声明的对象永远也不会相等，即使他们有相同的属性，只有在比较一个对象和这个对象的引用时，才会返回 `true`：
-
-```js
-// 两个变量，两个具有同样的属性、但不相同的对象
-const fruit = { name: 'apple' }
-const fruitbear = { name: 'apple' }
-
-fruit == fruitbear // return false
-fruit === fruitbear // return false
-```
-
-```js
-// 两个变量，同一个对象
-const fruit = { name: 'apple' }
-const fruitbear = fruit // 将 fruit 的对象引用（reference）赋值给 fruitbear
-// fruit 与 fruitbear 都指向同样的对象
-fruit == fruitbear // return true
-fruit === fruitbear // return true
-```
-
-### 原型与原型链
-
-**原型**（prototype）是 JavaScript 实现继承的机制：每个对象在创建时都会关联另一个对象（或者 `null`），这个被关联的对象就是它的原型。对象可以像读取自己的属性一样读取原型上的属性。原型主要用于共享属性和方法——把方法放在原型上，所有实例共用一份，而不是每个实例复制一份。
-
-这种继承更接近**委托**：对象不会复制原型上的属性，只是在自身找不到时，把查找转交给原型。每个对象的原型保存在内部属性 `[[Prototype]]` 中，它指向另一个对象（或者 `null`）。访问属性时，引擎先查对象自身，找不到就沿着 `[[Prototype]]` 指向的对象继续找，还找不到就继续向上，直到 `null`。这条由原型串起来的查找路径，就是**原型链**。
-
-数组和函数本质上也是对象，所以它们同样有原型链：
-
-```js
-const arr = []
-const fn = function () {}
-const obj = {}
-
-arr instanceof Object // true
-fn instanceof Object // true
-obj instanceof Object // true
-```
-
-读取原型用 `Object.getPrototypeOf(obj)`；设置原型一般用 `Object.create(proto)` 在创建时指定，或者在已有对象上用 `Object.setPrototypeOf(obj, proto)`：
-
-```js
-const proto = {
-  sayhello: 'hello',
-  greet() {
-    return this.sayhello
-  },
+for (const value of myIterable) {
+  console.log(value)
 }
-const obj = Object.create(proto)
+// 1
+// 2
+// 3
 
-obj.greet() // 'hello'，来自 proto
-Object.getPrototypeOf(obj) === proto // true
+;[...myIterable] // [1, 2, 3]
 ```
 
-`obj` 自身并没有 `greet`，它是在原型上找到的。
+#### 内置可迭代对象
 
-读取 `obj.greet` 时，引擎先查 `obj` 自身，没有；再沿 `[[Prototype]]` 到 `proto` 上找到 `greet`，以 `obj` 为 `this` 调用后得到 `'hello'`。查找在命中处停止，如果一路问到 `null` 仍未命中，`obj.greet` 会为 `undefined`。
+`String`、`Array`、`TypedArray`、`Map` 和 `Set` 都是内置可迭代对象，因为它们的原型对象都拥有一个 `Symbol.iterator` 方法。
 
-可以注意到这里的 `this` 不参与原型链查找，它的值由调用方式决定。`greet` 虽然是从原型上找到的，但 `obj.greet()` 调用时，`this` 是点号前面的 `obj`，不是 `proto`。因此 `this.sayhello` 会先在 `obj` 上找，找不到才继续沿原型链向上：
+#### 用于可迭代对象的语法
 
-```js
-obj.sayhello = 'hi'
-obj.greet() // 'hi'，this 是 obj，读到的是 obj 自己的 sayhello
-
-delete obj.sayhello
-obj.greet() // 'hello'，自有属性没了，回到原型上找
-```
-
-这也说明方法可以共享，但方法里的 `this` 指向调用它的对象，所以不同实例可以读到各自的数据。
-
-此外，`obj.__proto__` 也能读写原型，但它是 `Object.prototype` 上的访问器，属于历史遗留写法；现在一般用 `Object.getPrototypeOf()` / `Object.setPrototypeOf()`。
-
-#### 构造函数、prototype 与实例
-
-用构造函数创建对象时，实例的原型就是构造函数的 `prototype` 属性：
+一些语句和表达式专用于可迭代对象，例如 `for...of` 循环、展开语法、`yield*` 和解构语法：
 
 ```js
-function Person(name) {
-  this.name = name
+for (const value of ['a', 'b', 'c']) {
+  console.log(value)
+}
+// "a"
+// "b"
+// "c"
+
+;[...'abc'] // ["a", "b", "c"]
+
+function* gen() {
+  yield* ['a', 'b', 'c']
 }
 
-const person = new Person('logan')
+gen().next() // { value: "a", done: false }
+
+;[a, b, c] = new Set(['a', 'b', 'c'])
+a // "a"
 ```
-
-`new Person()` 大致做了三件事：创建一个空对象；把这个对象的 `[[Prototype]]` 指向 `Person.prototype`；以这个对象为 `this` 执行构造函数。
-
-三者的关系可以用一张图表示：
-
-```mermaid
-flowchart LR
-    Person["Person 构造函数"]
-    PersonProto["Person.prototype"]
-    PersonInstance["person 实例"]
-
-    Person -- "prototype" --> PersonProto
-    PersonProto -- "constructor" --> Person
-    Person -- "new Person()" --> PersonInstance
-    PersonInstance -. "__proto__" .-> PersonProto
-```
-
-图中的实线表示 `prototype` / `constructor` 关系以及 `new` 的创建过程，虚线表示 `__proto__`（即 `[[Prototype]]`）查找。`person` 通过 `__proto__` 指向它的原型对象，而 `Person.prototype` 正是指向这个对象；原型对象默认还有一个 `constructor` 属性，指回构造函数。所以：
-
-```js
-person.__proto__ === Person.prototype // true
-Object.getPrototypeOf(person) === Person.prototype // true
-Person.prototype.constructor === Person // true
-```
-
-把方法放在 `Person.prototype` 上，所有实例都能共享，不必在每个实例上复制一份：
-
-```js
-Person.prototype.sayName = function () {
-  console.log(this.name)
-}
-
-const person2 = new Person('Ada')
-person2.sayName() // Ada
-```
-
-`person2` 自身没有 `sayName`，查找会沿原型链落到 `Person.prototype.sayName`。同样，数组能调用 `map()`、普通对象能调用 `toString()`，也是因为方法挂在各自的原型上。
-
-注意区分两个词：
-
-- `person.__proto__`：实例实际的原型，所有普通对象都有。
-- `Person.prototype`：普通函数才有的属性，`new` 时作为实例的原型。
-- `Person.__proto__` 是 `Function.prototype`，不是 `Person.prototype`。
-
-`Person.prototype.__proto__` 默认是 `Object.prototype`，而 `Object.prototype.__proto__` 是 `null`，原型链到这里结束：
-
-```js
-Object.getPrototypeOf(Person.prototype) === Object.prototype // true
-Object.getPrototypeOf(Object.prototype) // null
-```
-
-#### 内置对象的原型链
-
-数组、函数、普通对象各自有一条原型链，最终都会到达 `Object.prototype`：
-
-```js
-const arr = []
-
-Object.getPrototypeOf(arr) === Array.prototype // true
-Object.getPrototypeOf(Array.prototype) === Object.prototype // true
-
-function fn() {}
-Object.getPrototypeOf(fn) === Function.prototype // true
-Object.getPrototypeOf(Function.prototype) === Object.prototype // true
-```
-
-实例、原型对象和 `Object.prototype` 之间的查找链可以画成：
-
-```mermaid
-flowchart LR
-    person["person"] -. "__proto__" .-> PersonProto["Person.prototype"]
-    PersonProto -. "__proto__" .-> ObjectProto["Object.prototype"]
-
-    arr["[]"] -. "__proto__" .-> ArrayProto["Array.prototype"]
-    ArrayProto -. "__proto__" .-> ObjectProto
-
-    fn["function fn()"] -. "__proto__" .-> FunctionProto["Function.prototype"]
-    FunctionProto -. "__proto__" .-> ObjectProto
-
-    ObjectProto -. "__proto__" .-> Null["null"]
-```
-
-图中的虚线表示 `__proto__`（即 `[[Prototype]]`）查找链，所有路径最终都会到达 `Object.prototype`，再指向 `null`。几个特殊点：
-
-- `Function.__proto__ === Function.prototype`：`Function` 自己也是函数。
-- `Object.__proto__ === Function.prototype`：`Object` 是构造函数，而构造函数都是 `Function` 的实例。
-- `Person.__proto__ === Function.prototype`：自定义构造函数同理。
-- `Object.prototype.__proto__ === null`：原型链的终点。
-
-`instanceof` 检查的正是这条链：右侧构造函数的 `prototype` 是否出现在左侧对象的原型链上：
-
-```js
-person instanceof Person // true
-person instanceof Object // true
-
-arr instanceof Array // true
-arr instanceof Object // true
-```
-
-箭头函数没有 `prototype`，也不能用 `new` 调用；只有普通函数（以及 `class`）才有 `prototype`。
-
-> 本节的原型关系图参考了 SegmentFault 文章《[彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)》，用 Mermaid 重绘。
 
 ## 解构赋值
-
-> 解构的语法在前面的类型与字符串部分已经出现；这里在数组和对象之后系统展开。函数参数解构涉及第三篇的函数，`for...of` 解构涉及本篇后面的 iterable。
 
 解构语法是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
 
@@ -1263,8 +1398,6 @@ const obj = { a: 1, b: 2 }
 
 ### Map
 
-本章将介绍由键索引的数据集合；`Map` 和 `Set` 对象包含可按插入顺序迭代的元素。
-
 `Map` 对象就是一个简单的键/值对映射集合，可以按照数据插入时的顺序遍历所有的元素。
 
 下面的代码演示了使用 `Map` 进行的一些基本操作。可以使用 `for...of` 循环来在每一次迭代中得到 `[key, value]` 数组：
@@ -1389,148 +1522,6 @@ mySet2 = new Set([1, 2, 3, 4])
 - 等价的作用类似于严格相等运算符 `===`。
 - `-0` 和 `+0` 相等。
 - `NaN` 与自身相等（与 `===` 有所不同）。
-
-## iterable
-
-### 迭代器
-
-迭代器和生成器将迭代的概念直接带入核心语言，并提供了一种机制来自定义 `for...of` 循环的行为。
-
-在 JavaScript 中，**迭代器**是一个对象，它定义一个序列，并在终止时可能附带一个返回值。更具体地说，迭代器是通过使用 `next()` 方法实现了迭代器协议的任何一个对象，该方法返回具有两个属性的对象：
-
-- `value`：迭代序列的下一个值。
-- `done`：如果已经迭代到序列中的最后一个值，则它为 `true`。如果 `value` 和 `done` 一起出现，则它就是迭代器的返回值。
-
-一旦创建，迭代器对象可以通过重复调用 `next()` 显式地迭代。迭代一个迭代器被称为消耗了这个迭代器，因为它通常只能执行一次：在产生终值后，对 `next()` 的额外调用应该继续返回 `{done: true}`。
-
-JavaScript 中最常见的迭代器是数组迭代器，它按顺序返回关联数组中的每个值。
-
-虽然很容易想象所有迭代器都可以表示为数组，但事实并非如此。数组必须完整分配，而迭代器则是按需分配。因此，迭代器可以表示无限大小的序列，例如 0 和 `Infinity` 之间的整数范围。
-
-下面的例子展示了具体做法。它允许创建一个简单的范围迭代器，以定义一个从 `start`（闭）到 `end`（开），以 `step` 为步长的整数序列。它的最终返回值是它创建的序列的大小，由变量 `iterationCount` 跟踪：
-
-```js
-function makeRangeIterator(start = 0, end = Infinity, step = 1) {
-  let nextIndex = start
-  let iterationCount = 0
-
-  const rangeIterator = {
-    next() {
-      let result
-      if (nextIndex < end) {
-        result = { value: nextIndex, done: false }
-        nextIndex += step
-        iterationCount++
-        return result
-      }
-      return { value: iterationCount, done: true }
-    },
-  }
-  return rangeIterator
-}
-```
-
-使用这个迭代器看起来像这样：
-
-```js
-let it = makeRangeIterator(1, 10, 2)
-
-let result = it.next()
-while (!result.done) {
-  console.log(result.value) // 1 3 5 7 9
-  result = it.next()
-}
-
-console.log(`已迭代序列的大小：${result.value}`) // 5
-```
-
-反射性地知道特定对象是否是迭代器是不可能的。如果需要这样做，请使用**可迭代对象**。
-
-### 可迭代对象
-
-若一个对象拥有迭代行为，比如在 `for...of` 中会循环一些值，那么那个对象便是一个可迭代对象。一些内置类型，如 `Array` 或 `Map` 拥有默认的迭代行为，而其他类型（比如 `Object`）则没有。
-
-为了实现**可迭代**，对象必须实现 `[Symbol.iterator]()` 方法，这意味着这个对象（或其原型链中的任意一个对象）必须具有一个键值为 `Symbol.iterator` 的属性。
-
-程序员应知道一个可迭代对象可以多次迭代，还是只能迭代一次。只能迭代一次的可迭代对象（例如生成器）通常从它们的 `[Symbol.iterator]()` 方法中返回 `this`，而那些可以多次迭代的方法必须在每次调用 `[Symbol.iterator]()` 时返回一个新的迭代器：
-
-```js
-function* makeIterator() {
-  yield 1
-  yield 2
-}
-
-const it = makeIterator()
-
-for (const itItem of it) {
-  console.log(itItem)
-}
-
-console.log(it[Symbol.iterator]() === it) // true
-
-// 这个例子展示了生成器（迭代器）是可迭代对象，
-// 它有一个 [Symbol.iterator]() 方法返回 it（它自己），
-// 因此，it 对象只能迭代*一次*。
-
-// 如果将它的 [Symbol.iterator]() 方法改为一个返回新的迭代器/生成器对象的函数/生成器，
-// 它（it）就可以迭代多次了。
-
-it[Symbol.iterator] = function* () {
-  yield 2
-  yield 1
-}
-```
-
-#### 自定义的可迭代对象
-
-可以像这样实现自己的可迭代对象：
-
-```js
-const myIterable = {
-  *[Symbol.iterator]() {
-    yield 1
-    yield 2
-    yield 3
-  },
-}
-
-for (const value of myIterable) {
-  console.log(value)
-}
-// 1
-// 2
-// 3
-
-;[...myIterable] // [1, 2, 3]
-```
-
-#### 内置可迭代对象
-
-`String`、`Array`、`TypedArray`、`Map` 和 `Set` 都是内置可迭代对象，因为它们的原型对象都拥有一个 `Symbol.iterator` 方法。
-
-#### 用于可迭代对象的语法
-
-一些语句和表达式专用于可迭代对象，例如 `for...of` 循环、展开语法、`yield*` 和解构语法：
-
-```js
-for (const value of ['a', 'b', 'c']) {
-  console.log(value)
-}
-// "a"
-// "b"
-// "c"
-
-;[...'abc'] // ["a", "b", "c"]
-
-function* gen() {
-  yield* ['a', 'b', 'c']
-}
-
-gen().next() // { value: "a", done: false }
-
-;[a, b, c] = new Set(['a', 'b', 'c'])
-a // "a"
-```
 
 ## JSON
 
@@ -1850,14 +1841,14 @@ console.log(btoa(binary)) // 5paH5pys
 
 ## 总结
 
-- **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`。
 - **对象**：属性名最终都会转成字符串或 Symbol；点号访问合法标识符，方括号访问动态键；对象比较的是引用。
-- **Map 和 Set**：按插入顺序迭代，`Map` 的键可以是任意类型，`Set` 天然去重；`WeakMap`/`WeakSet` 持有弱引用、不可枚举。
+- **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`。
 - **iterable**：可迭代对象必须实现 `Symbol.iterator`，迭代器的 `next()` 返回 `{ value, done }`。
+- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
+- **Map 和 Set**：按插入顺序迭代，`Map` 的键可以是任意类型，`Set` 天然去重；`WeakMap`/`WeakSet` 持有弱引用、不可枚举。
 - **JSON**：只支持双引号、无尾随逗号、无 `undefined`；`stringify` 会忽略函数和 symbol，循环引用抛 `TypeError`。
 - **拷贝与不变性**：展开和 `Object.assign()` 是浅拷贝；深拷贝可用 `structuredClone()`，它有明确的支持范围；`freeze()`/`seal()`/`preventExtensions()` 提供逐级增强的保护。
 - **二进制与编码**：位运算按 32 位整数处理；`ArrayBuffer` 配合 TypedArray/DataView 读写二进制；字符串以 UTF-16 存储，`TextEncoder`/`TextDecoder` 负责 UTF-8 转换。
-- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
 
 ## 参考
 
