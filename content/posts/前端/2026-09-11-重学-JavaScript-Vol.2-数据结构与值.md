@@ -556,85 +556,72 @@ console.log(arr.property) // "value"
 
 ### 对象与属性
 
-JavaScript 的设计是一个简单的基于对象的范式。一个对象就是一系列属性的集合，一个属性包含一个名和一个值。一个属性的值可以是函数，这种情况下属性也被称为**方法**。
+JavaScript 中的对象是**键值对的集合**：每个属性有一个名字（键）和一个值。值可以是任意类型；当值是函数时，这个属性通常称为**方法**。
 
-一个 JavaScript 对象有很多属性。一个对象的属性可以被解释成一个附加到对象上的变量。对象的属性和普通的 JavaScript 变量基本没什么区别，仅仅是属性属于某个对象。属性定义了对象的特征。可以通过点符号来访问一个对象的属性：
+对象常用来描述现实世界中的实体。例如，用对象描述小明：
 
 ```js
-objectName.propertyName
+const xiaoming = {
+  name: '小明',
+  birth: 1990,
+  school: 'No.1 Middle School',
+  height: 1.7,
+  weight: 65,
+  score: null,
+}
 ```
 
-和其他 JavaScript 变量一样，对象的名字（可以是普通的变量）和属性的名字都是大小写敏感的。可以在定义一个属性的时候就给它赋值：
+对象字面量用 `{ ... }` 表示，键值对写成 `key: value`，多个键值对之间用逗号分隔。
+
+属性可以看作挂在对象上的变量。访问属性有两种写法：
 
 ```js
-const myCar = new Object()
-myCar.make = 'Ford'
+objectName.propertyName // 点号：属性名必须是合法标识符
+objectName['propertyName'] // 方括号：属性名可以是任意字符串或 Symbol
+```
+
+点号写法更简洁，日常使用最多；属性名包含空格、连字符、以数字开头或者需要运行时才能确定时，只能用方括号：
+
+```js
+const myCar = {}
+
+myCar.make = 'Ford' // 点号
 myCar.model = 'Mustang'
-myCar.year = 1969
+
+const key = 'year'
+myCar[key] = 1969 // 键来自变量，只能用方括号
 ```
 
-对象中未赋值的属性的值为 `undefined`（而不是 `null`）：
+属性名是大小写敏感的，`myCar.make` 和 `myCar.Make` 是两个不同的属性。访问不存在的属性会得到 `undefined`，而不是 `null`；属性存在但值恰好是 `undefined` 时，读取结果一样，但它仍然是一个存在的属性：
 
 ```js
 myCar.noProperty // undefined
 ```
 
-JavaScript 对象的属性也可以通过方括号访问或者设置。对象有时也被叫作关联数组，因为每个属性都有一个用于访问它的字符串值：
+对象有时也被称为**关联数组**，因为属性可以像数组下标一样用方括号访问。属性键只有两种类型：字符串和 `Symbol`；用方括号写其他类型的键时，会先转换成字符串：
 
 ```js
-myCar['make'] = 'Ford'
-myCar['model'] = 'Mustang'
-myCar['year'] = 1969
-```
-
-一个对象的属性名可以是任何有效的 JavaScript 字符串，或者可以被转换为字符串的任何类型，包括空字符串。然而，一个属性的名称如果不是一个有效的 JavaScript 标识符（例如，一个由空格或连字符，或者以数字开头的属性名），就只能通过方括号标记访问。这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用。
-
-请注意，方括号中的所有键都将转换为字符串类型，因为 JavaScript 中的对象只能使用 String 类型作为键类型。例如：
-
-```js
-const myObj = new Object()
+const myObj = {}
 const str = 'myString'
-const rand = Math.random()
-const obj = new Object()
+const obj = {}
 
 myObj.type = 'Dot syntax'
 myObj['date created'] = 'String with space'
-myObj[str] = 'String value'
-myObj[rand] = 'Random Number'
-myObj[obj] = 'Object'
-myObj[''] = 'Even an empty string'
+myObj[str] = 'String value' // 等价于 myObj['myString']
+myObj[123] = 'Number key' // 等价于 myObj['123']
+myObj[obj] = 'Object key' // 等价于 myObj['[object Object]']
+myObj[''] = 'Empty string key'
 ```
 
-当将键 `obj` 添加到 `myObj` 时，JavaScript 将调用 `obj.toString()` 方法，并将此结果字符串用作新键。
+把对象当作键时，JavaScript 会先把它转换成字符串（通常调用 `toString()`），再用结果作为键；上面的 `obj` 因此变成了 `'[object Object]'`。这也是普通对象不适合当字典的原因——不同的对象很容易转换成同一个字符串。
 
-### 枚举属性
-
-有三种原生的方法用于列出或枚举对象的属性：
-
-- `for...in` 循环：该方法依次访问一个对象及其原型链中所有可枚举的属性。
-- `Object.keys(o)`：该方法返回对象 `o` 自身包含（不包括原型中）的所有可枚举属性的名称的数组。
-- `Object.getOwnPropertyNames(o)`：该方法返回对象 `o` 自身包含（不包括原型中）的所有属性（无论是否可枚举）的名称的数组。
-
-在 ECMAScript 5 之前，没有原生的方法枚举一个对象的所有属性。然而，可以通过以下函数完成：
+ES6 起，`Symbol` 也可以作为属性键。它不会被转换成字符串，只能用方括号访问：
 
 ```js
-function listAllProperties(o) {
-  let objectToInspect
-  let result = []
-
-  for (
-    objectToInspect = o;
-    objectToInspect !== null;
-    objectToInspect = Object.getPrototypeOf(objectToInspect)
-  ) {
-    result = result.concat(Object.getOwnPropertyNames(objectToInspect))
-  }
-
-  return result
-}
+const id = Symbol('id')
+myObj[id] = 123
+myObj[id] // 123
 ```
-
-这在展示“隐藏”（在原型中的不能通过对象访问的属性，因为另一个同名的属性存在于原型链的早期）的属性时很有用。如果只想列出可访问的属性，那么只需要去除数组中的重复元素即可。
 
 ### 创建对象
 
@@ -704,6 +691,16 @@ const rand = new Person('Rand McKinnon', 33, 'M')
 const ken = new Person('Ken Jones', 39, 'M')
 ```
 
+> JS 的 new 到底是干什么的？ https://zhuanlan.zhihu.com/p/23987456
+
+```
+new的过程：
+① 创建一个全新的空对象：{}
+② 把该对象的原型指向构造函数的 prototype
+③ 把 this 绑定到这个新对象，执行构造函数体
+④ 返回这个新对象（如果构造函数没显式 return 对象的话）
+```
+
 那么，可以重写 `car` 的定义以包含一个拥有它的 `owner` 属性：
 
 ```js
@@ -766,6 +763,33 @@ const obj = {
 }
 ```
 
+### 枚举属性
+
+有三种原生的方法用于列出或枚举对象的属性：
+
+- `for...in` 循环：该方法依次访问一个对象及其原型链中所有可枚举的属性。
+- `Object.keys(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有可枚举属性的名称的数组。
+- `Object.getOwnPropertyNames(obj)`：该方法返回对象 `obj` 自身包含（不包括原型中）的所有属性（无论是否可枚举）的名称的数组。
+
+在 ECMAScript 5 之前，没有原生的方法枚举一个对象的所有属性。然而，可以通过以下函数完成：
+
+```js
+function listAllProperties(o) {
+  let objectToInspect
+  let result = []
+
+  for (
+    objectToInspect = o;
+    objectToInspect !== null;
+    objectToInspect = Object.getPrototypeOf(objectToInspect)
+  ) {
+    result = result.concat(Object.getOwnPropertyNames(objectToInspect))
+  }
+
+  return result
+}
+```
+
 ### 方法、this 与访问器
 
 一个**方法**是关联到某个对象的函数，或者简单地说，一个方法是一个值为某个函数的对象属性。定义方法就像定义普通的函数，除了它们必须被赋给对象的某个属性：
@@ -806,7 +830,7 @@ function validate(obj, lowval, hival) {
 <input type="text" name="age" size="3" onChange="validate(this, 18, 99)" />
 ```
 
-总的说来，`this` 在一个方法中指调用的对象。当与 `form` 属性一起使用时，`this` 可以指代当前对象的父窗体。在下面的例子中，窗体 `myForm` 包含一个 `Text` 对象和一个按钮，当用户点击按键，`Text` 对象的值被设为窗体的名称。按钮的 `onclick` 事件处理器使用 `this.form` 以指代其父窗体，即 `myForm`：
+`this` 在一个方法中指调用的对象。当与 `form` 属性一起使用时，`this` 可以指代当前对象的父窗体。在下面的例子中，窗体 `myForm` 包含一个 `Text` 对象和一个按钮，当用户点击按键，`Text` 对象的值被设为窗体的名称。按钮的 `onclick` 事件处理器使用 `this.form` 以指代其父窗体，即 `myForm`：
 
 ```html
 <form name="myForm">
@@ -824,7 +848,7 @@ function validate(obj, lowval, hival) {
 </form>
 ```
 
-一个 getter 是一个获取某个特定属性的值的方法。一个 setter 是一个设定某个属性的值的方法。可以为预定义的或用户定义的对象定义 getter 和 setter 以支持新增的属性。定义 getter 和 setter 的语法采用对象字面量语法。下面例子描述了 getter 和 setter 是如何为用户定义的对象 `o` 工作的：
+一个 **getter** 是一个获取某个特定属性的值的方法。一个 **setter** 是一个设定某个属性的值的方法。可以为预定义的或用户定义的对象定义 getter 和 setter 以支持新增的属性。定义 getter 和 setter 的语法采用对象字面量语法。下面例子描述了 getter 和 setter 是如何为用户定义的对象 `o` 工作的：
 
 ```js
 const o = {
@@ -894,7 +918,123 @@ fruit === fruitbear // return true
 
 ### 原型链
 
-所有的 JavaScript 对象至少继承于一个对象。被继承的对象被称作原型，并且继承的属性可通过构造函数的 `prototype` 对象找到。对象的原型指向另一个对象或者 `null`——从概念上讲，它是对象的隐藏属性，通常表示为 `[[Prototype]]`。对象的 `[[Prototype]]` 的属性也可以在对象自身上访问。更完整的讨论放在第三篇《函数与闭包》展开。
+每个 JavaScript 对象都有一个内部属性 `[[Prototype]]`，它指向另一个对象（或者 `null`）。访问属性时，引擎先查对象自身，找不到就沿着 `[[Prototype]]` 指向的对象继续找，还找不到就继续向上，直到 `null`。这条查找路径就是**原型链**。
+
+数组和函数本质上也是对象，所以它们同样有原型链：
+
+![数组、函数、普通对象都是 Object 的实例](https://image-static.segmentfault.com/262/256/262256219-4f850f45b5c4a7de_fix732)
+
+读取原型用 `Object.getPrototypeOf(obj)`；设置原型一般用 `Object.create(proto)` 在创建时指定，或者在已有对象上用 `Object.setPrototypeOf(obj, proto)`：
+
+```js
+const proto = {
+  greet() {
+    return 'hello'
+  },
+}
+const obj = Object.create(proto)
+
+obj.greet() // 'hello'，来自 proto
+Object.getPrototypeOf(obj) === proto // true
+```
+
+`obj.__proto__` 也能读写原型，但它是 `Object.prototype` 上的访问器，属于历史遗留写法；新代码用 `Object.getPrototypeOf()` / `Object.setPrototypeOf()` 更稳妥。
+
+#### 构造函数、prototype 与实例
+
+用构造函数创建对象时，实例的原型就是构造函数的 `prototype` 属性：
+
+```js
+function Person(name) {
+  this.name = name
+}
+
+const person = new Person('logan')
+```
+
+`new Person()` 大致做了三件事：创建一个空对象；把这个对象的 `[[Prototype]]` 指向 `Person.prototype`；以这个对象为 `this` 执行构造函数。
+
+![实例 person 通过 __proto__ 指向原型对象](https://image-static.segmentfault.com/332/038/3320385832-f517fab65f5aabdb_fix732)
+
+图中 `person` 通过 `__proto__` 指向它的原型对象。`Person.prototype` 正是指向这个对象：
+
+![Person.prototype 指向原型对象](https://image-static.segmentfault.com/399/233/3992330991-f31adf4bec23955b_fix732)
+
+原型对象默认还有一个 `constructor` 属性，指回构造函数：
+
+![原型对象的 constructor 指回构造函数](https://image-static.segmentfault.com/263/183/2631832173-28d3229ed43786b0_fix732)
+
+所以：
+
+```js
+person.__proto__ === Person.prototype // true
+Object.getPrototypeOf(person) === Person.prototype // true
+Person.prototype.constructor === Person // true
+```
+
+把方法放在 `Person.prototype` 上，所有实例都能共享，不必在每个实例上复制一份：
+
+```js
+Person.prototype.sayName = function () {
+  console.log(this.name)
+}
+
+const person2 = new Person('Ada')
+person2.sayName() // Ada
+```
+
+`person2` 自身没有 `sayName`，查找会沿原型链落到 `Person.prototype.sayName`。同样，数组能调用 `map()`、普通对象能调用 `toString()`，也是因为方法挂在各自的原型上。
+
+注意区分两个词：
+
+- `person.__proto__`：实例实际的原型，所有普通对象都有。
+- `Person.prototype`：普通函数才有的属性，`new` 时作为实例的原型。
+- `Person.__proto__` 是 `Function.prototype`，不是 `Person.prototype`。
+
+`Person.prototype.__proto__` 默认是 `Object.prototype`，而 `Object.prototype.__proto__` 是 `null`，原型链到这里结束：
+
+```js
+Object.getPrototypeOf(Person.prototype) === Object.prototype // true
+Object.getPrototypeOf(Object.prototype) // null
+```
+
+#### 内置对象的原型链
+
+数组、函数、普通对象各自有一条原型链，最终都会到达 `Object.prototype`：
+
+```js
+const arr = []
+
+Object.getPrototypeOf(arr) === Array.prototype // true
+Object.getPrototypeOf(Array.prototype) === Object.prototype // true
+
+function fn() {}
+Object.getPrototypeOf(fn) === Function.prototype // true
+Object.getPrototypeOf(Function.prototype) === Object.prototype // true
+```
+
+![内置构造函数、实例与原型之间的完整关系](https://image-static.segmentfault.com/217/369/2173695793-d09719e75573427e_fix732)
+
+图中的虚线表示 `__proto__`（即 `[[Prototype]]`）查找链，实线表示 `prototype` 和 `constructor` 关系。几个特殊点：
+
+- `Function.__proto__ === Function.prototype`：`Function` 自己也是函数。
+- `Object.__proto__ === Function.prototype`：`Object` 是构造函数，而构造函数都是 `Function` 的实例。
+- `Person.__proto__ === Function.prototype`：自定义构造函数同理。
+- `Object.prototype.__proto__ === null`：原型链的终点。
+
+`instanceof` 检查的正是这条链：右侧构造函数的 `prototype` 是否出现在左侧对象的原型链上：
+
+```js
+person instanceof Person // true
+person instanceof Object // true
+
+arr instanceof Array // true
+arr instanceof Object // true
+```
+
+箭头函数没有 `prototype`，也不能用 `new` 调用；只有普通函数（以及 `class`）才有 `prototype`。
+
+> 本节示意图来自 SegmentFault 文章《[彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)》，文字按本文的叙述顺序做了改写。
 
 ## 解构赋值
 
@@ -1678,6 +1818,7 @@ console.log(btoa(binary)) // 5paH5pys
 
 - [索引集合](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections)
 - [使用对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Working_with_objects)
+- [彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)
 - [带键的集合](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections)
 - [迭代器和生成器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_generators)
 - [JSON](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)
