@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { hashString } from '@/utils/hash'
+
 const props = defineProps<{
   code: string
 }>()
 
 const container = useTemplateRef('mermaid')
-const [scroll, toggleScroll] = useToggle(true)
+
+// 深链用的稳定标识：只依赖源码，不随渲染 id / 主题变化
+const previewKey = computed(() => `mermaid-${hashString(props.code)}`)
 
 // 直接跟随 <html> 上的 dark 类，免得和导航栏的主题状态各存一份
 const isDark = ref(false)
@@ -24,7 +28,7 @@ const isVisible = useElementVisibility(container, { rootMargin: '50%' })
 const shouldRender = ref(false)
 whenever(isVisible, () => (shouldRender.value = true), { once: true })
 
-const diagram = computedAsync<{ svg?: string; width?: number; error?: string }>(async () => {
+const diagram = computedAsync<{ svg?: string; error?: string }>(async () => {
   // 异步依赖需要在 await 之前读取
   const { code } = props
   const darkMode = isDark.value
@@ -57,11 +61,7 @@ const diagram = computedAsync<{ svg?: string; width?: number; error?: string }>(
     })
 
     const { svg } = await mermaid.render(`${id}-${renderCount++}`, code)
-    // 保留原始画布宽度，超宽图表在容器内滚动
-    const width = new DOMParser().parseFromString(svg, 'image/svg+xml').querySelector('svg')
-      ?.viewBox.baseVal.width
-
-    return { svg, width }
+    return { svg }
   } catch (error) {
     return { error: error instanceof Error ? error.message : String(error) }
   }
@@ -69,20 +69,15 @@ const diagram = computedAsync<{ svg?: string; width?: number; error?: string }>(
 </script>
 
 <template>
-  <div ref="mermaid" class="mermaid-diagram">
-    <div
-      v-if="diagram.svg"
-      class="mermaid-viewport"
-      tabindex="0"
-      role="region"
-      aria-label="Mermaid 图表"
-      @click="toggleScroll()"
-    >
-      <div
-        :style="{ minWidth: scroll && diagram.width ? `${diagram.width}px` : undefined }"
-        v-html="diagram.svg"
-      />
-    </div>
+  <div
+    ref="mermaid"
+    class="mermaid-diagram"
+    :class="{ 'is-ready': !!diagram.svg }"
+    data-content-preview="mermaid"
+    :data-preview-key="previewKey"
+    :title="diagram.svg ? '点击查看大图' : undefined"
+  >
+    <div v-if="diagram.svg" class="mermaid-viewport" v-html="diagram.svg" />
     <template v-else-if="diagram.error">
       <details class="mermaid-error">
         <summary>图表渲染失败，查看错误详情</summary>
@@ -102,8 +97,6 @@ const diagram = computedAsync<{ svg?: string; width?: number; error?: string }>(
 }
 
 .mermaid-viewport {
-  overflow-x: auto;
-
   :deep(svg) {
     display: block;
     height: auto;

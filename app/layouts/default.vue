@@ -46,5 +46,6 @@ useEventListener(
       挂载一次就常驻（关掉只是隐藏），既不重复建索引，也免得从不搜索的访客白付这份开销。
     -->
     <SearchPalette v-if="opened" />
+    <ContentLightbox />
   </div>
 </template>

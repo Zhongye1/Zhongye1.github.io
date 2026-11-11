@@ -104,6 +104,20 @@
     border-radius: 0.5rem;
   }
 
+  // 正文图片和渲染完成的 Mermaid 图由 ContentLightbox 接管点击预览
+  img {
+    cursor: zoom-in;
+  }
+
+  .mermaid-diagram.is-ready {
+    cursor: zoom-in;
+  }
+
+  // 链接里的图片仍然走跳转，不要误导成点开大图
+  a img {
+    cursor: pointer;
+  }
+
   // `[grid]` 图片组（见 remark-plugins/remark-grid.ts）：列数 = 组内图片数（写在 --grid-cols 上），
   // 窄屏退回单列 —— 与旧站那套 `grid-cols-1 md:grid-cols-N gap-4 my-4` 对齐
   .image-grid {
