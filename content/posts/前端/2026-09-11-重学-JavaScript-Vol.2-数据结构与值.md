@@ -916,20 +916,31 @@ fruit == fruitbear // return true
 fruit === fruitbear // return true
 ```
 
-### 原型链
+### 原型与原型链
 
-每个 JavaScript 对象都有一个内部属性 `[[Prototype]]`，它指向另一个对象（或者 `null`）。访问属性时，引擎先查对象自身，找不到就沿着 `[[Prototype]]` 指向的对象继续找，还找不到就继续向上，直到 `null`。这条查找路径就是**原型链**。
+**原型**（prototype）是 JavaScript 实现继承的机制：每个对象在创建时都会关联另一个对象（或者 `null`），这个被关联的对象就是它的原型。对象可以像读取自己的属性一样读取原型上的属性。原型主要用于共享属性和方法——把方法放在原型上，所有实例共用一份，而不是每个实例复制一份。
+
+这种继承更接近**委托**：对象不会复制原型上的属性，只是在自身找不到时，把查找转交给原型。每个对象的原型保存在内部属性 `[[Prototype]]` 中，它指向另一个对象（或者 `null`）。访问属性时，引擎先查对象自身，找不到就沿着 `[[Prototype]]` 指向的对象继续找，还找不到就继续向上，直到 `null`。这条由原型串起来的查找路径，就是**原型链**。
 
 数组和函数本质上也是对象，所以它们同样有原型链：
 
-![数组、函数、普通对象都是 Object 的实例](https://image-static.segmentfault.com/262/256/262256219-4f850f45b5c4a7de_fix732)
+```js
+const arr = []
+const fn = function () {}
+const obj = {}
+
+arr instanceof Object // true
+fn instanceof Object // true
+obj instanceof Object // true
+```
 
 读取原型用 `Object.getPrototypeOf(obj)`；设置原型一般用 `Object.create(proto)` 在创建时指定，或者在已有对象上用 `Object.setPrototypeOf(obj, proto)`：
 
 ```js
 const proto = {
+  sayhello: 'hello',
   greet() {
-    return 'hello'
+    return this.sayhello
   },
 }
 const obj = Object.create(proto)
@@ -938,7 +949,23 @@ obj.greet() // 'hello'，来自 proto
 Object.getPrototypeOf(obj) === proto // true
 ```
 
-`obj.__proto__` 也能读写原型，但它是 `Object.prototype` 上的访问器，属于历史遗留写法；新代码用 `Object.getPrototypeOf()` / `Object.setPrototypeOf()` 更稳妥。
+`obj` 自身并没有 `greet`，它是在原型上找到的。
+
+读取 `obj.greet` 时，引擎先查 `obj` 自身，没有；再沿 `[[Prototype]]` 到 `proto` 上找到 `greet`，以 `obj` 为 `this` 调用后得到 `'hello'`。查找在命中处停止，如果一路问到 `null` 仍未命中，`obj.greet` 会为 `undefined`。
+
+可以注意到这里的 `this` 不参与原型链查找，它的值由调用方式决定。`greet` 虽然是从原型上找到的，但 `obj.greet()` 调用时，`this` 是点号前面的 `obj`，不是 `proto`。因此 `this.sayhello` 会先在 `obj` 上找，找不到才继续沿原型链向上：
+
+```js
+obj.sayhello = 'hi'
+obj.greet() // 'hi'，this 是 obj，读到的是 obj 自己的 sayhello
+
+delete obj.sayhello
+obj.greet() // 'hello'，自有属性没了，回到原型上找
+```
+
+这也说明方法可以共享，但方法里的 `this` 指向调用它的对象，所以不同实例可以读到各自的数据。
+
+此外，`obj.__proto__` 也能读写原型，但它是 `Object.prototype` 上的访问器，属于历史遗留写法；现在一般用 `Object.getPrototypeOf()` / `Object.setPrototypeOf()`。
 
 #### 构造函数、prototype 与实例
 
@@ -954,17 +981,21 @@ const person = new Person('logan')
 
 `new Person()` 大致做了三件事：创建一个空对象；把这个对象的 `[[Prototype]]` 指向 `Person.prototype`；以这个对象为 `this` 执行构造函数。
 
-![实例 person 通过 __proto__ 指向原型对象](https://image-static.segmentfault.com/332/038/3320385832-f517fab65f5aabdb_fix732)
+三者的关系可以用一张图表示：
 
-图中 `person` 通过 `__proto__` 指向它的原型对象。`Person.prototype` 正是指向这个对象：
+```mermaid
+flowchart LR
+    Person["Person 构造函数"]
+    PersonProto["Person.prototype"]
+    PersonInstance["person 实例"]
 
-![Person.prototype 指向原型对象](https://image-static.segmentfault.com/399/233/3992330991-f31adf4bec23955b_fix732)
+    Person -- "prototype" --> PersonProto
+    PersonProto -- "constructor" --> Person
+    Person -- "new Person()" --> PersonInstance
+    PersonInstance -. "__proto__" .-> PersonProto
+```
 
-原型对象默认还有一个 `constructor` 属性，指回构造函数：
-
-![原型对象的 constructor 指回构造函数](https://image-static.segmentfault.com/263/183/2631832173-28d3229ed43786b0_fix732)
-
-所以：
+图中的实线表示 `prototype` / `constructor` 关系以及 `new` 的创建过程，虚线表示 `__proto__`（即 `[[Prototype]]`）查找。`person` 通过 `__proto__` 指向它的原型对象，而 `Person.prototype` 正是指向这个对象；原型对象默认还有一个 `constructor` 属性，指回构造函数。所以：
 
 ```js
 person.__proto__ === Person.prototype // true
@@ -1013,9 +1044,23 @@ Object.getPrototypeOf(fn) === Function.prototype // true
 Object.getPrototypeOf(Function.prototype) === Object.prototype // true
 ```
 
-![内置构造函数、实例与原型之间的完整关系](https://image-static.segmentfault.com/217/369/2173695793-d09719e75573427e_fix732)
+实例、原型对象和 `Object.prototype` 之间的查找链可以画成：
 
-图中的虚线表示 `__proto__`（即 `[[Prototype]]`）查找链，实线表示 `prototype` 和 `constructor` 关系。几个特殊点：
+```mermaid
+flowchart LR
+    person["person"] -. "__proto__" .-> PersonProto["Person.prototype"]
+    PersonProto -. "__proto__" .-> ObjectProto["Object.prototype"]
+
+    arr["[]"] -. "__proto__" .-> ArrayProto["Array.prototype"]
+    ArrayProto -. "__proto__" .-> ObjectProto
+
+    fn["function fn()"] -. "__proto__" .-> FunctionProto["Function.prototype"]
+    FunctionProto -. "__proto__" .-> ObjectProto
+
+    ObjectProto -. "__proto__" .-> Null["null"]
+```
+
+图中的虚线表示 `__proto__`（即 `[[Prototype]]`）查找链，所有路径最终都会到达 `Object.prototype`，再指向 `null`。几个特殊点：
 
 - `Function.__proto__ === Function.prototype`：`Function` 自己也是函数。
 - `Object.__proto__ === Function.prototype`：`Object` 是构造函数，而构造函数都是 `Function` 的实例。
@@ -1034,7 +1079,7 @@ arr instanceof Object // true
 
 箭头函数没有 `prototype`，也不能用 `new` 调用；只有普通函数（以及 `class`）才有 `prototype`。
 
-> 本节示意图来自 SegmentFault 文章《[彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)》，文字按本文的叙述顺序做了改写。
+> 本节的原型关系图参考了 SegmentFault 文章《[彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)》，用 Mermaid 重绘。
 
 ## 解构赋值
 
