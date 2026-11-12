@@ -14,6 +14,8 @@ tags:
 
 ## 对象
 
+![对象纵览](https://pic3.zhimg.com/v2-45768c6a20c7577c46745a5c212d9142_r.jpg)
+
 ### 对象与属性
 
 JavaScript 中的对象是**键值对的集合**：每个属性有一个名字（键）和一个值。值可以是任意类型；当值是函数时，这个属性通常称为**方法**。
@@ -1318,6 +1320,8 @@ console.log([...myIterable]) // [1, 2, 3]
 
 ## 解构赋值
 
+> 更多可参考 https://www.yuque.com/cuggz/feplus/umnf74
+
 JavaScript 中最常用的两种数据结构是 Object 和 Array。其中对象是一种根据键存储数据的实体，数组是一种直接存储数据的有序列表。但是把它们传递给函数时，函数可能不需要整个对象/数组，而只需要其中一部分。
 
 比如要读取嵌套对象里的几个字段：
@@ -1669,44 +1673,87 @@ const [...newRgb] = rgb
 console.log(newRgb) // [200, 255, 100]
 ```
 
-## Map 和 Set
+## Map 和 Set (映射与集合)
 
-### Map
+ES6 引入 Map 和 Set，弥补了 Object 和 Array 在“映射”和“集合”场景下的设计缺陷。
 
-`Map` 对象就是一个简单的键/值对映射集合，可以按照数据插入时的顺序遍历所有的元素。
+### Map (映射)
 
-下面的代码演示了使用 `Map` 进行的一些基本操作。可以使用 `for...of` 循环来在每一次迭代中得到 `[key, value]` 数组：
+`Map` 对象就是一个简单的键/值对映射集合，Map 对象保存键值对，并且能够记住键的原始插入顺序。任何值（对象或者原始值）都可以作为一个键或一个值。
+
+- Map 对象这种数据结构和和对象类型，都已键值对的形式存储数据，即 key-vlue 形式。
+- Map 对象存储的数据是有序的，而我们平常使用的对象是无序的，所以通常当我们需要使用对象形式（键值对）存储数据且需要有序时，采用 Map 对象进行存储。
+- Map 对象的键值可以是任意类型，我们平时使用的对象只能使用字符串作为键。
+
+常用的方法和属性，按用途可以分为三类。
+
+**创建与修改（增删）**
+
+- `new Map()`：创建 Map 对象；也可以传入一个由键值对组成的可迭代对象，如 `new Map([['a', 1]])`。
+- `map.set(key, value)`：添加或更新一个键值对，返回 Map 本身。
+- `map.delete(key)`：删除指定键，成功返回 `true`，键不存在返回 `false`。
+- `map.clear()`：清空所有键值对。
+
+**访问与查找**
+
+- `map.get(key)`：读取键对应的值；键不存在时返回 `undefined`。
+- `map.has(key)`：判断是否存在某个键，返回 `true` 或 `false`。
+- `map.size`：只读属性，返回键值对的数量（对应数组的 `length`）。
+
+**遍历与迭代**
+
+- `map.keys()`：返回键的迭代器。
+- `map.values()`：返回值的迭代器。
+- `map.entries()`：返回 `[key, value]` 的迭代器，也是 `for...of` 默认使用的形式。
+- `map.forEach(callback)`：按插入顺序遍历，回调参数为 `(value, key, map)`。
+
+下面是使用 `Map` 进行的一些基本操作：
 
 ```js
 const sayings = new Map()
 sayings.set('dog', 'woof')
 sayings.set('cat', 'meow')
 sayings.set('elephant', 'toot')
-sayings.size // 3
-sayings.get('dog') // woof
-sayings.get('fox') // undefined
-sayings.has('bird') // false
-sayings.delete('dog')
-sayings.has('dog') // false
 
+console.log(sayings.size) // 3
+console.log(sayings.get('dog')) // woof
+console.log(sayings.get('fox')) // undefined
+console.log(sayings.has('bird')) // false
+console.log(sayings.has('cat')) // true
+
+console.log(sayings.delete('dog')) // true
+console.log(sayings.has('dog')) // false
+console.log(sayings.size) // 2
+
+// 可以使用 `for...of` 循环来在每一次迭代中得到 `[key, value]` 数组
 for (const [key, value] of sayings) {
   console.log(`${key} goes ${value}`)
 }
 // "cat goes meow"
 // "elephant goes toot"
 
+console.log([...sayings.keys()]) // ["cat", "elephant"]
+console.log([...sayings.values()]) // ["meow", "toot"]
+console.log([...sayings.entries()]) // [["cat", "meow"], ["elephant", "toot"]]
+
+sayings.forEach((value, key) => {
+  console.log(`${key} goes ${value}`)
+})
+// "cat goes meow"
+// "elephant goes toot"
+
 sayings.clear()
-sayings.size // 0
+console.log(sayings.size) // 0
 ```
 
-### Object 和 Map 的比较
+#### Object 和 Map 的比较
 
 一般地，`Object` 会被用于将字符串类型映射到值。`Object` 允许设置键值对、根据键获取值、删除键、检测某个键是否存在。不过，`Map` 对象还有一些优点，可以更好地应用于映射关系表示中：
 
-- `Object` 的键均为字符串或 Symbol 类型，在 `Map` 里键可以是任意类型。
+- `Object` 的键均为字符串或 Symbol 类型，在 `Map` 里键可以是任意类型（比如说可以用`Object`作为`Map`的键）。
 - 必须手动计算 `Object` 的大小，但是可以很容易地获取 `Map` 的大小（`size`）。
 - `Map` 的遍历遵循元素的插入顺序。
-- `Object` 有原型，所以映射中有一些缺省的键（可以用 `map = Object.create(null)` 回避）。
+- `Object` 有原型，所以映射中有一些缺省的键。
 
 这三条提示可以帮助决定用 `Map` 还是 `Object`：
 
@@ -1714,7 +1761,7 @@ sayings.size // 0
 - 如果需要将原始值存储为键，则使用 `Map`，因为 `Object` 将每个键视为字符串，不管它是一个数字值、布尔值还是任何其他原始值。
 - 如果存在需要对个别元素进行操作的逻辑，使用 `Object`。
 
-### WeakMap
+#### WeakMap
 
 `WeakMap` 是键/值对的集合，其键必须是对象或非注册符号，其值为任意 JavaScript 类型，并且不会对其键创建强引用。也就是说，一个对象作为键出现在 `WeakMap` 中并不会阻止该对象被垃圾回收。一旦作为键的对象被收集，其在任何 `WeakMap` 中的相应值也会被垃圾收集，只要它们没有在其他地方被强引用。唯一可用作 `WeakMap` 键的原始类型是 symbol，更具体地说，是非注册 symbol，因为非注册 symbol 保证是唯一的，并且不能被重新创建。
 
@@ -1741,9 +1788,36 @@ Public.prototype.method = function () {
 module.exports = Public
 ```
 
-### Set
+### Set (集合)
 
-`Set` 对象是一组唯一值的集合，可以按照添加顺序来遍历。`Set` 中的值只能出现一次；它在集合 `Set` 中是唯一的。以下代码演示了 `Set` 的基本操作：
+`Set` 对象是一组唯一值的集合，可以按照添加顺序来遍历。`Set` 中的值只能出现一次；它在集合 `Set` 中是唯一的。
+
+- Set 对象是一个类数组对象，它长得就很像数组。
+- Set 对象存储的值是不重复的，所以我们通常使用它来实现数组去重。
+- Set 对象存储的数据不是键值对的形式，而且它可以存储任何类型的数据。
+
+常用的方法和属性，按用途可以分为三类。
+
+**创建与修改（增删）**
+
+- `new Set()`：创建 Set 对象；也可以传入一个可迭代对象，如 `new Set([1, 2, 2])`，重复值会被自动去重。
+- `set.add(value)`：添加一个值，返回 Set 本身。
+- `set.delete(value)`：删除指定值，成功返回 `true`，值不存在返回 `false`。
+- `set.clear()`：清空所有值。
+
+**访问与查找**
+
+- `set.has(value)`：判断是否存在某个值，返回 `true` 或 `false`。
+- `set.size`：只读属性，返回值的数量（对应数组的 `length`）。
+
+**遍历与迭代**
+
+- `set.values()`：返回值的迭代器。
+- `set.keys()`：与 `values()` 等价，返回值的迭代器。
+- `set.entries()`：返回 `[value, value]` 的迭代器。
+- `set.forEach(callback)`：按插入顺序遍历，回调参数为 `(value, value, set)`。
+
+以下代码演示了 `Set` 的基本操作：
 
 ```js
 const mySet = new Set()
@@ -1751,36 +1825,35 @@ mySet.add(1)
 mySet.add('some text')
 mySet.add('foo')
 
-mySet.has(1) // true
-mySet.delete('foo')
-mySet.size // 2
+console.log(mySet.size) // 3
+console.log(mySet.has(1)) // true
+console.log(mySet.has('bar')) // false
+
+console.log(mySet.delete('foo')) // true
+console.log(mySet.has('foo')) // false
+console.log(mySet.size) // 2
 
 for (const item of mySet) {
   console.log(item)
 }
 // 1
 // "some text"
+
+console.log([...mySet.values()]) // [1, "some text"]
+console.log([...mySet.keys()]) // [1, "some text"]
+console.log([...mySet.entries()]) // [[1, 1], ["some text", "some text"]]
+
+mySet.forEach((value) => {
+  console.log(value)
+})
+// 1
+// "some text"
+
+mySet.clear()
+console.log(mySet.size) // 0
 ```
 
-### 数组和 Set 之间的转换
-
-可以使用 `Array.from()` 或展开语法来完成集合到数组的转换。同样，`Set` 的构造函数接受数组作为参数，可以完成从 `Array` 到 `Set` 的转换。`Set` 对象存储**唯一值**，所以数组转换为 `Set` 时，任何重复值将会被删除：
-
-```js
-const mySet2 = new Set([1, 2, 3, 4])
-
-console.log(Array.from(mySet)) // [1, "some text"]
-console.log([...mySet2]) // [1, 2, 3, 4]
-```
-
-一般情况下，在 JavaScript 中使用数组来存储一组元素，而新的 `Set` 对象有这些优势：
-
-- 根据值（`arr.splice(arr.indexOf(val), 1)`）删除数组元素效率低下。
-- `Set` 对象允许根据值删除元素，而数组中必须使用基于元素下标的 `splice` 方法。
-- 数组的 `indexOf` 方法无法找到 `NaN` 值。
-- `Set` 对象存储唯一值，所以不需要手动处理包含重复值的情况。
-
-### WeakSet
+#### WeakSet
 
 `WeakSet` 对象是可收集垃圾值的集合，包括对象和非注册 symbol。`WeakSet` 中的值只能出现一次。它在 `WeakSet` 的集合中是唯一的。与 `Set` 对象的主要区别有：
 
@@ -1790,15 +1863,59 @@ console.log([...mySet2]) // [1, 2, 3, 4]
 
 `WeakSet` 对象的用例有限。它们不会泄露内存，因此可以安全地使用 DOM 元素作为键，并将其标记用于跟踪等目的。
 
-### Map 和 Set 的键值相等
+### 数组与 Map、Set 之间的转换
 
-`Map` 对象和 `Set` 对象的键和值的等值判断都基于 SameValueZero 算法：
+三种数据结构有着各自不同的特性。数组是一个天然的栈，也是一个天然的队列，在三种数据结构中，其实例方法也应用也是最多的，是线性存储中话事人般的存在，也是我们在普通业务场景下的首选。Set数据的唯一性，可以帮助我们在业务场景中快速的进行去重。Map键值对结构的特殊性，以及对键的包容性，能够通过键快速获取到值，也是复杂业务冲常常用的。
 
-- 等价的作用类似于严格相等运算符 `===`。
-- `-0` 和 `+0` 相等。
-- `NaN` 与自身相等（与 `===` 有所不同）。
+**数组和 Set 的转换**
+
+`Set` 的构造函数接受一个可迭代对象，所以可以直接把数组转成 Set，重复值会被自动删除：
+
+```js
+// 数组转Set
+const set = new Set([1, 2, 2, 3])
+console.log(set) // Set(3) { 1, 2, 3 }
+
+// Set转数组
+const arr = [...set]
+console.log(arr) // [1, 2, 3]
+console.log(Array.from(set)) // [1, 2, 3]
+```
+
+**数组和 Map 的转换**
+
+`Map` 的构造函数接受一个由 `[key, value]` 组成的可迭代对象，所以数组可以直接转成 Map：
+
+```js
+// 数组转Map
+// 数组的每个元素必须是 [key, value] 的形式：
+const arr = [
+  ['name', 'Tom'],
+  ['age', 25],
+  ['city', 'Shenzhen'],
+]
+
+const map = new Map(arr)
+// Map { 'name' => 'Tom', 'age' => 25, 'city' => 'Shenzhen' }
+
+// Map 转数组
+// 方式一：扩展运算符
+const entries = [...map]
+// [['name', 'Tom'], ['age', 25], ['city', 'Shenzhen']]
+
+// 方式二：Array.from
+const entries2 = Array.from(map)
+// 同上
+
+// 只要 key
+const keys = [...map.keys()] // ['name', 'age', 'city']
+// 只要 value
+const values = [...map.values()] // ['Tom', 25, 'Shenzhen']
+```
 
 ## JSON
+
+> 更全面概述可参考 https://www.yuque.com/cuggz/feplus/bv296p
 
 `JSON` 命名空间对象包含用于解析 JavaScript 对象表示法（JSON）和将值转换为 JSON 字符串的静态方法。
 
@@ -1864,6 +1981,8 @@ console.log(JSON.stringify({ x: 5 }, null, 2))
 
 ## 拷贝与不变性
 
+> 更多可参考 https://www.yuque.com/cuggz/feplus/ppz4aq （深浅拷贝）与 https://www.yuque.com/cuggz/feplus/hbuupm （对象不变性）
+
 ### 值与引用
 
 原始值（字符串、数字、布尔、`null`、`undefined`、Symbol、BigInt）按值访问和复制；对象（包括数组、函数、`Map`、`Set`）按引用访问。赋值一个对象，只是复制了指向同一块内存的引用：
@@ -1898,7 +2017,7 @@ copy1.a = 10
 copy1.nested.b = 20
 
 console.log(original.a) // 1
-console.log(original.nested.b) // 20
+console.log(original.nested.b) // 20 可以看到嵌套对象在这里被影响了
 ```
 
 数组的浅拷贝可以用展开语法、`slice()` 或 `Array.from()`：
@@ -1915,21 +2034,7 @@ const arrCopy2 = arr.slice()
 
 深拷贝递归复制所有层级。常见做法有三种。
 
-**JSON 序列化**：`JSON.parse(JSON.stringify(value))`。它简单，但限制很多：
-
-- 会丢失 `undefined`、函数、Symbol；
-- `Date` 会变成字符串；
-- `Map`、`Set` 会变成 `{}`；
-- 循环引用会抛出 `TypeError`；
-- `NaN` 和 `Infinity` 会变成 `null`。
-
-```js
-const original = { date: new Date(), fn() {} }
-const copy = JSON.parse(JSON.stringify(original))
-// copy.date 是字符串，copy.fn 丢失
-```
-
-**`structuredClone()`** 是平台提供的结构化克隆算法，支持循环引用、`Date`、`RegExp`、`Map`、`Set`、`ArrayBuffer`、TypedArray 等，但仍然不能克隆函数、Symbol、DOM 节点和原型链：
+1. 现代浏览器中最好使用 **`structuredClone()`** 这种平台提供的结构化克隆算法，支持循环引用、`Date`、`RegExp`、`Map`、`Set`、`ArrayBuffer`、TypedArray 等，但仍然不能克隆函数、Symbol、DOM 节点和原型链：
 
 ```js
 const original = {
@@ -1944,21 +2049,50 @@ console.log(copy.self === copy) // true
 console.log(copy.date instanceof Date) // true
 ```
 
-**手写递归**：适合需要保留原型、函数或自定义克隆逻辑的场景。基本思路是递归处理数组和对象，并用 `WeakMap` 记录已经克隆过的对象，避免循环引用导致无限递归。
+2. **JSON 序列化**：`JSON.parse(JSON.stringify(value))`。
 
 ```js
-function deepClone(value, seen = new WeakMap()) {
-  if (value === null || typeof value !== 'object') return value
-  if (seen.has(value)) return seen.get(value)
+const copy = JSON.parse(JSON.stringify(original))
+```
 
-  const copy = Array.isArray(value) ? [] : {}
-  seen.set(value, copy)
+这个方法简单但限制很多：
 
-  for (const key of Reflect.ownKeys(value)) {
-    copy[key] = deepClone(value[key], seen)
+- 会丢失 `undefined`、函数、Symbol；
+- `Date` 会变成字符串；
+- `Map`、`Set` 会变成 `{}`；
+- 循环引用会抛出 `TypeError`；
+- `NaN` 和 `Infinity` 会变成 `null`。
+
+3. **手写递归**：适合需要保留原型、函数或自定义克隆逻辑的场景。基本思路是递归处理数组和对象，并用 `WeakMap` 记录已经克隆过的对象，避免循环引用导致无限递归。
+
+此外比较无聊的一点就是面试会拷打你手撕这个：
+
+```js
+function deepClone(source, hash = new WeakMap()) {
+  // 1. 基本类型直接返回
+  if (source === null || typeof source !== 'object') return source
+
+  // 2. 处理循环引用
+  if (hash.has(source)) return hash.get(source)
+
+  // 3. 处理特殊类型
+  const Constructor = source.constructor
+  if (typeof source === 'function') return source // 函数直接引用
+  if (Date.isDate?.(source)) return new Date(source)
+  if (source instanceof RegExp) return new RegExp(source.source, source.flags)
+
+  // 4. 保持原型链
+  const target = new Constructor()
+  hash.set(source, target)
+
+  // 5. 递归拷贝
+  for (const key in source) {
+    if (source.hasOwnProperty(key)) {
+      target[key] = deepClone(source[key], hash)
+    }
   }
 
-  return copy
+  return target
 }
 ```
 
@@ -2112,9 +2246,11 @@ const binary = String.fromCharCode(...bytes)
 console.log(btoa(binary)) // 5paH5pys
 ```
 
-字符编码的完整历史（ASCII、GBK、Unicode、UTF-8）和乱码排查属于“字符编码”专题，这里只覆盖 JavaScript 中与二进制、字符串互转相关的部分。
+字符编码的完整历史（ASCII、GBK、Unicode、UTF-8）和乱码排查属于“字符编码”专题，这里只覆盖 JavaScript 中与二进制、字符串的转换相关的部分。
 
 ## 总结
+
+![总结](https://pica.zhimg.com/v2-0d43768f5effb5510966af21976d9ed6_r.jpg)
 
 - **对象**：属性名最终都会转成字符串或 Symbol；点号访问合法标识符，方括号访问动态键；对象比较的是引用。
 - **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`。
