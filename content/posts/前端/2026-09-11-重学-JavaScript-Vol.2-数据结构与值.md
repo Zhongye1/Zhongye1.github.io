@@ -926,7 +926,7 @@ console.log(a2) // [10, 20, 30]
 
 > map/reduce 的概念可以参考 Google 的知名论文 [MapReduce: Simplified Data Processing on Large Clusters](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
 >
-> 简单说就是 map 把每个元素变成新的值​，输出等长新数组；reduce 把所有元素聚合成一个结果​，输出一个值
+> 简单说就是 map 把每个元素变成新的值，输出等长新数组；reduce 把所有元素聚合成一个结果，输出一个值
 
 `map()` 方法返回由每个数组元素上执行 `callback` 的返回值所组成的新数组：
 
@@ -1076,104 +1076,230 @@ console.log(arr.property) // "value"
 
 一些 DOM 集合（如 `NodeList`）和函数内部的 `arguments` 对象是**类数组对象**：它们有 `length` 属性和数字索引，但没有数组的方法。可以用 `Array.from()` 把它们转换成真正的数组，再使用 `map`、`filter` 等方法。
 
-## iterable
+## 可迭代对象（iterable）
+
+**迭代**，就是按顺序逐个访问集合中的元素。在 ES6 之前，只能靠"索引 + 循环"手动完成这件事，这时需初始化一个变量来记录每一次迭代在数据集合中的位置：
+
+```js
+let a = ['aaa', 'bbb', 'ccc']
+// 这里变量 i 的唯一作用就是记录当前迭代到了集合的哪个位置，手动管理迭代状态
+for (let i = 0; i < a.length; i++) {
+  console.log(a[i])
+}
+```
+
+索引式遍历存在局限：遍历逻辑和数据结构强绑定，换一种结构（如 Set、Map）就要重写；同时暴露了细节，调用方必须知道"怎么取下标、怎么取下一个"。
+
+ES6 把"能否被遍历"抽象成了一个标准协议：**可迭代协议（Iterable Protocol）**。实现了这个协议的对象叫**可迭代对象**，可以用 `for...of`、展开运算符 `...`、解构和 `Array.from` 等统一语法来消费。
+
+```js
+const arr = [10, 20, 30]
+for (let item of arr) {
+  console.log(item)
+}
+// 输出：10, 20, 30
+```
+
+`for...of` 能运行的原因，就是数组实现了可迭代协议。这套协议让迭代状态（取到了第几个、取完了没有）由对象自己内部维护，调用方不再需要手动管理下标。
 
 ### 迭代器
 
-迭代器和生成器将迭代的概念直接带入核心语言，并提供了一种机制来自定义 `for...of` 循环的行为。
-
-在 JavaScript 中，**迭代器**是一个对象，它定义一个序列，并在终止时可能附带一个返回值。更具体地说，迭代器是通过使用 `next()` 方法实现了迭代器协议的任何一个对象，该方法返回具有两个属性的对象：
+在 JavaScript 中，**迭代器**是一个通过 `next()` 方法实现迭代器协议的对象，它定义一个序列，并在终止时可能附带一个返回值。`next()` 返回一个具有两个属性的对象：
 
 - `value`：迭代序列的下一个值。
-- `done`：如果已经迭代到序列中的最后一个值，则它为 `true`。如果 `value` 和 `done` 一起出现，则它就是迭代器的返回值。
+- `done`：如果已经迭代到序列中的最后一个值，则它为 `true`，否则为 `false`。`done` 为 `true` 时，`value` 就是迭代器的返回值（没有返回值时为 `undefined`）。
 
 一旦创建，迭代器对象可以通过重复调用 `next()` 显式地迭代。迭代一个迭代器被称为消耗了这个迭代器，因为它通常只能执行一次：在产生终值后，对 `next()` 的额外调用应该继续返回 `{done: true}`。
 
-JavaScript 中最常见的迭代器是数组迭代器，它按顺序返回关联数组中的每个值。
-
-虽然很容易想象所有迭代器都可以表示为数组，但事实并非如此。数组必须完整分配，而迭代器则是按需分配。因此，迭代器可以表示无限大小的序列，例如 0 和 `Infinity` 之间的整数范围。
-
-下面的例子展示了具体做法。它允许创建一个简单的范围迭代器，以定义一个从 `start`（闭）到 `end`（开），以 `step` 为步长的整数序列。它的最终返回值是它创建的序列的大小，由变量 `iterationCount` 跟踪：
+ES5 实现一个迭代器：
 
 ```js
-function makeRangeIterator(start = 0, end = Infinity, step = 1) {
-  let nextIndex = start
-  let iterationCount = 0
-
-  const rangeIterator = {
-    next() {
-      let result
-      if (nextIndex < end) {
-        result = { value: nextIndex, done: false }
-        nextIndex += step
-        iterationCount++
-        return result
+function myIterator(list) {
+  var i = 0
+  return {
+    next: function () {
+      var done = i >= list.length
+      var value = !done ? list[i++] : undefined
+      return {
+        done: done,
+        value: value,
       }
-      return { value: iterationCount, done: true }
     },
   }
-  return rangeIterator
 }
+
+const iterator = myIterator([1, 2, 3])
+// 它返回的对象有 next() 方法，符合迭代器协议，所以它是一个迭代器。
+// 在这个手动实现的"迭代器"中，通过 `next()` 方法逐个产出值
+iterator.next() // "{done: false, value: 1}"
+iterator.next() // "{done: false, value: 2}"
+iterator.next() // "{done: false, value: 3}"
+iterator.next() // "{done: true, value: undefined}"
+// 以后的调用都一样
+iterator.next() // "{done: true, value: undefined}"
 ```
 
-使用这个迭代器看起来像这样：
+从上面代码可以看出，手写迭代器比较麻烦，而 ES6 新增的生成器可以更简单地创建迭代器对象。
+
+此外，这个 `iterator` 只是迭代器，不是可迭代对象，因为它没有 `[Symbol.iterator]` 方法：
 
 ```js
-let it = makeRangeIterator(1, 10, 2)
+const iter = myIterator([1, 2, 3])
 
-let result = it.next()
-while (!result.done) {
-  console.log(result.value) // 1 3 5 7 9
-  result = it.next()
-}
+// ❌ 不能用 for...of，因为没实现可迭代协议
+for (const n of iter) {
+} // TypeError
 
-console.log(`已迭代序列的大小：${result.value}`) // 5
+// ❌ 不能展开
+;[...iter] // TypeError
 ```
-
-反射性地知道特定对象是否是迭代器是不可能的。如果需要这样做，请使用**可迭代对象**。
 
 ### 可迭代对象
 
-若一个对象拥有迭代行为，比如在 `for...of` 中会循环一些值，那么那个对象便是一个可迭代对象。一些内置类型，如 `Array` 或 `Map` 拥有默认的迭代行为，而其他类型（比如 `Object`）则没有。
-
-为了实现**可迭代**，对象必须实现 `[Symbol.iterator]()` 方法，这意味着这个对象（或其原型链中的任意一个对象）必须具有一个键值为 `Symbol.iterator` 的属性。
-
-程序员应知道一个可迭代对象可以多次迭代，还是只能迭代一次。只能迭代一次的可迭代对象（例如生成器）通常从它们的 `[Symbol.iterator]()` 方法中返回 `this`，而那些可以多次迭代的方法必须在每次调用 `[Symbol.iterator]()` 时返回一个新的迭代器：
+可迭代协议的判定标准是：对象自身或原型链上存在 `Symbol.iterator` 属性，且该属性的值是一个函数，调用后返回一个迭代器：
 
 ```js
-function* makeIterator() {
-  yield 1
-  yield 2
-}
+const str = 'Hi'
+console.log(str[Symbol.iterator]) // [Function: [Symbol.iterator]]
 
-const it = makeIterator()
-
-for (const itItem of it) {
-  console.log(itItem)
-}
-
-console.log(it[Symbol.iterator]() === it) // true
-
-// 这个例子展示了生成器（迭代器）是可迭代对象，
-// 它有一个 [Symbol.iterator]() 方法返回 it（它自己），
-// 因此，it 对象只能迭代*一次*。
-
-// 如果将它的 [Symbol.iterator]() 方法改为一个返回新的迭代器/生成器对象的函数/生成器，
-// 它（it）就可以迭代多次了。
-
-it[Symbol.iterator] = function* () {
-  yield 2
-  yield 1
+for (const ch of str) {
+  console.log(ch) // H i
 }
 ```
 
-#### 自定义的可迭代对象
+常见的可迭代对象：
 
-可以像这样实现自己的可迭代对象：
+- `Array`
+- `String`
+- `Map`
+- `Set`
+- `TypedArray`
+- `arguments` 对象
+- DOM 集合（如 `NodeList`）
+
+相反，普通对象没有默认的迭代行为，不能直接用于 `for...of`：
+
+```js
+const plain = { a: 1, b: 2 }
+console.log(plain[Symbol.iterator]) // undefined，没有默认的迭代行为
+
+try {
+  for (const value of plain) {
+    console.log(value)
+  }
+} catch (error) {
+  console.log(error.name, error.message) // TypeError plain is not iterable
+}
+```
+
+照着迭代器协议补上 `[Symbol.iterator]()`，普通对象也能变成可迭代对象。下面的 `range` 在 `[Symbol.iterator]()` 里直接返回一个带 `next()` 的迭代器：
+
+```js
+const range = {
+  from: 1,
+  to: 5,
+  [Symbol.iterator]() {
+    let current = this.from
+    const last = this.to
+    return {
+      next() {
+        return current <= last
+          ? { value: current++, done: false }
+          : { value: undefined, done: true }
+      },
+    }
+  },
+}
+
+console.log([...range]) // [1, 2, 3, 4, 5]
+for (const n of range) {
+  console.log(n) // 1 2 3 4 5
+}
+
+const [first, second] = range
+console.log(first, second) // 1 2
+console.log(range[Symbol.iterator]() === range[Symbol.iterator]()) // false
+```
+
+展开、`for...of` 和解构都会调用 `[Symbol.iterator]()`；每次调用返回一个新的迭代器对象（最后一行比较为 `false`），所以 `range` 可以反复迭代。
+
+### 生成器
+
+生成器是一个特殊的函数，使用 `function*` 定义，调用后返回一个生成器对象。
+
+普通函数遵循运行至完成（run-to-completion）模型：一旦调用，就会一直执行到 `return`、函数结束或抛出异常，中途不能暂停。
+
+生成器函数不遵循这个模型——调用它时函数体并不执行，执行由 `next()` 驱动：每次调用 `next()`，函数体执行到下一个 `yield` 并暂停，`yield` 后面的值作为 `{ value, done: false }` 返回；暂停期间的局部变量和执行位置都会保留，下一次 `next()` 从暂停处继续。
+
+```js
+function* generateSequence() {
+  yield 1
+  yield 2
+  yield 3
+}
+let sequence = generateSequence()
+sequence.next() // "{done: false, value: 1}"
+sequence.next() // "{done: false, value: 2}"
+sequence.next() // "{done: false, value: 3}"
+sequence.next() // "{done: true, value: undefined}"
+// 以后的调用都一样
+sequence.next() // "{done: true, value: undefined}"
+```
+
+把 `yield` 放进循环，暂停时循环变量的状态会被保留，下一次 `next()` 从原处继续，因此可以按需产出整个序列：
+
+```js
+function* generateRange(start = 0, end = Infinity, step = 1) {
+  for (let i = start; i < end; i += step) {
+    yield i
+  }
+}
+
+const numbers = generateRange(1, 10, 2)
+numbers.next() // { done: false, value: 1 }
+numbers.next() // { done: false, value: 3 }
+```
+
+它和前面的 `myIterator` 思路相同：都由 `next()` 逐个产出值；区别是生成器不需要手动维护 `i`、`list.length` 这些状态，暂停和恢复由引擎负责，因此还能表示无限序列。
+
+`yield*` 可以把另一个可迭代对象的值逐个转交给当前生成器：
+
+```js
+function* gen() {
+  yield* ['a', 'b', 'c']
+}
+
+console.log(gen().next()) // { value: 'a', done: false }
+console.log([...gen()]) // ['a', 'b', 'c']
+```
+
+生成器对象同时满足两个协议：它有 `next()`，是迭代器；它的 `[Symbol.iterator]()` 返回自身，所以也是可迭代对象，可以直接用于 `for...of`、展开和解构：
+
+```js
+const it = generateSequence()
+
+console.log(it[Symbol.iterator]() === it) // true
+
+// 同一个生成器对象只能迭代一次
+// 把可迭代对象 it 里的所有值逐个取出来，放进一个新数组
+console.log([...it]) // [1, 2, 3]
+console.log([...it]) // []
+
+// 重新调用函数，拿到新的生成器对象，可以再迭代一次
+console.log([...generateSequence()]) // [1, 2, 3]
+console.log([...generateSequence()]) // [1, 2, 3]
+```
+
+第一次展开得到 `[1, 2, 3]`；第二次是空数组，因为 `[Symbol.iterator]()` 返回的就是 `it` 自己，而这个生成器已经被消耗完。只能迭代一次的可迭代对象通常都这样实现；需要重复迭代时，让 `[Symbol.iterator]()` 每次返回一个新的生成器。
+
+### 自定义的可迭代对象
+
+自定义可迭代对象最简洁的写法，是直接把 `[Symbol.iterator]` 写成生成器方法：
 
 ```js
 const myIterable = {
-  *[Symbol.iterator]() {
+  // 生成器方法
+  [Symbol.iterator]: function* () {
     yield 1
     yield 2
     yield 3
@@ -1187,35 +1313,7 @@ for (const value of myIterable) {
 // 2
 // 3
 
-;[...myIterable] // [1, 2, 3]
-```
-
-#### 内置可迭代对象
-
-`String`、`Array`、`TypedArray`、`Map` 和 `Set` 都是内置可迭代对象，因为它们的原型对象都拥有一个 `Symbol.iterator` 方法。
-
-#### 用于可迭代对象的语法
-
-一些语句和表达式专用于可迭代对象，例如 `for...of` 循环、展开语法、`yield*` 和解构语法：
-
-```js
-for (const value of ['a', 'b', 'c']) {
-  console.log(value)
-}
-// "a"
-// "b"
-// "c"
-
-;[...'abc'] // ["a", "b", "c"]
-
-function* gen() {
-  yield* ['a', 'b', 'c']
-}
-
-gen().next() // { value: "a", done: false }
-
-;[a, b, c] = new Set(['a', 'b', 'c'])
-a // "a"
+console.log([...myIterable]) // [1, 2, 3]
 ```
 
 ## 解构赋值
@@ -1492,10 +1590,10 @@ for (const item of mySet) {
 可以使用 `Array.from()` 或展开语法来完成集合到数组的转换。同样，`Set` 的构造函数接受数组作为参数，可以完成从 `Array` 到 `Set` 的转换。`Set` 对象存储**唯一值**，所以数组转换为 `Set` 时，任何重复值将会被删除：
 
 ```js
-Array.from(mySet)
-;[...mySet2]
+const mySet2 = new Set([1, 2, 3, 4])
 
-mySet2 = new Set([1, 2, 3, 4])
+console.log(Array.from(mySet)) // [1, "some text"]
+console.log([...mySet2]) // [1, 2, 3, 4]
 ```
 
 一般情况下，在 JavaScript 中使用数组来存储一组元素，而新的 `Set` 对象有这些优势：
@@ -1807,8 +1905,8 @@ TypedArray 不支持 `push()`、`pop()`、`splice()` 等改变长度的方法，
 JavaScript 字符串以 UTF-16 码元序列存储。每个码元是 16 位无符号整数，字符串的 `length` 是码元数量，不一定等于 Unicode 字符数量。超出 BMP 的字符（如部分 emoji）由两个代理码元组成，`length` 为 2：
 
 ```js
-'😀'.length // 2
-;[...'😀'].length // 1，按码点迭代
+console.log('😀'.length) // 2
+console.log([...'😀'].length) // 1，按码点迭代
 ```
 
 `codePointAt()` 和 `String.fromCodePoint()` 按码点处理；`charCodeAt()` 和 `String.fromCharCode()` 按 UTF-16 码元处理。正则表达式的 `u` 标志让模式按 Unicode 码点匹配，而不是按码元：
@@ -1843,7 +1941,7 @@ console.log(btoa(binary)) // 5paH5pys
 
 - **对象**：属性名最终都会转成字符串或 Symbol；点号访问合法标识符，方括号访问动态键；对象比较的是引用。
 - **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`。
-- **iterable**：可迭代对象必须实现 `Symbol.iterator`，迭代器的 `next()` 返回 `{ value, done }`。
+- **iterable**：可迭代对象必须实现 `Symbol.iterator`，迭代器的 `next()` 返回 `{ value, done }`；生成器是创建迭代器最省事的方式，但一个生成器对象只能迭代一次。
 - **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
 - **Map 和 Set**：按插入顺序迭代，`Map` 的键可以是任意类型，`Set` 天然去重；`WeakMap`/`WeakSet` 持有弱引用、不可枚举。
 - **JSON**：只支持双引号、无尾随逗号、无 `undefined`；`stringify` 会忽略函数和 symbol，循环引用抛 `TypeError`。
@@ -1857,6 +1955,8 @@ console.log(btoa(binary)) // 5paH5pys
 - [彻底搞懂JS原型与原型链](https://segmentfault.com/a/1190000042725370)
 - [带键的集合](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections)
 - [迭代器和生成器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_generators)
+- [zhuanlan.zhihu.com/p/55989130](https://zhuanlan.zhihu.com/p/55989130)
+- [zhuanlan.zhihu.com/p/183124536](https://zhuanlan.zhihu.com/p/183124536)
 - [JSON](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)
 - [类型化数组](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Typed_arrays)
 - [Object.freeze()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
