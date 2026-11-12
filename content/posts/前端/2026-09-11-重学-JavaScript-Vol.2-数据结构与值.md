@@ -1318,179 +1318,356 @@ console.log([...myIterable]) // [1, 2, 3]
 
 ## 解构赋值
 
-解构语法是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
+JavaScript 中最常用的两种数据结构是 Object 和 Array。其中对象是一种根据键存储数据的实体，数组是一种直接存储数据的有序列表。但是把它们传递给函数时，函数可能不需要整个对象/数组，而只需要其中一部分。
+
+比如要读取嵌套对象里的几个字段：
+
+```js
+const student = {
+  name: 'ZhangSan',
+  scores: { math: 19, english: 85, chinese: 100 },
+}
+
+// 不解构：每次都要写完整访问链
+console.log(student.name) // ZhangSan
+console.log(student.scores.math) // 19
+console.log(student.scores.english) // 85
+
+// 解构：一次取出，后续直接使用变量
+const { name, scores } = student
+const { math, english, chinese } = scores
+console.log(name, math, english, chinese) // ZhangSan 19 85 100
+```
+
+解构赋值是一种 JavaScript 语法，可以将数组中的值或对象的属性取出，赋值给其他变量。它可以在接收数据的位置使用，例如赋值的左侧或创建新标识符绑定的任何位置。
 
 ```js
 let a, b, rest
-;[a, b] = [10, 20]
+
+ [a, b] = [10, 20]
 // a = 10, b = 20
 
-;[a, b, ...rest] = [10, 20, 30, 40, 50]
-// rest = [30, 40, 50]
+ [a, b, ...rest] = [10, 20, 30, 40, 50]
+// a = 10, b = 20, rest = [30, 40, 50]
 ```
 
-### 数组解构
+### 对象的解构赋值
 
-数组解构按位置取值，可以跳过元素、设置默认值、收集剩余元素：
+对象解构又称为对象属性分配模式，它允许我们将对象的属性值分配给相应的变量。它有两种写法：
 
-```js
-const arr = [1, 2, 3]
-const [first, second, third] = arr
-// first = 1, second = 2, third = 3
+```javascript
+let obj = { x: 1, y: 2, z: 3 }
 
-const [x, , z] = arr
-// x = 1, z = 3
+// 对象解构的完整形式，对象的每个属性都将被分配一个变量，其中冒号前面的是源对象中的属性，冒号后面的是要赋值属性;
+let { x: a, y: b, z: c } = obj
+console.log(a, b, c) // 1 2 3
 
-const [p = 10, q = 20] = [1]
-// p = 1, q = 20
-
-const [head, ...tail] = arr
-// head = 1, tail = [2, 3]
+// 对象解构的简写形式，对象的属性与要分配的属性一致时可以使用这种形式
+let { x, y, z } = obj
+console.log(x, y, z) // 1 2 3
 ```
 
-交换变量不需要中间变量：
+如果需要给已有变量赋值，需要将赋值表达式使用括号括起来，如果省略，解构对象将被视为一个块语句，而块语句时不能放在赋值表达式左侧的。
 
-```js
-let a = 1
-let b = 2
-;[a, b] = [b, a]
-// a = 2, b = 1
+```javascript
+let obj = { x: 1, y: 2, z: 3 }
+
+let x = 0,
+  y = 0,
+  z = 0
+
+;({ x, y, z } = obj)
+console.log(x, y, z) // 1 2 3
 ```
 
-数组解构不只用于数组，任何可迭代对象都可以：
+当使用解构赋值时，可以给变量传递一个默认值：
 
-```js
-const [firstChar, secondChar] = 'ab'
-// firstChar = "a", secondChar = "b"
+```javascript
+const person = {
+  name: 'ZhangSan',
+  height: 180,
+}
 
-const [one, two] = new Set([1, 2])
+const { name, height, age = 25 } = person
+
+console.log(name, height, age) // ZhangSan 180 25
 ```
 
-### 对象解构
+这里我们给age分配了一个默认值，当对源对象上不存在age属性时，age就会被赋上默认值25，而不是undefined。
 
-对象解构按属性名取值，可以与变量名不同，也可以设置默认值：
+如果分配的对象属性为undefined，那么就会使用默认值：
 
-```js
-const obj = { a: 1, b: 2, c: 3 }
-const { a, b, c } = obj
-// a = 1, b = 2, c = 3
-
-const { a: x, b: y } = obj
-// x = 1, y = 2
-
-const { a: p = 10, d = 20 } = obj
-// p = 1, d = 20
+```javascript
+const { x = 2 } = { x: undefined }
+console.log(x) // 2
 ```
 
-默认值只在属性不存在或值为 `undefined` 时生效；值为 `null` 时不使用默认值：
+### 数组的解构赋值
 
-```js
-const [a = 1] = []
-const { b = 2 } = { b: undefined }
-const { c = 2 } = { c: null }
-// a = 1, b = 2, c = null
+在使用数组解构时，实际上会使用迭代器将所需要的值与结构源分开。因此，我们可以对**可迭代值**使用数组结构，包括字符串、数组、集合、函数映射、DOM元素。我们还可以将解构赋值与扩展运算符结合使用。
+
+#### 字符串
+
+```javascript
+let message = 'Hello'
+let [a, b] = message
+let [x, y, ...z] = message
+
+console.log(a, b) // H e
+console.log(x, y, z) // H e ['l', 'l', 'o']
 ```
 
-剩余属性收集对象剩余的可枚举自有属性：
+#### 数组
 
-```js
-const { a, ...others } = { a: 1, b: 2, c: 3 }
-// a = 1, others = { b: 2, c: 3 }
+```javascript
+let numbers = [1, 2, 3]
+let [x, y, z] = numbers
+
+console.log(x, y, z) // 1 2 3
 ```
 
-剩余属性必须是模式中的最后一个，并且不能有尾随逗号。
+#### 集合
+
+```javascript
+let set = new Set().add('foo').add('bar')
+let [a, b] = set
+
+console.log(a, b) // foo bar
+```
+
+#### Map
+
+```javascript
+let map = new Map().set('a', 1).set('b', 2)
+let [x, y] = map
+
+console.log(x, y) // ["a", 1] ["b", 2]
+```
+
+在数组的解构中，存储变量的数组中的每个变量都会映射到解构数组上相同索引处的相应项。
+
+如果解构中某一项不需要，可以使用逗号操作符进行分隔：
+
+```javascript
+const rgb = [200, 255, 100]
+
+const [, , blue] = rgb
+
+console.log(blue) // 100
+```
+
+与对象解构一样，可以使用数组解构为局部变量设置默认值：
+
+```javascript
+const rgb = [200]
+
+const [red = 255, green, blue = 255] = rgb
+
+console.log(`R: ${red}, G: ${green}, B: ${blue}`) // R: 200, G: undefined, B: 255
+```
+
+如果变量已经存在，就可以这么写：
+
+```javascript
+let red = 100,
+  green = 200,
+  blue = 50
+
+const rgb = [200, 255, 100]
+
+;[red, green] = rgb
+
+console.log(`R: ${red}, G: ${green}, B: ${blue}`) // R: 200, G: 255, B: 50
+```
+
+与对象解构不同的是，这里不需要括号将数组括起来。
+
+如果给变量分配的值是undefined，那么就会使用默认值：
+
+```javascript
+const [x = 1] = [undefined]
+console.log(x) // 1
+```
+
+这里的默认值并不一定是一个固定值，它可以是一个计算属性：
+
+```javascript
+function foo() {
+  return 1
+}
+
+let obj1 = { x: 2 }
+let obj2 = { x: undefined }
+
+let { x: first = foo() } = obj1
+console.log(first) // 2
+
+let { x: second = foo() } = obj2
+console.log(second) // 1
+```
+
+如果想将数组中的一些元素分配给变量，而将数组中的其余项分配给特定的变量就可以这样做：
+
+```javascript
+let [greeting, ...intro] = ['Hello', 'I', 'am', 'CUGGZ']
+
+console.log(greeting) // "Hello"
+console.log(intro) // ["I", "am", "CUGGZ"]
+```
 
 ### 嵌套解构
 
-数组和对象可以任意嵌套：
+解构赋值可以用于嵌套数组和嵌套对象：
 
-```js
-const user = {
-  name: 'Ada',
-  address: { city: 'London', zip: 'N1' },
-  hobbies: ['math', 'code'],
+```javascript
+const student = {
+  name: 'ZhangSan',
+  age: 18,
+  scores: {
+    math: 19,
+    english: 85,
+    chinese: 100,
+  },
 }
 
 const {
   name,
-  address: { city },
-  hobbies: [firstHobby],
-} = user
-// name = "Ada", city = "London", firstHobby = "math"
+  scores: { math, english, chinese },
+} = student
+// name = "ZhangSan", math = 19, english = 85, chinese = 100
 ```
 
-解构对象时会沿着原型链查找属性：
+嵌套数组解构的例子：
 
-```js
-const base = { inherited: 1 }
-const child = Object.create(base)
-child.own = 2
-
-const { inherited, own } = child
-// inherited = 1, own = 2
+```javascript
+let numbers = [1, [2, 3, 4], 5]
+let [a, [b, c, d], e] = numbers
+console.log(a, b, c, d, e) // 1 2 3 4 5
 ```
 
-### 函数参数解构
+### 解构赋值的应用
 
-解构可以直接用在函数参数上，常用于配置对象：
+#### 解构函数参数
 
-```js
-function draw({ x = 0, y = 0, size = 10 }) {
-  console.log(x, y, size)
+可以对函数参数使用解构赋值：
+
+```javascript
+function foo([a, b]) {
+  console.log(a + b)
 }
+foo([1, 2]) // 3
 
-draw({ x: 1, size: 20 })
-// 1 0 20
-```
-
-也可以和默认参数组合：
-
-```js
-function connect({ host = 'localhost', port = 80 } = {}) {
-  return `${host}:${port}`
+function bar({ x, y }) {
+  console.log(x, y)
 }
-
-connect() // "localhost:80"
+bar({ x: 1, y: 2 }) // 1 2
 ```
 
-### 循环中的解构
+可以对函数返回值使用解构赋值：
 
-`for...of` 可以直接解构每个元素，尤其是 `Map` 的 `[key, value]`：
-
-```js
-for (const [key, value] of new Map([
-  ['a', 1],
-  ['b', 2],
-])) {
-  console.log(key, value)
+```javascript
+function getStudentInfo() {
+  return {
+    name: 'ZhangSan',
+    age: 18,
+    scores: {
+      math: 19,
+      english: 85,
+      chinese: 100,
+    },
+  }
 }
-```
-
-### 绑定模式与赋值模式
-
-解构有两种模式：绑定模式和赋值模式。
-
-绑定模式以声明关键字（`var`、`let` 或 `const`）开始，每个属性必须绑定到一个变量或继续解构：
-
-```js
-const obj = { a: 1, b: { c: 2 } }
 const {
-  a,
-  b: { c: d },
-} = obj
-// 变量 a 和 d 被绑定
+  name,
+  scores: { math, english, chinese },
+} = getStudentInfo()
+console.log(name, math, english, chinese) // ZhangSan 19 85 100
 ```
 
-赋值模式不以关键字开头，每个解构属性被赋值给一个已存在的目标：
+#### 循环中的解构
 
-```js
-const numbers = []
-const obj = { a: 1, b: 2 }
-;({ a: numbers[0], b: numbers[1] } = obj)
-// numbers = [1, 2]
+需要循环中的对象键值时，也可以使用对象解构：
+
+```javascript
+const students = [
+  {
+    name: 'ZhangSan',
+    grade: 80,
+  },
+  {
+    name: 'LiSi',
+    grade: 75,
+  },
+  {
+    name: 'WangWu',
+    grade: 95,
+  },
+]
+
+for (let { name, grade } of students) {
+  console.log(name, grade)
+}
+// ZhangSan 80
+// LiSi 75
+// WangWu 95
 ```
 
-使用对象字面量解构而不带声明时，赋值语句周围必须添加括号 `( ... )`，否则左侧的 `{ a, b }` 会被当成块语句。在无分号风格中，括号表达式前面需要补一个分号。
+#### 动态属性解构
+
+很多时候我们不知道对象属性的 key，只有运行时才知道。比如有一个方法 `getStudentInfo`，它接收一个 key，返回对应的属性值：
+
+```javascript
+const student = { name: 'ZhangSan', age: 18 }
+
+const getStudentInfo = (key) => {
+  const { [key]: value } = student
+  return value
+}
+
+console.log(getStudentInfo('name')) // ZhangSan
+console.log(getStudentInfo('age')) // 18
+```
+
+另外包裹 key 的方括号不能少，否则 `{ key: value }` 会去取名为 `key` 的属性，而不是变量 `key` 指向的属性名。
+
+#### 交换变量
+
+数组结构一个很实用的功能就是实现交换局部变量。通常，我们会借助临时变量来实现变量的交换：
+
+```javascript
+let width = 300
+let height = 400
+
+let temp = width
+width = height
+height = temp
+
+console.log(width, height) // 400 300
+```
+
+如果使用数组的解构赋值，就会变得很简单：
+
+```javascript
+let width = 300
+let height = 400
+
+;[width, height] = [height, width]
+
+console.log(width, height) // 400 300
+```
+
+#### 数组拷贝
+
+可以使用解构赋值和rest运算符来实现数组的拷贝：
+
+```javascript
+const rgb = [200, 255, 100]
+
+const [...newRgb] = rgb
+// 等同于 const newRgb = [...rgb]
+
+console.log(newRgb) // [200, 255, 100]
+```
 
 ## Map 和 Set
 
@@ -1942,7 +2119,7 @@ console.log(btoa(binary)) // 5paH5pys
 - **对象**：属性名最终都会转成字符串或 Symbol；点号访问合法标识符，方括号访问动态键；对象比较的是引用。
 - **数组**：本质是“以索引为属性名”的对象，`length` 是最大索引加一且可写；遍历用 `for`、`for...of` 或 `forEach`，不要用 `for...in`。
 - **iterable**：可迭代对象必须实现 `Symbol.iterator`，迭代器的 `next()` 返回 `{ value, done }`；生成器是创建迭代器最省事的方式，但一个生成器对象只能迭代一次。
-- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套和函数参数解构。
+- **解构**：数组按位置、对象按属性名取值，支持默认值、剩余、嵌套、动态属性名，以及函数参数与返回值解构。
 - **Map 和 Set**：按插入顺序迭代，`Map` 的键可以是任意类型，`Set` 天然去重；`WeakMap`/`WeakSet` 持有弱引用、不可枚举。
 - **JSON**：只支持双引号、无尾随逗号、无 `undefined`；`stringify` 会忽略函数和 symbol，循环引用抛 `TypeError`。
 - **拷贝与不变性**：展开和 `Object.assign()` 是浅拷贝；深拷贝可用 `structuredClone()`，它有明确的支持范围；`freeze()`/`seal()`/`preventExtensions()` 提供逐级增强的保护。
